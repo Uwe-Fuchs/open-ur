@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  
+  <properties>
+  </properties>
+  
+  <parent>
+    <groupId>org.open-ur.pom</groupId>
+    <artifactId>open_ur-poms</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <relativePath>../open_ur-poms/pom.xml</relativePath>
+  </parent>
+  
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.open-ur.module</groupId>
+  <artifactId>open_ur-modules</artifactId>
+  <packaging>pom</packaging>
+  
+  <modules>
+    <module>open_ur-module-util</module>
+    <module>open_ur-module-domain</module>
+    <module>open_ur-module-persistence</module>
+    <module>open_ur-module-service</module>
+  </modules>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+      </plugins>
+    </pluginManagement> 
+    <plugins>
+    </plugins>
+  </build>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.open-ur.module</groupId>
+        <artifactId>open_ur-module-util</artifactId>
+        <version>${project.version}</version>
+        <type>jar</type>
+      </dependency>
+      <dependency>
+        <groupId>org.open-ur.module</groupId>
+        <artifactId>open_ur-module-domain</artifactId>
+        <version>${project.version}</version>
+        <type>jar</type>
+      </dependency>
+      <dependency>
+        <groupId>org.open-ur.module</groupId>
+        <artifactId>open_ur-module-persistence</artifactId>
+        <version>${project.version}</version>
+        <type>jar</type>
+      </dependency>
+      <dependency>
+        <groupId>org.open-ur.module</groupId>
+        <artifactId>open_ur-module-service</artifactId>
+        <version>${project.version}</version>
+        <type>jar</type>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+  </dependencies>
+  
+</project>

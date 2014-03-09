@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.open-ur.pom</groupId>
+  <version>0.1-SNAPSHOT</version>
+  <artifactId>open_ur-builder_pom</artifactId>
+  <packaging>pom</packaging>  
+  <modules>
+    <module>open_ur-poms</module>
+    <module>open_ur-modules</module>
+    <!--module>open-ur-webservice</module>
+    <module>open-ur-standalone-serverapp</module>
+    <module>open-ur-admin-webapp</module-->
+  </modules>
+</project>

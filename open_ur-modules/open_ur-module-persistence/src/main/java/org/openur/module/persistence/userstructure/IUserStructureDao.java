@@ -1,0 +1,99 @@
+package org.openur.module.persistence.userstructure;
+
+import java.util.List;
+
+import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
+import org.openur.module.domain.userstructure.user.person.IPerson;
+import org.openur.module.domain.userstructure.user.technicaluser.ITechnicalUser;
+
+public interface IUserStructureDao
+{
+  /**
+   * searches a person via it's unique identifier.
+   * 
+   * @param personId : the unique identifier of the person.
+   * 
+   * @return the person or null, if no person is found.
+   */
+  IPerson findPersonById(String personId);
+  
+  /**
+   * searches a person via it's (domain specific) user-number.
+   * 
+   * @param personalNumber : the user-number of the person.
+   * 
+   * @return the person or null, if no person is found.
+   */
+  IPerson findPersonByNumber(String personalNumber);
+	
+  /**
+   * returns all stored persons in a list.
+   * If no persons are found, the result-list will be empty (not null).
+   * 
+   * @return List with all persons.
+   */
+  List<IPerson> obtainAllPersons();
+  
+  /**
+   * searches an organizational-unit via it's unique identifier.
+   * 
+   * @param orgUnitId : the unique identifier of the organizational-unit.
+   * 
+   * @return the organizational-unit or null, if no organizational-unit is found.
+   */
+  IOrganizationalUnit findOrgUnitById(String orgUnitId);
+  
+  /**
+   * searches a organizational-unit via it's (domain specific) number.
+   * 
+   * @param orgUnitNumber : the number of the organizational-unit.
+   * 
+   * @return the organizational-unit or null, if no organizational-unit is found.
+   */
+  IOrganizationalUnit findOrgUnitByNumber(String orgUnitNumber);
+	
+  /**
+   * returns all stored organizational-units in a list.
+   * If no organizational-units are found, the result-list will be empty (not null).
+   * 
+   * @return List with all organizational-units (maybe empty).
+   */
+  List<IOrganizationalUnit> obtainAllOrgUnits();
+  
+  /**
+   * returns all subordinated org-units of an org-unit in a list.
+   * If no org-units are found, the result-list will be empty (not null).
+   * 
+   * @param orgUnitId : the unique identifier of the super-org-unit.
+   * @param inclMembers : including all members of the org-units?
+   * 
+   * @return List with all subordinated org-units of an org-unit (maybe empty).
+   */
+  List<IOrganizationalUnit> obtainSubOrgUnitsForOrgUnit(String orgUnitId, boolean inclMembers);
+	
+  /**
+   * searches a technical user via it's unique identifier.
+   * 
+   * @param techUserId : the unique identifier of the technical user.
+   * 
+   * @return the technical user or null, if no user is found.
+   */
+	ITechnicalUser findTechnicalUserById(String techUserId);
+	
+  /**
+   * searches a technical user via it's (domain specific) user-number.
+   * 
+   * @param techUserNumber : the user-number of the technical user.
+   * 
+   * @return the technical user or null, if no user is found.
+   */
+	ITechnicalUser findTechnicalUserByNumber(String techUserNumber);
+	
+  /**
+   * returns all stored technical users in a list.
+   * If no users are found, the result-list will be empty (not null).
+   * 
+   * @return List with all technical users.
+   */
+  List<ITechnicalUser> obtainAllTechnicalUsers();
+}
