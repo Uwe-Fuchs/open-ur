@@ -4,5 +4,5 @@ import org.openur.module.domain.IPrincipalUser;
 
 public interface IAuthenticationServices	
 {
-	IPrincipalUser getAuthenticationInfo(String userName);
+	IPrincipalUser authenticate(String userName);
 }

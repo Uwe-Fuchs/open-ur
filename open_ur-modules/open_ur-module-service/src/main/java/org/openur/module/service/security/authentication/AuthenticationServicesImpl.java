@@ -6,7 +6,7 @@ public class AuthenticationServicesImpl
 	implements IAuthenticationServices
 {
 	@Override
-	public IPrincipalUser getAuthenticationInfo(String userName)
+	public IPrincipalUser authenticate(String userName)
 	{
 		// TODO Auto-generated method stub
 		return null;

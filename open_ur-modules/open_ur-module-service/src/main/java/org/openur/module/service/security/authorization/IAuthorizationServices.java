@@ -36,14 +36,14 @@ public interface IAuthorizationServices
   Set<IPermission> obtainPermissionsPerRole(IRole role);
   
   /**
-   * checks if 
+   * checks if a user has a certain (app-based) permission within an organizational-unit.
    * 
-   * @param app
-   * @param permission
    * @param user
+   * @param app
    * @param orgUnit
+   * @param permission
    * 
-   * @return
+   * @return the user has the permission.
    */
-  Boolean hasPermission(IApplication app, IPermission permission, IPrincipalUser user, IOrganizationalUnit orgUnit);
+  Boolean hasPermission(IPrincipalUser user, IApplication app, IOrganizationalUnit orgUnit, IPermission permission);
 }
