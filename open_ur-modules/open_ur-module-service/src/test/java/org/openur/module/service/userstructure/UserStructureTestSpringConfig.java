@@ -14,9 +14,9 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 //@ComponentScan(basePackages = {"org.openur.module.persistence", "org.openur.module.service"})
 @Profile(value = "test")
-public class TestSpringConfig
+public class UserStructureTestSpringConfig
 {
-	public TestSpringConfig()
+	public UserStructureTestSpringConfig()
 	{
 		super();
 		

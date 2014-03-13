@@ -16,7 +16,6 @@ public class UserServicesImpl
 {
 	private IUserStructureDao userStructureDao;
 
-	//TODO: inject property directly, not via accessor => equip tests with spring-test-tools.
 	@Inject
 	public void setUserStructureDao(IUserStructureDao userStructureDao)
 	{

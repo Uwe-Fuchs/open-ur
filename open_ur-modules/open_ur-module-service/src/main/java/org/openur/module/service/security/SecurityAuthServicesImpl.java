@@ -1,33 +1,27 @@
-package org.openur.module.service.security.authorization;
+package org.openur.module.service.security;
 
-import java.util.Set;
+
+import javax.inject.Inject;
 
 import org.openur.module.domain.IPrincipalUser;
 import org.openur.module.domain.security.IApplication;
 import org.openur.module.domain.security.IPermission;
-import org.openur.module.domain.security.IRole;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
+import org.openur.module.persistence.security.ISecurityDao;
 
-public class AuthorizationServicesImpl
-	implements IAuthorizationServices
+public class SecurityAuthServicesImpl
+	implements ISecurityAuthServices
 {
-
-	@Override
-	public Set<IRole> obtainAllRoles()
+	private ISecurityDao securityDao;
+	
+	@Inject	
+	public void setSecurityDao(ISecurityDao securityDao)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		this.securityDao = securityDao;
 	}
-
+	
 	@Override
-	public IRole findRolePerId(String roleId)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Set<IPermission> obtainPermissionsPerRole(IRole role)
+	public IPrincipalUser authenticate(String userName)
 	{
 		// TODO Auto-generated method stub
 		return null;
@@ -40,5 +34,4 @@ public class AuthorizationServicesImpl
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

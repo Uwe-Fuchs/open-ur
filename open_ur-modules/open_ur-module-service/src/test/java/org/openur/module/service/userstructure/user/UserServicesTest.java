@@ -22,14 +22,14 @@ import org.openur.module.domain.userstructure.user.technicaluser.ITechnicalUser;
 import org.openur.module.domain.userstructure.user.technicaluser.TechnicalUser;
 import org.openur.module.domain.userstructure.user.technicaluser.TechnicalUserBuilder;
 import org.openur.module.persistence.userstructure.IUserStructureDao;
-import org.openur.module.service.userstructure.TestSpringConfig;
+import org.openur.module.service.userstructure.UserStructureTestSpringConfig;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ActiveProfiles("test")
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {TestSpringConfig.class})
+@ContextConfiguration(classes = {UserStructureTestSpringConfig.class})
 public class UserServicesTest
 {
 	@Inject
