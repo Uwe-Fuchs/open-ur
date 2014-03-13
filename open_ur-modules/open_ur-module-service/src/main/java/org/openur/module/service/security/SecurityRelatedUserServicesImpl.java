@@ -20,7 +20,7 @@ public class SecurityRelatedUserServicesImpl
 	}
 
 	@Override
-	public IRole findRolePerId(String roleId)
+	public IRole findRoleById(String roleId)
 	{
 		// TODO Auto-generated method stub
 		return null;

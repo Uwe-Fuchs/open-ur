@@ -8,13 +8,13 @@ import org.openur.module.domain.security.IRole;
 public interface ISecurityRelatedUserServices
 {
 	/**
-	 * searches a role to the given id.
+	 * searches a role-object with the given id.
 	 * 
 	 * @param roleId : id of the role.
 	 * 
 	 * @return the role with the given id or null, if no role is found.
 	 */
-	IRole findRolePerId(String roleId);
+	IRole findRoleById(String roleId);
 
 	/**
 	 * obtains all defined user-roles.
