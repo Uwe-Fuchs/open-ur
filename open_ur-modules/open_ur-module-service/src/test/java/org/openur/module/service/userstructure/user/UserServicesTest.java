@@ -9,12 +9,12 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.inject.Inject;
+
 import org.apache.commons.collections4.CollectionUtils;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.openur.module.domain.userstructure.user.person.IPerson;
 import org.openur.module.domain.userstructure.user.person.Person;
 import org.openur.module.domain.userstructure.user.person.PersonBuilder;
@@ -22,24 +22,20 @@ import org.openur.module.domain.userstructure.user.technicaluser.ITechnicalUser;
 import org.openur.module.domain.userstructure.user.technicaluser.TechnicalUser;
 import org.openur.module.domain.userstructure.user.technicaluser.TechnicalUserBuilder;
 import org.openur.module.persistence.userstructure.IUserStructureDao;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ActiveProfiles("test")
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {TestSpringConfig.class})
 public class UserServicesTest
 {
-	@Mock
+	@Inject
 	private IUserStructureDao dao;
 	
+	@Inject
 	private IUserServices userServices;
-
-	@Before
-	public void setUp()
-		throws Exception
-	{
-		MockitoAnnotations.initMocks(this);
-		UserServicesImpl _userServices = new UserServicesImpl();
-		//TODO: inject property directly, not via accessor => equip tests with spring-test-tools.
-		_userServices.setUserStructureDao(dao);
-		this.userServices = _userServices;
-	}
 
 	@Test
 	public void testFindPersonById()
