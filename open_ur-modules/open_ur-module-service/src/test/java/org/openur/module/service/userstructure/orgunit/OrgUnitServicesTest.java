@@ -8,34 +8,32 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.inject.Inject;
+
 import org.apache.commons.collections4.CollectionUtils;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnit;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnitBuilder;
 import org.openur.module.persistence.userstructure.IUserStructureDao;
+import org.openur.module.service.userstructure.TestSpringConfig;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ActiveProfiles("test")
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {TestSpringConfig.class})
 public class OrgUnitServicesTest
 {
-	@Mock
+	@Inject
 	private IUserStructureDao dao;
 	
+	@Inject
 	private IOrgUnitServices orgUnitServices;
-
-	@Before
-	public void setUp()
-		throws Exception
-	{
-		MockitoAnnotations.initMocks(this);
-		OrgUnitServicesImpl _orgUnitServices = new OrgUnitServicesImpl();
-		_orgUnitServices.setUserStructureDao(dao);
-		this.orgUnitServices = _orgUnitServices;
-	}
 
 	@Test
 	public void testFindOrgUnitById()
