@@ -33,7 +33,7 @@ public interface IOrgUnitMember
 	/**
 	 * indicates if a member has a certain permission (within his/her set of roles).
 	 * 
-	 * @param role : the permission which the member should have.
+	 * @param role : the permission the member should have.
 	 * 
 	 * @return the member has the permission.
 	 */

@@ -1,10 +1,12 @@
 package org.openur.module.service.security;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.inject.Inject;
 
-import org.openur.module.domain.security.IPermission;
+import org.apache.commons.collections4.CollectionUtils;
 import org.openur.module.domain.security.IRole;
 import org.openur.module.persistence.security.ISecurityDao;
 
@@ -29,12 +31,18 @@ public class SecurityRelatedUserServicesImpl
 	@Override
 	public Set<IRole> obtainAllRoles()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		List<IRole> roleList = securityDao.obtainAllRoles();
+		Set<IRole> roleSet = new HashSet<>();
+		
+		if (CollectionUtils.isNotEmpty(roleList)) {
+			roleSet.addAll(roleList);
+		}
+		
+		return roleSet;
 	}
 
 	@Override
-	public Set<IPermission> obtainPermissionsPerRole(IRole role)
+	public IRole findRoleByName(String roleName)
 	{
 		// TODO Auto-generated method stub
 		return null;
