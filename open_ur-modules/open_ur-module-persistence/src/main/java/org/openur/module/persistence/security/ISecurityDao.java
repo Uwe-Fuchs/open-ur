@@ -13,4 +13,22 @@ public interface ISecurityDao
 	 * @return Set with user-roles (empty if no roles are defined).
 	 */
 	List<IRole> obtainAllRoles();
+	
+	/**
+	 * searches a role-object with the given id.
+	 * 
+	 * @param roleId : id of the role.
+	 * 
+	 * @return the role with the given id or null, if no role is found.
+	 */
+	IRole findRoleById(String roleId);
+	
+	/**
+	 * searches a role-object with the given name.
+	 * 
+	 * @param roleName : name of the role.
+	 * 
+	 * @return the role with the given name or null, if no role is found.
+	 */
+	IRole findRoleByName(String roleName);
 }

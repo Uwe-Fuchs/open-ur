@@ -1,16 +1,14 @@
 package org.openur.module.service.security;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 
 import javax.inject.Inject;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -33,37 +31,53 @@ public class SecurityRelatedUserServicesTest
 	@Inject
 	private ISecurityRelatedUserServices securityRelatedUserServices;
 
-	@Before
-	public void setUp()
-		throws Exception
-	{
-	}
-
 	@Test
 	public void testObtainAllRoles()
 	{
-		OpenURRoleBuilder rb = new OpenURRoleBuilder("role1");
-		OpenURRole role1 = new OpenURRole(rb);
-		rb = new OpenURRoleBuilder("role2");
-		OpenURRole role2 = new OpenURRole(rb);
-		List<IRole> roles = new ArrayList<>(2);
-		roles.addAll(Arrays.asList(role1, role2));
+		IRole role1 = new OpenURRole(new OpenURRoleBuilder("role1"));
+		IRole role2 = new OpenURRole(new OpenURRoleBuilder("role2"));		
+		Mockito.when(dao.obtainAllRoles()).thenReturn(Arrays.asList(role1, role2));
 		
-		Mockito.when(dao.obtainAllRoles()).thenReturn(roles);
-		
-		Set<IRole> result = securityRelatedUserServices.obtainAllRoles();
-		assertTrue(CollectionUtils.isNotEmpty(result));
+		Set<IRole> resultSet = securityRelatedUserServices.obtainAllRoles();
+		assertTrue(CollectionUtils.isNotEmpty(resultSet));
+		assertEquals(2, resultSet.size());
+		assertTrue(resultSet.contains(role1));
+		assertTrue(resultSet.contains(role2));
 	}
 
-//	@Test
-//	public void testFindRoleById()
-//	{
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testFindRoleByName()
-//	{
-//		fail("Not yet implemented");
-//	}
+	@Test
+	public void testFindRoleById()
+	{
+		final String ROLE_ID_1 = "111aaa";
+		final String ROLE_ID_2 = "222bbb";
+		IRole role1 = new OpenURRole(new OpenURRoleBuilder(ROLE_ID_1, "role1"));
+		IRole role2 = new OpenURRole(new OpenURRoleBuilder(ROLE_ID_2, "role2"));	
+		Mockito.when(dao.findRoleById(ROLE_ID_1)).thenReturn(role1);
+		Mockito.when(dao.findRoleById(ROLE_ID_2)).thenReturn(role2);
+		
+		IRole resultRole = securityRelatedUserServices.findRoleById(ROLE_ID_1);
+		assertEquals(resultRole, role1);
+		resultRole = securityRelatedUserServices.findRoleById(ROLE_ID_2);
+		assertEquals(resultRole, role2);
+		resultRole = securityRelatedUserServices.findRoleById("abcdef");
+		assertEquals(resultRole, null);
+	}
+
+	@Test
+	public void testFindRoleByName()
+	{
+		final String ROLE_NAME_1 = "role1";
+		final String ROLE_NAME_2 = "role2";
+		IRole role1 = new OpenURRole(new OpenURRoleBuilder(ROLE_NAME_1));
+		IRole role2 = new OpenURRole(new OpenURRoleBuilder(ROLE_NAME_2));
+		Mockito.when(dao.findRoleByName(ROLE_NAME_1)).thenReturn(role1);
+		Mockito.when(dao.findRoleByName(ROLE_NAME_2)).thenReturn(role2);
+		
+		IRole resultRole = securityRelatedUserServices.findRoleByName(ROLE_NAME_1);
+		assertEquals(resultRole, role1);
+		resultRole = securityRelatedUserServices.findRoleByName(ROLE_NAME_2);
+		assertEquals(resultRole, role2);
+		resultRole = securityRelatedUserServices.findRoleByName("abcdef");
+		assertEquals(resultRole, null);	
+	}
 }

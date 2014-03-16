@@ -30,15 +30,15 @@ public class SecurityAuthServicesImpl
 	}
 
 	@Override
-	public IPrincipalUser authenticate(IAuthenticationToken authenticationToken)
+	public Boolean hasPermission(IPrincipalUser user, IApplication app,
+		IOrganizationalUnit orgUnit, IPermission permission)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Boolean hasPermission(IPrincipalUser user, IApplication app,
-		IOrganizationalUnit orgUnit, IPermission permission)
+	public IPrincipalUser authenticate(IAuthenticationToken authenticationToken)
 	{
 		// TODO Auto-generated method stub
 		return null;

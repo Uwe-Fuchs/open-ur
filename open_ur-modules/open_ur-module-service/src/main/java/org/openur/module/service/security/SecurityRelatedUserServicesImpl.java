@@ -24,8 +24,7 @@ public class SecurityRelatedUserServicesImpl
 	@Override
 	public IRole findRoleById(String roleId)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return securityDao.findRoleById(roleId);
 	}
 
 	@Override
@@ -44,7 +43,6 @@ public class SecurityRelatedUserServicesImpl
 	@Override
 	public IRole findRoleByName(String roleName)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return securityDao.findRoleByName(roleName);
 	}
 }
