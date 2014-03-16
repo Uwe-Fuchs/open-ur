@@ -15,12 +15,12 @@ public class OpenURRoleTest
 	{
 		OpenURApplicationBuilder ab = new OpenURApplicationBuilder("app1", "user1", "pw1");
 		OpenURApplication app1 = new OpenURApplication(ab);		
-		OpenURPermissionBuilder pb = new OpenURPermissionBuilder("perm1", app1);
+		OpenURPermissionBuilder pb = new OpenURPermissionBuilder("perm1", PermissionScope.SELECTED, app1);
 		OpenURPermission perm1 = new OpenURPermission(pb);
 		
 		ab = new OpenURApplicationBuilder("app2", "user2", "pw2");
 		OpenURApplication app2 = new OpenURApplication(ab);		
-		pb = new OpenURPermissionBuilder("perm2", app2);
+		pb = new OpenURPermissionBuilder("perm2", PermissionScope.SUB, app2);
 		OpenURPermission perm2 = new OpenURPermission(pb);
 		
 		OpenURRoleBuilder rb = new OpenURRoleBuilder("role1");
@@ -41,7 +41,7 @@ public class OpenURRoleTest
 	{
 		OpenURApplicationBuilder ab = new OpenURApplicationBuilder("app1", "user1", "pw1");
 		OpenURApplication app1 = new OpenURApplication(ab);		
-		OpenURPermissionBuilder pb = new OpenURPermissionBuilder("perm1", app1);
+		OpenURPermissionBuilder pb = new OpenURPermissionBuilder("perm1", PermissionScope.SELECTED, app1);
 		OpenURPermission perm1 = new OpenURPermission(pb);		
 		OpenURRoleBuilder rb = new OpenURRoleBuilder("role1");
 		rb.permissions(new HashSet<IPermission>(Arrays.asList(perm1)));
@@ -49,7 +49,7 @@ public class OpenURRoleTest
 		
 		ab = new OpenURApplicationBuilder("app2", "user2", "pw2");
 		OpenURApplication app2 = new OpenURApplication(ab);		
-		pb = new OpenURPermissionBuilder("perm2", app2);
+		pb = new OpenURPermissionBuilder("perm2", PermissionScope.SELECTED_SUB, app2);
 		OpenURPermission perm2 = new OpenURPermission(pb);		
 		rb = new OpenURRoleBuilder("role2");
 		rb.permissions(new HashSet<IPermission>(Arrays.asList(perm2)));

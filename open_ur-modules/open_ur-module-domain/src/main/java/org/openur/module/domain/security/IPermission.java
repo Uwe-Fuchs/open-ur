@@ -18,4 +18,11 @@ public interface IPermission
 	 * @return String.
 	 */
 	String getPermission();
+	
+	/**
+	 * the scope (i.e. SELECTED, SUB or SELECTED_SUB)
+	 * 
+	 * @return PermissionScope
+	 */
+	PermissionScope getPermissionScope();
 }

@@ -13,6 +13,7 @@ public class OpenURPermission
 	private final IApplication app;
 	private final String permissionName;
 	private final String description;
+	private final PermissionScope permissionScope;
 
 	// constructor:
 	public OpenURPermission(OpenURPermissionBuilder b)
@@ -22,6 +23,13 @@ public class OpenURPermission
 		this.app = b.getApp();
 		this.permissionName = b.getPermissionName();
 		this.description = b.getDescription();
+		this.permissionScope = b.getPermissionScope();
+	}
+
+	@Override
+	public PermissionScope getPermissionScope()
+	{
+		return permissionScope;
 	}
 
 	// accessors:
