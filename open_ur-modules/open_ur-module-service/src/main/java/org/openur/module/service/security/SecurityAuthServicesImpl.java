@@ -5,6 +5,7 @@ import javax.inject.Inject;
 
 import org.openur.module.domain.IPrincipalUser;
 import org.openur.module.domain.security.IApplication;
+import org.openur.module.domain.security.IAuthenticationToken;
 import org.openur.module.domain.security.IPermission;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 import org.openur.module.persistence.security.ISecurityDao;
@@ -19,9 +20,17 @@ public class SecurityAuthServicesImpl
 	{
 		this.securityDao = securityDao;
 	}
-	
+
 	@Override
-	public IPrincipalUser authenticate(String userName)
+	public Boolean hasPermission(IPrincipalUser user, IApplication app,
+		IPermission permission)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IPrincipalUser authenticate(IAuthenticationToken authenticationToken)
 	{
 		// TODO Auto-generated method stub
 		return null;
