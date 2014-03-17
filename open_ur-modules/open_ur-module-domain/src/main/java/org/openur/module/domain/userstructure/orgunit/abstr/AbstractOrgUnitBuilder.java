@@ -6,7 +6,6 @@ import java.util.Set;
 
 import org.openur.module.domain.userstructure.UserStructureBaseBuilder;
 import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
-import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
 
 public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>>
 	extends UserStructureBaseBuilder<T>
@@ -34,7 +33,7 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 	}
 	
 	@SuppressWarnings("unchecked")
-	public T members(Collection<OrgUnitMember> members) {
+	public T members(Collection<IOrgUnitMember> members) {
 		this.members.addAll(members);
 		return (T) this;
 	}

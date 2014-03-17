@@ -1,21 +1,14 @@
 package org.openur.module.domain.userstructure.orgunit;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.util.UUID;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.openur.module.domain.userstructure.Status;
 
 public class OrganizationalUnitTest
 {
-	@Before
-	public void setUp()
-		throws Exception
-	{
-	}
-
 	@Test
 	public void testCompareTo()
 	{
@@ -24,14 +17,14 @@ public class OrganizationalUnitTest
 			.status(Status.ACTIVE)
 			.name("staff department")
 			.shortName("stf");
-		OrganizationalUnit ou = new OrganizationalUnit(oub);
+		IOrganizationalUnit ou = new OrganizationalUnit(oub);
 		
 		oub = new OrganizationalUnitBuilder(UUID.randomUUID().toString())
 			.number("456xyz")
 			.status(Status.ACTIVE)
 			.name("accounts department")
 			.shortName("acc");
-		OrganizationalUnit ou2 = new OrganizationalUnit(oub);
+		IOrganizationalUnit ou2 = new OrganizationalUnit(oub);
 		
 		assertTrue("ou1 should be after ou2 because of name", ou.compareTo(ou2) > 0);
 		
@@ -52,5 +45,17 @@ public class OrganizationalUnitTest
 		ou2 = new OrganizationalUnit(oub);
 		
 		assertTrue("ou1 should be before ou2 because of org-unit-number", ou.compareTo(ou2) < 0);
+	
+		oub = new OrganizationalUnitBuilder(UUID.randomUUID().toString())
+			.number("456xyz")
+			.status(Status.ACTIVE);
+		ou = new OrganizationalUnit(oub);
+	
+		OrgUnitSimpleBuilder soub = new OrgUnitSimpleBuilder()
+			.number("123abc")
+			.status(Status.ACTIVE);
+		IOrganizationalUnit sou = new OrgUnitSimple(soub);
+	
+		assertTrue("ou should be after ou-simple because of org-unit-number", ou.compareTo(sou) > 0);
 	}
 }

@@ -55,11 +55,19 @@ public class OrganizationalUnit
 	}
 
 	// operations:
-	public int compareTo(OrganizationalUnit ou)
+	@Override
+	public int compareTo(IOrganizationalUnit ou)
 	{    
+		if (!(ou instanceof OrganizationalUnit))
+		{
+			return super.compareTo(ou);
+		}
+		
+		OrganizationalUnit orgUnit = (OrganizationalUnit) ou;
+		
     int comparison = new CompareToBuilder()
-														.append(this.getName(), ou.getName())
-														.append(this.getShortName(), ou.getShortName())
+														.append(this.getName(), orgUnit.getName())
+														.append(this.getShortName(), orgUnit.getShortName())
 														.toComparison();
 
     if (comparison != 0)

@@ -1,8 +1,7 @@
 package org.openur.module.domain.userstructure.user.person;
 
-import static org.junit.Assert.*;
-
-import java.util.UUID;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.openur.module.domain.userstructure.Status;
@@ -23,15 +22,15 @@ public class PersonSimpleTest
 	@Test
 	public void testCompareTo()
 	{
-		PersonSimpleBuilder pb = new PersonSimpleBuilder(UUID.randomUUID().toString(), "username1", "password1")
+		PersonSimpleBuilder pb = new PersonSimpleBuilder("username1", "password1")
 			.number("123abc")
 			.status(Status.ACTIVE);
-		PersonSimple p1 = new PersonSimple(pb);
+		IPerson p1 = new PersonSimple(pb);
 		
-		pb = new PersonSimpleBuilder(UUID.randomUUID().toString(), "username2", "password2")
+		pb = new PersonSimpleBuilder("username2", "password2")
 			.number("456xyz")
 			.status(Status.ACTIVE);
-		PersonSimple p2 = new PersonSimple(pb);
+		IPerson p2 = new PersonSimple(pb);
 		
 		assertTrue("different personal numbers", p1.compareTo(p2) < 0);
 		

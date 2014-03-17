@@ -83,8 +83,16 @@ public class Person
 	}
 
 	// operations:
-	public int compareTo(Person pers)
+	@Override
+	public int compareTo(IPerson other)
 	{
+		if (!(other instanceof Person))
+		{
+			return super.compareTo(other);
+		}
+		
+		Person pers = (Person) other;
+		
 		int comparison = new CompareToBuilder()
 														.append(this.getName(), pers.getName())
 														.append(this.getEmailAdress(), pers.getEmailAdress())

@@ -10,7 +10,6 @@ import org.openur.module.domain.GraphNode;
 import org.openur.module.domain.security.IApplication;
 import org.openur.module.domain.security.IPermission;
 import org.openur.module.domain.security.IRole;
-import org.openur.module.domain.security.OpenURRole;
 
 public class OrgUnitMember
 	extends GraphNode
@@ -32,7 +31,7 @@ public class OrgUnitMember
 		this.roles = null;
 	}
 	
-	public OrgUnitMember(String personId, Collection<OpenURRole> roles)
+	public OrgUnitMember(String personId, Collection<IRole> roles)
 	{
 		super();
 		

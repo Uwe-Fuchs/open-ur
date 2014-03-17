@@ -9,6 +9,7 @@ import java.util.HashSet;
 import org.junit.Test;
 import org.openur.module.domain.security.IApplication;
 import org.openur.module.domain.security.IPermission;
+import org.openur.module.domain.security.IRole;
 import org.openur.module.domain.security.OpenURApplication;
 import org.openur.module.domain.security.OpenURApplicationBuilder;
 import org.openur.module.domain.security.OpenURPermission;
@@ -44,19 +45,19 @@ public class OrgUnitMemberTest
 		IPermission perm1 = new OpenURPermission(pb);		
 		OpenURRoleBuilder rb = new OpenURRoleBuilder("role1");
 		rb.permissions(new HashSet<IPermission>(Arrays.asList(perm1)));
-		OpenURRole role1 = new OpenURRole(rb);
+		IRole role1 = new OpenURRole(rb);
 		
 		IOrgUnitMember m1 = new OrgUnitMember("principalUserId1", Arrays.asList(role1));
 		
 		assertTrue(m1.hasRole(role1));
 		
 		ab = new OpenURApplicationBuilder("app2", "user2", "pw2");
-		OpenURApplication app2 = new OpenURApplication(ab);		
+		IApplication app2 = new OpenURApplication(ab);		
 		pb = new OpenURPermissionBuilder("perm2", PermissionScope.SUB, app2);
-		OpenURPermission perm2 = new OpenURPermission(pb);		
+		IPermission perm2 = new OpenURPermission(pb);		
 		rb = new OpenURRoleBuilder("role2");
 		rb.permissions(new HashSet<IPermission>(Arrays.asList(perm2)));
-		OpenURRole role2 = new OpenURRole(rb);
+		IRole role2 = new OpenURRole(rb);
 		
 		assertFalse(m1.hasRole(role2));
 	}
@@ -72,11 +73,11 @@ public class OrgUnitMemberTest
 		ab = new OpenURApplicationBuilder("app2", "user2", "pw2");
 		OpenURApplication app2 = new OpenURApplication(ab);		
 		pb = new OpenURPermissionBuilder("perm2", PermissionScope.SUB, app2);
-		OpenURPermission perm2 = new OpenURPermission(pb);
+		IPermission perm2 = new OpenURPermission(pb);
 		
 		OpenURRoleBuilder rb = new OpenURRoleBuilder("role1");
 		rb.permissions(new HashSet<IPermission>(Arrays.asList(perm1, perm2)));
-		OpenURRole role = new OpenURRole(rb);
+		IRole role = new OpenURRole(rb);
 		
 		IOrgUnitMember member = new OrgUnitMember("principalUserId1", Arrays.asList(role));
 		
@@ -85,7 +86,7 @@ public class OrgUnitMemberTest
 		assertFalse(member.hasPermission(app1, perm2));
 		
 		pb = new OpenURPermissionBuilder("perm3", PermissionScope.SELECTED_SUB,  app1);
-		OpenURPermission perm3 = new OpenURPermission(pb);
+		IPermission perm3 = new OpenURPermission(pb);
 		assertFalse(member.hasPermission(app1, perm3));
 	}
 

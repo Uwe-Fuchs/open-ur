@@ -14,6 +14,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnit;
@@ -127,8 +128,8 @@ public class OrgUnitServicesTest
 				.superOuId(superOuId)
 		);
 		
-		OrgUnitMember m1 = new OrgUnitMember("personalId1");
-		OrgUnitMember m2 = new OrgUnitMember("personalId2");
+		IOrgUnitMember m1 = new OrgUnitMember("personalId1");
+		IOrgUnitMember m2 = new OrgUnitMember("personalId2");
 		IOrganizationalUnit orgUnit2_m = new OrganizationalUnit(
 			new OrganizationalUnitBuilder(orgUnitId)
 				.number(orgUnitNo2)

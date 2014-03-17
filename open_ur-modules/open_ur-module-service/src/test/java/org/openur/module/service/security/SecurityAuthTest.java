@@ -21,16 +21,23 @@ public class SecurityAuthTest
 	{
 	}
 
+	@Test
+	public void testAuthenticate()
+	{
+		// Nothing to test yet => job is done completely by Shiro.
+		// maybe test the integration of different security-clients like Shiro, Spring-Sec, JAAS ??
+		Assert.assertTrue(true);
+	}
+
 //	@Test
-//	public void testAuthenticate()
-//	{
-//		// Nothing to test yet => job is done completely by Shiro.
-//		Assert.assertTrue(true);
-//	}
-//
-//	@Test
-//	public void testHasPermission()
+//	public void testHasPermissionInOrgUnit()
 //	{
 //		fail("Not yet implemented");
 //	}
+
+//  @Test
+//  public void testHasPermission()
+//  {
+//	  fail("Not yet implemented");
+//  }
 }
