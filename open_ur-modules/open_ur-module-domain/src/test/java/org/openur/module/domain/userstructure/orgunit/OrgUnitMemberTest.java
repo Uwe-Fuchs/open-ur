@@ -37,14 +37,14 @@ public class OrgUnitMemberTest
 			.status(Status.ACTIVE);
 		IPerson pers2 = new Person(persBuilder);
 	
-		IOrgUnitMember m1 = new OrgUnitMember(pers1);
+		IOrgUnitMember m1 = new OrgUnitMember(new OrgUnitMemberBuilder(pers1));
 		assertTrue(m1.equals(m1));
 		
-		IOrgUnitMember m2 = new OrgUnitMember(pers2);		
+		IOrgUnitMember m2 = new OrgUnitMember(new OrgUnitMemberBuilder(pers2));		
 		assertFalse(m1.equals(m2));
 		assertFalse(m2.equals(m1));
 		
-		m2 = new OrgUnitMember(pers1);
+		m2 = new OrgUnitMember(new OrgUnitMemberBuilder(pers1));
 		assertTrue(m1.equals(m2));
 	}
 
@@ -117,18 +117,17 @@ public class OrgUnitMemberTest
 			.number("123abc")
 			.status(Status.ACTIVE);
 		IPerson pers1 = new Person(persBuilder);
+		IOrgUnitMember m1 = new OrgUnitMember(new OrgUnitMemberBuilder(pers1));
 		
 		persBuilder = new PersonBuilder("username2", "password2")
 			.number("456xyz")
 			.status(Status.ACTIVE);
 		IPerson pers2 = new Person(persBuilder);
-		
-		IOrgUnitMember m1 = new OrgUnitMember(pers1);
-		IOrgUnitMember m2 = new OrgUnitMember(pers2);
+		IOrgUnitMember m2 = new OrgUnitMember(new OrgUnitMemberBuilder(pers2));
 		
 		assertTrue(m1.compareTo(m2) < 0);
 		
-		m2 = new OrgUnitMember(pers1);
+		m2 = new OrgUnitMember(new OrgUnitMemberBuilder(pers1));
 		assertTrue(m1.compareTo(m2) == 0);		
 	}
 }

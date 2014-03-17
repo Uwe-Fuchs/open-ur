@@ -23,13 +23,13 @@ public class OrgUnitSimpleTest
 			.number("123abc")
 			.status(Status.ACTIVE);
 		IPerson pers1 = new Person(persBuilder);
-		IOrgUnitMember m1 = new OrgUnitMember(pers1);
+		IOrgUnitMember m1 = new OrgUnitMember(new OrgUnitMemberBuilder(pers1));
 		
 		persBuilder = new PersonBuilder("username2", "password2")
 			.number("456xyz")
 			.status(Status.ACTIVE);
 		IPerson pers2 = new Person(persBuilder);
-		IOrgUnitMember m2 = new OrgUnitMember(pers2);
+		IOrgUnitMember m2 = new OrgUnitMember(new OrgUnitMemberBuilder(pers2));
 		
 		OrgUnitSimpleBuilder oub = new OrgUnitSimpleBuilder()
 			.number("123abc")
@@ -47,7 +47,7 @@ public class OrgUnitSimpleTest
 			.number("789äöü")
 			.status(Status.ACTIVE);
 		IPerson pers3 = new Person(persBuilder);
-		IOrgUnitMember m3 = new OrgUnitMember(pers3);
+		IOrgUnitMember m3 = new OrgUnitMember(new OrgUnitMemberBuilder(pers3));
 		
 		assertNull(ou.findMember(m3.getPerson()));
 		assertNull(ou.findMember(m3.getPerson().getIdentifier()));
@@ -60,13 +60,13 @@ public class OrgUnitSimpleTest
 			.number("123abc")
 			.status(Status.ACTIVE);
 		IPerson pers1 = new Person(persBuilder);
-		IOrgUnitMember m1 = new OrgUnitMember(pers1);
+		IOrgUnitMember m1 = new OrgUnitMember(new OrgUnitMemberBuilder(pers1));
 		
 		persBuilder = new PersonBuilder("username2", "password2")
 			.number("456xyz")
 			.status(Status.ACTIVE);
 		IPerson pers2 = new Person(persBuilder);
-		IOrgUnitMember m2 = new OrgUnitMember(pers2);
+		IOrgUnitMember m2 = new OrgUnitMember(new OrgUnitMemberBuilder(pers2));
 		
 		OrgUnitSimpleBuilder oub = new OrgUnitSimpleBuilder()
 			.number("123abc")
@@ -84,7 +84,7 @@ public class OrgUnitSimpleTest
 			.number("789äöü")
 			.status(Status.ACTIVE);
 		IPerson pers3 = new Person(persBuilder);
-		IOrgUnitMember m3 = new OrgUnitMember(pers3);
+		IOrgUnitMember m3 = new OrgUnitMember(new OrgUnitMemberBuilder(pers3));
 		
 		assertFalse(ou.isMember(m3.getPerson()));
 		assertFalse(ou.isMember(m3.getPerson().getIdentifier()));

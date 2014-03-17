@@ -23,13 +23,12 @@ public class OrgUnitMember
 	private final Set<IRole> roles;
 
 	// constructors:
-	public OrgUnitMember(IPerson person)
+	public OrgUnitMember(OrgUnitMemberBuilder b)
 	{
 		super();
-		
-		Validate.notNull(person, "person must not be null!");	
-		this.person = person;
-		this.roles = null;
+
+		this.person = b.getPerson();
+		this.roles = Collections.unmodifiableSet(b.getRoles());
 	}
 	
 	public OrgUnitMember(IPerson person, Collection<IRole> roles)

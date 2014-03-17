@@ -18,6 +18,7 @@ import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitMemberBuilder;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnit;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnitBuilder;
 import org.openur.module.domain.userstructure.user.person.IPerson;
@@ -136,13 +137,13 @@ public class OrgUnitServicesTest
 			.number("123abc")
 			.status(Status.ACTIVE);
 		IPerson pers1 = new Person(persBuilder);
-		IOrgUnitMember m1 = new OrgUnitMember(pers1);
+		IOrgUnitMember m1 = new OrgUnitMember(new OrgUnitMemberBuilder(pers1));
 		
 		persBuilder = new PersonBuilder("username2", "password2")
 			.number("456xyz")
 			.status(Status.ACTIVE);
 		IPerson pers2 = new Person(persBuilder);
-		IOrgUnitMember m2 = new OrgUnitMember(pers2);
+		IOrgUnitMember m2 = new OrgUnitMember(new OrgUnitMemberBuilder(pers2));
 		
 		IOrganizationalUnit orgUnit2_m = new OrganizationalUnit(
 			new OrganizationalUnitBuilder(orgUnitId)
