@@ -10,6 +10,7 @@ import org.openur.module.domain.GraphNode;
 import org.openur.module.domain.security.IApplication;
 import org.openur.module.domain.security.IPermission;
 import org.openur.module.domain.security.IRole;
+import org.openur.module.domain.userstructure.user.person.IPerson;
 
 public class OrgUnitMember
 	extends GraphNode
@@ -18,25 +19,25 @@ public class OrgUnitMember
 	private static final long serialVersionUID = -8299862057665830750L;
 
 	// properties:
-	private final String personId;
+	private final IPerson person;
 	private final Set<IRole> roles;
 
 	// constructors:
-	public OrgUnitMember(String personId)
+	public OrgUnitMember(IPerson person)
 	{
 		super();
 		
-		Validate.notEmpty(personId, "person-id must not be empty!");	
-		this.personId = personId;
+		Validate.notNull(person, "person must not be null!");	
+		this.person = person;
 		this.roles = null;
 	}
 	
-	public OrgUnitMember(String personId, Collection<IRole> roles)
+	public OrgUnitMember(IPerson person, Collection<IRole> roles)
 	{
 		super();
 		
-		Validate.notEmpty(personId, "person-id must not be empty!");	
-		this.personId = personId;
+		Validate.notNull(person, "person must not be null!");	
+		this.person = person;
 		
 		Set<IRole> r = new HashSet<IRole>();
 		
@@ -50,9 +51,9 @@ public class OrgUnitMember
 
 	// accessors:
 	@Override
-	public String getPersonId()
+	public IPerson getPerson()
 	{
-		return personId;
+		return person;
 	}
 
 	@Override
@@ -85,7 +86,7 @@ public class OrgUnitMember
 	@Override
 	public int compareTo(IOrgUnitMember other)
 	{
-		return this.getPersonId().compareTo(other.getPersonId());
+		return this.getPerson().compareTo(other.getPerson());
 	}
 
 	@Override
@@ -98,6 +99,6 @@ public class OrgUnitMember
 
 		IOrgUnitMember other = (IOrgUnitMember) obj;
 
-		return this.getPersonId().equals(other.getPersonId());
+		return this.getPerson().equals(other.getPerson());
 	}
 }

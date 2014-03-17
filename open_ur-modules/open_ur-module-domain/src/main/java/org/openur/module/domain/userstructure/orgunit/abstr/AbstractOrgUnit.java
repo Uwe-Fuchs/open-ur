@@ -7,11 +7,12 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.openur.module.domain.userstructure.UserStructureBase;
 import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
+import org.openur.module.domain.userstructure.user.person.IPerson;
 
 /**
- * A basic implementation of {@link IOrganizationalUnit}. If it is sufficient for you,
+ * A basic implementation of {@link IOrganizationalUnit}. If this meets your needs,
  * use {@link OrgUnitSimple} as a concrete implementation, otherwise extend this to
- * create a domain-object that meet your needs.
+ * create a suitable domain-object.
  * 
  * @author fuchs
  */
@@ -63,7 +64,7 @@ public abstract class AbstractOrgUnit
 
     for (IOrgUnitMember m : this.getMembers())
     {
-      if (id.equals(m.getPersonId()))
+      if (id.equals(m.getPerson().getIdentifier()))
       {
         return m;
       }
@@ -81,6 +82,28 @@ public abstract class AbstractOrgUnit
     }
 
     return (this.findMember(id) != null);
+	}
+
+	@Override
+	public boolean isMember(IPerson person)
+	{
+		if (person == null)
+    {
+      return false;
+    }
+
+    return (this.findMember(person) != null);
+	}
+
+	@Override
+	public IOrgUnitMember findMember(IPerson person)
+	{
+		if (person == null)
+    {
+      return null;
+    }
+
+    return findMember(person.getIdentifier());
 	}
 	
 	@Override

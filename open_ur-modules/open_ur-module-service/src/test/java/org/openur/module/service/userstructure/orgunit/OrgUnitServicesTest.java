@@ -14,11 +14,15 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnit;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnitBuilder;
+import org.openur.module.domain.userstructure.user.person.IPerson;
+import org.openur.module.domain.userstructure.user.person.Person;
+import org.openur.module.domain.userstructure.user.person.PersonBuilder;
 import org.openur.module.persistence.userstructure.IUserStructureDao;
 import org.openur.module.service.userstructure.UserStructureTestSpringConfig;
 import org.springframework.test.context.ActiveProfiles;
@@ -128,8 +132,18 @@ public class OrgUnitServicesTest
 				.superOuId(superOuId)
 		);
 		
-		IOrgUnitMember m1 = new OrgUnitMember("personalId1");
-		IOrgUnitMember m2 = new OrgUnitMember("personalId2");
+		PersonBuilder persBuilder = new PersonBuilder("username1", "password1")
+			.number("123abc")
+			.status(Status.ACTIVE);
+		IPerson pers1 = new Person(persBuilder);
+		IOrgUnitMember m1 = new OrgUnitMember(pers1);
+		
+		persBuilder = new PersonBuilder("username2", "password2")
+			.number("456xyz")
+			.status(Status.ACTIVE);
+		IPerson pers2 = new Person(persBuilder);
+		IOrgUnitMember m2 = new OrgUnitMember(pers2);
+		
 		IOrganizationalUnit orgUnit2_m = new OrganizationalUnit(
 			new OrganizationalUnitBuilder(orgUnitId)
 				.number(orgUnitNo2)

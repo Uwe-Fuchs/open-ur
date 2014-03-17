@@ -17,22 +17,34 @@ import org.openur.module.domain.security.OpenURPermissionBuilder;
 import org.openur.module.domain.security.OpenURRole;
 import org.openur.module.domain.security.OpenURRoleBuilder;
 import org.openur.module.domain.security.PermissionScope;
+import org.openur.module.domain.userstructure.Status;
+import org.openur.module.domain.userstructure.user.person.IPerson;
+import org.openur.module.domain.userstructure.user.person.Person;
+import org.openur.module.domain.userstructure.user.person.PersonBuilder;
 
 public class OrgUnitMemberTest
 {
 	@Test
 	public void testEqualsObject()
 	{
-		IOrgUnitMember m1 = new OrgUnitMember("principalUserId1");
+		PersonBuilder persBuilder = new PersonBuilder("username1", "password1")
+			.number("123abc")
+			.status(Status.ACTIVE);
+		IPerson pers1 = new Person(persBuilder);
+		
+		persBuilder = new PersonBuilder("username2", "password2")
+			.number("456xyz")
+			.status(Status.ACTIVE);
+		IPerson pers2 = new Person(persBuilder);
+	
+		IOrgUnitMember m1 = new OrgUnitMember(pers1);
 		assertTrue(m1.equals(m1));
 		
-		IOrgUnitMember m2 = new OrgUnitMember("principalUserId2");		
+		IOrgUnitMember m2 = new OrgUnitMember(pers2);		
 		assertFalse(m1.equals(m2));
+		assertFalse(m2.equals(m1));
 		
-		m2 = new OrgUnitMember("principalUserId2");
-		assertFalse(m1.equals(m2));
-		
-		m2 = new OrgUnitMember("principalUserId1");
+		m2 = new OrgUnitMember(pers1);
 		assertTrue(m1.equals(m2));
 	}
 
@@ -45,9 +57,12 @@ public class OrgUnitMemberTest
 		IPermission perm1 = new OpenURPermission(pb);		
 		OpenURRoleBuilder rb = new OpenURRoleBuilder("role1");
 		rb.permissions(new HashSet<IPermission>(Arrays.asList(perm1)));
-		IRole role1 = new OpenURRole(rb);
-		
-		IOrgUnitMember m1 = new OrgUnitMember("principalUserId1", Arrays.asList(role1));
+		IRole role1 = new OpenURRole(rb);		
+		PersonBuilder persBuilder = new PersonBuilder("username1", "password1")
+			.number("123abc")
+			.status(Status.ACTIVE);
+		IPerson pers = new Person(persBuilder);		
+		IOrgUnitMember m1 = new OrgUnitMember(pers, Arrays.asList(role1));
 		
 		assertTrue(m1.hasRole(role1));
 		
@@ -79,7 +94,12 @@ public class OrgUnitMemberTest
 		rb.permissions(new HashSet<IPermission>(Arrays.asList(perm1, perm2)));
 		IRole role = new OpenURRole(rb);
 		
-		IOrgUnitMember member = new OrgUnitMember("principalUserId1", Arrays.asList(role));
+		PersonBuilder persBuilder = new PersonBuilder("username1", "password1")
+			.number("123abc")
+			.status(Status.ACTIVE);
+		IPerson pers = new Person(persBuilder);
+		
+		IOrgUnitMember member = new OrgUnitMember(pers, Arrays.asList(role));
 		
 		assertTrue(member.hasPermission(app1, perm1));
 		assertTrue(member.hasPermission(app2, perm2));
@@ -92,16 +112,23 @@ public class OrgUnitMemberTest
 
 	@Test
 	public void testCompareTo()
-	{
-		OrgUnitMember m1 = new OrgUnitMember("principalUserId1");
-		OrgUnitMember m2 = new OrgUnitMember("principalUserId2");
+	{		
+		PersonBuilder persBuilder = new PersonBuilder("username1", "password1")
+			.number("123abc")
+			.status(Status.ACTIVE);
+		IPerson pers1 = new Person(persBuilder);
+		
+		persBuilder = new PersonBuilder("username2", "password2")
+			.number("456xyz")
+			.status(Status.ACTIVE);
+		IPerson pers2 = new Person(persBuilder);
+		
+		IOrgUnitMember m1 = new OrgUnitMember(pers1);
+		IOrgUnitMember m2 = new OrgUnitMember(pers2);
 		
 		assertTrue(m1.compareTo(m2) < 0);
 		
-		m2 = new OrgUnitMember("principalUserId2");
-		assertTrue(m1.compareTo(m2) < 0);		
-		
-		m2 = new OrgUnitMember("principalUserId1");
+		m2 = new OrgUnitMember(pers1);
 		assertTrue(m1.compareTo(m2) == 0);		
 	}
 }

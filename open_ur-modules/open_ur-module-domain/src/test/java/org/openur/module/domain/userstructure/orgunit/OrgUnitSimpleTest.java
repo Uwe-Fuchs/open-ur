@@ -10,14 +10,26 @@ import java.util.UUID;
 
 import org.junit.Test;
 import org.openur.module.domain.userstructure.Status;
+import org.openur.module.domain.userstructure.user.person.IPerson;
+import org.openur.module.domain.userstructure.user.person.Person;
+import org.openur.module.domain.userstructure.user.person.PersonBuilder;
 
 public class OrgUnitSimpleTest
 {
 	@Test
 	public void testFindMember()
 	{
-		IOrgUnitMember m1 = new OrgUnitMember("personalId1");
-		IOrgUnitMember m2 = new OrgUnitMember("personalId2");
+		PersonBuilder persBuilder = new PersonBuilder("username1", "password1")
+			.number("123abc")
+			.status(Status.ACTIVE);
+		IPerson pers1 = new Person(persBuilder);
+		IOrgUnitMember m1 = new OrgUnitMember(pers1);
+		
+		persBuilder = new PersonBuilder("username2", "password2")
+			.number("456xyz")
+			.status(Status.ACTIVE);
+		IPerson pers2 = new Person(persBuilder);
+		IOrgUnitMember m2 = new OrgUnitMember(pers2);
 		
 		OrgUnitSimpleBuilder oub = new OrgUnitSimpleBuilder()
 			.number("123abc")
@@ -26,18 +38,35 @@ public class OrgUnitSimpleTest
 		
 		IOrganizationalUnit ou = new OrgUnitSimple(oub);
 		
-		assertEquals(m1, ou.findMember(m1.getPersonId()));
-		assertEquals(m2, ou.findMember(m2.getPersonId()));
+		assertEquals(m1, ou.findMember(m1.getPerson()));
+		assertEquals(m1, ou.findMember(m1.getPerson().getIdentifier()));
+		assertEquals(m2, ou.findMember(m2.getPerson()));
+		assertEquals(m2, ou.findMember(m2.getPerson().getIdentifier()));
 		
-		IOrgUnitMember m3 = new OrgUnitMember("personalId3");
-		assertNull(ou.findMember(m3.getPersonId()));
+		persBuilder = new PersonBuilder("username3", "password3")
+			.number("789äöü")
+			.status(Status.ACTIVE);
+		IPerson pers3 = new Person(persBuilder);
+		IOrgUnitMember m3 = new OrgUnitMember(pers3);
+		
+		assertNull(ou.findMember(m3.getPerson()));
+		assertNull(ou.findMember(m3.getPerson().getIdentifier()));
 	}
 
 	@Test
 	public void testIsMember()
 	{
-		IOrgUnitMember m1 = new OrgUnitMember("personalId1");
-		IOrgUnitMember m2 = new OrgUnitMember("personalId2");
+		PersonBuilder persBuilder = new PersonBuilder("username1", "password1")
+			.number("123abc")
+			.status(Status.ACTIVE);
+		IPerson pers1 = new Person(persBuilder);
+		IOrgUnitMember m1 = new OrgUnitMember(pers1);
+		
+		persBuilder = new PersonBuilder("username2", "password2")
+			.number("456xyz")
+			.status(Status.ACTIVE);
+		IPerson pers2 = new Person(persBuilder);
+		IOrgUnitMember m2 = new OrgUnitMember(pers2);
 		
 		OrgUnitSimpleBuilder oub = new OrgUnitSimpleBuilder()
 			.number("123abc")
@@ -46,11 +75,19 @@ public class OrgUnitSimpleTest
 		
 		IOrganizationalUnit ou = new OrgUnitSimple(oub);
 		
-		assertTrue(ou.isMember(m1.getPersonId()));
-		assertTrue(ou.isMember(m2.getPersonId()));
+		assertTrue(ou.isMember(m1.getPerson()));
+		assertTrue(ou.isMember(m1.getPerson().getIdentifier()));
+		assertTrue(ou.isMember(m2.getPerson()));
+		assertTrue(ou.isMember(m2.getPerson().getIdentifier()));
 		
-		IOrgUnitMember m3 = new OrgUnitMember("personalId3");
-		assertFalse(ou.isMember(m3.getPersonId()));
+		persBuilder = new PersonBuilder("username3", "password3")
+			.number("789äöü")
+			.status(Status.ACTIVE);
+		IPerson pers3 = new Person(persBuilder);
+		IOrgUnitMember m3 = new OrgUnitMember(pers3);
+		
+		assertFalse(ou.isMember(m3.getPerson()));
+		assertFalse(ou.isMember(m3.getPerson().getIdentifier()));
 	}
 
 	@Test

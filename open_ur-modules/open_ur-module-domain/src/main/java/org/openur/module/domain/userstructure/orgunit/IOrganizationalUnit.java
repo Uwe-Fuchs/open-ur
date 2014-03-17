@@ -3,6 +3,7 @@ package org.openur.module.domain.userstructure.orgunit;
 import java.util.Set;
 
 import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
+import org.openur.module.domain.userstructure.user.person.IPerson;
 import org.openur.module.domain.userstructure.IUserStructureBase;
 
 public interface IOrganizationalUnit 
@@ -45,4 +46,22 @@ public interface IOrganizationalUnit
    * @return the given person is a member in this org-unit.
    */
   boolean isMember(String id);
+	
+  /**
+   * indicates if a person is a member in this org-unit.
+   * 
+   * @param id : the person.
+   * 
+   * @return the given person is a member in this org-unit.
+   */
+  boolean isMember(IPerson person);
+	
+  /**
+   * searches the given person in this org-unit.
+   *
+   * @param id : the person that is searched.
+   *
+   * @return IOrgUnitMember if found in this org-unit, else null.
+   */
+	IOrgUnitMember findMember(IPerson person);
 }

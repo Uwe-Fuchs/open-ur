@@ -5,14 +5,15 @@ import java.util.Set;
 import org.openur.module.domain.security.IApplication;
 import org.openur.module.domain.security.IPermission;
 import org.openur.module.domain.security.IRole;
+import org.openur.module.domain.userstructure.user.person.IPerson;
 
 public interface IOrgUnitMember
 	extends Comparable<IOrgUnitMember>
 {
 	/**
-	 * returns the personal identifier of the member.
+	 * returns the person-object of the member.
 	 */
-	String getPersonId();
+	IPerson getPerson();
 
 	/**
 	 * returns the roles the member takes part in.

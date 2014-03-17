@@ -26,10 +26,10 @@ public interface IIdentifiableEntity
 	Date getCreationDate();
 	
 	/**
-	 * identity-objects should be comparable.
+	 * identity-objects should be equal if they have the same identifier.
 	 * criteria for equality should be the identifier.
 	 * 
-	 * @param obj the object that is checked on equality.
+	 * @param obj the object that is checked in terms of equality.
 	 * 
 	 * @return both objects are equal.
 	 */
