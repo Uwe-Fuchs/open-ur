@@ -12,36 +12,37 @@ public class OrgUnitMemberBuilder
 {
 	// properties:
 	private IPerson person = null;
-	private Set<IRole> roles = null;
+	private IOrganizationalUnit orgUnit = null;
+	private Set<IRole> roles = new HashSet<IRole>();
 
-	public OrgUnitMemberBuilder(IPerson person)
-	{
-		init(person, null);
-	}
-
-	public OrgUnitMemberBuilder(IPerson person, Collection<IRole> roles)
-	{
-		init(person, roles);
-	}
-
-	private void init(IPerson person, Collection<IRole> roles)
+	public OrgUnitMemberBuilder(IPerson person, IOrganizationalUnit orgUnit)
 	{
 		Validate.notNull(person, "person must not be null!");
+		Validate.notNull(orgUnit, "org-unit must not be null!");
 		this.person = person;
-
-		Set<IRole> roleSet = new HashSet<IRole>();
-
+		this.orgUnit = orgUnit;
+	}
+	
+	// builder-methods:
+	public OrgUnitMemberBuilder roles(Collection<IRole> roles)
+	{
 		if (roles != null)
 		{
-			roleSet.addAll(roles);
+			this.roles.addAll(roles);
 		}
-
-		this.roles = roleSet;
+		
+		return this;
 	}
 
+	// accessors:
 	IPerson getPerson()
 	{
 		return person;
+	}
+
+	IOrganizationalUnit getOrgUnit()
+	{
+		return orgUnit;
 	}
 
 	Set<IRole> getRoles()

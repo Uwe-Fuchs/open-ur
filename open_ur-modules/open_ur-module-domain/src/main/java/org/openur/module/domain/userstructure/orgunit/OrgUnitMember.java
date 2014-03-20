@@ -1,11 +1,10 @@
 package org.openur.module.domain.userstructure.orgunit;
 
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.openur.module.domain.GraphNode;
 import org.openur.module.domain.security.IApplication;
 import org.openur.module.domain.security.IPermission;
@@ -20,6 +19,7 @@ public class OrgUnitMember
 
 	// properties:
 	private final IPerson person;
+	private final IOrganizationalUnit orgUnit;
 	private final Set<IRole> roles;
 
 	// constructors:
@@ -28,24 +28,8 @@ public class OrgUnitMember
 		super();
 
 		this.person = b.getPerson();
+		this.orgUnit = b.getOrgUnit();
 		this.roles = Collections.unmodifiableSet(b.getRoles());
-	}
-	
-	public OrgUnitMember(IPerson person, Collection<IRole> roles)
-	{
-		super();
-		
-		Validate.notNull(person, "person must not be null!");	
-		this.person = person;
-		
-		Set<IRole> r = new HashSet<IRole>();
-		
-		if (roles != null)
-		{
-			r.addAll(roles);
-		}
-		
-		this.roles = Collections.unmodifiableSet(r);
 	}
 
 	// accessors:
@@ -53,6 +37,12 @@ public class OrgUnitMember
 	public IPerson getPerson()
 	{
 		return person;
+	}
+
+	@Override
+	public IOrganizationalUnit getOrgUnit()
+	{
+		return orgUnit;
 	}
 
 	@Override
@@ -73,7 +63,7 @@ public class OrgUnitMember
 	{
 		for (IRole role : getRoles())
 		{
-			if (role.getPermissions(app).contains(permission))
+			if (role.getPermissions(app) != null && role.getPermissions(app).contains(permission))
 			{
 				return true;
 			}
@@ -85,7 +75,15 @@ public class OrgUnitMember
 	@Override
 	public int compareTo(IOrgUnitMember other)
 	{
-		return this.getPerson().compareTo(other.getPerson());
+		if (this.equals(other))
+		{
+			return 0;
+		}
+		
+		return new CompareToBuilder()
+										.append(this.getOrgUnit(), other.getOrgUnit())
+										.append(this.getPerson(), other.getPerson())
+										.toComparison();
 	}
 
 	@Override
@@ -97,7 +95,10 @@ public class OrgUnitMember
 		}
 
 		IOrgUnitMember other = (IOrgUnitMember) obj;
-
-		return this.getPerson().equals(other.getPerson());
+		
+		return new EqualsBuilder()
+										.append(this.getPerson(), other.getPerson())
+										.append(this.getOrgUnit(), other.getOrgUnit())
+										.isEquals();
 	}
 }

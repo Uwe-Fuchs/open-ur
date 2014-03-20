@@ -14,6 +14,11 @@ public interface IOrgUnitMember
 	 * returns the person-object of the member.
 	 */
 	IPerson getPerson();
+	
+	/**
+	 * returns the org-unit of the member.
+	 */
+	IOrganizationalUnit getOrgUnit();
 
 	/**
 	 * returns the roles the member takes part in.
