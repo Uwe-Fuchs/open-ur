@@ -14,9 +14,10 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitDelegate;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitDelegateBuilder;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitMemberBuilder;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnit;
@@ -116,49 +117,29 @@ public class OrgUnitServicesTest
 	@Test
 	public void testObtainSubOrgUnitsForOrgUnit()
 	{		
-		String superOuId = UUID.randomUUID().toString();
+		final String SUPER_OU_ID = UUID.randomUUID().toString();
 		
-		String orgUnitNo1 = "no123";		
+		final String OU_NUMBER_1 = "no123";
+		final String OU_ID_1 = UUID.randomUUID().toString();		
 		IOrganizationalUnit orgUnit1 = new OrganizationalUnit(
-			new OrganizationalUnitBuilder()
-				.number(orgUnitNo1)
-				.superOuId(superOuId)
+			new OrganizationalUnitBuilder(OU_ID_1)
+				.number(OU_NUMBER_1)
+				.superOuId(SUPER_OU_ID)
 		);
 
-		String orgUnitNo2 = "no456";
-		String orgUnitId = UUID.randomUUID().toString();		
+		final String OU_NUMBER_2 = "no456";
+		final String OU_ID_2 = UUID.randomUUID().toString();		
 		IOrganizationalUnit orgUnit2 = new OrganizationalUnit(
-			new OrganizationalUnitBuilder(orgUnitId)
-				.number(orgUnitNo2)
-				.superOuId(superOuId)
+			new OrganizationalUnitBuilder(OU_ID_2)
+				.number(OU_NUMBER_2)
+				.superOuId(SUPER_OU_ID)
 		);
 		
-		PersonBuilder persBuilder = new PersonBuilder("username1", "password1")
-			.number("123abc")
-			.status(Status.ACTIVE);
-		IPerson pers1 = new Person(persBuilder);
-		IOrgUnitMember m1 = new OrgUnitMember(new OrgUnitMemberBuilder(pers1));
-		
-		persBuilder = new PersonBuilder("username2", "password2")
-			.number("456xyz")
-			.status(Status.ACTIVE);
-		IPerson pers2 = new Person(persBuilder);
-		IOrgUnitMember m2 = new OrgUnitMember(new OrgUnitMemberBuilder(pers2));
-		
-		IOrganizationalUnit orgUnit2_m = new OrganizationalUnit(
-			new OrganizationalUnitBuilder(orgUnitId)
-				.number(orgUnitNo2)
-				.members(Arrays.asList(m1, m2))
-				.superOuId(superOuId)
-		);
-		
-		Mockito.when(dao.obtainSubOrgUnitsForOrgUnit(superOuId, false))
+		Mockito.when(dao.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID, false))
 			.thenReturn(Arrays.asList(orgUnit1, orgUnit2));
-		Mockito.when(dao.obtainSubOrgUnitsForOrgUnit(superOuId, true))
-			.thenReturn(Arrays.asList(orgUnit1, orgUnit2_m));
 		
 		Set<IOrganizationalUnit> orgUnitSet = 
-			orgUnitServices.obtainSubOrgUnitsForOrgUnit(superOuId, false);
+			orgUnitServices.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID, false);
 		
 		assertTrue(CollectionUtils.isNotEmpty(orgUnitSet));
 		assertEquals(2, orgUnitSet.size());
@@ -175,7 +156,29 @@ public class OrgUnitServicesTest
 			}
 		}
 		
-		orgUnitSet = orgUnitServices.obtainSubOrgUnitsForOrgUnit(superOuId, true);
+		IOrganizationalUnit oud_2 = new OrgUnitDelegate(
+			new OrgUnitDelegateBuilder(OU_ID_2)
+				.number(OU_NUMBER_2)
+				.superOuId(SUPER_OU_ID)
+		);
+		
+		IPerson persA = new Person(new PersonBuilder("usernameA", "passwordA"));
+		IOrgUnitMember mA = new OrgUnitMember(new OrgUnitMemberBuilder(persA, oud_2));
+		
+		IPerson persB = new Person(new PersonBuilder("usernameB", "passwordB"));
+		IOrgUnitMember mB = new OrgUnitMember(new OrgUnitMemberBuilder(persB, oud_2));
+		
+		IOrganizationalUnit orgUnit2_m = new OrganizationalUnit(
+			new OrganizationalUnitBuilder(OU_ID_2)
+				.number(OU_NUMBER_2)
+				.superOuId(SUPER_OU_ID)
+				.members(Arrays.asList(mA, mB))
+		);
+		
+		Mockito.when(dao.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID, true))
+			.thenReturn(Arrays.asList(orgUnit1, orgUnit2_m));
+		
+		orgUnitSet = orgUnitServices.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID, true);
 		
 		assertTrue(orgUnitSet.contains(orgUnit2_m));
 		
@@ -185,8 +188,8 @@ public class OrgUnitServicesTest
 			{
 				assertTrue(CollectionUtils.isNotEmpty(ou.getMembers()));
 				assertEquals(2, ou.getMembers().size());
-				assertTrue(ou.getMembers().contains(m1));
-				assertTrue(ou.getMembers().contains(m2));
+				assertTrue(ou.getMembers().contains(mA));
+				assertTrue(ou.getMembers().contains(mB));
 				
 				break;
 			}

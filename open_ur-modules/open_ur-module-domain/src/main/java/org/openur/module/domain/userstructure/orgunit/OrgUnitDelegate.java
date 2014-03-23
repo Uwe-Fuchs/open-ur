@@ -3,7 +3,6 @@ package org.openur.module.domain.userstructure.orgunit;
 import java.util.Set;
 
 import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnit;
-import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnitBuilder;
 import org.openur.module.domain.userstructure.user.person.IPerson;
 import org.openur.module.util.exception.UnsupportedException;
 
@@ -16,8 +15,7 @@ public class OrgUnitDelegate
 {
 	private static final long serialVersionUID = 3368895151661296646L;
 
-	public OrgUnitDelegate(
-		AbstractOrgUnitBuilder<? extends AbstractOrgUnitBuilder<?>> b)
+	public OrgUnitDelegate(OrgUnitDelegateBuilder b)
 	{
 		super(b);
 	}
