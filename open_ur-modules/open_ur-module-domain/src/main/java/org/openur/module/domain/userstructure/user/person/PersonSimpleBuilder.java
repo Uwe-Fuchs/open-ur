@@ -16,4 +16,9 @@ public class PersonSimpleBuilder
 	{
 		super(username, password);
 	}
+	
+	public PersonSimple build()
+	{
+		return new PersonSimple(this);
+	}
 }

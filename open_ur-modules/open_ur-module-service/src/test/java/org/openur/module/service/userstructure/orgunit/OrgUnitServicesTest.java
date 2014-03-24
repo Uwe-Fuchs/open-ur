@@ -23,7 +23,6 @@ import org.openur.module.domain.userstructure.orgunit.OrgUnitMemberBuilder;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnit;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnitBuilder;
 import org.openur.module.domain.userstructure.user.person.IPerson;
-import org.openur.module.domain.userstructure.user.person.Person;
 import org.openur.module.domain.userstructure.user.person.PersonBuilder;
 import org.openur.module.persistence.userstructure.IUserStructureDao;
 import org.openur.module.service.userstructure.UserStructureTestSpringConfig;
@@ -162,10 +161,10 @@ public class OrgUnitServicesTest
 				.superOuId(SUPER_OU_ID)
 		);
 		
-		IPerson persA = new Person(new PersonBuilder("usernameA", "passwordA"));
+		IPerson persA = new PersonBuilder("usernameA", "passwordA").build();
 		IOrgUnitMember mA = new OrgUnitMember(new OrgUnitMemberBuilder(persA, oud_2));
 		
-		IPerson persB = new Person(new PersonBuilder("usernameB", "passwordB"));
+		IPerson persB = new PersonBuilder("usernameB", "passwordB").build();
 		IOrgUnitMember mB = new OrgUnitMember(new OrgUnitMemberBuilder(persB, oud_2));
 		
 		IOrganizationalUnit orgUnit2_m = new OrganizationalUnit(

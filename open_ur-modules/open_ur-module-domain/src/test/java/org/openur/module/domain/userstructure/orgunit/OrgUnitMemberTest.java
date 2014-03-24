@@ -19,7 +19,6 @@ import org.openur.module.domain.security.OpenURRoleBuilder;
 import org.openur.module.domain.security.PermissionScope;
 import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.userstructure.user.person.IPerson;
-import org.openur.module.domain.userstructure.user.person.Person;
 import org.openur.module.domain.userstructure.user.person.PersonBuilder;
 
 public class OrgUnitMemberTest
@@ -30,7 +29,7 @@ public class OrgUnitMemberTest
 		PersonBuilder persBuilder = new PersonBuilder("username1", "password1")
 			.number("123abc")
 			.status(Status.ACTIVE);
-		IPerson pers1 = new Person(persBuilder);
+		IPerson pers1 = persBuilder.build();
 		OrgUnitSimpleBuilder oub = new OrgUnitSimpleBuilder()
 			.number("123ABC")
 			.status(Status.ACTIVE);
@@ -42,7 +41,7 @@ public class OrgUnitMemberTest
 		persBuilder = new PersonBuilder("username2", "password2")
 			.number("456xyz")
 			.status(Status.ACTIVE);
-		IPerson pers2 = new Person(persBuilder);
+		IPerson pers2 = persBuilder.build();
 		IOrgUnitMember m21 = new OrgUnitMember(new OrgUnitMemberBuilder(pers2, orgUnit1));	
 		
 		assertFalse(m11.equals(m21));
@@ -69,7 +68,7 @@ public class OrgUnitMemberTest
 		PersonBuilder persBuilder = new PersonBuilder("username1", "password1")
 			.number("123")
 			.status(Status.ACTIVE);
-		IPerson pers1 = new Person(persBuilder);
+		IPerson pers1 = persBuilder.build();
 		OrgUnitSimpleBuilder oub = new OrgUnitSimpleBuilder()
 			.number("XYZ")
 			.status(Status.ACTIVE);
@@ -81,7 +80,7 @@ public class OrgUnitMemberTest
 		persBuilder = new PersonBuilder("username2", "password2")
 			.number("456")
 			.status(Status.ACTIVE);
-		IPerson pers2 = new Person(persBuilder);
+		IPerson pers2 = persBuilder.build();
 		IOrgUnitMember m21 = new OrgUnitMember(new OrgUnitMemberBuilder(pers2, orgUnit1));
 		
 		assertTrue(m11.compareTo(m21) < 0);
@@ -107,7 +106,7 @@ public class OrgUnitMemberTest
 		PersonBuilder persBuilder = new PersonBuilder("username1", "password1")
 			.number("123")
 			.status(Status.ACTIVE);
-		IPerson pers = new Person(persBuilder);
+		IPerson pers = persBuilder.build();
 		OrgUnitSimpleBuilder ouBuilder = new OrgUnitSimpleBuilder()
 			.number("ABC")
 			.status(Status.ACTIVE);
@@ -137,7 +136,7 @@ public class OrgUnitMemberTest
 			.permissions(new HashSet<IPermission>(Arrays.asList(perm11, perm12)));
 		IRole role1 = new OpenURRole(rb);
 		
-		IPerson person = new Person(new PersonBuilder("username1", "password1"));
+		IPerson person = new PersonBuilder("username1", "password1").build();
 		IOrganizationalUnit orgUnit = new OrgUnitSimple(new OrgUnitSimpleBuilder());
 		
 		OrgUnitMemberBuilder memberBuilder = new OrgUnitMemberBuilder(person, orgUnit)

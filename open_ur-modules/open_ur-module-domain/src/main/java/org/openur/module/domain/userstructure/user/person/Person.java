@@ -22,7 +22,7 @@ public class Person
   private final EMailAddress homeEmailAdress;
 
   // constructor:
-	public Person(PersonBuilder b)
+	Person(PersonBuilder b)
 	{
 		super(b);
 		this.name = b.getName();

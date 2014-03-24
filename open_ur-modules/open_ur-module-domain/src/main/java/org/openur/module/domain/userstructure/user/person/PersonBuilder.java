@@ -83,6 +83,11 @@ public class PersonBuilder
 		this.homeEmailAdress = homeEmailAdress;			
 		return this;
 	}
+	
+	public Person build()
+	{
+		return new Person(this);
+	}
 
 	// accessors:
 	Name getName()

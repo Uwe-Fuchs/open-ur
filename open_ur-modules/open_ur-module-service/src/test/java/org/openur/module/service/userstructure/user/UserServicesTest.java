@@ -44,8 +44,8 @@ public class UserServicesTest
 		String uuid = UUID.randomUUID().toString();
 		String uuid2 = UUID.randomUUID().toString();
 		
-		IPerson person = new Person(new PersonBuilder(uuid, "name", "pw"));
-		IPerson person2 = new Person(new PersonBuilder(uuid2, "name2", "pw2"));
+		IPerson person = new PersonBuilder(uuid, "name", "pw").build();
+		IPerson person2 = new PersonBuilder(uuid2, "name2", "pw2").build();
 		
 		Mockito.when(dao.findPersonById(uuid)).thenReturn(person);
 		Mockito.when(dao.findPersonById(uuid2)).thenReturn(person2);	
@@ -65,8 +65,8 @@ public class UserServicesTest
 		String personalNo1 = "no123";
 		String personalNo2 = "no456";
 		
-		IPerson person = new Person(new PersonBuilder("name", "pw").number(personalNo1));
-		IPerson person2 = new Person(new PersonBuilder("name2", "pw2").number(personalNo2));
+		IPerson person = new PersonBuilder("name", "pw").number(personalNo1).build();
+		IPerson person2 = new PersonBuilder("name2", "pw2").number(personalNo2).build();
 		
 		Mockito.when(dao.findPersonByNumber(personalNo1)).thenReturn(person);
 		Mockito.when(dao.findPersonByNumber(personalNo2)).thenReturn(person2);
@@ -86,8 +86,8 @@ public class UserServicesTest
 		String personalNo1 = "no123";
 		String personalNo2 = "no456";
 		
-		IPerson person = new Person(new PersonBuilder("name", "pw").number(personalNo1));
-		IPerson person2 = new Person(new PersonBuilder("name2", "pw2").number(personalNo2));
+		IPerson person = new PersonBuilder("name", "pw").number(personalNo1).build();
+		IPerson person2 = new PersonBuilder("name2", "pw2").number(personalNo2).build();
 		
 		Mockito.when(dao.obtainAllPersons()).thenReturn(Arrays.asList(person, person2));
 		

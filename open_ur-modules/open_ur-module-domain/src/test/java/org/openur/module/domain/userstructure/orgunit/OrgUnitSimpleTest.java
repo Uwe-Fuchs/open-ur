@@ -11,7 +11,6 @@ import java.util.UUID;
 import org.junit.Test;
 import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.userstructure.user.person.IPerson;
-import org.openur.module.domain.userstructure.user.person.Person;
 import org.openur.module.domain.userstructure.user.person.PersonBuilder;
 import org.openur.module.util.exception.OpenURRuntimeException;
 
@@ -23,12 +22,12 @@ public class OrgUnitSimpleTest
 		PersonBuilder persBuilder = new PersonBuilder("username1", "password1")
 			.number("123abc")
 			.status(Status.ACTIVE);
-		IPerson pers1 = new Person(persBuilder);
+		IPerson pers1 = persBuilder.build();
 		
 		persBuilder = new PersonBuilder("username2", "password2")
 			.number("456xyz")
 			.status(Status.ACTIVE);
-		IPerson pers2 = new Person(persBuilder);
+		IPerson pers2 = persBuilder.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();
 		final String OU_NUMBER = "123abc";
@@ -55,7 +54,7 @@ public class OrgUnitSimpleTest
 		persBuilder = new PersonBuilder("username3", "password3")
 			.number("789äöü")
 			.status(Status.ACTIVE);
-		IPerson pers3 = new Person(persBuilder);
+		IPerson pers3 = persBuilder.build();
 		IOrgUnitMember m3 = new OrgUnitMember(new OrgUnitMemberBuilder(pers3, oud));
 		
 		assertNull(ou.findMember(m3.getPerson()));
@@ -73,12 +72,12 @@ public class OrgUnitSimpleTest
 		PersonBuilder persBuilder = new PersonBuilder("username1", "password1")
 			.number("123abc")
 			.status(Status.ACTIVE);
-		IPerson pers1 = new Person(persBuilder);
+		IPerson pers1 = persBuilder.build();
 	
 		persBuilder = new PersonBuilder("username2", "password2")
 			.number("456xyz")
 			.status(Status.ACTIVE);
-		IPerson pers2 = new Person(persBuilder);
+		IPerson pers2 = persBuilder.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();
 		final String OU_NUMBER = "123abc";
@@ -105,7 +104,7 @@ public class OrgUnitSimpleTest
 		persBuilder = new PersonBuilder("username3", "password3")
 			.number("789äöü")
 			.status(Status.ACTIVE);
-		IPerson pers3 = new Person(persBuilder);
+		IPerson pers3 = persBuilder.build();
 		IOrgUnitMember m3 = new OrgUnitMember(new OrgUnitMemberBuilder(pers3, oud));
 		
 		assertFalse(ou.isMember(m3.getPerson()));
@@ -120,7 +119,7 @@ public class OrgUnitSimpleTest
 	@Test(expected=OpenURRuntimeException.class)
 	public void checkWrongOrgUnitID()
 	{
-		IPerson pers = new Person(new PersonBuilder("username1", "password1"));
+		IPerson pers = new PersonBuilder("username1", "password1").build();
 		IOrganizationalUnit oud = new OrgUnitDelegate(new OrgUnitDelegateBuilder("123"));
 		IOrgUnitMember member = new OrgUnitMember(new OrgUnitMemberBuilder(pers, oud));
 		
