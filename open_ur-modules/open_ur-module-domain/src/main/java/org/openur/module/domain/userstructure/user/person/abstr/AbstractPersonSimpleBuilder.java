@@ -16,14 +16,14 @@ public abstract class AbstractPersonSimpleBuilder<T extends AbstractPersonSimple
   private String password = null;
 	
   // constructors:
-	public AbstractPersonSimpleBuilder(String username, String password)
+  protected AbstractPersonSimpleBuilder(String username, String password)
 	{
 		super();
 
 		init(username, password);
 	}
 	
-	public AbstractPersonSimpleBuilder(String identifier, String username, String password)
+  protected AbstractPersonSimpleBuilder(String identifier, String username, String password)
 	{
 		super(identifier);
 

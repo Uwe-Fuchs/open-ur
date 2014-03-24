@@ -20,7 +20,7 @@ public abstract class AbstractPerson
 	private final String password;
 
 	// constructor:
-	public AbstractPerson(AbstractPersonSimpleBuilder<? extends AbstractPersonSimpleBuilder<?>> b)
+	protected AbstractPerson(AbstractPersonSimpleBuilder<? extends AbstractPersonSimpleBuilder<?>> b)
 	{
 		super(b);
 		this.apps = Collections.unmodifiableSet(b.getApps());

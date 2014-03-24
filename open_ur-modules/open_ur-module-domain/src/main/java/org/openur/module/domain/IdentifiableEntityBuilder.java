@@ -14,7 +14,7 @@ public abstract class IdentifiableEntityBuilder<T extends IdentifiableEntityBuil
 	private Date creationDate = null;
 	
 	// constructors:
-	public IdentifiableEntityBuilder()
+	protected IdentifiableEntityBuilder()
 	{
 		super();
 		
@@ -22,7 +22,7 @@ public abstract class IdentifiableEntityBuilder<T extends IdentifiableEntityBuil
 		this.creationDate = new Date();
 	}
 	
-	public IdentifiableEntityBuilder(String identifier)
+	protected IdentifiableEntityBuilder(String identifier)
 	{
 		super();
 
@@ -32,7 +32,7 @@ public abstract class IdentifiableEntityBuilder<T extends IdentifiableEntityBuil
 		this.creationDate = new Date();
 	}
 	
-	public IdentifiableEntityBuilder(Date creationDate)
+	protected IdentifiableEntityBuilder(Date creationDate)
 	{
 		super();
 		
@@ -42,7 +42,7 @@ public abstract class IdentifiableEntityBuilder<T extends IdentifiableEntityBuil
 		this.creationDate = creationDate;
 	}
 	
-	public IdentifiableEntityBuilder(String identifier, Date creationDate)
+	protected IdentifiableEntityBuilder(String identifier, Date creationDate)
 	{
 		super();
 		
