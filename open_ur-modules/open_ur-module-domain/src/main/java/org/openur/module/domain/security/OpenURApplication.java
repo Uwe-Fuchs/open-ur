@@ -5,7 +5,7 @@ import org.openur.module.domain.IdentifiableEntityImpl;
 
 public class OpenURApplication
 	extends IdentifiableEntityImpl
-	implements IApplication, IPrincipalUser, Comparable<OpenURApplication>
+	implements IApplication, IPrincipalUser
 {
 	private static final long serialVersionUID = -7587130077162770445L;
 	
@@ -50,8 +50,8 @@ public class OpenURApplication
 
 	// operations:
 	@Override
-	public int compareTo(OpenURApplication o)
+	public int compareTo(IApplication o)
 	{
-		return this.getApplicationName().compareToIgnoreCase(o.getApplicationName());
+		return this.getApplication().compareToIgnoreCase(o.getApplication());
 	}
 }
