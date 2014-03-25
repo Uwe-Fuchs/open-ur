@@ -23,7 +23,7 @@ public class OrgUnitMember
 	private final Set<IRole> roles;
 
 	// constructors:
-	public OrgUnitMember(OrgUnitMemberBuilder b)
+	OrgUnitMember(OrgUnitMemberBuilder b)
 	{
 		super();
 

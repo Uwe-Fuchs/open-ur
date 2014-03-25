@@ -15,7 +15,7 @@ public class OrgUnitDelegate
 {
 	private static final long serialVersionUID = 3368895151661296646L;
 
-	public OrgUnitDelegate(OrgUnitDelegateBuilder b)
+	OrgUnitDelegate(OrgUnitDelegateBuilder b)
 	{
 		super(b);
 	}

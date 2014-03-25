@@ -16,4 +16,9 @@ public class OrgUnitSimpleBuilder
 	{
 		super(identifier);
 	}
+	
+	public OrgUnitSimple build()
+	{
+		return new OrgUnitSimple(this);
+	}
 }

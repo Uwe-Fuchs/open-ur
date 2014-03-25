@@ -13,7 +13,7 @@ public class TechnicalUser
   private final String username;
   private final String password;
 
-	public TechnicalUser(TechnicalUserBuilder b)
+	TechnicalUser(TechnicalUserBuilder b)
 	{
 		super(b);
 		this.username = b.getUsername();

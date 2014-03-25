@@ -27,7 +27,7 @@ public abstract class AbstractOrgUnit
   private final Set<IOrgUnitMember> members;
   
 	// constructor:
-	public AbstractOrgUnit(AbstractOrgUnitBuilder<? extends AbstractOrgUnitBuilder<?>> b)
+	protected AbstractOrgUnit(AbstractOrgUnitBuilder<? extends AbstractOrgUnitBuilder<?>> b)
 	{
 		super(b);
 		this.superOuId = b.getSuperOuId();

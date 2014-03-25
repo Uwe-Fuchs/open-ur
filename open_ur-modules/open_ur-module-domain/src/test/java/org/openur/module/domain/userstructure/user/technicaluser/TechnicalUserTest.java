@@ -13,11 +13,11 @@ public class TechnicalUserTest
 		TechnicalUserBuilder tub = new TechnicalUserBuilder("user1", "pw1");
 		tub.number("abc");
 		tub.status(Status.ACTIVE);
-		TechnicalUser tu1 = new TechnicalUser(tub);
+		TechnicalUser tu1 = tub.build();
 		
 		tub = new TechnicalUserBuilder("user2", "pw2");
 		tub.number("xyz");
-		TechnicalUser tu2 = new TechnicalUser(tub);
+		TechnicalUser tu2 = tub.build();
 		
 		assertTrue(tu1.compareTo(tu2) < 0);
 	}

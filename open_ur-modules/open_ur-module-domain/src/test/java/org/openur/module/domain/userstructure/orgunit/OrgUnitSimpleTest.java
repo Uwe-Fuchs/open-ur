@@ -19,49 +19,55 @@ public class OrgUnitSimpleTest
 	@Test
 	public void testFindMember()
 	{
-		PersonBuilder persBuilder = new PersonBuilder("username1", "password1")
+		IPerson pers1 = new PersonBuilder("username1", "password1")
 			.number("123abc")
-			.status(Status.ACTIVE);
-		IPerson pers1 = persBuilder.build();
+			.status(Status.ACTIVE)
+			.build();
 		
-		persBuilder = new PersonBuilder("username2", "password2")
+		IPerson pers2 = new PersonBuilder("username2", "password2")
 			.number("456xyz")
-			.status(Status.ACTIVE);
-		IPerson pers2 = persBuilder.build();
+			.status(Status.ACTIVE)
+			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();
 		final String OU_NUMBER = "123abc";
 		final Status OU_STATUS = Status.ACTIVE;
-		OrgUnitDelegateBuilder oudb = new OrgUnitDelegateBuilder(OU_ID)
-			.number(OU_NUMBER)
-			.status(OU_STATUS);
-		IOrganizationalUnit oud = new OrgUnitDelegate(oudb);
-		
-		IOrgUnitMember m2 = new OrgUnitMember(new OrgUnitMemberBuilder(pers2, oud));
-		IOrgUnitMember m1 = new OrgUnitMember(new OrgUnitMemberBuilder(pers1, oud));		
-
-		OrgUnitSimpleBuilder oub = new OrgUnitSimpleBuilder(OU_ID)
+		IOrganizationalUnit oud = new OrgUnitDelegateBuilder(OU_ID)
 			.number(OU_NUMBER)
 			.status(OU_STATUS)
-			.members(Arrays.asList(m1, m2));
-		IOrganizationalUnit ou = new OrgUnitSimple(oub);
+			.build();
+		
+		IOrgUnitMember m2 = new OrgUnitMemberBuilder(pers2, oud)
+			.build();
+		IOrgUnitMember m1 = new OrgUnitMemberBuilder(pers1, oud)
+			.build();		
+
+		IOrganizationalUnit ou = new OrgUnitSimpleBuilder(OU_ID)
+			.number(OU_NUMBER)
+			.status(OU_STATUS)
+			.members(Arrays.asList(m1, m2))
+			.build();
 		
 		assertEquals(m1, ou.findMember(m1.getPerson()));
 		assertEquals(m1, ou.findMember(m1.getPerson().getIdentifier()));
 		assertEquals(m2, ou.findMember(m2.getPerson()));
 		assertEquals(m2, ou.findMember(m2.getPerson().getIdentifier()));
 		
-		persBuilder = new PersonBuilder("username3", "password3")
+		IPerson pers3 = new PersonBuilder("username3", "password3")
 			.number("789äöü")
-			.status(Status.ACTIVE);
-		IPerson pers3 = persBuilder.build();
-		IOrgUnitMember m3 = new OrgUnitMember(new OrgUnitMemberBuilder(pers3, oud));
+			.status(Status.ACTIVE)
+			.build();
+		IOrgUnitMember m3 = new OrgUnitMemberBuilder(pers3, oud)
+			.build();
 		
 		assertNull(ou.findMember(m3.getPerson()));
 		assertNull(ou.findMember(m3.getPerson().getIdentifier()));
 		
-		oub.members(Arrays.asList(m1, m2, m3));
-		ou = new OrgUnitSimple(oub);
+		ou = new OrgUnitSimpleBuilder(OU_ID)
+			.number(OU_NUMBER)
+			.status(OU_STATUS)
+			.members(Arrays.asList(m1, m2, m3))
+			.build();
 		assertEquals(m3, ou.findMember(m3.getPerson()));
 		assertEquals(m3, ou.findMember(m3.getPerson().getIdentifier()));
 	}
@@ -69,49 +75,56 @@ public class OrgUnitSimpleTest
 	@Test
 	public void testIsMember()
 	{
-		PersonBuilder persBuilder = new PersonBuilder("username1", "password1")
+		IPerson pers1 = new PersonBuilder("username1", "password1")
 			.number("123abc")
-			.status(Status.ACTIVE);
-		IPerson pers1 = persBuilder.build();
+			.status(Status.ACTIVE)
+			.build();
 	
-		persBuilder = new PersonBuilder("username2", "password2")
+		IPerson pers2 = new PersonBuilder("username2", "password2")
 			.number("456xyz")
-			.status(Status.ACTIVE);
-		IPerson pers2 = persBuilder.build();
+			.status(Status.ACTIVE)
+			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();
 		final String OU_NUMBER = "123abc";
 		final Status OU_STATUS = Status.ACTIVE;
-		OrgUnitDelegateBuilder oudb = new OrgUnitDelegateBuilder(OU_ID)
-			.number(OU_NUMBER)
-			.status(OU_STATUS);
-		IOrganizationalUnit oud = new OrgUnitDelegate(oudb);
-		
-		IOrgUnitMember m2 = new OrgUnitMember(new OrgUnitMemberBuilder(pers2, oud));
-		IOrgUnitMember m1 = new OrgUnitMember(new OrgUnitMemberBuilder(pers1, oud));		
-	
-		OrgUnitSimpleBuilder oub = new OrgUnitSimpleBuilder(OU_ID)
+		IOrganizationalUnit oud = new OrgUnitDelegateBuilder(OU_ID)
 			.number(OU_NUMBER)
 			.status(OU_STATUS)
-			.members(Arrays.asList(m1, m2));
-		IOrganizationalUnit ou = new OrgUnitSimple(oub);
+			.build();
+		
+		IOrgUnitMember m2 = new OrgUnitMemberBuilder(pers2, oud)
+			.build();
+		IOrgUnitMember m1 = new OrgUnitMemberBuilder(pers1, oud)
+			.build();		
+	
+		IOrganizationalUnit ou = new OrgUnitSimpleBuilder(OU_ID)
+			.number(OU_NUMBER)
+			.status(OU_STATUS)
+			.members(Arrays.asList(m1, m2))
+			.build();
 		
 		assertTrue(ou.isMember(m1.getPerson()));
 		assertTrue(ou.isMember(m1.getPerson().getIdentifier()));
 		assertTrue(ou.isMember(m2.getPerson()));
 		assertTrue(ou.isMember(m2.getPerson().getIdentifier()));
 		
-		persBuilder = new PersonBuilder("username3", "password3")
+		IPerson pers3 = new PersonBuilder("username3", "password3")
 			.number("789äöü")
-			.status(Status.ACTIVE);
-		IPerson pers3 = persBuilder.build();
-		IOrgUnitMember m3 = new OrgUnitMember(new OrgUnitMemberBuilder(pers3, oud));
+			.status(Status.ACTIVE)
+			.build();
+		IOrgUnitMember m3 = new OrgUnitMemberBuilder(pers3, oud)
+			.build();
 		
 		assertFalse(ou.isMember(m3.getPerson()));
 		assertFalse(ou.isMember(m3.getPerson().getIdentifier()));
 		
-		oub.members(Arrays.asList(m1, m2, m3));
-		ou = new OrgUnitSimple(oub);		
+		ou = new OrgUnitSimpleBuilder(OU_ID)
+			.number(OU_NUMBER)
+			.status(OU_STATUS)
+			.members(Arrays.asList(m1, m2, m3))
+			.build();
+		
 		assertTrue(ou.isMember(m3.getPerson()));
 		assertTrue(ou.isMember(m3.getPerson().getIdentifier()));
 	}
@@ -120,8 +133,8 @@ public class OrgUnitSimpleTest
 	public void checkWrongOrgUnitID()
 	{
 		IPerson pers = new PersonBuilder("username1", "password1").build();
-		IOrganizationalUnit oud = new OrgUnitDelegate(new OrgUnitDelegateBuilder("123"));
-		IOrgUnitMember member = new OrgUnitMember(new OrgUnitMemberBuilder(pers, oud));
+		IOrganizationalUnit oud = new OrgUnitDelegateBuilder("123").build();
+		IOrgUnitMember member = new OrgUnitMemberBuilder(pers, oud).build();
 		
 		OrgUnitSimpleBuilder oub = new OrgUnitSimpleBuilder("456");
 		oub.members(Arrays.asList(member));
@@ -133,20 +146,20 @@ public class OrgUnitSimpleTest
 		OrgUnitSimpleBuilder oub = new OrgUnitSimpleBuilder()
 			.number("123abc")
 			.status(Status.ACTIVE);
-		IOrganizationalUnit ou = new OrgUnitSimple(oub);
+		IOrganizationalUnit ou = oub.build();
 		
 		oub = new OrgUnitSimpleBuilder(UUID.randomUUID().toString())
 			.number("456xyz")
 			.status(Status.ACTIVE)
 			.superOuId(ou.getIdentifier());
-		IOrganizationalUnit ou2 = new OrgUnitSimple(oub);
+		IOrganizationalUnit ou2 = oub.build();
 		
 		assertTrue("ou1 should be before ou2 because of ou-numbers", ou.compareTo(ou2) < 0);
 		
 		oub = new OrgUnitSimpleBuilder()
 			.number("123abc")
 			.status(Status.INACTIVE);
-		ou2 = new OrgUnitSimple(oub);
+		ou2 = oub.build();
 		
 		assertTrue("ou1 should be before ou2 because of status", ou.compareTo(ou2) < 0);
 	}

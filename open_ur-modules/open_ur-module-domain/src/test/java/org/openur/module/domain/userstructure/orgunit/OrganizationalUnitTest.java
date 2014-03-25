@@ -17,14 +17,14 @@ public class OrganizationalUnitTest
 			.status(Status.ACTIVE)
 			.name("staff department")
 			.shortName("stf");
-		IOrganizationalUnit ou = new OrganizationalUnit(oub);
+		IOrganizationalUnit ou = oub.build();
 		
 		oub = new OrganizationalUnitBuilder(UUID.randomUUID().toString())
 			.number("456xyz")
 			.status(Status.ACTIVE)
 			.name("accounts department")
 			.shortName("acc");
-		IOrganizationalUnit ou2 = new OrganizationalUnit(oub);
+		IOrganizationalUnit ou2 = oub.build();
 		
 		assertTrue("ou1 should be after ou2 because of name", ou.compareTo(ou2) > 0);
 		
@@ -33,7 +33,7 @@ public class OrganizationalUnitTest
 			.status(Status.ACTIVE)
 			.name("staff department")
 			.shortName("stf2");
-		ou2 = new OrganizationalUnit(oub);
+		ou2 = oub.build();
 		
 		assertTrue("ou1 should be before ou2 because of short-name", ou.compareTo(ou2) < 0);
 		
@@ -42,19 +42,19 @@ public class OrganizationalUnitTest
 			.status(Status.ACTIVE)
 			.name("staff department")
 			.shortName("stf");
-		ou2 = new OrganizationalUnit(oub);
+		ou2 = oub.build();
 		
 		assertTrue("ou1 should be before ou2 because of org-unit-number", ou.compareTo(ou2) < 0);
 	
 		oub = new OrganizationalUnitBuilder(UUID.randomUUID().toString())
 			.number("456xyz")
 			.status(Status.ACTIVE);
-		ou = new OrganizationalUnit(oub);
+		ou = oub.build();
 	
 		OrgUnitSimpleBuilder soub = new OrgUnitSimpleBuilder()
 			.number("123abc")
 			.status(Status.ACTIVE);
-		IOrganizationalUnit sou = new OrgUnitSimple(soub);
+		IOrganizationalUnit sou = soub.build();
 	
 		assertTrue("ou should be after ou-simple because of org-unit-number", ou.compareTo(sou) > 0);
 	}

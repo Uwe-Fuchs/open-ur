@@ -33,6 +33,11 @@ public class OrgUnitMemberBuilder
 		
 		return this;
 	}
+	
+	public OrgUnitMember build()
+	{
+		return new OrgUnitMember(this);
+	}
 
 	// accessors:
 	IPerson getPerson()

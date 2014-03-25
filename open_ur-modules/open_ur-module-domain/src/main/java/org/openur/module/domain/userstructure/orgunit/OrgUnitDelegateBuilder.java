@@ -12,6 +12,11 @@ public class OrgUnitDelegateBuilder
 	{
 		super(identifier);
 	}
+	
+	public OrgUnitDelegate build()
+	{
+		return new OrgUnitDelegate(this);
+	}
 
 	@Override
 	public OrgUnitDelegateBuilder members(Collection<IOrgUnitMember> members)

@@ -55,6 +55,11 @@ public class OrganizationalUnitBuilder
 		this.emailAdress = emailAdress;
 		return this;
 	}
+	
+	public OrganizationalUnit build()
+	{
+		return new OrganizationalUnit(this);
+	}
 
 	// accessors:
 	String getName()

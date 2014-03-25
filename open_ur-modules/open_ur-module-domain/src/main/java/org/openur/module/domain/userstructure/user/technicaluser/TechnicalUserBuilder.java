@@ -43,4 +43,9 @@ public class TechnicalUserBuilder
 	{
 		return password;
 	}
+	
+	public TechnicalUser build()
+	{
+		return new TechnicalUser(this);
+	}
 }

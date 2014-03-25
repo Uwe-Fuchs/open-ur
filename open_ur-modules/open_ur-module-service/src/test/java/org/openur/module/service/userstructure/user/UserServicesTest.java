@@ -19,7 +19,6 @@ import org.openur.module.domain.userstructure.user.person.IPerson;
 import org.openur.module.domain.userstructure.user.person.Person;
 import org.openur.module.domain.userstructure.user.person.PersonBuilder;
 import org.openur.module.domain.userstructure.user.technicaluser.ITechnicalUser;
-import org.openur.module.domain.userstructure.user.technicaluser.TechnicalUser;
 import org.openur.module.domain.userstructure.user.technicaluser.TechnicalUserBuilder;
 import org.openur.module.persistence.userstructure.IUserStructureDao;
 import org.openur.module.service.userstructure.UserStructureTestSpringConfig;
@@ -110,8 +109,8 @@ public class UserServicesTest
 		String uuid = UUID.randomUUID().toString();
 		String uuid2 = UUID.randomUUID().toString();
 		
-		ITechnicalUser techUser = new TechnicalUser(new TechnicalUserBuilder(uuid, "name", "pw"));
-		ITechnicalUser techUser2 = new TechnicalUser(new TechnicalUserBuilder(uuid2, "name2", "pw2"));
+		ITechnicalUser techUser = new TechnicalUserBuilder(uuid, "name", "pw").build();
+		ITechnicalUser techUser2 = new TechnicalUserBuilder(uuid2, "name2", "pw2").build();
 		
 		Mockito.when(dao.findTechnicalUserById(uuid)).thenReturn(techUser);
 		Mockito.when(dao.findTechnicalUserById(uuid2)).thenReturn(techUser2);	
@@ -131,8 +130,8 @@ public class UserServicesTest
 		String personalNo1 = "no123";
 		String personalNo2 = "no456";
 		
-		ITechnicalUser techUser = new TechnicalUser(new TechnicalUserBuilder("name", "pw").number(personalNo1));
-		ITechnicalUser techUser2 = new TechnicalUser(new TechnicalUserBuilder("name2", "pw2").number(personalNo2));
+		ITechnicalUser techUser = new TechnicalUserBuilder("name", "pw").number(personalNo1).build();
+		ITechnicalUser techUser2 = new TechnicalUserBuilder("name2", "pw2").number(personalNo2).build();
 		
 		Mockito.when(dao.findTechnicalUserByNumber(personalNo1)).thenReturn(techUser);
 		Mockito.when(dao.findTechnicalUserByNumber(personalNo2)).thenReturn(techUser2);	
@@ -152,8 +151,8 @@ public class UserServicesTest
 		String personalNo1 = "no123";
 		String personalNo2 = "no456";
 		
-		ITechnicalUser techUser = new TechnicalUser(new TechnicalUserBuilder("name", "pw").number(personalNo1));
-		ITechnicalUser techUser2 = new TechnicalUser(new TechnicalUserBuilder("name2", "pw2").number(personalNo2));
+		ITechnicalUser techUser = new TechnicalUserBuilder("name", "pw").number(personalNo1).build();
+		ITechnicalUser techUser2 = new TechnicalUserBuilder("name2", "pw2").number(personalNo2).build();
 		
 		Mockito.when(dao.obtainAllTechnicalUsers()).thenReturn(Arrays.asList(techUser, techUser2));
 		
