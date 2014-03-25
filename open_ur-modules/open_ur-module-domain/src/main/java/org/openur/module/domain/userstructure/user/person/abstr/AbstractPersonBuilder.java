@@ -7,7 +7,7 @@ import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.security.IApplication;
 import org.openur.module.domain.userstructure.UserStructureBaseBuilder;
 
-public abstract class AbstractPersonSimpleBuilder<T extends AbstractPersonSimpleBuilder<T>>
+public abstract class AbstractPersonBuilder<T extends AbstractPersonBuilder<T>>
 	extends UserStructureBaseBuilder<T>
 {
 	// properties:
@@ -16,14 +16,14 @@ public abstract class AbstractPersonSimpleBuilder<T extends AbstractPersonSimple
   private String password = null;
 	
   // constructors:
-  protected AbstractPersonSimpleBuilder(String username, String password)
+  protected AbstractPersonBuilder(String username, String password)
 	{
 		super();
 
 		init(username, password);
 	}
 	
-  protected AbstractPersonSimpleBuilder(String identifier, String username, String password)
+  protected AbstractPersonBuilder(String identifier, String username, String password)
 	{
 		super(identifier);
 

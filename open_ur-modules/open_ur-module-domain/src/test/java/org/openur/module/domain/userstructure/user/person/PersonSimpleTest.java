@@ -14,7 +14,7 @@ public class PersonSimpleTest
 		PersonSimpleBuilder pb = new PersonSimpleBuilder("username2", "password2")
 			.number("123abc")
 			.status(Status.INACTIVE);		
-		PersonSimple p1 = pb.build();
+		IPerson p1 = pb.build();
 		
 		assertEquals(p1.getNumber(), "123abc");
 	}

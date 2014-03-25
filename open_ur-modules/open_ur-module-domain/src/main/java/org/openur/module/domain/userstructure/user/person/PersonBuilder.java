@@ -2,10 +2,10 @@ package org.openur.module.domain.userstructure.user.person;
 
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.EMailAddress;
-import org.openur.module.domain.userstructure.user.person.abstr.AbstractPersonSimpleBuilder;
+import org.openur.module.domain.userstructure.user.person.abstr.AbstractPersonBuilder;
 
 public class PersonBuilder
-	extends AbstractPersonSimpleBuilder<PersonBuilder>
+	extends AbstractPersonBuilder<PersonBuilder>
 {
 	// properties:
 	private Name name = null;
