@@ -13,7 +13,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.openur.module.domain.security.IRole;
-import org.openur.module.domain.security.OpenURRole;
 import org.openur.module.domain.security.OpenURRoleBuilder;
 import org.openur.module.persistence.security.ISecurityDao;
 import org.springframework.test.context.ActiveProfiles;
@@ -34,8 +33,8 @@ public class SecurityRelatedUserServicesTest
 	@Test
 	public void testObtainAllRoles()
 	{
-		IRole role1 = new OpenURRole(new OpenURRoleBuilder("role1"));
-		IRole role2 = new OpenURRole(new OpenURRoleBuilder("role2"));		
+		IRole role1 = new OpenURRoleBuilder("role1").build();
+		IRole role2 = new OpenURRoleBuilder("role2").build();		
 		Mockito.when(dao.obtainAllRoles()).thenReturn(Arrays.asList(role1, role2));
 		
 		Set<IRole> resultSet = securityRelatedUserServices.obtainAllRoles();
@@ -50,8 +49,8 @@ public class SecurityRelatedUserServicesTest
 	{
 		final String ROLE_ID_1 = "111aaa";
 		final String ROLE_ID_2 = "222bbb";
-		IRole role1 = new OpenURRole(new OpenURRoleBuilder(ROLE_ID_1, "role1"));
-		IRole role2 = new OpenURRole(new OpenURRoleBuilder(ROLE_ID_2, "role2"));	
+		IRole role1 = new OpenURRoleBuilder(ROLE_ID_1, "role1").build();
+		IRole role2 = new OpenURRoleBuilder(ROLE_ID_2, "role2").build();	
 		Mockito.when(dao.findRoleById(ROLE_ID_1)).thenReturn(role1);
 		Mockito.when(dao.findRoleById(ROLE_ID_2)).thenReturn(role2);
 		
@@ -68,8 +67,8 @@ public class SecurityRelatedUserServicesTest
 	{
 		final String ROLE_NAME_1 = "role1";
 		final String ROLE_NAME_2 = "role2";
-		IRole role1 = new OpenURRole(new OpenURRoleBuilder(ROLE_NAME_1));
-		IRole role2 = new OpenURRole(new OpenURRoleBuilder(ROLE_NAME_2));
+		IRole role1 = new OpenURRoleBuilder(ROLE_NAME_1).build();
+		IRole role2 = new OpenURRoleBuilder(ROLE_NAME_2).build();
 		Mockito.when(dao.findRoleByName(ROLE_NAME_1)).thenReturn(role1);
 		Mockito.when(dao.findRoleByName(ROLE_NAME_2)).thenReturn(role2);
 		

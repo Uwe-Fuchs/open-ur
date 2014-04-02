@@ -13,19 +13,19 @@ public class OpenURRoleTest
 	@Test
 	public void testGetPermissions()
 	{
-		OpenURApplicationBuilder ab = new OpenURApplicationBuilder("app1", "user1", "pw1");
-		OpenURApplication app1 = new OpenURApplication(ab);		
-		OpenURPermissionBuilder pb = new OpenURPermissionBuilder("perm1", PermissionScope.SELECTED, app1);
-		OpenURPermission perm1 = new OpenURPermission(pb);
+		OpenURApplication app1 = new OpenURApplicationBuilder("app1", "user1", "pw1")
+			.build();		
+		OpenURPermission perm1 = new OpenURPermissionBuilder("perm1", PermissionScope.SELECTED, app1)
+			.build();
 		
-		ab = new OpenURApplicationBuilder("app2", "user2", "pw2");
-		OpenURApplication app2 = new OpenURApplication(ab);		
-		pb = new OpenURPermissionBuilder("perm2", PermissionScope.SUB, app2);
-		OpenURPermission perm2 = new OpenURPermission(pb);
-		
-		OpenURRoleBuilder rb = new OpenURRoleBuilder("role1");
-		rb.permissions(new HashSet<IPermission>(Arrays.asList(perm1, perm2)));
-		OpenURRole role = new OpenURRole(rb);
+		OpenURApplication app2 = new OpenURApplicationBuilder("app2", "user2", "pw2")
+			.build();
+		OpenURPermission perm2 = new OpenURPermissionBuilder("perm2", PermissionScope.SUB, app2)
+			.build();
+
+		OpenURRole role = new OpenURRoleBuilder("role1")
+			.permissions(new HashSet<IPermission>(Arrays.asList(perm1, perm2)))
+			.build();
 		
 		Set<IPermission> perms = role.getPermissions(app1);
 		assertEquals(perms.size(), 1);
@@ -39,27 +39,25 @@ public class OpenURRoleTest
 	@Test
 	public void testCompareTo()
 	{
-		OpenURApplicationBuilder ab = new OpenURApplicationBuilder("app1", "user1", "pw1");
-		OpenURApplication app1 = new OpenURApplication(ab);		
-		OpenURPermissionBuilder pb = new OpenURPermissionBuilder("perm1", PermissionScope.SELECTED, app1);
-		OpenURPermission perm1 = new OpenURPermission(pb);		
-		OpenURRoleBuilder rb = new OpenURRoleBuilder("role1");
-		rb.permissions(new HashSet<IPermission>(Arrays.asList(perm1)));
-		OpenURRole role1 = new OpenURRole(rb);
+		OpenURApplication app1 = new OpenURApplicationBuilder("app1", "user1", "pw1").build();		
+		OpenURPermission perm1 = new OpenURPermissionBuilder("perm1", PermissionScope.SELECTED, app1).build();		
+		OpenURRole role1 = new OpenURRoleBuilder("role1")
+			.permissions(new HashSet<IPermission>(Arrays.asList(perm1)))
+			.build();
 		
-		ab = new OpenURApplicationBuilder("app2", "user2", "pw2");
-		OpenURApplication app2 = new OpenURApplication(ab);		
-		pb = new OpenURPermissionBuilder("perm2", PermissionScope.SELECTED_SUB, app2);
-		OpenURPermission perm2 = new OpenURPermission(pb);		
-		rb = new OpenURRoleBuilder("role2");
-		rb.permissions(new HashSet<IPermission>(Arrays.asList(perm2)));
-		OpenURRole role2 = new OpenURRole(rb);
+		OpenURApplication app2 = new OpenURApplicationBuilder("app2", "user2", "pw2")
+			.build();		
+		OpenURPermission perm2 = new OpenURPermissionBuilder("perm2", PermissionScope.SELECTED_SUB, app2)
+			.build();		
+		OpenURRole role2 = new OpenURRoleBuilder("role2")
+			.permissions(new HashSet<IPermission>(Arrays.asList(perm2)))
+			.build();
 		
 		assertTrue("role1 should be before role2", role1.compareTo(role2) < 1);
 		
-		rb = new OpenURRoleBuilder("role1");
-		rb.permissions(new HashSet<IPermission>(Arrays.asList(perm2)));
-		OpenURRole role1_1 = new OpenURRole(rb);
+		OpenURRole role1_1 = new OpenURRoleBuilder("role1")
+			.permissions(new HashSet<IPermission>(Arrays.asList(perm2)))
+			.build();
 		
 		assertTrue(role1.compareTo(role1_1) == role1.getIdentifier().compareTo(role1_1.getIdentifier()));
 	}

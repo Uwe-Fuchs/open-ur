@@ -15,7 +15,7 @@ public class OpenURApplication
   private final String password;
 
 	// constructor:
-	public OpenURApplication(OpenURApplicationBuilder b)
+	OpenURApplication(OpenURApplicationBuilder b)
 	{
 		super(b);
 

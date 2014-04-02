@@ -46,6 +46,11 @@ public class OpenURRoleBuilder
 		return this;
 	}
 	
+	public OpenURRole build() 
+	{
+		return new OpenURRole(this);
+	}
+	
 	public OpenURRoleBuilder permissions(Set<IPermission> perms)
 	{
 		Map<IApplication, Set<IPermission>> permsLocal = new HashMap<IApplication, Set<IPermission>>();

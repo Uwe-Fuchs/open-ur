@@ -16,7 +16,7 @@ public class OpenURPermission
 	private final PermissionScope permissionScope;
 
 	// constructor:
-	public OpenURPermission(OpenURPermissionBuilder b)
+	OpenURPermission(OpenURPermissionBuilder b)
 	{
 		super(b);
 

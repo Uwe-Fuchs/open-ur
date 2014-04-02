@@ -34,6 +34,11 @@ public class OpenURApplicationBuilder
 		this.password = password;
 	}
 	
+	public OpenURApplication build()
+	{
+		return new OpenURApplication(this);
+	}
+	
 	String getApplicationName()
 	{
 		return applicationName;

@@ -19,7 +19,7 @@ public class OpenURRole
 	private final Map<IApplication, Set<IPermission>> permissions;
 
 	// constructor:
-	public OpenURRole(OpenURRoleBuilder b)
+	OpenURRole(OpenURRoleBuilder b)
 	{
 		super(b);
 

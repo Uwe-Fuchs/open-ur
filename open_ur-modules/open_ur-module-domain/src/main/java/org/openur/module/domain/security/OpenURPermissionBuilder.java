@@ -45,6 +45,11 @@ public class OpenURPermissionBuilder
 		this.description = description;
 		return this;
 	}
+	
+	public OpenURPermission build()
+	{
+		return new OpenURPermission(this);
+	}
 
 	// accessors:
 	IApplication getApp()
