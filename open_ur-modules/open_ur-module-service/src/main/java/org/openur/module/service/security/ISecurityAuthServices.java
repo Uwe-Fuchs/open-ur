@@ -13,13 +13,14 @@ public interface ISecurityAuthServices
    * checks if a user has a certain (app-based) permission within an organizational-unit.
    * 
    * @param user
-   * @param app
    * @param orgUnit
+   * @param app
    * @param permission
    * 
    * @return the user has the permission.
    */
-  Boolean hasPermission(IPrincipalUser user, IApplication app, IOrganizationalUnit orgUnit, IPermission permission);
+  Boolean hasPermission(IPrincipalUser user, IOrganizationalUnit orgUnit,
+		IApplication app, IPermission permission);
   
   /**
    * checks if a user has a certain (app-based) permission in general.
