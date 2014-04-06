@@ -25,15 +25,10 @@ public class OpenURApplication
 	}
 
 	// accessors:
+	@Override
 	public String getApplicationName()
 	{
 		return applicationName;
-	}
-	
-	@Override
-	public String getApplication()
-	{
-		return getApplicationName();
 	}
 
 	@Override
@@ -52,6 +47,6 @@ public class OpenURApplication
 	@Override
 	public int compareTo(IApplication o)
 	{
-		return this.getApplication().compareToIgnoreCase(o.getApplication());
+		return this.getApplicationName().compareToIgnoreCase(o.getApplicationName());
 	}
 }

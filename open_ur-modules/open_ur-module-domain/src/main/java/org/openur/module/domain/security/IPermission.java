@@ -17,7 +17,7 @@ public interface IPermission
 	 * 
 	 * @return String.
 	 */
-	String getPermission();
+	String getPermissionName();
 	
 	/**
 	 * the scope (i.e. SELECTED, SUB or SELECTED_SUB)

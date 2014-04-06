@@ -33,20 +33,15 @@ public class OpenURPermission
 	}
 
 	// accessors:
-	public String getPermissionName()
-	{
-		return permissionName;
-	}
-
 	public String getDescription()
 	{
 		return description;
 	}
 
 	@Override
-	public String getPermission()
+	public String getPermissionName()
 	{
-		return getPermissionName();
+		return permissionName;
 	}
 
 	@Override
@@ -60,7 +55,7 @@ public class OpenURPermission
 	public int compareTo(IPermission o)
 	{
 		int comparison = new CompareToBuilder()
-												.append(this.getPermission(), o.getPermission())
+												.append(this.getPermissionName(), o.getPermissionName())
 												.append(this.getApp(), o.getApp())
 												.toComparison();
 		
