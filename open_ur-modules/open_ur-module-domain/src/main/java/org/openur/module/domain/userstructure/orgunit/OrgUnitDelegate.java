@@ -2,6 +2,8 @@ package org.openur.module.domain.userstructure.orgunit;
 
 import java.util.Set;
 
+import org.openur.module.domain.security.IApplication;
+import org.openur.module.domain.security.IPermission;
 import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnit;
 import org.openur.module.domain.userstructure.user.person.IPerson;
 import org.openur.module.util.exception.UnsupportedException;
@@ -46,6 +48,12 @@ public class OrgUnitDelegate
 
 	@Override
 	public IOrgUnitMember findMember(IPerson person)
+	{
+		throw new UnsupportedException("Not supported in Delegate!");
+	}
+	
+	@Override
+	public boolean hasPermission(IPerson user, IApplication app, IPermission permission)
 	{
 		throw new UnsupportedException("Not supported in Delegate!");
 	}

@@ -2,9 +2,10 @@ package org.openur.module.domain.userstructure.orgunit;
 
 import java.util.Set;
 
-import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
-import org.openur.module.domain.userstructure.user.person.IPerson;
+import org.openur.module.domain.security.IApplication;
+import org.openur.module.domain.security.IPermission;
 import org.openur.module.domain.userstructure.IUserStructureBase;
+import org.openur.module.domain.userstructure.user.person.IPerson;
 
 public interface IOrganizationalUnit 
 	extends IUserStructureBase, Comparable<IOrganizationalUnit>
@@ -64,4 +65,15 @@ public interface IOrganizationalUnit
    * @return IOrgUnitMember if found in this org-unit, else null.
    */
 	IOrgUnitMember findMember(IPerson person);
+	
+	/**
+	 * indicates if a person has a certain permission in an app.
+	 * 
+	 * @param person : the person for whom the permission is used.
+	 * @param app : the application for which the permission is used.
+	 * @param permission : the permission the person should have.
+	 * 
+	 * @return the person has the permission.
+	 */
+	boolean hasPermission(IPerson person, IApplication app, IPermission permission); 
 }

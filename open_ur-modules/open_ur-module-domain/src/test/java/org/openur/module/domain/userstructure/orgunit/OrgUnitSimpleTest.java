@@ -6,9 +6,17 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.UUID;
 
 import org.junit.Test;
+import org.openur.module.domain.security.IApplication;
+import org.openur.module.domain.security.IPermission;
+import org.openur.module.domain.security.IRole;
+import org.openur.module.domain.security.OpenURApplicationBuilder;
+import org.openur.module.domain.security.OpenURPermissionBuilder;
+import org.openur.module.domain.security.OpenURRoleBuilder;
+import org.openur.module.domain.security.PermissionScope;
 import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.userstructure.user.person.IPerson;
 import org.openur.module.domain.userstructure.user.person.PersonBuilder;
@@ -138,6 +146,42 @@ public class OrgUnitSimpleTest
 		
 		OrgUnitSimpleBuilder oub = new OrgUnitSimpleBuilder("456");
 		oub.members(Arrays.asList(member));
+	}
+
+	@Test
+	public void hasPermission()
+	{
+		IApplication app1 = new OpenURApplicationBuilder("app1", "user1", "pw1")
+			.build();		
+		IPermission perm11 = new OpenURPermissionBuilder("perm11", PermissionScope.SELECTED,  app1)
+			.build();		
+		IRole role1 = new OpenURRoleBuilder("role1")
+			.permissions(new HashSet<IPermission>(Arrays.asList(perm11)))
+			.build();
+		
+		IPerson person = new PersonBuilder("username1", "password1")
+			.build();
+		
+		final String OU_ID = UUID.randomUUID().toString();		
+		IOrganizationalUnit oud = new OrgUnitDelegateBuilder(OU_ID)
+			.build();
+		
+		IOrgUnitMember member = new OrgUnitMemberBuilder(person, oud)
+		  .roles(Arrays.asList(role1))
+		  .build();
+		
+		IOrganizationalUnit ou = new OrgUnitSimpleBuilder(OU_ID)
+			.members(Arrays.asList(member))
+			.build();
+		
+		// has permission:		
+		assertTrue(ou.hasPermission(person, app1, perm11));
+	
+		// doesn't have permission:
+		IPermission perm12 = new OpenURPermissionBuilder("perm12", PermissionScope.SELECTED_SUB,  app1)
+			.build();
+		
+		assertFalse(ou.hasPermission(person, app1, perm12));
 	}
 
 	@Test
