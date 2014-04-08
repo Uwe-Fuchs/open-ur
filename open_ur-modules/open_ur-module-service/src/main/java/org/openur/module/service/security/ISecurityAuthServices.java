@@ -6,32 +6,56 @@ import org.openur.module.domain.security.IApplication;
 import org.openur.module.domain.security.IAuthenticationToken;
 import org.openur.module.domain.security.IPermission;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
+import org.openur.module.domain.userstructure.user.person.IPerson;
 
 public interface ISecurityAuthServices
 {
   /**
-   * checks if a user has a certain (app-based) permission within an organizational-unit.
+   * checks if a user has a certain (app-based) permission in general.
    * 
-   * @param user
-   * @param orgUnit
-   * @param app
+   * @param userId
    * @param permission
+   * @param app
    * 
    * @return the user has the permission.
    */
-  Boolean hasPermission(IPrincipalUser user, IOrganizationalUnit orgUnit,
-		IApplication app, IPermission permission);
+  Boolean hasPermission(String userId, String permission, IApplication app);
+  
+  /**
+   * checks if a user has a certain (app-based) permission within an organizational-unit.
+   * 
+   * @param userId
+   * @param orgUnitId
+   * @param permission
+   * @param app
+   * 
+   * @return the user has the permission.
+   */
+  Boolean hasPermission(String userId, String orgUnitId, String permission, IApplication app);
   
   /**
    * checks if a user has a certain (app-based) permission in general.
    * 
    * @param user
-   * @param app
    * @param permission
+   * @param app
    * 
    * @return the user has the permission.
    */
-  Boolean hasPermission(IPrincipalUser user, IApplication app, IPermission permission);
+  Boolean hasPermission(IPerson user, IPermission permission, IApplication app);
+  
+  /**
+   * checks if a user has a certain (app-based) permission within an organizational-unit.
+   * 
+   * @param user
+   * @param orgUnit
+   * @param permission
+   * @param app
+   * 
+   * @return the user has the permission.
+   */
+  Boolean hasPermission(IPerson user, IOrganizationalUnit orgUnit,
+		IPermission permission, IApplication app);
 
   /**
    * authenticates a user based on the given token.

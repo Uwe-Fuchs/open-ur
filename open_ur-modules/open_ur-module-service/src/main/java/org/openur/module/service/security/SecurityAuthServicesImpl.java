@@ -8,6 +8,7 @@ import org.openur.module.domain.security.IApplication;
 import org.openur.module.domain.security.IAuthenticationToken;
 import org.openur.module.domain.security.IPermission;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
+import org.openur.module.domain.userstructure.user.person.IPerson;
 import org.openur.module.persistence.security.ISecurityDao;
 
 public class SecurityAuthServicesImpl
@@ -22,16 +23,29 @@ public class SecurityAuthServicesImpl
 	}
 
 	@Override
-	public Boolean hasPermission(IPrincipalUser user, IApplication app,
-		IPermission permission)
+	public Boolean hasPermission(IPerson user, IPermission permission, IApplication app)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Boolean hasPermission(IPrincipalUser user, IOrganizationalUnit orgUnit,
-		IApplication app, IPermission permission)
+	public Boolean hasPermission(IPerson user, IOrganizationalUnit orgUnit,
+		IPermission permission, IApplication app)
+	{
+		return Boolean.TRUE;
+	}
+
+	@Override
+	public Boolean hasPermission(String userId, String permission, IApplication app)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean hasPermission(String userId, String orgUnitId,
+		String permission, IApplication app)
 	{
 		return Boolean.TRUE;
 	}
