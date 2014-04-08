@@ -17,7 +17,6 @@ import org.openur.module.domain.security.OpenURApplicationBuilder;
 import org.openur.module.domain.security.OpenURPermissionBuilder;
 import org.openur.module.domain.security.OpenURRoleBuilder;
 import org.openur.module.domain.security.PermissionScope;
-import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitDelegateBuilder;
@@ -50,70 +49,60 @@ public class SecurityAuthTest
 	}
 
 	@Test
-	public void testHasPermissionInOrgUnit()
+	public void testHasPermissionIPersonIOrganizationalUnitIPermissionIApplication()
 	{
 		IApplication app1 = new OpenURApplicationBuilder("app1", "user1", "pw1")
 			.build();		
 		IPermission perm11 = new OpenURPermissionBuilder("perm11", PermissionScope.SELECTED,  app1)
+			.build();		
+		IRole role1 = new OpenURRoleBuilder("role1")
+			.permissions(new HashSet<IPermission>(Arrays.asList(perm11)))
 			.build();
-		IPermission perm12 = new OpenURPermissionBuilder("perm12", PermissionScope.SELECTED_SUB,  app1)
-			.build();
-		
-		OpenURRoleBuilder orb = new OpenURRoleBuilder("role1");
 		
 		IPerson person = new PersonBuilder("username1", "password1")
 			.build();
 		
-		final String OU_ID = UUID.randomUUID().toString();
-		final String OU_NUMBER = "123abc";
-		final Status OU_STATUS = Status.ACTIVE;
-		
+		final String OU_ID = UUID.randomUUID().toString();		
 		IOrganizationalUnit oud = new OrgUnitDelegateBuilder(OU_ID)
-			.number(OU_NUMBER)
-			.status(OU_STATUS)
-			.build();
-		
-		OrgUnitSimpleBuilder oub = new OrgUnitSimpleBuilder(OU_ID)
-			.number(OU_NUMBER)
-			.status(OU_STATUS);
-		
-		// has permission in org-unit:	
-		IRole role1 = orb
-			.permissions(new HashSet<IPermission>(Arrays.asList(perm11, perm12)))
 			.build();
 		
 		IOrgUnitMember member = new OrgUnitMemberBuilder(person, oud)
 		  .roles(Arrays.asList(role1))
 		  .build();
 		
-		IOrganizationalUnit ou = oub
+		IOrganizationalUnit ou = new OrgUnitSimpleBuilder(OU_ID)
 			.members(Arrays.asList(member))
 			.build();
 		
-		assertTrue(securityAuthServices.hasPermission(person, ou, app1, perm12));
+		// has permission in org-unit:
+		assertTrue(securityAuthServices.hasPermission(person, ou, perm11, app1));
+		
+		// doesn't have permission:
+		IPermission perm12 = new OpenURPermissionBuilder("perm12", PermissionScope.SELECTED_SUB,  app1)
+			.build();
+		
+		assertTrue(securityAuthServices.hasPermission(person, ou, perm12, app1));
 		
 		// has permission in super-org-unit:
 		
 		
-		// doesn't have permission:
-//		role1 = orb
-//			.permissions(new HashSet<IPermission>(Arrays.asList(perm11)))
-//			.build();
-//		
-//		member = new OrgUnitMemberBuilder(person, oud)
-//		  .roles(Arrays.asList(role1))
-//		  .build();
-//		
-//		ou = oub
-//			.members(Arrays.asList(member))
-//			.build();
-//		
-//		assertFalse(securityAuthServices.hasPermission(person, ou, app1, perm12));
 	}
 
-//  @Test
-//  public void testHasPermission()
-//  {
-//	  fail("Not yet implemented");
-//  }
+//	@Test
+//	public void testHasPermissionIPersonIPermissionIApplication()
+//	{
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	public void testHasPermissionStringStringIApplication()
+//	{
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	public void testHasPermissionStringStringStringIApplication()
+//	{
+//		fail("Not yet implemented");
+//	}
 }
