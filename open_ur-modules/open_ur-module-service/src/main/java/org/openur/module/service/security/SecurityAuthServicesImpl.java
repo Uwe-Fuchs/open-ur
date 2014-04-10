@@ -9,17 +9,17 @@ import org.openur.module.domain.security.IAuthenticationToken;
 import org.openur.module.domain.security.IPermission;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 import org.openur.module.domain.userstructure.user.person.IPerson;
-import org.openur.module.persistence.security.ISecurityDao;
+import org.openur.module.service.userstructure.orgunit.IOrgUnitServices;
 
 public class SecurityAuthServicesImpl
 	implements ISecurityAuthServices
 {
-	private ISecurityDao securityDao;
+	private IOrgUnitServices orgUnitServices;
 	
 	@Inject	
-	public void setSecurityDao(ISecurityDao securityDao)
+	public void setOrgUnitServices(IOrgUnitServices orgUnitServices)
 	{
-		this.securityDao = securityDao;
+		this.orgUnitServices = orgUnitServices;
 	}
 
 	@Override
@@ -33,7 +33,16 @@ public class SecurityAuthServicesImpl
 	public Boolean hasPermission(IPerson user, IOrganizationalUnit orgUnit,
 		IPermission permission, IApplication app)
 	{
-		return Boolean.TRUE;
+		boolean hasPerm = false;
+		IOrganizationalUnit ouTmp = orgUnit;
+		
+		while (!hasPerm && ouTmp != null)
+		{
+			hasPerm = ouTmp.hasPermission(user, app, permission);
+			ouTmp = orgUnitServices.findOrgUnitById(ouTmp.getSuperOuId());
+		}
+		
+		return hasPerm;
 	}
 
 	@Override

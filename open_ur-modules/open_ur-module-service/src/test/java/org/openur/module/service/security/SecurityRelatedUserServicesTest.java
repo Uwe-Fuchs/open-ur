@@ -25,7 +25,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class SecurityRelatedUserServicesTest
 {
 	@Inject
-	private ISecurityDao dao;
+	private ISecurityDao securityDao;
 	
 	@Inject
 	private ISecurityRelatedUserServices securityRelatedUserServices;
@@ -35,7 +35,7 @@ public class SecurityRelatedUserServicesTest
 	{
 		IRole role1 = new OpenURRoleBuilder("role1").build();
 		IRole role2 = new OpenURRoleBuilder("role2").build();		
-		Mockito.when(dao.obtainAllRoles()).thenReturn(Arrays.asList(role1, role2));
+		Mockito.when(securityDao.obtainAllRoles()).thenReturn(Arrays.asList(role1, role2));
 		
 		Set<IRole> resultSet = securityRelatedUserServices.obtainAllRoles();
 		assertTrue(CollectionUtils.isNotEmpty(resultSet));
@@ -51,8 +51,8 @@ public class SecurityRelatedUserServicesTest
 		final String ROLE_ID_2 = "222bbb";
 		IRole role1 = new OpenURRoleBuilder(ROLE_ID_1, "role1").build();
 		IRole role2 = new OpenURRoleBuilder(ROLE_ID_2, "role2").build();	
-		Mockito.when(dao.findRoleById(ROLE_ID_1)).thenReturn(role1);
-		Mockito.when(dao.findRoleById(ROLE_ID_2)).thenReturn(role2);
+		Mockito.when(securityDao.findRoleById(ROLE_ID_1)).thenReturn(role1);
+		Mockito.when(securityDao.findRoleById(ROLE_ID_2)).thenReturn(role2);
 		
 		IRole resultRole = securityRelatedUserServices.findRoleById(ROLE_ID_1);
 		assertEquals(resultRole, role1);
@@ -69,8 +69,8 @@ public class SecurityRelatedUserServicesTest
 		final String ROLE_NAME_2 = "role2";
 		IRole role1 = new OpenURRoleBuilder(ROLE_NAME_1).build();
 		IRole role2 = new OpenURRoleBuilder(ROLE_NAME_2).build();
-		Mockito.when(dao.findRoleByName(ROLE_NAME_1)).thenReturn(role1);
-		Mockito.when(dao.findRoleByName(ROLE_NAME_2)).thenReturn(role2);
+		Mockito.when(securityDao.findRoleByName(ROLE_NAME_1)).thenReturn(role1);
+		Mockito.when(securityDao.findRoleByName(ROLE_NAME_2)).thenReturn(role2);
 		
 		IRole resultRole = securityRelatedUserServices.findRoleByName(ROLE_NAME_1);
 		assertEquals(resultRole, role1);

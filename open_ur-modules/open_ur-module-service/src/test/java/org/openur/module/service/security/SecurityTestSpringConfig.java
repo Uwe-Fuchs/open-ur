@@ -3,6 +3,7 @@ package org.openur.module.service.security;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.openur.module.persistence.security.ISecurityDao;
+import org.openur.module.service.userstructure.orgunit.IOrgUnitServices;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -19,7 +20,10 @@ public class SecurityTestSpringConfig
 	}
 
 	@Mock
-	private ISecurityDao dao;
+	private ISecurityDao securityDao;
+	
+	@Mock
+	private IOrgUnitServices orgUnitServices;
 
 	@Bean(name = "securityRelatedUserServices")
 	public ISecurityRelatedUserServices securityRelatedUserServices()
@@ -33,13 +37,19 @@ public class SecurityTestSpringConfig
 	public ISecurityAuthServices securityAuthServices()
 	{
 		SecurityAuthServicesImpl _securityAuthServices = new SecurityAuthServicesImpl();
-		_securityAuthServices.setSecurityDao(securityDao());
+		_securityAuthServices.setOrgUnitServices(orgUnitServices());
 		return _securityAuthServices;
 	}
 
 	@Bean(name = "securityDao")
 	public ISecurityDao securityDao()
 	{		
-		return this.dao;
+		return this.securityDao;
+	}
+
+	@Bean(name = "orgUnitServices")
+	public IOrgUnitServices orgUnitServices()
+	{		
+		return this.orgUnitServices;
 	}
 }
