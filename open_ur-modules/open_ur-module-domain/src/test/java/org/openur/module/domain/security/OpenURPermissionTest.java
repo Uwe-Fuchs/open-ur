@@ -9,10 +9,10 @@ public class OpenURPermissionTest
 	@Test
 	public void testCompareTo()
 	{
-		OpenURApplication app = new OpenURApplicationBuilder("app", "user1", "pw").build();		
+		IApplication app = new OpenURApplicationBuilder("app", "user1", "pw").build();		
 		
-		OpenURPermission perm1 = new OpenURPermissionBuilder("perm1", PermissionScope.SELECTED, app).build();		
-		OpenURPermission perm2 = new OpenURPermissionBuilder("perm2", PermissionScope.SELECTED, app).build();
+		IPermission perm1 = new OpenURPermissionBuilder("perm1", PermissionScope.SELECTED, app).build();		
+		IPermission perm2 = new OpenURPermissionBuilder("perm2", PermissionScope.SELECTED, app).build();
 		
 		assertTrue(perm1.compareTo(perm2) < 0);
 	}
@@ -32,14 +32,14 @@ public class OpenURPermissionTest
 	@Test(expected=NullPointerException.class)
 	public void testExceptionCreateWithNameAndAppAndEmptyScope()
 	{
-		OpenURApplication app = new OpenURApplicationBuilder("app", "user1", "pw").build();
+		IApplication app = new OpenURApplicationBuilder("app", "user1", "pw").build();
 		new OpenURPermissionBuilder("perm", null, app);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testExceptionCreateWithEmptyNameAndApp()
 	{
-		OpenURApplication app = new OpenURApplicationBuilder("app", "user1", "pw").build();
+		IApplication app = new OpenURApplicationBuilder("app", "user1", "pw").build();
 		new OpenURPermissionBuilder("", PermissionScope.SELECTED, app);
 	}
 }
