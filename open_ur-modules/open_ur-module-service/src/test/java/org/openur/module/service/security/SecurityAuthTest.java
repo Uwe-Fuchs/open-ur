@@ -40,7 +40,7 @@ public class SecurityAuthTest
 	private ISecurityAuthServices securityAuthServices;
 	
 	@Inject
-	private ISecurityRelatedUserServices securityRelatedUserServices;
+	private ISecurityDomainServices securityDomainServices;
 	
 	@Inject
 	private IOrgUnitServices orgUnitServices;

@@ -25,12 +25,12 @@ public class SecurityTestSpringConfig
 	@Mock
 	private IOrgUnitServices orgUnitServices;
 
-	@Bean(name = "securityRelatedUserServices")
-	public ISecurityRelatedUserServices securityRelatedUserServices()
+	@Bean(name = "securityDomainServices")
+	public ISecurityDomainServices securityDomainServices()
 	{
-		SecurityRelatedUserServicesImpl _securityRelatedUserServices = new SecurityRelatedUserServicesImpl();
-		_securityRelatedUserServices.setSecurityDao(securityDao());
-		return _securityRelatedUserServices;
+		SecurityDomainServicesImpl _securityDomainServices = new SecurityDomainServicesImpl();
+		_securityDomainServices.setSecurityDao(securityDao());
+		return _securityDomainServices;
 	}
 
 	@Bean(name = "securityAuthServices")

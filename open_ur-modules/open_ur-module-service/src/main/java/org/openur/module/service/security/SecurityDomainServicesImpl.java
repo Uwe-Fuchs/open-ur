@@ -12,8 +12,8 @@ import org.openur.module.domain.security.IPermission;
 import org.openur.module.domain.security.IRole;
 import org.openur.module.persistence.security.ISecurityDao;
 
-public class SecurityRelatedUserServicesImpl
-	implements ISecurityRelatedUserServices
+public class SecurityDomainServicesImpl
+	implements ISecurityDomainServices
 {
 	private ISecurityDao securityDao;
 	

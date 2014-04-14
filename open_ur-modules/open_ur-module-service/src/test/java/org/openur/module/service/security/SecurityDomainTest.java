@@ -26,13 +26,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ActiveProfiles("test")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {SecurityTestSpringConfig.class})
-public class SecurityRelatedUserServicesTest
+public class SecurityDomainTest
 {
 	@Inject
 	private ISecurityDao securityDao;
 	
 	@Inject
-	private ISecurityRelatedUserServices securityRelatedUserServices;
+	private ISecurityDomainServices securityDomainServices;
 
 	@Test
 	public void testObtainAllRoles()
@@ -41,7 +41,7 @@ public class SecurityRelatedUserServicesTest
 		IRole role2 = new OpenURRoleBuilder("role2").build();		
 		Mockito.when(securityDao.obtainAllRoles()).thenReturn(Arrays.asList(role1, role2));
 		
-		Set<IRole> resultSet = securityRelatedUserServices.obtainAllRoles();
+		Set<IRole> resultSet = securityDomainServices.obtainAllRoles();
 		assertTrue(CollectionUtils.isNotEmpty(resultSet));
 		assertEquals(2, resultSet.size());
 		assertTrue(resultSet.contains(role1));
@@ -58,11 +58,11 @@ public class SecurityRelatedUserServicesTest
 		Mockito.when(securityDao.findRoleById(ROLE_ID_1)).thenReturn(role1);
 		Mockito.when(securityDao.findRoleById(ROLE_ID_2)).thenReturn(role2);
 		
-		IRole resultRole = securityRelatedUserServices.findRoleById(ROLE_ID_1);
+		IRole resultRole = securityDomainServices.findRoleById(ROLE_ID_1);
 		assertEquals(resultRole, role1);
-		resultRole = securityRelatedUserServices.findRoleById(ROLE_ID_2);
+		resultRole = securityDomainServices.findRoleById(ROLE_ID_2);
 		assertEquals(resultRole, role2);
-		resultRole = securityRelatedUserServices.findRoleById("abcdef");
+		resultRole = securityDomainServices.findRoleById("abcdef");
 		assertEquals(resultRole, null);
 	}
 
@@ -76,11 +76,11 @@ public class SecurityRelatedUserServicesTest
 		Mockito.when(securityDao.findRoleByName(ROLE_NAME_1)).thenReturn(role1);
 		Mockito.when(securityDao.findRoleByName(ROLE_NAME_2)).thenReturn(role2);
 		
-		IRole resultRole = securityRelatedUserServices.findRoleByName(ROLE_NAME_1);
+		IRole resultRole = securityDomainServices.findRoleByName(ROLE_NAME_1);
 		assertEquals(resultRole, role1);
-		resultRole = securityRelatedUserServices.findRoleByName(ROLE_NAME_2);
+		resultRole = securityDomainServices.findRoleByName(ROLE_NAME_2);
 		assertEquals(resultRole, role2);
-		resultRole = securityRelatedUserServices.findRoleByName("abcdef");
+		resultRole = securityDomainServices.findRoleByName("abcdef");
 		assertEquals(resultRole, null);	
 	}
 
@@ -98,11 +98,11 @@ public class SecurityRelatedUserServicesTest
 		Mockito.when(securityDao.findPermissionById(PERM_ID_1)).thenReturn(perm1);
 		Mockito.when(securityDao.findPermissionById(PERM_ID_2)).thenReturn(perm2);
 		
-		IPermission resultPermission = securityRelatedUserServices.findPermissionById(PERM_ID_1);
+		IPermission resultPermission = securityDomainServices.findPermissionById(PERM_ID_1);
 		assertEquals(resultPermission, perm1);
-		resultPermission = securityRelatedUserServices.findPermissionById(PERM_ID_2);
+		resultPermission = securityDomainServices.findPermissionById(PERM_ID_2);
 		assertEquals(resultPermission, perm2);
-		resultPermission = securityRelatedUserServices.findPermissionById("abcdef");
+		resultPermission = securityDomainServices.findPermissionById("abcdef");
 		assertEquals(resultPermission, null);
 	}
 
@@ -121,15 +121,15 @@ public class SecurityRelatedUserServicesTest
 		Mockito.when(securityDao.findPermissionByName(PERM_NAME_2, app)).thenReturn(perm2);
 		
 		IPermission resultPermission 
-			= securityRelatedUserServices.findPermissionByName(PERM_NAME_1, app);
+			= securityDomainServices.findPermissionByName(PERM_NAME_1, app);
 		assertEquals(resultPermission, perm1);
-		resultPermission = securityRelatedUserServices.findPermissionByName(PERM_NAME_2, app);
+		resultPermission = securityDomainServices.findPermissionByName(PERM_NAME_2, app);
 		assertEquals(resultPermission, perm2);
-		resultPermission = securityRelatedUserServices.findPermissionByName("abcdef", app);
+		resultPermission = securityDomainServices.findPermissionByName("abcdef", app);
 		assertEquals(resultPermission, null);
 		
 		IApplication app2 = new OpenURApplicationBuilder("app2", "user2", "pw2").build();	
-		resultPermission = securityRelatedUserServices.findPermissionByName(PERM_NAME_1, app2);
+		resultPermission = securityDomainServices.findPermissionByName(PERM_NAME_1, app2);
 		assertEquals(resultPermission, null);
 	}
 
@@ -143,7 +143,7 @@ public class SecurityRelatedUserServicesTest
 			"perm2", PermissionScope.SELECTED, app).build();
 		Mockito.when(securityDao.obtainAllPermissions()).thenReturn(Arrays.asList(perm1, perm2));
 		
-		Set<IPermission> resultSet = securityRelatedUserServices.obtainAllPermissions();
+		Set<IPermission> resultSet = securityDomainServices.obtainAllPermissions();
 		assertTrue(CollectionUtils.isNotEmpty(resultSet));
 		assertEquals(2, resultSet.size());
 		assertTrue(resultSet.contains(perm1));
@@ -169,7 +169,7 @@ public class SecurityRelatedUserServicesTest
 		Mockito.when(securityDao.obtainPermissionsForApp(app2))
 			.thenReturn(Arrays.asList(perm21, perm22));
 		
-		Set<IPermission> resultSet = securityRelatedUserServices.obtainPermissionsForApp(app1);
+		Set<IPermission> resultSet = securityDomainServices.obtainPermissionsForApp(app1);
 		assertTrue(CollectionUtils.isNotEmpty(resultSet));
 		assertEquals(2, resultSet.size());
 		assertTrue(resultSet.contains(perm11));
@@ -177,7 +177,7 @@ public class SecurityRelatedUserServicesTest
 		assertFalse(resultSet.contains(perm21));
 		assertFalse(resultSet.contains(perm22));
 		
-		resultSet = securityRelatedUserServices.obtainPermissionsForApp(app2);
+		resultSet = securityDomainServices.obtainPermissionsForApp(app2);
 		assertTrue(CollectionUtils.isNotEmpty(resultSet));
 		assertEquals(2, resultSet.size());
 		assertTrue(resultSet.contains(perm21));

@@ -6,7 +6,7 @@ import org.openur.module.domain.security.IApplication;
 import org.openur.module.domain.security.IPermission;
 import org.openur.module.domain.security.IRole;
 
-public interface ISecurityRelatedUserServices
+public interface ISecurityDomainServices
 {
 	/**
 	 * searches a role-object with the given id.
