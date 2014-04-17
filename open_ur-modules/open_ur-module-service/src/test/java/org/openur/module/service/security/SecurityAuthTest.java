@@ -27,6 +27,7 @@ import org.openur.module.domain.userstructure.orgunit.OrgUnitSimpleBuilder;
 import org.openur.module.domain.userstructure.user.person.IPerson;
 import org.openur.module.domain.userstructure.user.person.PersonBuilder;
 import org.openur.module.service.userstructure.orgunit.IOrgUnitServices;
+import org.openur.module.service.userstructure.user.IUserServices;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -44,6 +45,9 @@ public class SecurityAuthTest
 	
 	@Inject
 	private IOrgUnitServices orgUnitServices;
+	
+	@Inject
+	private IUserServices userServices;
 
 	@Test
 	public void testAuthenticate()
@@ -58,10 +62,10 @@ public class SecurityAuthTest
 	{
 		IApplication app1 = new OpenURApplicationBuilder("app1", "user1", "pw1")
 			.build();		
-		IPermission perm11 = new OpenURPermissionBuilder("perm11", PermissionScope.SELECTED,  app1)
+		IPermission perm1 = new OpenURPermissionBuilder("perm1", PermissionScope.SELECTED, app1)
 			.build();		
 		IRole role1 = new OpenURRoleBuilder("role1")
-			.permissions(new HashSet<IPermission>(Arrays.asList(perm11)))
+			.permissions(new HashSet<IPermission>(Arrays.asList(perm1)))
 			.build();
 		
 		IPerson person = new PersonBuilder("username1", "password1")
@@ -80,10 +84,10 @@ public class SecurityAuthTest
 			.build();
 		
 		// has permission in org-unit:
-		assertTrue(securityAuthServices.hasPermission(person, ou, perm11, app1));
+		assertTrue(securityAuthServices.hasPermission(person, ou, perm1, app1));
 		
 		// doesn't have permission:
-		IPermission perm12 = new OpenURPermissionBuilder("perm12", PermissionScope.SELECTED_SUB,  app1)
+		IPermission perm12 = new OpenURPermissionBuilder("perm2", PermissionScope.SELECTED_SUB,  app1)
 			.build();
 		
 		assertFalse(securityAuthServices.hasPermission(person, ou, perm12, app1));
@@ -95,7 +99,7 @@ public class SecurityAuthTest
 		
 		Mockito.when(orgUnitServices.findOrgUnitById(OU_ID)).thenReturn(ou);
 		
-		assertTrue(securityAuthServices.hasPermission(person, sub_ou, perm11, app1));
+		assertTrue(securityAuthServices.hasPermission(person, sub_ou, perm1, app1));
 	}
 
 //	@Test
@@ -109,35 +113,57 @@ public class SecurityAuthTest
 //	{
 //		fail("Not yet implemented");
 //	}
-//
-//	@Test
-//	public void testHasPermissionStringStringStringIApplication()
-//	{
-//		IApplication app1 = new OpenURApplicationBuilder("app1", "user1", "pw1")
-//			.build();		
-//		IPermission perm11 = new OpenURPermissionBuilder("perm11", PermissionScope.SELECTED,  app1)
-//			.build();		
-//		IRole role1 = new OpenURRoleBuilder("role1")
-//			.permissions(new HashSet<IPermission>(Arrays.asList(perm11)))
-//			.build();
-//		
-//		final String PERS_ID = UUID.randomUUID().toString();		
-//		IPerson person = new PersonBuilder(PERS_ID, "username1", "password1")
-//			.build();
-//		
-//		final String OU_ID = UUID.randomUUID().toString();		
-//		IOrganizationalUnit oud = new OrgUnitDelegateBuilder(OU_ID)
-//			.build();
-//		
-//		IOrgUnitMember member = new OrgUnitMemberBuilder(person, oud)
-//		  .roles(Arrays.asList(role1))
-//		  .build();
-//		
-//		IOrganizationalUnit ou = new OrgUnitSimpleBuilder(OU_ID)
-//			.members(Arrays.asList(member))
-//			.build();
-//		
-//		Mockito.when(securityRelatedUserServices.findPe).thenReturn(ou);
-//		Mockito.when(orgUnitServices.findOrgUnitById(OU_ID)).thenReturn(ou);
-//	}
+
+	@Test
+	public void testHasPermissionStringStringStringIApplication()
+	{
+		IApplication app = new OpenURApplicationBuilder("app", "app", "app_pw")
+			.build();		
+		final String PERM_NAME_1 = "perm1";
+		IPermission perm1 = new OpenURPermissionBuilder(PERM_NAME_1, PermissionScope.SELECTED,  app)
+			.build();		
+		IRole role1 = new OpenURRoleBuilder("role1")
+			.permissions(new HashSet<IPermission>(Arrays.asList(perm1)))
+			.build();
+		
+		final String PERS_ID = UUID.randomUUID().toString();		
+		IPerson person = new PersonBuilder(PERS_ID, "username1", "password1")
+			.build();
+		
+		final String OU_ID = UUID.randomUUID().toString();		
+		IOrganizationalUnit oud = new OrgUnitDelegateBuilder(OU_ID)
+			.build();
+		
+		IOrgUnitMember member = new OrgUnitMemberBuilder(person, oud)
+		  .roles(Arrays.asList(role1))
+		  .build();
+		
+		IOrganizationalUnit ou = new OrgUnitSimpleBuilder(OU_ID)
+			.members(Arrays.asList(member))
+			.build();
+		
+		Mockito.when(securityDomainServices.findPermissionByName(PERM_NAME_1, app)).thenReturn(perm1);
+		Mockito.when(orgUnitServices.findOrgUnitById(OU_ID)).thenReturn(ou);
+		Mockito.when(userServices.findPersonById(PERS_ID)).thenReturn(person);
+		
+		// has permission in org-unit:
+		assertTrue(securityAuthServices.hasPermission(PERS_ID, OU_ID, PERM_NAME_1, app));
+		
+		// doesn't have permission:
+		final String PERM_NAME_2 = "perm2";
+		IPermission perm2 = new OpenURPermissionBuilder(PERM_NAME_2, PermissionScope.SELECTED_SUB,  app)
+			.build();
+		Mockito.when(securityDomainServices.findPermissionByName(PERM_NAME_2, app)).thenReturn(perm2);
+		assertFalse(securityAuthServices.hasPermission(PERS_ID, OU_ID, PERM_NAME_2, app));
+		
+		// has permission in super-org-unit:
+		final String SUB_OU_ID = UUID.randomUUID().toString();	
+		IOrganizationalUnit sub_ou = new OrgUnitSimpleBuilder(SUB_OU_ID)
+			.superOuId(OU_ID)
+			.build();
+		
+		Mockito.when(orgUnitServices.findOrgUnitById(SUB_OU_ID)).thenReturn(sub_ou);
+		
+		assertTrue(securityAuthServices.hasPermission(PERS_ID, SUB_OU_ID, PERM_NAME_1, app));
+	}
 }
