@@ -138,7 +138,7 @@ public class OrgUnitSimpleTest
 	}
 	
 	@Test(expected=OpenURRuntimeException.class)
-	public void checkWrongOrgUnitID()
+	public void testWrongOrgUnitID()
 	{
 		IPerson pers = new PersonBuilder("username1", "password1").build();
 		IOrganizationalUnit oud = new OrgUnitDelegateBuilder("123").build();
@@ -149,7 +149,7 @@ public class OrgUnitSimpleTest
 	}
 
 	@Test
-	public void hasPermission()
+	public void testHasPermission()
 	{
 		IApplication app1 = new OpenURApplicationBuilder("app1", "user1", "pw1")
 			.build();		
@@ -187,24 +187,41 @@ public class OrgUnitSimpleTest
 	@Test
 	public void testCompareTo()
 	{
-		OrgUnitSimpleBuilder oub = new OrgUnitSimpleBuilder()
+		IOrganizationalUnit ou = new OrgUnitSimpleBuilder()
 			.number("123abc")
-			.status(Status.ACTIVE);
-		IOrganizationalUnit ou = oub.build();
+			.status(Status.ACTIVE)
+			.build();
 		
-		oub = new OrgUnitSimpleBuilder(UUID.randomUUID().toString())
+		IOrganizationalUnit ou2 = new OrgUnitSimpleBuilder(UUID.randomUUID().toString())
 			.number("456xyz")
 			.status(Status.ACTIVE)
-			.superOuId(ou.getIdentifier());
-		IOrganizationalUnit ou2 = oub.build();
+			.superOuId(ou.getIdentifier())
+			.build();
 		
 		assertTrue("ou1 should be before ou2 because of ou-numbers", ou.compareTo(ou2) < 0);
 		
-		oub = new OrgUnitSimpleBuilder()
+		ou2 = new OrgUnitSimpleBuilder()
 			.number("123abc")
-			.status(Status.INACTIVE);
-		ou2 = oub.build();
+			.status(Status.INACTIVE)
+			.build();
 		
 		assertTrue("ou1 should be before ou2 because of status", ou.compareTo(ou2) < 0);
 	}
+
+	@Test
+	public void testIsRootOrgUnit()
+	{
+		IOrganizationalUnit ou = new OrgUnitSimpleBuilder().build();
+		assertTrue(ou.isRootOrgUnit());
+		
+		ou = new OrgUnitSimpleBuilder()
+			.superOuId("123")
+			.build();
+		assertFalse(ou.isRootOrgUnit());
+		
+		ou = new OrgUnitSimpleBuilder()
+			.superOuId("")
+			.build();
+		assertTrue(ou.isRootOrgUnit());
+	}	
 }

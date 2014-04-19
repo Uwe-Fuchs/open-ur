@@ -21,7 +21,15 @@ public interface IOrganizationalUnit
 	 * @return the id of the superior ou or null if this ou is the highest ou (thus the "root"
 	 * of the hierarchy).
 	 */
-	String getSuperOuId();	
+	String getSuperOuId();
+	
+	/**
+	 * indicates wether this org-unit is the hierachical root of the organization,
+	 * i.e.: no super-org-unit exists for this org-unit.
+	 * 
+	 * @return this org-unit is the hierachical root of the organization
+	 */
+	boolean isRootOrgUnit();
 	
 	/**
 	 * returns the members of this orgaizational-unit in a set.

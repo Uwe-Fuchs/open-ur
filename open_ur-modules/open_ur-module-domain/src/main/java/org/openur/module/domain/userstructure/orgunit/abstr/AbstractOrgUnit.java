@@ -3,6 +3,7 @@ package org.openur.module.domain.userstructure.orgunit.abstr;
 import java.util.Collections;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.openur.module.domain.security.IApplication;
 import org.openur.module.domain.security.IPermission;
@@ -41,6 +42,12 @@ public abstract class AbstractOrgUnit
 	public String getSuperOuId()
 	{
 		return superOuId;
+	}
+
+	@Override
+	public boolean isRootOrgUnit()
+	{
+		return (StringUtils.isEmpty(getSuperOuId()));
 	}
 
 	@Override
