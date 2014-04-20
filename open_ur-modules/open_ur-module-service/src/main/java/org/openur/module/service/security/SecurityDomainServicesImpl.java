@@ -6,7 +6,6 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.openur.module.domain.security.IApplication;
 import org.openur.module.domain.security.IPermission;
 import org.openur.module.domain.security.IRole;
@@ -73,12 +72,13 @@ public class SecurityDomainServicesImpl
 	
 	private static <T> Set<T> buildSetFromList(List<T> resultList)
 	{
-		Set<T> resultSet = new HashSet<>();
+//		Set<T> resultSet = new HashSet<>(resultList);
+//		
+//		if (CollectionUtils.isNotEmpty(resultList))
+//		{
+//			resultSet.addAll(resultList);
+//		}
 		
-		if (CollectionUtils.isNotEmpty(resultList)) {
-			resultSet.addAll(resultList);
-		}
-		
-		return resultSet;
+		return new HashSet<>(resultList);
 	}
 }

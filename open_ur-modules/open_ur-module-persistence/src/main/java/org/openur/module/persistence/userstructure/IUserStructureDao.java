@@ -72,6 +72,15 @@ public interface IUserStructureDao
   List<IOrganizationalUnit> obtainSubOrgUnitsForOrgUnit(String orgUnitId, boolean inclMembers);
 	
   /**
+   * returns all org-units, which are roots (i.e. the highest in
+   * an organization) in a list. If no org-units are found, 
+   * the result-list will be empty (not null).
+   * 
+   * @return List with all root-org-units.
+   */
+  List<IOrganizationalUnit> obtainRootOrgUnits();
+  
+  /**
    * searches a technical user via it's unique identifier.
    * 
    * @param techUserId : the unique identifier of the technical user.

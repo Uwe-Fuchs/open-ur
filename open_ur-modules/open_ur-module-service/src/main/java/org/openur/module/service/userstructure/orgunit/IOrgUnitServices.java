@@ -42,4 +42,13 @@ public interface IOrgUnitServices
    * @return Set with all subordinated org-units of an org-unit (maybe empty).
    */
   Set<IOrganizationalUnit> obtainSubOrgUnitsForOrgUnit(String orgUnitId, boolean inclMembers);
+	
+  /**
+   * returns all organizational-units, which are roots (i.e. the highest in
+   * an organization) in a set. If no org-units can be found, 
+   * the result-set will be empty (not null).
+   * 
+   * @return Set with all root-org-units.
+   */
+  Set<IOrganizationalUnit> obtainRootOrgUnits();
 }

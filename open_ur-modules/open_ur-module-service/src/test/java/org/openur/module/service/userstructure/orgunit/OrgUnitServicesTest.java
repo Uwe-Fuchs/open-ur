@@ -1,9 +1,8 @@
 package org.openur.module.service.userstructure.orgunit;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.UUID;
@@ -190,6 +189,36 @@ public class OrgUnitServicesTest
 		
 		orgUnitSet = orgUnitServices.obtainSubOrgUnitsForOrgUnit("idOfOuThatNotExtists", true);
 		assertNotNull(orgUnitSet);
+		assertTrue(orgUnitSet.isEmpty());
+	}
+
+	@Test
+	public void testObtainRootOrgUnits()
+	{		
+		final String SUPER_OU_ID = UUID.randomUUID().toString();
+		IOrganizationalUnit superOu = new OrganizationalUnitBuilder(SUPER_OU_ID)
+			.build();
+		
+		final String OU_ID_1 = UUID.randomUUID().toString();		
+		IOrganizationalUnit orgUnit1 = new OrganizationalUnitBuilder(OU_ID_1)
+			.superOuId(SUPER_OU_ID)
+			.build();
+		
+		Mockito.when(dao.obtainRootOrgUnits())
+			.thenReturn(Arrays.asList(superOu));
+		
+		Set<IOrganizationalUnit> orgUnitSet = orgUnitServices.obtainRootOrgUnits();
+		assertTrue(orgUnitSet.contains(superOu));
+		assertFalse(orgUnitSet.contains(orgUnit1));
+		
+		Mockito.when(dao.obtainRootOrgUnits())
+			.thenReturn(null);
+		orgUnitSet = orgUnitServices.obtainRootOrgUnits();
+		assertTrue(orgUnitSet.isEmpty());
+		
+		Mockito.when(dao.obtainRootOrgUnits())
+			.thenReturn(new ArrayList<IOrganizationalUnit>());
+		orgUnitSet = orgUnitServices.obtainRootOrgUnits();
 		assertTrue(orgUnitSet.isEmpty());
 	}
 }
