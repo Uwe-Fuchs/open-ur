@@ -38,13 +38,6 @@ public class SecurityAuthServicesImpl
 	}
 
 	@Override
-	public Boolean hasPermission(IPerson user, IPermission permission, IApplication app)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Boolean hasPermission(IPerson user, IOrganizationalUnit orgUnit,
 		IPermission permission, IApplication app)
 	{
@@ -58,13 +51,6 @@ public class SecurityAuthServicesImpl
 		}
 		
 		return hasPerm;
-	}
-
-	@Override
-	public Boolean hasPermission(String userId, String perm, IApplication app)
-	{
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

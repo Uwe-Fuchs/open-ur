@@ -11,17 +11,6 @@ import org.openur.module.domain.userstructure.user.person.IPerson;
 public interface ISecurityAuthServices
 {
   /**
-   * checks if a user has a certain (app-based) permission in general.
-   * 
-   * @param userId
-   * @param permission
-   * @param app
-   * 
-   * @return the user has the permission.
-   */
-  Boolean hasPermission(String userId, String permission, IApplication app);
-  
-  /**
    * checks if a user has a certain (app-based) permission within an organizational-unit.
    * 
    * @param userId
@@ -32,17 +21,6 @@ public interface ISecurityAuthServices
    * @return the user has the permission.
    */
   Boolean hasPermission(String userId, String orgUnitId, String permission, IApplication app);
-  
-  /**
-   * checks if a user has a certain (app-based) permission in general.
-   * 
-   * @param user
-   * @param permission
-   * @param app
-   * 
-   * @return the user has the permission.
-   */
-  Boolean hasPermission(IPerson user, IPermission permission, IApplication app);
   
   /**
    * checks if a user has a certain (app-based) permission within an organizational-unit.

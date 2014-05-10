@@ -106,41 +106,6 @@ public class SecurityAuthTest
 	}
 
 	@Test
-	public void testHasPermissionIPersonIPermissionIApplication()
-	{
-		IApplication app1 = new OpenURApplicationBuilder("app1", "user1", "pw1")
-			.build();		
-		IPermission perm1 = new OpenURPermissionBuilder("perm1", PermissionScope.SELECTED, app1)
-			.build();		
-		IRole role1 = new OpenURRoleBuilder("role1")
-			.permissions(new HashSet<IPermission>(Arrays.asList(perm1)))
-			.build();
-		
-		IPerson person = new PersonBuilder("username1", "password1")
-			.build();
-		
-		final String ROOT_OU_ID = UUID.randomUUID().toString();		
-		IOrganizationalUnit oud = new OrgUnitDelegateBuilder(ROOT_OU_ID)
-			.build();
-		
-		IOrgUnitMember member = new OrgUnitMemberBuilder(person, oud)
-		  .roles(Arrays.asList(role1))
-		  .build();
-		
-		IOrganizationalUnit rootOu = new OrgUnitSimpleBuilder(ROOT_OU_ID)
-			.members(Arrays.asList(member))
-			.build();
-		
-		//Mockito.when(orgUnitServices.obtainRootOrgUnits()).thenReturn(ou);
-	}
-
-//	@Test
-//	public void testHasPermissionStringStringIApplication()
-//	{
-//		fail("Not yet implemented");
-//	}
-
-	@Test
 	public void testHasPermissionStringStringStringIApplication()
 	{
 		IApplication app = new OpenURApplicationBuilder("app", "app", "app_pw")
