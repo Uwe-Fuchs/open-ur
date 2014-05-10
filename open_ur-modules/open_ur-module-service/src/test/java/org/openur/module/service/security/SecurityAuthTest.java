@@ -93,7 +93,10 @@ public class SecurityAuthTest
 		assertFalse(securityAuthServices.hasPermission(person, ou, perm12, app1));
 		
 		// has permission in super-org-unit:
-		IOrganizationalUnit sub_ou = new OrgUnitSimpleBuilder()
+		IOrganizationalUnit rootOu = new OrgUnitSimpleBuilder()
+			.build();
+		
+		IOrganizationalUnit sub_ou = new OrgUnitSimpleBuilder(rootOu)
 			.superOuId(OU_ID)
 			.build();
 		
@@ -102,12 +105,35 @@ public class SecurityAuthTest
 		assertTrue(securityAuthServices.hasPermission(person, sub_ou, perm1, app1));
 	}
 
-//	@Test
-//	public void testHasPermissionIPersonIPermissionIApplication()
-//	{
-//		fail("Not yet implemented");
-//	}
-//
+	@Test
+	public void testHasPermissionIPersonIPermissionIApplication()
+	{
+		IApplication app1 = new OpenURApplicationBuilder("app1", "user1", "pw1")
+			.build();		
+		IPermission perm1 = new OpenURPermissionBuilder("perm1", PermissionScope.SELECTED, app1)
+			.build();		
+		IRole role1 = new OpenURRoleBuilder("role1")
+			.permissions(new HashSet<IPermission>(Arrays.asList(perm1)))
+			.build();
+		
+		IPerson person = new PersonBuilder("username1", "password1")
+			.build();
+		
+		final String ROOT_OU_ID = UUID.randomUUID().toString();		
+		IOrganizationalUnit oud = new OrgUnitDelegateBuilder(ROOT_OU_ID)
+			.build();
+		
+		IOrgUnitMember member = new OrgUnitMemberBuilder(person, oud)
+		  .roles(Arrays.asList(role1))
+		  .build();
+		
+		IOrganizationalUnit rootOu = new OrgUnitSimpleBuilder(ROOT_OU_ID)
+			.members(Arrays.asList(member))
+			.build();
+		
+		//Mockito.when(orgUnitServices.obtainRootOrgUnits()).thenReturn(ou);
+	}
+
 //	@Test
 //	public void testHasPermissionStringStringIApplication()
 //	{
@@ -157,8 +183,11 @@ public class SecurityAuthTest
 		assertFalse(securityAuthServices.hasPermission(PERS_ID, OU_ID, PERM_NAME_2, app));
 		
 		// has permission in super-org-unit:
+		IOrganizationalUnit rootOu = new OrgUnitSimpleBuilder()
+			.build();
+	
 		final String SUB_OU_ID = UUID.randomUUID().toString();	
-		IOrganizationalUnit sub_ou = new OrgUnitSimpleBuilder(SUB_OU_ID)
+		IOrganizationalUnit sub_ou = new OrgUnitSimpleBuilder(SUB_OU_ID, rootOu)
 			.superOuId(OU_ID)
 			.build();
 		

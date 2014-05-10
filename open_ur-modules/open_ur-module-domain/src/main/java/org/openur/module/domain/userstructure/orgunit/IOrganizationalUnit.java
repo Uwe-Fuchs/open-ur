@@ -32,6 +32,13 @@ public interface IOrganizationalUnit
 	boolean isRootOrgUnit();
 	
 	/**
+	 * returns the root-org-unit of the hierarchy this org-unit is a part of. 
+	 * 
+	 * @return root-org-unit of this hierarchy.
+	 */
+	IOrganizationalUnit getRootOrgUnit();
+	
+	/**
 	 * returns the members of this orgaizational-unit in a set.
 	 * 
 	 * @return set of members (maybe empty if the org-unit has no members).

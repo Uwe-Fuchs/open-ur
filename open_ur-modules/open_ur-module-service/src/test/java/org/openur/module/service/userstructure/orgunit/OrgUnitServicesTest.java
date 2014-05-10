@@ -1,6 +1,9 @@
 package org.openur.module.service.userstructure.orgunit;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,6 +20,7 @@ import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitDelegateBuilder;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitMemberBuilder;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitSimpleBuilder;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnit;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnitBuilder;
 import org.openur.module.domain.userstructure.user.person.IPerson;
@@ -41,22 +45,24 @@ public class OrgUnitServicesTest
 	@Test
 	public void testFindOrgUnitById()
 	{		
-		String uuid = UUID.randomUUID().toString();
-		String uuid2 = UUID.randomUUID().toString();
+		final String UUID_1 = UUID.randomUUID().toString();
+		final String UUID_2 = UUID.randomUUID().toString();
 		
-		IOrganizationalUnit orgUnit1 = 
-			new OrganizationalUnitBuilder(uuid).name("Human Resources").build();
-		IOrganizationalUnit orgUnit2 = 
-			new OrganizationalUnitBuilder(uuid2).name("Marketing").build();
+		IOrganizationalUnit orgUnit1 = new OrganizationalUnitBuilder(UUID_1)
+			.name("Human Resources")
+			.build();
+		IOrganizationalUnit orgUnit2 = new OrganizationalUnitBuilder(UUID_2)
+			.name("Marketing")
+			.build();
 		
-		Mockito.when(dao.findOrgUnitById(uuid)).thenReturn(orgUnit1);
-		Mockito.when(dao.findOrgUnitById(uuid2)).thenReturn(orgUnit2);	
+		Mockito.when(dao.findOrgUnitById(UUID_1)).thenReturn(orgUnit1);
+		Mockito.when(dao.findOrgUnitById(UUID_2)).thenReturn(orgUnit2);	
 		
-		IOrganizationalUnit p = orgUnitServices.findOrgUnitById(uuid);		
+		IOrganizationalUnit p = orgUnitServices.findOrgUnitById(UUID_1);		
 		assertNotNull(p);
 		assertEquals("Name", "Human Resources", ((OrganizationalUnit) p).getName());	
 		
-		IOrganizationalUnit p2 = orgUnitServices.findOrgUnitById(uuid2);		
+		IOrganizationalUnit p2 = orgUnitServices.findOrgUnitById(UUID_2);		
 		assertNotNull(p2);
 		assertEquals("Name", "Marketing", ((OrganizationalUnit) p2).getName());
 	}
@@ -64,22 +70,26 @@ public class OrgUnitServicesTest
 	@Test
 	public void testFindOrgUnitByNumber()
 	{
-		String orgUnitNo1 = "no123";
-		String orgUnitNo2 = "no456";
+		final String NO_123 = "no123";
+		final String NO_456 = "no456";
 		
-		IOrganizationalUnit orgUnit1 = 
-			new OrganizationalUnitBuilder().number(orgUnitNo1).name("Human Resources").build();
-		IOrganizationalUnit orgUnit2 = 
-			new OrganizationalUnitBuilder().number(orgUnitNo2).name("Marketing").build();
+		IOrganizationalUnit orgUnit1 = new OrganizationalUnitBuilder()
+			.number(NO_123)
+			.name("Human Resources")
+			.build();
+		IOrganizationalUnit orgUnit2 = new OrganizationalUnitBuilder()
+			.number(NO_456)
+			.name("Marketing")
+			.build();
 		
-		Mockito.when(dao.findOrgUnitByNumber(orgUnitNo1)).thenReturn(orgUnit1);
-		Mockito.when(dao.findOrgUnitByNumber(orgUnitNo2)).thenReturn(orgUnit2);
+		Mockito.when(dao.findOrgUnitByNumber(NO_123)).thenReturn(orgUnit1);
+		Mockito.when(dao.findOrgUnitByNumber(NO_456)).thenReturn(orgUnit2);
 		
-		IOrganizationalUnit p = orgUnitServices.findOrgUnitByNumber(orgUnitNo1);		
+		IOrganizationalUnit p = orgUnitServices.findOrgUnitByNumber(NO_123);		
 		assertNotNull(p);
 		assertEquals("Name", "Human Resources", ((OrganizationalUnit) p).getName());	
 		
-		IOrganizationalUnit p2 = orgUnitServices.findOrgUnitByNumber(orgUnitNo2);		
+		IOrganizationalUnit p2 = orgUnitServices.findOrgUnitByNumber(NO_456);		
 		assertNotNull(p2);
 		assertEquals("Name", "Marketing", ((OrganizationalUnit) p2).getName());
 	}
@@ -87,13 +97,12 @@ public class OrgUnitServicesTest
 	@Test
 	public void testObtainAllOrgUnits()
 	{
-		String orgUnitNo1 = "no123";
-		String orgUnitNo2 = "no456";
-		
-		IOrganizationalUnit orgUnit1 = 
-			new OrganizationalUnitBuilder().number(orgUnitNo1).build();
-		IOrganizationalUnit orgUnit2 = 
-			new OrganizationalUnitBuilder().number(orgUnitNo2).build();
+		IOrganizationalUnit orgUnit1 = new OrganizationalUnitBuilder()
+			.number("no123")
+			.build();
+		IOrganizationalUnit orgUnit2 = new OrganizationalUnitBuilder()
+			.number("no456")
+			.build();
 		
 		Mockito.when(dao.obtainAllOrgUnits()).thenReturn(Arrays.asList(orgUnit1, orgUnit2));
 		
@@ -113,18 +122,21 @@ public class OrgUnitServicesTest
 	@Test
 	public void testObtainSubOrgUnitsForOrgUnit()
 	{		
+		IOrganizationalUnit rootOu = new OrgUnitSimpleBuilder()
+			.build();
+		
 		final String SUPER_OU_ID = UUID.randomUUID().toString();
 		
 		final String OU_NUMBER_1 = "no123";
 		final String OU_ID_1 = UUID.randomUUID().toString();		
-		IOrganizationalUnit orgUnit1 = new OrganizationalUnitBuilder(OU_ID_1)
+		IOrganizationalUnit orgUnit1 = new OrganizationalUnitBuilder(OU_ID_1, rootOu)
 				.number(OU_NUMBER_1)
 				.superOuId(SUPER_OU_ID)
 				.build();
 
 		final String OU_NUMBER_2 = "no456";
 		final String OU_ID_2 = UUID.randomUUID().toString();		
-		IOrganizationalUnit orgUnit2 = new OrganizationalUnitBuilder(OU_ID_2)
+		IOrganizationalUnit orgUnit2 = new OrganizationalUnitBuilder(OU_ID_2, rootOu)
 				.number(OU_NUMBER_2)
 				.superOuId(SUPER_OU_ID)
 				.build();
@@ -150,7 +162,7 @@ public class OrgUnitServicesTest
 			}
 		}
 		
-		IOrganizationalUnit oud_2 = new OrgUnitDelegateBuilder(OU_ID_2)
+		IOrganizationalUnit oud_2 = new OrgUnitDelegateBuilder(OU_ID_2, rootOu)
 				.number(OU_NUMBER_2)
 				.superOuId(SUPER_OU_ID)
 				.build();
@@ -161,7 +173,7 @@ public class OrgUnitServicesTest
 		IPerson persB = new PersonBuilder("usernameB", "passwordB").build();
 		IOrgUnitMember mB = new OrgUnitMemberBuilder(persB, oud_2).build();
 		
-		IOrganizationalUnit orgUnit2_m = new OrganizationalUnitBuilder(OU_ID_2)
+		IOrganizationalUnit orgUnit2_m = new OrganizationalUnitBuilder(OU_ID_2, rootOu)
 				.number(OU_NUMBER_2)
 				.superOuId(SUPER_OU_ID)
 				.members(Arrays.asList(mA, mB))
@@ -200,7 +212,7 @@ public class OrgUnitServicesTest
 			.build();
 		
 		final String OU_ID_1 = UUID.randomUUID().toString();		
-		IOrganizationalUnit orgUnit1 = new OrganizationalUnitBuilder(OU_ID_1)
+		IOrganizationalUnit orgUnit1 = new OrganizationalUnitBuilder(OU_ID_1, superOu)
 			.superOuId(SUPER_OU_ID)
 			.build();
 		

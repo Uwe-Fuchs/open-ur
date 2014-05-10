@@ -13,6 +13,11 @@ public class OrgUnitDelegateBuilder
 		super(identifier);
 	}
 	
+	public OrgUnitDelegateBuilder(String identifier, IOrganizationalUnit rootOrgUnit)
+	{
+		super(identifier, rootOrgUnit);
+	}
+	
 	public OrgUnitDelegate build()
 	{
 		return new OrgUnitDelegate(this);

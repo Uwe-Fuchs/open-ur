@@ -17,8 +17,20 @@ public class OrgUnitSimpleBuilder
 		super(identifier);
 	}
 	
+	public OrgUnitSimpleBuilder(IOrganizationalUnit rootOrgUnit)
+	{
+		super(rootOrgUnit);
+	}
+
+	public OrgUnitSimpleBuilder(String identifier, IOrganizationalUnit rootOrgUnit)
+	{
+		super(identifier, rootOrgUnit);
+	}
+
 	public OrgUnitSimple build()
 	{
+		super.build();
+		
 		return new OrgUnitSimple(this);
 	}
 }

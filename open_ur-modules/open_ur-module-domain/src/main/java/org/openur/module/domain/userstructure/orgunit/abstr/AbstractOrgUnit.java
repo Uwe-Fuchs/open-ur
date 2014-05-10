@@ -3,13 +3,13 @@ package org.openur.module.domain.userstructure.orgunit.abstr;
 import java.util.Collections;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.openur.module.domain.security.IApplication;
 import org.openur.module.domain.security.IPermission;
 import org.openur.module.domain.userstructure.UserStructureBase;
 import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitSimple;
 import org.openur.module.domain.userstructure.user.person.IPerson;
 
 /**
@@ -28,12 +28,14 @@ public abstract class AbstractOrgUnit
 	// properties:
   private final String superOuId;
   private final Set<IOrgUnitMember> members;
+  private final IOrganizationalUnit rootOrgUnit;
   
 	// constructor:
 	protected AbstractOrgUnit(AbstractOrgUnitBuilder<? extends AbstractOrgUnitBuilder<?>> b)
 	{
 		super(b);
 		this.superOuId = b.getSuperOuId();
+		this.rootOrgUnit = b.getRootOrgUnit();
 		this.members = Collections.unmodifiableSet(b.getMembers());
 	}
 
@@ -47,7 +49,13 @@ public abstract class AbstractOrgUnit
 	@Override
 	public boolean isRootOrgUnit()
 	{
-		return (StringUtils.isEmpty(getSuperOuId()));
+		return (getRootOrgUnit() == null);
+	}
+
+	@Override
+	public IOrganizationalUnit getRootOrgUnit()
+	{
+		return rootOrgUnit;
 	}
 
 	@Override

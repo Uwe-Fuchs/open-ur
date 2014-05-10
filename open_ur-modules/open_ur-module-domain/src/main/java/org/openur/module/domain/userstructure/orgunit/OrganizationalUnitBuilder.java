@@ -25,6 +25,16 @@ public class OrganizationalUnitBuilder
 		super(identifier);
 	}
 
+	public OrganizationalUnitBuilder(IOrganizationalUnit rootOrgUnit)
+	{
+		super(rootOrgUnit);
+	}
+
+	public OrganizationalUnitBuilder(String identifier, IOrganizationalUnit rootOrgUnit)
+	{
+		super(identifier, rootOrgUnit);
+	}
+
 	// builder-methods:
 	public OrganizationalUnitBuilder name(String name)
 	{
