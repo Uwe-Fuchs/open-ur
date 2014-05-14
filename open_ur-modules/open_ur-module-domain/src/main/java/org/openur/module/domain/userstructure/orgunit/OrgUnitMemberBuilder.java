@@ -12,15 +12,15 @@ public class OrgUnitMemberBuilder
 {
 	// properties:
 	private IPerson person = null;
-	private IOrganizationalUnit orgUnit = null;
+	private String orgUnitId = null;
 	private Set<IRole> roles = new HashSet<IRole>();
 
-	public OrgUnitMemberBuilder(IPerson person, IOrganizationalUnit orgUnit)
+	public OrgUnitMemberBuilder(IPerson person, String orgUnitId)
 	{
 		Validate.notNull(person, "person must not be null!");
-		Validate.notNull(orgUnit, "org-unit must not be null!");
+		Validate.notNull(orgUnitId, "org-unit must not be null!");
 		this.person = person;
-		this.orgUnit = orgUnit;
+		this.orgUnitId = orgUnitId;
 	}
 	
 	// builder-methods:
@@ -45,9 +45,9 @@ public class OrgUnitMemberBuilder
 		return person;
 	}
 
-	IOrganizationalUnit getOrgUnit()
+	String getOrgUnitId()
 	{
-		return orgUnit;
+		return orgUnitId;
 	}
 
 	Set<IRole> getRoles()

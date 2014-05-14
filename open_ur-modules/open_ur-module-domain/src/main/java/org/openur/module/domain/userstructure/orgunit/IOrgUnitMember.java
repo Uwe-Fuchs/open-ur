@@ -18,7 +18,7 @@ public interface IOrgUnitMember
 	/**
 	 * returns the org-unit of the member.
 	 */
-	IOrganizationalUnit getOrgUnit();
+	String getOrgUnitId();
 
 	/**
 	 * returns the roles the member takes part in.

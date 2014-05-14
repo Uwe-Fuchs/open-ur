@@ -18,7 +18,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
-import org.openur.module.domain.userstructure.orgunit.OrgUnitDelegateBuilder;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitMemberBuilder;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitSimpleBuilder;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnit;
@@ -152,26 +151,11 @@ public class OrgUnitServicesTest
 		assertTrue(orgUnitSet.contains(orgUnit1));
 		assertTrue(orgUnitSet.contains(orgUnit2));
 		
-		for (IOrganizationalUnit ou : orgUnitSet)
-		{
-			if (ou.equals(orgUnit2))
-			{
-				assertTrue(CollectionUtils.isEmpty(ou.getMembers()));
-				
-				break;
-			}
-		}
-		
-		IOrganizationalUnit oud_2 = new OrgUnitDelegateBuilder(OU_ID_2, rootOu)
-				.number(OU_NUMBER_2)
-				.superOuId(SUPER_OU_ID)
-				.build();
-		
 		IPerson persA = new PersonBuilder("usernameA", "passwordA").build();
-		IOrgUnitMember mA = new OrgUnitMemberBuilder(persA, oud_2).build();
+		IOrgUnitMember mA = new OrgUnitMemberBuilder(persA, OU_ID_2).build();
 		
 		IPerson persB = new PersonBuilder("usernameB", "passwordB").build();
-		IOrgUnitMember mB = new OrgUnitMemberBuilder(persB, oud_2).build();
+		IOrgUnitMember mB = new OrgUnitMemberBuilder(persB, OU_ID_2).build();
 		
 		IOrganizationalUnit orgUnit2_m = new OrganizationalUnitBuilder(OU_ID_2, rootOu)
 				.number(OU_NUMBER_2)

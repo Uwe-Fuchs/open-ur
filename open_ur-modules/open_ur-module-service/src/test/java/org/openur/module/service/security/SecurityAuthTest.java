@@ -21,7 +21,6 @@ import org.openur.module.domain.security.OpenURRoleBuilder;
 import org.openur.module.domain.security.PermissionScope;
 import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
-import org.openur.module.domain.userstructure.orgunit.OrgUnitDelegateBuilder;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitMemberBuilder;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitSimpleBuilder;
 import org.openur.module.domain.userstructure.user.person.IPerson;
@@ -71,11 +70,9 @@ public class SecurityAuthTest
 		IPerson person = new PersonBuilder("username1", "password1")
 			.build();
 		
-		final String OU_ID = UUID.randomUUID().toString();		
-		IOrganizationalUnit oud = new OrgUnitDelegateBuilder(OU_ID)
-			.build();
+		final String OU_ID = UUID.randomUUID().toString();	
 		
-		IOrgUnitMember member = new OrgUnitMemberBuilder(person, oud)
+		IOrgUnitMember member = new OrgUnitMemberBuilder(person, OU_ID)
 		  .roles(Arrays.asList(role1))
 		  .build();
 		
@@ -121,11 +118,9 @@ public class SecurityAuthTest
 		IPerson person = new PersonBuilder(PERS_ID, "username1", "password1")
 			.build();
 		
-		final String OU_ID = UUID.randomUUID().toString();		
-		IOrganizationalUnit oud = new OrgUnitDelegateBuilder(OU_ID)
-			.build();
+		final String OU_ID = UUID.randomUUID().toString();
 		
-		IOrgUnitMember member = new OrgUnitMemberBuilder(person, oud)
+		IOrgUnitMember member = new OrgUnitMemberBuilder(person, OU_ID)
 		  .roles(Arrays.asList(role1))
 		  .build();
 		

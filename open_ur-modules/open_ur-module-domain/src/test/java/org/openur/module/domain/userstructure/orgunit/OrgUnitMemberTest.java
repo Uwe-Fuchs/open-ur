@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.UUID;
 
 import org.junit.Test;
 import org.openur.module.domain.security.IApplication;
@@ -27,32 +28,25 @@ public class OrgUnitMemberTest
 			.number("123abc")
 			.status(Status.ACTIVE)
 			.build();
-		IOrganizationalUnit orgUnit1 = new OrgUnitSimpleBuilder()
-			.number("123ABC")
-			.status(Status.ACTIVE)
-			.build();		
-		IOrgUnitMember m11 = new OrgUnitMemberBuilder(pers1, orgUnit1)
+		
+		final String OU_ID_1 = UUID.randomUUID().toString();
+		IOrgUnitMember m11 = new OrgUnitMemberBuilder(pers1, OU_ID_1)
 			.build();
 		
 		assertTrue(m11.equals(m11));
 		
 		IPerson pers2 = new PersonBuilder("username2", "password2")
-			.number("456xyz")
-			.status(Status.ACTIVE)
 			.build();
-		IOrgUnitMember m21 = new OrgUnitMemberBuilder(pers2, orgUnit1)
+		IOrgUnitMember m21 = new OrgUnitMemberBuilder(pers2, OU_ID_1)
 			.build();	
 		
 		assertFalse(m11.equals(m21));
 		assertFalse(m21.equals(m11));
 
-		IOrganizationalUnit orgUnit2 = new OrgUnitSimpleBuilder()
-			.number("456XYZ")
-			.status(Status.ACTIVE)
+		final String OU_ID_2 = UUID.randomUUID().toString();
+		IOrgUnitMember m12 = new OrgUnitMemberBuilder(pers1, OU_ID_2)
 			.build();
-		IOrgUnitMember m12 = new OrgUnitMemberBuilder(pers1, orgUnit2)
-			.build();
-		IOrgUnitMember m22 = new OrgUnitMemberBuilder(pers2, orgUnit2)
+		IOrgUnitMember m22 = new OrgUnitMemberBuilder(pers2, OU_ID_2)
 			.build();
 		
 		assertFalse(m11.equals(m12));
@@ -70,11 +64,8 @@ public class OrgUnitMemberTest
 			.number("123")
 			.status(Status.ACTIVE)
 			.build();
-		IOrganizationalUnit orgUnit1 = new OrgUnitSimpleBuilder()
-			.number("XYZ")
-			.status(Status.ACTIVE)
-			.build();
-		IOrgUnitMember m11 = new OrgUnitMemberBuilder(pers1, orgUnit1)
+		final String OU_ID_1 = "XYZ";
+		IOrgUnitMember m11 = new OrgUnitMemberBuilder(pers1, OU_ID_1)
 			.build();
 		
 		assertTrue(m11.compareTo(m11) == 0);
@@ -83,18 +74,15 @@ public class OrgUnitMemberTest
 			.number("456")
 			.status(Status.ACTIVE)
 			.build();
-		IOrgUnitMember m21 = new OrgUnitMemberBuilder(pers2, orgUnit1)
+		IOrgUnitMember m21 = new OrgUnitMemberBuilder(pers2, OU_ID_1)
 			.build();
 		
 		assertTrue(m11.compareTo(m21) < 0);
 		
-		IOrganizationalUnit orgUnit2 = new OrgUnitSimpleBuilder()
-			.number("ABC")
-			.status(Status.ACTIVE)
+		final String OU_ID_2 = "ABC";
+		IOrgUnitMember m12 = new OrgUnitMemberBuilder(pers1, OU_ID_2)
 			.build();
-		IOrgUnitMember m12 = new OrgUnitMemberBuilder(pers1, orgUnit2)
-			.build();
-		IOrgUnitMember m22 = new OrgUnitMemberBuilder(pers2, orgUnit2)
+		IOrgUnitMember m22 = new OrgUnitMemberBuilder(pers2, OU_ID_2)
 			.build();
 	
 		assertTrue(m11.compareTo(m12) > 0);
@@ -113,10 +101,8 @@ public class OrgUnitMemberTest
 			.number("123")
 			.status(Status.ACTIVE)
 			.build();
-		IOrganizationalUnit orgUnit1 = new OrgUnitSimpleBuilder()
-			.number("ABC")
-			.build();
-		IOrgUnitMember member = new OrgUnitMemberBuilder(pers, orgUnit1)
+		final String OU_ID_1 = UUID.randomUUID().toString();
+		IOrgUnitMember member = new OrgUnitMemberBuilder(pers, OU_ID_1)
 		  .roles(Arrays.asList(role1))
 		  .build();		
 		assertTrue(member.hasRole(role1));
@@ -125,7 +111,7 @@ public class OrgUnitMemberTest
 			.build();		
 		assertFalse(member.hasRole(role2));
 		
-		member = new OrgUnitMemberBuilder(pers, orgUnit1)
+		member = new OrgUnitMemberBuilder(pers, OU_ID_1)
 	  	.roles(Arrays.asList(role1, role2))
 	  	.build();
 		assertTrue(member.hasRole(role1));
@@ -146,11 +132,10 @@ public class OrgUnitMemberTest
 			.build();
 		
 		IPerson person = new PersonBuilder("username1", "password1")
-			.build();
-		IOrganizationalUnit orgUnit = new OrgUnitSimpleBuilder()
-			.build();
+			.build();		
+		final String OU_ID_1 = UUID.randomUUID().toString();
 		
-		IOrgUnitMember member = new OrgUnitMemberBuilder(person, orgUnit)
+		IOrgUnitMember member = new OrgUnitMemberBuilder(person, OU_ID_1)
 		  .roles(Arrays.asList(role1))
 		  .build();		
 		
@@ -170,7 +155,7 @@ public class OrgUnitMemberTest
 		assertFalse(member.hasPermission(app2, perm22));
 		assertFalse(member.hasPermission(app2, perm22));
 		
-		member = new OrgUnitMemberBuilder(person, orgUnit)
+		member = new OrgUnitMemberBuilder(person, OU_ID_1)
 	  	.roles(Arrays.asList(role1, role2))
 	  	.build();
 		assertTrue(member.hasPermission(app2, perm22));

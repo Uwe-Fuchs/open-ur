@@ -19,7 +19,7 @@ public class OrgUnitMember
 
 	// properties:
 	private final IPerson person;
-	private final IOrganizationalUnit orgUnit;
+	private final String orgUnitId;
 	private final Set<IRole> roles;
 
 	// constructors:
@@ -28,7 +28,7 @@ public class OrgUnitMember
 		super();
 
 		this.person = b.getPerson();
-		this.orgUnit = b.getOrgUnit();
+		this.orgUnitId = b.getOrgUnitId();
 		this.roles = Collections.unmodifiableSet(b.getRoles());
 	}
 
@@ -40,9 +40,9 @@ public class OrgUnitMember
 	}
 
 	@Override
-	public IOrganizationalUnit getOrgUnit()
+	public String getOrgUnitId()
 	{
-		return orgUnit;
+		return orgUnitId;
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class OrgUnitMember
 		}
 		
 		return new CompareToBuilder()
-										.append(this.getOrgUnit(), other.getOrgUnit())
+										.append(this.getOrgUnitId(), other.getOrgUnitId())
 										.append(this.getPerson(), other.getPerson())
 										.toComparison();
 	}
@@ -98,7 +98,7 @@ public class OrgUnitMember
 		
 		return new EqualsBuilder()
 										.append(this.getPerson(), other.getPerson())
-										.append(this.getOrgUnit(), other.getOrgUnit())
+										.append(this.getOrgUnitId(), other.getOrgUnitId())
 										.isEquals();
 	}
 }

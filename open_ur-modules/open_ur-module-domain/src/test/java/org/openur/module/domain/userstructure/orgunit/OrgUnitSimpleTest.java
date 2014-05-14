@@ -29,31 +29,19 @@ public class OrgUnitSimpleTest
 	public void testFindMember()
 	{
 		IPerson pers1 = new PersonBuilder("username1", "password1")
-			.number("123abc")
-			.status(Status.ACTIVE)
 			.build();
 		
 		IPerson pers2 = new PersonBuilder("username2", "password2")
-			.number("456xyz")
-			.status(Status.ACTIVE)
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();
-		final String OU_NUMBER = "123abc";
-		final Status OU_STATUS = Status.ACTIVE;
-		IOrganizationalUnit oud = new OrgUnitDelegateBuilder(OU_ID)
-			.number(OU_NUMBER)
-			.status(OU_STATUS)
-			.build();
 		
-		IOrgUnitMember m2 = new OrgUnitMemberBuilder(pers2, oud)
+		IOrgUnitMember m2 = new OrgUnitMemberBuilder(pers2, OU_ID)
 			.build();
-		IOrgUnitMember m1 = new OrgUnitMemberBuilder(pers1, oud)
+		IOrgUnitMember m1 = new OrgUnitMemberBuilder(pers1, OU_ID)
 			.build();		
 
 		IOrganizationalUnit ou = new OrgUnitSimpleBuilder(OU_ID)
-			.number(OU_NUMBER)
-			.status(OU_STATUS)
 			.members(Arrays.asList(m1, m2))
 			.build();
 		
@@ -63,18 +51,14 @@ public class OrgUnitSimpleTest
 		assertEquals(m2, ou.findMember(m2.getPerson().getIdentifier()));
 		
 		IPerson pers3 = new PersonBuilder("username3", "password3")
-			.number("789äöü")
-			.status(Status.ACTIVE)
 			.build();
-		IOrgUnitMember m3 = new OrgUnitMemberBuilder(pers3, oud)
+		IOrgUnitMember m3 = new OrgUnitMemberBuilder(pers3, OU_ID)
 			.build();
 		
 		assertNull(ou.findMember(m3.getPerson()));
 		assertNull(ou.findMember(m3.getPerson().getIdentifier()));
 		
 		ou = new OrgUnitSimpleBuilder(OU_ID)
-			.number(OU_NUMBER)
-			.status(OU_STATUS)
 			.members(Arrays.asList(m1, m2, m3))
 			.build();
 		assertEquals(m3, ou.findMember(m3.getPerson()));
@@ -85,31 +69,19 @@ public class OrgUnitSimpleTest
 	public void testIsMember()
 	{
 		IPerson pers1 = new PersonBuilder("username1", "password1")
-			.number("123abc")
-			.status(Status.ACTIVE)
 			.build();
 	
 		IPerson pers2 = new PersonBuilder("username2", "password2")
-			.number("456xyz")
-			.status(Status.ACTIVE)
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();
-		final String OU_NUMBER = "123abc";
-		final Status OU_STATUS = Status.ACTIVE;
-		IOrganizationalUnit oud = new OrgUnitDelegateBuilder(OU_ID)
-			.number(OU_NUMBER)
-			.status(OU_STATUS)
-			.build();
 		
-		IOrgUnitMember m2 = new OrgUnitMemberBuilder(pers2, oud)
+		IOrgUnitMember m2 = new OrgUnitMemberBuilder(pers2, OU_ID)
 			.build();
-		IOrgUnitMember m1 = new OrgUnitMemberBuilder(pers1, oud)
+		IOrgUnitMember m1 = new OrgUnitMemberBuilder(pers1, OU_ID)
 			.build();		
 	
 		IOrganizationalUnit ou = new OrgUnitSimpleBuilder(OU_ID)
-			.number(OU_NUMBER)
-			.status(OU_STATUS)
 			.members(Arrays.asList(m1, m2))
 			.build();
 		
@@ -119,18 +91,14 @@ public class OrgUnitSimpleTest
 		assertTrue(ou.isMember(m2.getPerson().getIdentifier()));
 		
 		IPerson pers3 = new PersonBuilder("username3", "password3")
-			.number("789äöü")
-			.status(Status.ACTIVE)
 			.build();
-		IOrgUnitMember m3 = new OrgUnitMemberBuilder(pers3, oud)
+		IOrgUnitMember m3 = new OrgUnitMemberBuilder(pers3, OU_ID)
 			.build();
 		
 		assertFalse(ou.isMember(m3.getPerson()));
 		assertFalse(ou.isMember(m3.getPerson().getIdentifier()));
 		
 		ou = new OrgUnitSimpleBuilder(OU_ID)
-			.number(OU_NUMBER)
-			.status(OU_STATUS)
 			.members(Arrays.asList(m1, m2, m3))
 			.build();
 		
@@ -139,11 +107,10 @@ public class OrgUnitSimpleTest
 	}
 	
 	@Test(expected=OpenURRuntimeException.class)
-	public void testWrongOrgUnitID()
+	public void testCreateWithWrongOrgUnitID()
 	{
 		IPerson pers = new PersonBuilder("username1", "password1").build();
-		IOrganizationalUnit oud = new OrgUnitDelegateBuilder("123").build();
-		IOrgUnitMember member = new OrgUnitMemberBuilder(pers, oud).build();
+		IOrgUnitMember member = new OrgUnitMemberBuilder(pers, "123").build();
 		
 		OrgUnitSimpleBuilder oub = new OrgUnitSimpleBuilder("456");
 		oub.members(Arrays.asList(member));
@@ -164,10 +131,8 @@ public class OrgUnitSimpleTest
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();		
-		IOrganizationalUnit oud = new OrgUnitDelegateBuilder(OU_ID)
-			.build();
 		
-		IOrgUnitMember member = new OrgUnitMemberBuilder(person, oud)
+		IOrgUnitMember member = new OrgUnitMemberBuilder(person, OU_ID)
 		  .roles(Arrays.asList(role1))
 		  .build();
 		

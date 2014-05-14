@@ -68,7 +68,7 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 	{
 		for (IOrgUnitMember m : members)
 		{
-			if (!(this.getIdentifier().equals(m.getOrgUnit().getIdentifier())))
+			if (!(this.getIdentifier().equals(m.getOrgUnitId())))
 			{
 				throw new OpenURRuntimeException("OrgUnit-ID's must be equal!");
 			}
