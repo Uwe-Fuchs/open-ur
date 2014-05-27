@@ -18,7 +18,7 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 	// properties:
 	private String superOuId = null;
 	private IOrganizationalUnit rootOrgUnit = null;
-	private Set<IOrgUnitMember> members = new HashSet<IOrgUnitMember>();
+	protected Set<IOrgUnitMember> members = new HashSet<IOrgUnitMember>();
 
 	// constructors:
 	public AbstractOrgUnitBuilder()
@@ -64,17 +64,20 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 	}
 
 	@SuppressWarnings("unchecked")
-	public T members(Collection<IOrgUnitMember> members)
+	public T members(Collection<? extends IOrgUnitMember> members)
 	{
-		for (IOrgUnitMember m : members)
+		if (members != null)
 		{
-			if (!(this.getIdentifier().equals(m.getOrgUnitId())))
+			for (IOrgUnitMember m : members)
 			{
-				throw new OpenURRuntimeException("OrgUnit-ID's must be equal!");
+				if (!(this.getIdentifier().equals(m.getOrgUnitId())))
+				{
+					throw new OpenURRuntimeException("OrgUnit-ID's must be equal!");
+				}
 			}
+
+			this.members.addAll(members);			
 		}
-		
-		this.members.addAll(members);
 		
 		return (T) this;
 	}
@@ -101,7 +104,7 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 		return rootOrgUnit;
 	}
 
-	Set<IOrgUnitMember> getMembers()
+	Set<? extends IOrgUnitMember> getMembers()
 	{
 		return members;
 	}

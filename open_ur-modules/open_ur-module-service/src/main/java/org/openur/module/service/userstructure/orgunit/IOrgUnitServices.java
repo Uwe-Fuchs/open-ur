@@ -7,20 +7,20 @@ import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 public interface IOrgUnitServices
 {
   /**
-   * searches an orgainizational-unit via it's unique identifier.
+   * searches an organizational-unit via it's unique identifier.
    * 
-   * @param orgUnitId : the unique identifier of the orgainizational-unit.
+   * @param orgUnitId : the unique identifier of the organizational-unit.
    * 
-   * @return the orgainizational-unit or null, if no orgainizational-unit is found.
+   * @return the organizational-unit or null, if no organizational-unit is found.
    */
   IOrganizationalUnit findOrgUnitById(String orgUnitId);
   
   /**
-   * searches a orgainizational-unit via it's (domain specific) number.
+   * searches a organizational-unit via it's (domain specific) number.
    * 
-   * @param orgUnitNumber : the number of the orgainizational-unit.
+   * @param orgUnitNumber : the number of the organizational-unit.
    * 
-   * @return the orgainizational-unit or null, if no orgainizational-unit is found.
+   * @return the organizational-unit or null, if no organizational-unit is found.
    */
   IOrganizationalUnit findOrgUnitByNumber(String orgUnitNumber);
 	

@@ -5,6 +5,7 @@ import java.util.List;
 import org.openur.module.domain.security.IApplication;
 import org.openur.module.domain.security.IPermission;
 import org.openur.module.domain.security.IRole;
+import org.openur.module.domain.security.orgunit.IAuthorizableOrgUnit;
 
 public interface ISecurityDao
 {
@@ -68,4 +69,14 @@ public interface ISecurityDao
 	 * @return List with user-permissions (empty if no permissions are defined).
 	 */
 	List<IPermission> obtainAllPermissions();
+	
+  /**
+   * searches an authorizable org-unit via it's unique identifier.
+   * 
+   * @param orgUnitId : the unique identifier of the org-unit.
+   * 
+   * @return the authorizable org-unit or null, if no org-unit is found.
+   */
+	IAuthorizableOrgUnit findAuthOrgUnitById(String orgUnitId);
+	// idea: search the org-unit via orgUnitDao, then enrich it's members with roles (???)
 }

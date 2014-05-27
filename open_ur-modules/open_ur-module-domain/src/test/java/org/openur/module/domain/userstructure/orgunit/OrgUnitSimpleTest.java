@@ -6,17 +6,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.UUID;
 
 import org.junit.Test;
-import org.openur.module.domain.security.IApplication;
-import org.openur.module.domain.security.IPermission;
-import org.openur.module.domain.security.IRole;
-import org.openur.module.domain.security.OpenURApplicationBuilder;
-import org.openur.module.domain.security.OpenURPermissionBuilder;
-import org.openur.module.domain.security.OpenURRoleBuilder;
-import org.openur.module.domain.security.PermissionScope;
 import org.openur.module.domain.userstructure.InconsistentHierarchyException;
 import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.userstructure.user.person.IPerson;
@@ -36,10 +28,8 @@ public class OrgUnitSimpleTest
 		
 		final String OU_ID = UUID.randomUUID().toString();
 		
-		IOrgUnitMember m2 = new OrgUnitMemberBuilder(pers2, OU_ID)
-			.build();
-		IOrgUnitMember m1 = new OrgUnitMemberBuilder(pers1, OU_ID)
-			.build();		
+		IOrgUnitMember m2 = new OrgUnitMember(pers2, OU_ID);
+		IOrgUnitMember m1 = new OrgUnitMember(pers1, OU_ID);		
 
 		IOrganizationalUnit ou = new OrgUnitSimpleBuilder(OU_ID)
 			.members(Arrays.asList(m1, m2))
@@ -52,8 +42,7 @@ public class OrgUnitSimpleTest
 		
 		IPerson pers3 = new PersonBuilder("username3", "password3")
 			.build();
-		IOrgUnitMember m3 = new OrgUnitMemberBuilder(pers3, OU_ID)
-			.build();
+		IOrgUnitMember m3 = new OrgUnitMember(pers3, OU_ID);
 		
 		assertNull(ou.findMember(m3.getPerson()));
 		assertNull(ou.findMember(m3.getPerson().getIdentifier()));
@@ -76,10 +65,8 @@ public class OrgUnitSimpleTest
 		
 		final String OU_ID = UUID.randomUUID().toString();
 		
-		IOrgUnitMember m2 = new OrgUnitMemberBuilder(pers2, OU_ID)
-			.build();
-		IOrgUnitMember m1 = new OrgUnitMemberBuilder(pers1, OU_ID)
-			.build();		
+		IOrgUnitMember m2 = new OrgUnitMember(pers2, OU_ID);
+		IOrgUnitMember m1 = new OrgUnitMember(pers1, OU_ID);		
 	
 		IOrganizationalUnit ou = new OrgUnitSimpleBuilder(OU_ID)
 			.members(Arrays.asList(m1, m2))
@@ -92,8 +79,7 @@ public class OrgUnitSimpleTest
 		
 		IPerson pers3 = new PersonBuilder("username3", "password3")
 			.build();
-		IOrgUnitMember m3 = new OrgUnitMemberBuilder(pers3, OU_ID)
-			.build();
+		IOrgUnitMember m3 = new OrgUnitMember(pers3, OU_ID);
 		
 		assertFalse(ou.isMember(m3.getPerson()));
 		assertFalse(ou.isMember(m3.getPerson().getIdentifier()));
@@ -110,44 +96,20 @@ public class OrgUnitSimpleTest
 	public void testCreateWithWrongOrgUnitID()
 	{
 		IPerson pers = new PersonBuilder("username1", "password1").build();
-		IOrgUnitMember member = new OrgUnitMemberBuilder(pers, "123").build();
+		IOrgUnitMember member = new OrgUnitMember(pers, "123");
 		
 		OrgUnitSimpleBuilder oub = new OrgUnitSimpleBuilder("456");
 		oub.members(Arrays.asList(member));
 	}
-
-	@Test
-	public void testHasPermission()
-	{
-		IApplication app1 = new OpenURApplicationBuilder("app1", "user1", "pw1")
-			.build();		
-		IPermission perm11 = new OpenURPermissionBuilder("perm11", PermissionScope.SELECTED,  app1)
-			.build();		
-		IRole role1 = new OpenURRoleBuilder("role1")
-			.permissions(new HashSet<IPermission>(Arrays.asList(perm11)))
-			.build();
-		
-		IPerson person = new PersonBuilder("username1", "password1")
-			.build();
-		
-		final String OU_ID = UUID.randomUUID().toString();		
-		
-		IOrgUnitMember member = new OrgUnitMemberBuilder(person, OU_ID)
-		  .roles(Arrays.asList(role1))
-		  .build();
-		
-		IOrganizationalUnit ou = new OrgUnitSimpleBuilder(OU_ID)
-			.members(Arrays.asList(member))
-			.build();
-		
-		// has permission:		
-		assertTrue(ou.hasPermission(person, app1, perm11));
 	
-		// doesn't have permission:
-		IPermission perm12 = new OpenURPermissionBuilder("perm12", PermissionScope.SELECTED_SUB,  app1)
+	@Test
+	public void testCreateWithNullMembers()
+	{
+		OrgUnitSimple ou = new OrgUnitSimpleBuilder()
+			.members(null)
 			.build();
 		
-		assertFalse(ou.hasPermission(person, app1, perm12));
+		assertTrue(ou.getMembers().isEmpty());
 	}
 
 	@Test

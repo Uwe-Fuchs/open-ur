@@ -66,8 +66,11 @@ public class OrganizationalUnitBuilder
 		return this;
 	}
 	
+	@Override
 	public OrganizationalUnit build()
 	{
+		super.build();
+		
 		return new OrganizationalUnit(this);
 	}
 

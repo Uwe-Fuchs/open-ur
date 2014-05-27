@@ -5,6 +5,7 @@ import java.util.Set;
 import org.openur.module.domain.security.IApplication;
 import org.openur.module.domain.security.IPermission;
 import org.openur.module.domain.security.IRole;
+import org.openur.module.domain.security.orgunit.IAuthorizableOrgUnit;
 
 public interface ISecurityDomainServices
 {
@@ -67,4 +68,13 @@ public interface ISecurityDomainServices
 	 * @return Set with user-permissions (empty if no permissions are defined).
 	 */
 	Set<IPermission> obtainAllPermissions();
+	
+  /**
+   * searches an authorizable org-unit via it's unique identifier.
+   * 
+   * @param orgUnitId : the unique identifier of the org-unit.
+   * 
+   * @return the authorizable org-unit or null, if no org-unit is found.
+   */
+	IAuthorizableOrgUnit findAuthOrgUnitById(String orgUnitId);
 }

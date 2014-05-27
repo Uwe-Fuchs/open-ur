@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.inject.Inject;
 
@@ -18,6 +19,11 @@ import org.openur.module.domain.security.OpenURApplicationBuilder;
 import org.openur.module.domain.security.OpenURPermissionBuilder;
 import org.openur.module.domain.security.OpenURRoleBuilder;
 import org.openur.module.domain.security.PermissionScope;
+import org.openur.module.domain.security.orgunit.AuthOrganizationalUnit;
+import org.openur.module.domain.security.orgunit.IAuthorizableOrgUnit;
+import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
+import org.openur.module.domain.userstructure.orgunit.OrganizationalUnit;
+import org.openur.module.domain.userstructure.orgunit.OrganizationalUnitBuilder;
 import org.openur.module.persistence.security.ISecurityDao;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -184,5 +190,28 @@ public class SecurityDomainTest
 		assertTrue(resultSet.contains(perm22));
 		assertFalse(resultSet.contains(perm11));
 		assertFalse(resultSet.contains(perm12));
+	}
+
+	@Test
+	public void testFindAuthOrgUnitById()
+	{		
+		final String UUID_1 = UUID.randomUUID().toString();
+		final String UUID_2 = UUID.randomUUID().toString();
+		
+		IAuthorizableOrgUnit orgUnit1 = new AuthOrganizationalUnit(
+			new OrganizationalUnitBuilder(UUID_1).name("Human Resources"));
+		IAuthorizableOrgUnit orgUnit2 = new AuthOrganizationalUnit(
+			new OrganizationalUnitBuilder(UUID_2).name("Marketing"));
+		
+		Mockito.when(securityDao.findAuthOrgUnitById(UUID_1)).thenReturn(orgUnit1);
+		Mockito.when(securityDao.findAuthOrgUnitById(UUID_2)).thenReturn(orgUnit2);	
+		
+		IOrganizationalUnit p = securityDomainServices.findAuthOrgUnitById(UUID_1);		
+		assertNotNull(p);
+		assertEquals("Name", "Human Resources", ((OrganizationalUnit) p).getName());	
+		
+		IOrganizationalUnit p2 = securityDomainServices.findAuthOrgUnitById(UUID_2);		
+		assertNotNull(p2);
+		assertEquals("Name", "Marketing", ((OrganizationalUnit) p2).getName());
 	}
 }

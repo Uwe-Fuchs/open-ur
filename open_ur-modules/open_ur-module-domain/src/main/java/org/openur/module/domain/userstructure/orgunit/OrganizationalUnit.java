@@ -18,7 +18,7 @@ public class OrganizationalUnit
 	private final EMailAddress emailAdress;
 
 	// constructor:
-	OrganizationalUnit(OrganizationalUnitBuilder b)
+	protected OrganizationalUnit(OrganizationalUnitBuilder b)
 	{
 		super(b);
 		this.name = b.getName();

@@ -1,14 +1,8 @@
 package org.openur.module.domain.userstructure.orgunit;
 
-import java.util.Collections;
-import java.util.Set;
-
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.openur.module.domain.GraphNode;
-import org.openur.module.domain.security.IApplication;
-import org.openur.module.domain.security.IPermission;
-import org.openur.module.domain.security.IRole;
 import org.openur.module.domain.userstructure.user.person.IPerson;
 
 public class OrgUnitMember
@@ -20,16 +14,14 @@ public class OrgUnitMember
 	// properties:
 	private final IPerson person;
 	private final String orgUnitId;
-	private final Set<IRole> roles;
 
 	// constructors:
-	OrgUnitMember(OrgUnitMemberBuilder b)
+	public OrgUnitMember(IPerson person, String orgUnitId)
 	{
 		super();
 
-		this.person = b.getPerson();
-		this.orgUnitId = b.getOrgUnitId();
-		this.roles = Collections.unmodifiableSet(b.getRoles());
+		this.person = person;
+		this.orgUnitId = orgUnitId;
 	}
 
 	// accessors:
@@ -43,33 +35,6 @@ public class OrgUnitMember
 	public String getOrgUnitId()
 	{
 		return orgUnitId;
-	}
-
-	@Override
-	public Set<IRole> getRoles()
-	{
-		return roles;
-	}
-
-	// operations:
-	@Override
-	public boolean hasRole(IRole role)
-	{
-		return getRoles().contains(role);
-	}
-
-	@Override
-	public boolean hasPermission(IApplication app, IPermission permission)
-	{
-		for (IRole role : getRoles())
-		{
-			if (role.getPermissions(app) != null && role.getPermissions(app).contains(permission))
-			{
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	@Override

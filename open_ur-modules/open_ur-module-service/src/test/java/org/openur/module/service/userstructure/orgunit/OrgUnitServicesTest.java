@@ -18,7 +18,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
-import org.openur.module.domain.userstructure.orgunit.OrgUnitMemberBuilder;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitSimpleBuilder;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnit;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnitBuilder;
@@ -152,10 +152,10 @@ public class OrgUnitServicesTest
 		assertTrue(orgUnitSet.contains(orgUnit2));
 		
 		IPerson persA = new PersonBuilder("usernameA", "passwordA").build();
-		IOrgUnitMember mA = new OrgUnitMemberBuilder(persA, OU_ID_2).build();
+		IOrgUnitMember mA = new OrgUnitMember(persA, OU_ID_2);
 		
 		IPerson persB = new PersonBuilder("usernameB", "passwordB").build();
-		IOrgUnitMember mB = new OrgUnitMemberBuilder(persB, OU_ID_2).build();
+		IOrgUnitMember mB = new OrgUnitMember(persB, OU_ID_2);
 		
 		IOrganizationalUnit orgUnit2_m = new OrganizationalUnitBuilder(OU_ID_2, rootOu)
 				.number(OU_NUMBER_2)

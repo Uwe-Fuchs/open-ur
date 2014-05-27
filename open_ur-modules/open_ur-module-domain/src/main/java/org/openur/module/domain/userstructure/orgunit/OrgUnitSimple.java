@@ -8,7 +8,7 @@ public class OrgUnitSimple
 	private static final long serialVersionUID = 2563758496079145215L;
   
 	// constructor:
-	OrgUnitSimple(OrgUnitSimpleBuilder b)
+	protected OrgUnitSimple(OrgUnitSimpleBuilder b)
 	{
 		super(b);
 	}

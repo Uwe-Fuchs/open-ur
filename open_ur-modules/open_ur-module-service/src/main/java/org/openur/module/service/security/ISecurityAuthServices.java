@@ -5,7 +5,7 @@ import org.openur.module.domain.IPrincipalUser;
 import org.openur.module.domain.security.IApplication;
 import org.openur.module.domain.security.IAuthenticationToken;
 import org.openur.module.domain.security.IPermission;
-import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
+import org.openur.module.domain.security.orgunit.IAuthorizableOrgUnit;
 import org.openur.module.domain.userstructure.user.person.IPerson;
 
 public interface ISecurityAuthServices
@@ -32,7 +32,7 @@ public interface ISecurityAuthServices
    * 
    * @return the user has the permission.
    */
-  Boolean hasPermission(IPerson user, IOrganizationalUnit orgUnit,
+  Boolean hasPermission(IPerson user, IAuthorizableOrgUnit orgUnit,
 		IPermission permission, IApplication app);
 
   /**
