@@ -17,9 +17,8 @@ public interface IAuthorizableOrgUnit
 	 * 
 	 * @return the person has the permission.
 	 */
-	boolean hasPermission(IPerson person, IApplication app, IPermission permission);
-	/* TODO: use this in Java8:
-	 {
+	default boolean hasPermission(IPerson person, IApplication app, IPermission permission)
+	{
 		IAuthorizableMember member = findAuthorizableMember(person.getIdentifier());
 		
 		if (member == null)
@@ -28,7 +27,7 @@ public interface IAuthorizableOrgUnit
 		}
 		
 		return member.hasPermission(app, permission);
-	}*/
+	}
 	
   /**
    * searches the member with the given userId in this org-unit.
@@ -37,9 +36,8 @@ public interface IAuthorizableOrgUnit
    *
    * @return IAuthorizableMember if found in this org-unit, else null.
    */
-	IAuthorizableMember findAuthorizableMember(String id);
-	/* TODO: use this in Java8:
-	 {
-		return (IAuthorizableMember) super.findMember(id);
-	}*/
+	default IAuthorizableMember findAuthorizableMember(String id)
+	{
+		return (IAuthorizableMember) findMember(id);
+	}
 }

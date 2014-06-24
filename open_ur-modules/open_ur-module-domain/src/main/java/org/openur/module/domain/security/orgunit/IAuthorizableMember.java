@@ -18,8 +18,8 @@ public interface IAuthorizableMember
 	 * 
 	 * @return the member has the permission.
 	 */
-	boolean hasPermission(IApplication app, IPermission permission);
-	/*{
+	default boolean hasPermission(IApplication app, IPermission permission)
+	{
 		for (IRole role : getRoles())
 		{
 			if (role.getPermissions(app) != null && role.getPermissions(app).contains(permission))
@@ -29,14 +29,7 @@ public interface IAuthorizableMember
 		}
 	
 		return false;
-	}*/
-
-	/**
-	 * returns the roles the member takes part in.
-	 * 
-	 * @return roles in a set (or empty set).
-	 */
-	Set<IRole> getRoles();
+	}
 
 	/**
 	 * indicates if a member has a certain role.
@@ -45,8 +38,15 @@ public interface IAuthorizableMember
 	 * 
 	 * @return the member has the role.
 	 */
-	boolean hasRole(IRole role);
-	/*{
+	default boolean hasRole(IRole role)
+	{
 		return getRoles().contains(role);
-	}*/
+	}
+
+	/**
+	 * returns the roles the member takes part in.
+	 * 
+	 * @return roles in a set (or empty set).
+	 */
+	Set<IRole> getRoles();
 }
