@@ -1,10 +1,8 @@
 package org.openur.module.domain.userstructure;
 
-import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.SortedSet;
@@ -71,40 +69,40 @@ public class Country
 		return result;
 	}
 
-	public static List<Country> getDisplayableCountries(final Locale locale)
-	{
-		List<Country> result = new ArrayList<Country>();
-
-		for (Country country : getAll())
-		{
-			if (!country.getLocales().isEmpty())
-			{
-				Locale countryLocale = country.getLocales().get(0);
-
-				if (countryLocale.getDisplayCountry(locale) != null)
-				{
-					result.add(country);
-				}
-			}
-		}
-
-		Collections.sort(result, new Comparator<Country>()
-		{
-			@Override
-			public int compare(Country o1, Country o2)
-			{
-				return Collator.getInstance(locale).compare(o1.getLabel(locale), o2.getLabel(locale));
-			}
-
-			@Override
-			public boolean equals(Object obj)
-			{
-				return this.equals(obj);
-			}
-		});
-
-		return result;
-	}
+//	public static List<Country> getDisplayableCountries(final Locale locale)
+//	{
+//		List<Country> result = new ArrayList<Country>();
+//
+//		for (Country country : getAll())
+//		{
+//			if (!country.getLocales().isEmpty())
+//			{
+//				Locale countryLocale = country.getLocales().get(0);
+//
+//				if (countryLocale.getDisplayCountry(locale) != null)
+//				{
+//					result.add(country);
+//				}
+//			}
+//		}
+//
+//		Collections.sort(result, new Comparator<Country>()
+//		{
+//			@Override
+//			public int compare(Country o1, Country o2)
+//			{
+//				return Collator.getInstance(locale).compare(o1.getLabel(locale), o2.getLabel(locale));
+//			}
+//
+//			@Override
+//			public boolean equals(Object obj)
+//			{
+//				return this.equals(obj);
+//			}
+//		});
+//
+//		return result;
+//	}
 
 	public List<Locale> getLocales()
 	{
