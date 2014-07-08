@@ -2,10 +2,10 @@ package org.openur.module.persistence.security;
 
 import java.util.List;
 
-import org.openur.module.domain.security.IApplication;
-import org.openur.module.domain.security.IPermission;
-import org.openur.module.domain.security.IRole;
-import org.openur.module.domain.security.orgunit.IAuthorizableOrgUnit;
+import org.openur.module.domain.application.IApplication;
+import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
+import org.openur.module.domain.security.authorization.IPermission;
+import org.openur.module.domain.security.authorization.IRole;
 
 public interface ISecurityDao
 {
