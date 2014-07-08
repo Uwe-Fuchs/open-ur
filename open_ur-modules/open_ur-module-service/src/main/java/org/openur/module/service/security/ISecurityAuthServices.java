@@ -1,10 +1,10 @@
 package org.openur.module.service.security;
 
 
-import org.openur.module.domain.IPrincipalUser;
 import org.openur.module.domain.security.IApplication;
 import org.openur.module.domain.security.IAuthenticationToken;
 import org.openur.module.domain.security.IPermission;
+import org.openur.module.domain.security.IPrincipalUser;
 import org.openur.module.domain.security.orgunit.IAuthorizableOrgUnit;
 import org.openur.module.domain.userstructure.user.person.IPerson;
 

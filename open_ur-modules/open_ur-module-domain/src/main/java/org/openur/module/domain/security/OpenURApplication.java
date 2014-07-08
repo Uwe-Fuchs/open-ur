@@ -1,6 +1,5 @@
 package org.openur.module.domain.security;
 
-import org.openur.module.domain.IPrincipalUser;
 import org.openur.module.domain.IdentifiableEntityImpl;
 
 public class OpenURApplication
