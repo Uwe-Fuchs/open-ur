@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.Set;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
-import org.openur.module.domain.security.IApplication;
+import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.userstructure.UserStructureBase;
 import org.openur.module.domain.userstructure.user.person.IPerson;
 

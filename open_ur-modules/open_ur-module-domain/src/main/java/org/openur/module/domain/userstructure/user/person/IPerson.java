@@ -2,8 +2,8 @@ package org.openur.module.domain.userstructure.user.person;
 
 import java.util.Set;
 
-import org.openur.module.domain.security.IApplication;
-import org.openur.module.domain.security.IPrincipalUser;
+import org.openur.module.domain.application.IApplication;
+import org.openur.module.domain.security.authentication.IPrincipalUser;
 import org.openur.module.domain.userstructure.IUserStructureBase;
 
 public interface IPerson

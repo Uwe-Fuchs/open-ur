@@ -1,6 +1,6 @@
 package org.openur.module.domain.userstructure.user.technicaluser;
 
-import org.openur.module.domain.security.IPrincipalUser;
+import org.openur.module.domain.security.authentication.IPrincipalUser;
 import org.openur.module.domain.userstructure.IUserStructureBase;
 
 public interface ITechnicalUser

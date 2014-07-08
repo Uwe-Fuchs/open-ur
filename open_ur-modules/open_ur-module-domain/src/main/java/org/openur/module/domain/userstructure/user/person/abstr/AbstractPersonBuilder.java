@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
-import org.openur.module.domain.security.IApplication;
+import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.userstructure.UserStructureBaseBuilder;
 
 public abstract class AbstractPersonBuilder<T extends AbstractPersonBuilder<T>>
