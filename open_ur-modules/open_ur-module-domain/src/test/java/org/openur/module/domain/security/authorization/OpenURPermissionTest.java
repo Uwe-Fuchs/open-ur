@@ -1,4 +1,4 @@
-package org.openur.module.domain.application;
+package org.openur.module.domain.security.authorization;
 
 import static org.junit.Assert.assertTrue;
 
