@@ -15,7 +15,7 @@ import org.mockito.Mockito;
 import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.domain.security.authorization.AuthOrgUnitSimple;
-import org.openur.module.domain.security.authorization.AuthOrganizationalUnit;
+import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.AuthorizableMember;
 import org.openur.module.domain.security.authorization.IAuthorizableMember;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
@@ -73,7 +73,7 @@ public class SecurityAuthTest
 		
 		final String OU_ID = UUID.randomUUID().toString();
 		IAuthorizableMember member = new AuthorizableMember(person, OU_ID, Arrays.asList(role1));		
-		IAuthorizableOrgUnit ou = new AuthOrganizationalUnit(
+		IAuthorizableOrgUnit ou = new AuthorizableOrgUnit(
 			new OrganizationalUnitBuilder(OU_ID), Arrays.asList(member));
 		
 		// has permission in org-unit:
@@ -118,7 +118,7 @@ public class SecurityAuthTest
 		
 		final String OU_ID = UUID.randomUUID().toString();
 		IAuthorizableMember member = new AuthorizableMember(person, OU_ID, Arrays.asList(role1));		
-		IAuthorizableOrgUnit ou = new AuthOrganizationalUnit(
+		IAuthorizableOrgUnit ou = new AuthorizableOrgUnit(
 			new OrganizationalUnitBuilder(OU_ID), Arrays.asList(member));
 		
 		Mockito.when(securityDomainServices.findPermissionByName(PERM_NAME_1, app)).thenReturn(perm1);

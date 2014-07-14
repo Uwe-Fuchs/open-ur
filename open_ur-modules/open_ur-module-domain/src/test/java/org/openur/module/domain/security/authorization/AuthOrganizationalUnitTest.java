@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.domain.security.authorization.AuthOrgUnitSimple;
-import org.openur.module.domain.security.authorization.AuthOrganizationalUnit;
+import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.AuthorizableMember;
 import org.openur.module.domain.security.authorization.IAuthorizableMember;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
@@ -43,7 +43,7 @@ public class AuthOrganizationalUnitTest
 		IAuthorizableMember m1 = new AuthorizableMember(pers1, OU_ID);
 		IAuthorizableMember m2 = new AuthorizableMember(pers2, OU_ID);
 		
-		IAuthorizableOrgUnit ou = new AuthOrganizationalUnit(
+		IAuthorizableOrgUnit ou = new AuthorizableOrgUnit(
 			new OrganizationalUnitBuilder(OU_ID), Arrays.asList(m1, m2));
 		
 		assertEquals(m1, ou.findMember(m1.getPerson()));
@@ -81,7 +81,7 @@ public class AuthOrganizationalUnitTest
 		
 		final String OU_ID = UUID.randomUUID().toString();		
 		IAuthorizableMember member = new AuthorizableMember(person, OU_ID,Arrays.asList(role1));		
-		IAuthorizableOrgUnit ou = new AuthOrganizationalUnit(
+		IAuthorizableOrgUnit ou = new AuthorizableOrgUnit(
 			new OrganizationalUnitBuilder(OU_ID), Arrays.asList(member));
 		
 		// has permission:		
@@ -97,7 +97,7 @@ public class AuthOrganizationalUnitTest
 	@Test
 	public void testCreateWithNullMembers()
 	{
-		IAuthorizableOrgUnit ou = new AuthOrganizationalUnit(
+		IAuthorizableOrgUnit ou = new AuthorizableOrgUnit(
 			new OrganizationalUnitBuilder(), null);
 		
 		assertTrue(ou.getMembers().isEmpty());

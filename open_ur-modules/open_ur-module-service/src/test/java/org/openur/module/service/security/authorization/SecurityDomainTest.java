@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
-import org.openur.module.domain.security.authorization.AuthOrganizationalUnit;
+import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
@@ -199,9 +199,9 @@ public class SecurityDomainTest
 		final String UUID_1 = UUID.randomUUID().toString();
 		final String UUID_2 = UUID.randomUUID().toString();
 		
-		IAuthorizableOrgUnit orgUnit1 = new AuthOrganizationalUnit(
+		IAuthorizableOrgUnit orgUnit1 = new AuthorizableOrgUnit(
 			new OrganizationalUnitBuilder(UUID_1).name("Human Resources"));
-		IAuthorizableOrgUnit orgUnit2 = new AuthOrganizationalUnit(
+		IAuthorizableOrgUnit orgUnit2 = new AuthorizableOrgUnit(
 			new OrganizationalUnitBuilder(UUID_2).name("Marketing"));
 		
 		Mockito.when(securityDao.findAuthOrgUnitById(UUID_1)).thenReturn(orgUnit1);
