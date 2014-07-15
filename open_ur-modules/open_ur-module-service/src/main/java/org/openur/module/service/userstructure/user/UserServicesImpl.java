@@ -7,8 +7,8 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.openur.module.domain.userstructure.user.person.IPerson;
-import org.openur.module.domain.userstructure.user.technicaluser.ITechnicalUser;
+import org.openur.module.domain.userstructure.person.IPerson;
+import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 import org.openur.module.persistence.userstructure.IUserStructureDao;
 
 public class UserServicesImpl

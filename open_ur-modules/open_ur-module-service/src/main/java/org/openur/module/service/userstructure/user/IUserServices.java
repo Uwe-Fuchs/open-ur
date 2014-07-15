@@ -2,8 +2,8 @@ package org.openur.module.service.userstructure.user;
 
 import java.util.Set;
 
-import org.openur.module.domain.userstructure.user.person.IPerson;
-import org.openur.module.domain.userstructure.user.technicaluser.ITechnicalUser;
+import org.openur.module.domain.userstructure.person.IPerson;
+import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 
 public interface IUserServices
 {

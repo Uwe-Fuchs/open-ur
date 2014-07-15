@@ -1,4 +1,4 @@
-package org.openur.module.domain.userstructure.user.person;
+package org.openur.module.domain.userstructure.person;
 
 import static org.junit.Assert.assertTrue;
 
@@ -7,6 +7,11 @@ import java.util.UUID;
 import org.junit.Test;
 import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.Status;
+import org.openur.module.domain.userstructure.person.Gender;
+import org.openur.module.domain.userstructure.person.IPerson;
+import org.openur.module.domain.userstructure.person.Name;
+import org.openur.module.domain.userstructure.person.PersonBuilder;
+import org.openur.module.domain.userstructure.person.PersonSimpleBuilder;
 
 public class PersonTest
 {

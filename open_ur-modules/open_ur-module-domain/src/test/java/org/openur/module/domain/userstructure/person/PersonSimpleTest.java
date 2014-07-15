@@ -1,10 +1,12 @@
-package org.openur.module.domain.userstructure.user.person;
+package org.openur.module.domain.userstructure.person;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.openur.module.domain.userstructure.Status;
+import org.openur.module.domain.userstructure.person.IPerson;
+import org.openur.module.domain.userstructure.person.PersonSimpleBuilder;
 
 public class PersonSimpleTest
 {

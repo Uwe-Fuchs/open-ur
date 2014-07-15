@@ -1,6 +1,6 @@
-package org.openur.module.domain.userstructure.user.person;
+package org.openur.module.domain.userstructure.person;
 
-import org.openur.module.domain.userstructure.user.person.abstr.AbstractPersonBuilder;
+import org.openur.module.domain.userstructure.person.abstr.AbstractPersonBuilder;
 
 
 public class PersonSimpleBuilder

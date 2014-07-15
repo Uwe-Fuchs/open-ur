@@ -8,7 +8,7 @@ import org.openur.module.domain.userstructure.UserStructureBase;
 import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitSimple;
-import org.openur.module.domain.userstructure.user.person.IPerson;
+import org.openur.module.domain.userstructure.person.IPerson;
 
 /**
  * A basic implementation of {@link IOrganizationalUnit}. If this meets your needs,

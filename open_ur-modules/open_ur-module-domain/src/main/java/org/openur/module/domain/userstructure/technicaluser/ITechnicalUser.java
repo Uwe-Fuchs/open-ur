@@ -1,4 +1,4 @@
-package org.openur.module.domain.userstructure.user.technicaluser;
+package org.openur.module.domain.userstructure.technicaluser;
 
 import org.openur.module.domain.security.authentication.IPrincipalUser;
 import org.openur.module.domain.userstructure.IUserStructureBase;

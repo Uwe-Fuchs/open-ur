@@ -1,9 +1,11 @@
-package org.openur.module.domain.userstructure.user.technicaluser;
+package org.openur.module.domain.userstructure.technicaluser;
 
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.openur.module.domain.userstructure.Status;
+import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
+import org.openur.module.domain.userstructure.technicaluser.TechnicalUserBuilder;
 
 public class TechnicalUserTest
 {

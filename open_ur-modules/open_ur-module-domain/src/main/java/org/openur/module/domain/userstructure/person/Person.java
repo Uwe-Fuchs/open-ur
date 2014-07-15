@@ -1,9 +1,9 @@
-package org.openur.module.domain.userstructure.user.person;
+package org.openur.module.domain.userstructure.person;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.EMailAddress;
-import org.openur.module.domain.userstructure.user.person.abstr.AbstractPerson;
+import org.openur.module.domain.userstructure.person.abstr.AbstractPerson;
 
 public class Person
 	extends AbstractPerson

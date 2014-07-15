@@ -3,7 +3,7 @@ package org.openur.module.domain.userstructure.orgunit;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.openur.module.domain.GraphNode;
-import org.openur.module.domain.userstructure.user.person.IPerson;
+import org.openur.module.domain.userstructure.person.IPerson;
 
 public class OrgUnitMember
 	extends GraphNode

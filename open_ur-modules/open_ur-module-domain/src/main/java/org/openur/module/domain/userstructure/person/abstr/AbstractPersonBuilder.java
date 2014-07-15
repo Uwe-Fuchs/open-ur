@@ -1,4 +1,4 @@
-package org.openur.module.domain.userstructure.user.person.abstr;
+package org.openur.module.domain.userstructure.person.abstr;
 
 import java.util.HashSet;
 import java.util.Set;

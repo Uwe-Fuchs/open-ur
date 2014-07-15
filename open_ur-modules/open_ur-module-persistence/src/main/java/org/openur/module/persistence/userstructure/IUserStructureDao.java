@@ -3,8 +3,8 @@ package org.openur.module.persistence.userstructure;
 import java.util.List;
 
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
-import org.openur.module.domain.userstructure.user.person.IPerson;
-import org.openur.module.domain.userstructure.user.technicaluser.ITechnicalUser;
+import org.openur.module.domain.userstructure.person.IPerson;
+import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 
 public interface IUserStructureDao
 {

@@ -23,8 +23,8 @@ import org.openur.module.domain.security.authorization.OpenURPermissionBuilder;
 import org.openur.module.domain.security.authorization.OpenURRoleBuilder;
 import org.openur.module.domain.security.authorization.PermissionScope;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitSimpleBuilder;
-import org.openur.module.domain.userstructure.user.person.IPerson;
-import org.openur.module.domain.userstructure.user.person.PersonBuilder;
+import org.openur.module.domain.userstructure.person.IPerson;
+import org.openur.module.domain.userstructure.person.PersonBuilder;
 
 public class AuthOrgUnitSimpleTest
 {

@@ -1,4 +1,4 @@
-package org.openur.module.domain.userstructure.user.person;
+package org.openur.module.domain.userstructure.person;
 
 import java.util.Set;
 

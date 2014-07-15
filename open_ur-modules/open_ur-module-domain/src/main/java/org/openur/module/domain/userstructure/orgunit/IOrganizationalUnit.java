@@ -3,7 +3,7 @@ package org.openur.module.domain.userstructure.orgunit;
 import java.util.Set;
 
 import org.openur.module.domain.userstructure.IUserStructureBase;
-import org.openur.module.domain.userstructure.user.person.IPerson;
+import org.openur.module.domain.userstructure.person.IPerson;
 
 public interface IOrganizationalUnit 
 	extends IUserStructureBase, Comparable<IOrganizationalUnit>

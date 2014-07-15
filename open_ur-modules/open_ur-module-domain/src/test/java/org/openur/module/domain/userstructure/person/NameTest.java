@@ -1,4 +1,4 @@
-package org.openur.module.domain.userstructure.user.person;
+package org.openur.module.domain.userstructure.person;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -6,9 +6,9 @@ import static org.junit.Assert.assertTrue;
 import java.util.Locale;
 
 import org.junit.Test;
-import org.openur.module.domain.userstructure.user.person.Gender;
-import org.openur.module.domain.userstructure.user.person.Name;
-import org.openur.module.domain.userstructure.user.person.Title;
+import org.openur.module.domain.userstructure.person.Gender;
+import org.openur.module.domain.userstructure.person.Name;
+import org.openur.module.domain.userstructure.person.Title;
 
 public class NameTest
 {

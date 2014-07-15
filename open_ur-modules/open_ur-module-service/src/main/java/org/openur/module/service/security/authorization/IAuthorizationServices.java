@@ -4,7 +4,7 @@ package org.openur.module.service.security.authorization;
 import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IPermission;
-import org.openur.module.domain.userstructure.user.person.IPerson;
+import org.openur.module.domain.userstructure.person.IPerson;
 
 public interface IAuthorizationServices
 {

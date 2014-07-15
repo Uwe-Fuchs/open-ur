@@ -6,7 +6,7 @@ import javax.inject.Inject;
 import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IPermission;
-import org.openur.module.domain.userstructure.user.person.IPerson;
+import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.service.security.ISecurityDomainServices;
 import org.openur.module.service.userstructure.user.IUserServices;
 

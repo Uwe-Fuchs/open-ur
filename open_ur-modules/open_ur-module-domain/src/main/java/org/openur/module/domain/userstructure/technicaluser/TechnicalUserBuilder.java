@@ -1,4 +1,4 @@
-package org.openur.module.domain.userstructure.user.technicaluser;
+package org.openur.module.domain.userstructure.technicaluser;
 
 import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.userstructure.UserStructureBaseBuilder;

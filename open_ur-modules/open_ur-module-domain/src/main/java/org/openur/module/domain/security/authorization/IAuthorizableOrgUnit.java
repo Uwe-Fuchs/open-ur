@@ -2,7 +2,7 @@ package org.openur.module.domain.security.authorization;
 
 import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
-import org.openur.module.domain.userstructure.user.person.IPerson;
+import org.openur.module.domain.userstructure.person.IPerson;
 
 public interface IAuthorizableOrgUnit
 	extends IOrganizationalUnit
