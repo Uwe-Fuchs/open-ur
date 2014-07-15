@@ -4,15 +4,14 @@ package org.openur.module.service.security.authorization;
 import javax.inject.Inject;
 
 import org.openur.module.domain.application.IApplication;
-import org.openur.module.domain.security.authentication.IAuthenticationToken;
-import org.openur.module.domain.security.authentication.IPrincipalUser;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.userstructure.user.person.IPerson;
+import org.openur.module.service.security.ISecurityDomainServices;
 import org.openur.module.service.userstructure.user.IUserServices;
 
-public class SecurityAuthServicesImpl
-	implements ISecurityAuthServices
+public class AuthorizationServicesImpl
+	implements IAuthorizationServices
 {
 	private IUserServices userServices;
 	private ISecurityDomainServices securityDomainServices;
@@ -53,12 +52,5 @@ public class SecurityAuthServicesImpl
 		IPermission permission = securityDomainServices.findPermissionByName(perm, app);
 		
 		return hasPermission(person, orgUnit, permission, app);
-	}
-
-	@Override
-	public IPrincipalUser authenticate(IAuthenticationToken authenticationToken)
-	{
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

@@ -1,4 +1,4 @@
-package org.openur.module.service.security.authorization;
+package org.openur.module.service.security;
 
 import java.util.HashSet;
 import java.util.List;

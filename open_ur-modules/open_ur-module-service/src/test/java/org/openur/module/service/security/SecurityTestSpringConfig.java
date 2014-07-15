@@ -1,12 +1,12 @@
-package org.openur.module.service.security.authorization;
+package org.openur.module.service.security;
 
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.openur.module.persistence.security.ISecurityDao;
-import org.openur.module.service.security.authorization.ISecurityAuthServices;
-import org.openur.module.service.security.authorization.ISecurityDomainServices;
-import org.openur.module.service.security.authorization.SecurityAuthServicesImpl;
-import org.openur.module.service.security.authorization.SecurityDomainServicesImpl;
+import org.openur.module.service.security.ISecurityDomainServices;
+import org.openur.module.service.security.SecurityDomainServicesImpl;
+import org.openur.module.service.security.authorization.IAuthorizationServices;
+import org.openur.module.service.security.authorization.AuthorizationServicesImpl;
 import org.openur.module.service.userstructure.user.IUserServices;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,11 +37,10 @@ public class SecurityTestSpringConfig
 		return _securityDomainServices;
 	}
 
-	@Bean(name = "securityAuthServices")
-	public ISecurityAuthServices securityAuthServices()
+	@Bean(name = "authorizationServices")
+	public IAuthorizationServices authorizationServices()
 	{
-		SecurityAuthServicesImpl _securityAuthServices = new SecurityAuthServicesImpl();
-		return _securityAuthServices;
+		return new AuthorizationServicesImpl();
 	}
 
 	@Bean(name = "securityDao")
