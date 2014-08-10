@@ -10,7 +10,7 @@ import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
-import org.openur.module.persistence.security.ISecurityDao;
+import org.openur.module.persistence.dao.ISecurityDao;
 
 public class SecurityDomainServicesImpl
 	implements ISecurityDomainServices

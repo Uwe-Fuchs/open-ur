@@ -2,7 +2,7 @@ package org.openur.module.service.security;
 
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.openur.module.persistence.security.ISecurityDao;
+import org.openur.module.persistence.dao.ISecurityDao;
 import org.openur.module.service.security.ISecurityDomainServices;
 import org.openur.module.service.security.SecurityDomainServicesImpl;
 import org.openur.module.service.security.authorization.IAuthorizationServices;

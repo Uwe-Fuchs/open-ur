@@ -7,7 +7,7 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
-import org.openur.module.persistence.userstructure.IUserStructureDao;
+import org.openur.module.persistence.dao.IUserStructureDao;
 
 public class OrgUnitServicesImpl
 	implements IOrgUnitServices

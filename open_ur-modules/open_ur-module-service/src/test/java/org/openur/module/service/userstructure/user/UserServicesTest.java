@@ -20,7 +20,7 @@ import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.person.PersonBuilder;
 import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUserBuilder;
-import org.openur.module.persistence.userstructure.IUserStructureDao;
+import org.openur.module.persistence.dao.IUserStructureDao;
 import org.openur.module.service.userstructure.UserStructureTestSpringConfig;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;

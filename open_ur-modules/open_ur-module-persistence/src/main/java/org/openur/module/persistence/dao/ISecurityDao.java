@@ -1,4 +1,4 @@
-package org.openur.module.persistence.security;
+package org.openur.module.persistence.dao;
 
 import java.util.List;
 

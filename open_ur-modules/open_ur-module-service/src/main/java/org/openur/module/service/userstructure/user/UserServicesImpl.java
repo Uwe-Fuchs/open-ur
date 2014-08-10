@@ -9,7 +9,7 @@ import javax.inject.Inject;
 import org.apache.commons.collections4.CollectionUtils;
 import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
-import org.openur.module.persistence.userstructure.IUserStructureDao;
+import org.openur.module.persistence.dao.IUserStructureDao;
 
 public class UserServicesImpl
 	implements IUserServices

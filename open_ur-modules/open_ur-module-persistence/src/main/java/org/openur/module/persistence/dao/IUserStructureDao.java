@@ -1,4 +1,4 @@
-package org.openur.module.persistence.userstructure;
+package org.openur.module.persistence.dao;
 
 import java.util.List;
 

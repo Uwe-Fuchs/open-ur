@@ -2,7 +2,7 @@ package org.openur.module.service.userstructure;
 
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.openur.module.persistence.userstructure.IUserStructureDao;
+import org.openur.module.persistence.dao.IUserStructureDao;
 import org.openur.module.service.userstructure.orgunit.IOrgUnitServices;
 import org.openur.module.service.userstructure.orgunit.OrgUnitServicesImpl;
 import org.openur.module.service.userstructure.user.IUserServices;
