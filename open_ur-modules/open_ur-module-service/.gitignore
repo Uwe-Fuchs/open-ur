@@ -3,3 +3,4 @@
 /.classpath
 /.project
 /open_ur-module-service.iml
+*.springBeans
