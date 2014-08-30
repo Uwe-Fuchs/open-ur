@@ -3,10 +3,12 @@
   
   <properties>
     <jdk.version>1.8</jdk.version>
-    <slf4j.version>1.6.1</slf4j.version>
-    <hibernate.core.version>4.1.1.Final</hibernate.core.version>
+    <org.junit.version>4.11</org.junit.version>
+    <slf4j.version>1.7.7</slf4j.version>
+    <hibernate.core.version>4.3.5.Final</hibernate.core.version>
     <jersey-version>1.9-ea04</jersey-version>
-    <spring-version>3.1.2.RELEASE</spring-version>    
+    <springframework.version>4.0.6.RELEASE</springframework.version>
+    <springframework.data.version>1.6.2.RELEASE</springframework.data.version>
     <compilerId>javac</compilerId>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>    
     <build.dir>target</build.dir>
