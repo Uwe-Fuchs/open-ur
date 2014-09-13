@@ -14,7 +14,6 @@ public class Address
 	private final String careOf;
 	private final String poBox;
 	private final String street;
-	private final String number;
 	private final String postcode;
 	private final String city;
 	private final Country country;
@@ -26,7 +25,6 @@ public class Address
 		this.careOf = b.careOf;
 		this.poBox = b.poBox;
 		this.street = b.street;
-		this.number = b.number;
 		this.city = b.city;
 		this.postcode = b.postcode;
 		this.country = b.country;
@@ -51,11 +49,6 @@ public class Address
 	public String getStreet()
 	{
 		return street;
-	}
-
-	public String getNumber()
-	{
-		return number;
 	}
 
 	public String getPostcode()
@@ -107,7 +100,6 @@ public class Address
 		private String careOf = null;
 		private String poBox = null;
 		private String street = null;
-		private String number = null;
 		private String city = null;
 		private String postcode = null;
 		private Country country = null;
@@ -132,12 +124,6 @@ public class Address
 		public Address.AddressBuilder street(String street)
 		{
 			this.street = street;
-			return this;
-		}
-
-		public Address.AddressBuilder number(String number)
-		{
-			this.number = number;
 			return this;
 		}
 
