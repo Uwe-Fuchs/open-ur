@@ -14,6 +14,7 @@ public class Address
 	private final String careOf;
 	private final String poBox;
 	private final String street;
+	private final String streetNo;
 	private final String postcode;
 	private final String city;
 	private final Country country;
@@ -25,6 +26,7 @@ public class Address
 		this.careOf = b.careOf;
 		this.poBox = b.poBox;
 		this.street = b.street;
+		this.streetNo = b.streetNo;
 		this.city = b.city;
 		this.postcode = b.postcode;
 		this.country = b.country;
@@ -51,6 +53,11 @@ public class Address
 		return street;
 	}
 
+	public String getStreetNo()
+	{
+		return streetNo;
+	}
+
 	public String getPostcode()
 	{
 		return postcode;
@@ -70,19 +77,39 @@ public class Address
 	@Override
 	public boolean equals(Object obj)
 	{
-		return EqualsBuilder.reflectionEquals(this, obj);
+		if (obj == null || !this.getClass().equals(obj.getClass()))
+		{
+			return false;
+		}
+		
+		if (this == obj)
+		{
+			return true;
+		}
+		
+		Address other = (Address) obj;
+		
+		return new EqualsBuilder()
+											.append(this.getCountry(), other.getCountry())
+											.append(this.getCity(), other.getCity())
+											.append(this.getPostcode(), other.getPostcode())
+											.append(this.getStreet(), other.getStreet())
+											.append(this.getStreetNo(), other.getStreetNo())
+											.append(this.getPoBox(), other.getPoBox())
+											.isEquals();
 	}
 
 	@Override
-	public int compareTo(Address o)
+	public int compareTo(Address other)
 	{
 		int comparison = new CompareToBuilder()
-											.append(this.getCountry(), o.getCountry())
-											.append(this.getCity(), o.getCity())
-											.append(this.getPostcode(), o.getPostcode())
-											.append(this.getStreet(), o.getStreet())
-											.append(this.getPoBox(), o.getPoBox())
-											.append(this.getCareOf(), o.getCareOf())
+											.append(this.getCountry(), other.getCountry())
+											.append(this.getCity(), other.getCity())
+											.append(this.getPostcode(), other.getPostcode())
+											.append(this.getStreet(), other.getStreet())
+											.append(this.getStreetNo(), other.getStreetNo())
+											.append(this.getPoBox(), other.getPoBox())
+											.append(this.getCareOf(), other.getCareOf())
 											.toComparison();
 		
 		if (comparison != 0)
@@ -90,7 +117,7 @@ public class Address
 			return comparison;
 		}
 		
-		return CompareToBuilder.reflectionCompare(this, o);
+		return CompareToBuilder.reflectionCompare(this, other);
 	}
 
 	// builder-class:
@@ -100,6 +127,7 @@ public class Address
 		private String careOf = null;
 		private String poBox = null;
 		private String street = null;
+		private String streetNo = null;
 		private String city = null;
 		private String postcode = null;
 		private Country country = null;
@@ -124,6 +152,12 @@ public class Address
 		public Address.AddressBuilder street(String street)
 		{
 			this.street = street;
+			return this;
+		}
+
+		public Address.AddressBuilder streetNo(String streetNo)
+		{
+			this.streetNo = streetNo;
 			return this;
 		}
 

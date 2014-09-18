@@ -1,6 +1,6 @@
 package org.openur.module.domain.userstructure;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.openur.module.domain.userstructure.Address;
@@ -9,6 +9,50 @@ import org.openur.module.domain.userstructure.Address.AddressBuilder;
 
 public class AddressTest
 {
+	@Test
+	public void testEquals()
+	{
+		AddressBuilder b = Address.builder();
+		Address address1;
+		Address address2;
+		
+		b.country(Country.byCode("DE"));
+		b.city("city_1");
+		b.postcode("11");
+		b.street("street_1");
+		b.streetNo("11");
+		b.poBox("poBox_1");
+		address1 = b.build();
+		b.country(Country.byCode("DE"));
+		b.city("city_1");
+		b.postcode("11");
+		b.street("street_1");
+		b.streetNo("11");
+		b.poBox("poBox_2");
+		address2 = b.build();
+		
+		assertFalse(address1.equals(address2));
+		
+		b.country(Country.byCode("DE"));
+		b.city("city_1");
+		b.postcode("11");
+		b.street("street_1");
+		b.streetNo("11");
+		b.poBox("poBox_1");
+		b.careOf("Schmidt");
+		address1 = b.build();
+		b.country(Country.byCode("DE"));
+		b.city("city_1");
+		b.postcode("11");
+		b.street("street_1");
+		b.streetNo("11");
+		b.poBox("poBox_1");
+		b.careOf("Schulz");
+		address2 = b.build();
+		
+		assertEquals("addresses are equal despite different co's", address1, address2);
+	}
+	
 	@Test
 	public void testCompareTo()
 	{

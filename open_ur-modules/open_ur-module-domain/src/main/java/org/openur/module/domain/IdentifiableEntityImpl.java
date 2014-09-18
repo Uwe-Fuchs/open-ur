@@ -43,9 +43,14 @@ public abstract class IdentifiableEntityImpl
 	@Override
 	public boolean equals(Object obj)
 	{
-		if (obj == null || !(obj instanceof IdentifiableEntityImpl))
+		if (obj == null || !this.getClass().equals(obj.getClass()))
 		{
 			return false;
+		}
+		
+		if (this == obj)
+		{
+			return true;
 		}
 
 		IdentifiableEntityImpl ie = (IdentifiableEntityImpl) obj;
