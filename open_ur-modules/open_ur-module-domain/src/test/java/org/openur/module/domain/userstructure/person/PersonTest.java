@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.UUID;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.Status;
@@ -15,41 +16,56 @@ import org.openur.module.domain.userstructure.person.PersonSimpleBuilder;
 
 public class PersonTest
 {
+	private Name name;
+	
+	@Before
+	public void setUp()
+		throws Exception
+	{
+		this.name = Name.create(null, null, "Meier");
+	}
+	
 	@Test(expected=NullPointerException.class)
 	public void checkEmptyID()
 	{
-		new PersonBuilder(null, "username", "password");
+		new PersonBuilder(null, "username", "password", name);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void checkEmptyUserName()
 	{
-		new PersonBuilder(UUID.randomUUID().toString(), "", "password");
+		new PersonBuilder(UUID.randomUUID().toString(), "", "password", name);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void checkEmptyPassword()
 	{
-		new PersonBuilder(UUID.randomUUID().toString(), "username", "");
+		new PersonBuilder(UUID.randomUUID().toString(), "username", "", name);
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void checkEmptyName()
+	{
+		new PersonBuilder("username", "password", null);
 	}
 
 	@Test
 	public void testCompareTo()
 	{
-		PersonBuilder pb = new PersonBuilder(UUID.randomUUID().toString(), "username", "password")
+		PersonBuilder pb = new PersonBuilder(UUID.randomUUID().toString(), "username", "password", name)
 			.number("123abc")
 			.status(Status.ACTIVE)
 			.name(Name.create(Gender.MALE, "Uwe", "Fuchs"))
 			.emailAdress(new EMailAddress("mail@uwefuchs.de"));
 		IPerson p1 = pb.build();
 		
-		pb = new PersonBuilder(UUID.randomUUID().toString(), "username2", "password2")
+		pb = new PersonBuilder(UUID.randomUUID().toString(), "username2", "password2", name)
 			.number("456xyz")
 			.name(Name.create(Gender.FEMALE, "Angela", "Merkel"));
 		IPerson p2 = pb.build();
 		assertTrue("different names", p1.compareTo(p2) < 0);
 		
-		pb = new PersonBuilder("username3", "password3")
+		pb = new PersonBuilder("username3", "password3", name)
 			.number("456xyz")
 			.name(Name.create(Gender.MALE, "Arne", "Fuchs"));
 		p2 = pb.build();	
@@ -60,7 +76,7 @@ public class PersonTest
 		p2 = pb.build();
 		assertTrue("same names, different email-addresses", p1.compareTo(p2) > 0);
 		
-		pb = new PersonBuilder(UUID.randomUUID().toString(), "username2", "password2")
+		pb = new PersonBuilder(UUID.randomUUID().toString(), "username2", "password2", name)
 			.number("456xyz")
 			.status(Status.ACTIVE);
 		p1 = pb.build();

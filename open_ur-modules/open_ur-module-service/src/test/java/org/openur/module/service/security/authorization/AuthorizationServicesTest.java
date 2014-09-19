@@ -15,8 +15,8 @@ import org.mockito.Mockito;
 import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.domain.security.authorization.AuthOrgUnitSimple;
-import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.AuthorizableMember;
+import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IAuthorizableMember;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IPermission;
@@ -27,10 +27,9 @@ import org.openur.module.domain.security.authorization.PermissionScope;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitSimpleBuilder;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnitBuilder;
 import org.openur.module.domain.userstructure.person.IPerson;
-import org.openur.module.domain.userstructure.person.PersonBuilder;
+import org.openur.module.domain.userstructure.person.PersonSimpleBuilder;
 import org.openur.module.service.security.ISecurityDomainServices;
 import org.openur.module.service.security.SecurityTestSpringConfig;
-import org.openur.module.service.security.authorization.IAuthorizationServices;
 import org.openur.module.service.userstructure.user.IUserServices;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -69,7 +68,7 @@ public class AuthorizationServicesTest
 			.permissions(new HashSet<IPermission>(Arrays.asList(perm1)))
 			.build();
 		
-		IPerson person = new PersonBuilder("username1", "password1")
+		IPerson person = new PersonSimpleBuilder("username1", "password1")
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();
@@ -114,7 +113,7 @@ public class AuthorizationServicesTest
 			.build();
 		
 		final String PERS_ID = UUID.randomUUID().toString();		
-		IPerson person = new PersonBuilder(PERS_ID, "username1", "password1")
+		IPerson person = new PersonSimpleBuilder(PERS_ID, "username1", "password1")
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();

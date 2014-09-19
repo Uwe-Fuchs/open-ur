@@ -58,8 +58,9 @@ public abstract class AbstractPerson
 	public int compareTo(IPerson other)
 	{
 		int comparison = new CompareToBuilder()
-			.append(this.getPersonNumber(), other.getPersonNumber())
-			.append(this.getStatus(), other.getStatus()).toComparison();
+				.append(this.getPersonNumber(), other.getPersonNumber())
+				.append(this.getStatus(), other.getStatus())
+				.toComparison();
 
 		return comparison;
 	}

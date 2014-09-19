@@ -10,16 +10,9 @@ import java.util.UUID;
 import org.junit.Test;
 import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
-import org.openur.module.domain.security.authorization.AuthorizableMember;
-import org.openur.module.domain.security.authorization.IAuthorizableMember;
-import org.openur.module.domain.security.authorization.IPermission;
-import org.openur.module.domain.security.authorization.IRole;
-import org.openur.module.domain.security.authorization.OpenURPermissionBuilder;
-import org.openur.module.domain.security.authorization.OpenURRoleBuilder;
-import org.openur.module.domain.security.authorization.PermissionScope;
 import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.userstructure.person.IPerson;
-import org.openur.module.domain.userstructure.person.PersonBuilder;
+import org.openur.module.domain.userstructure.person.PersonSimpleBuilder;
 
 public class AuthorizableMemberTest
 {
@@ -28,7 +21,7 @@ public class AuthorizableMemberTest
 	{
 		IRole role1 = new OpenURRoleBuilder("role1")
 			.build();		
-		IPerson pers = new PersonBuilder("username1", "password1")
+		IPerson pers = new PersonSimpleBuilder("username1", "password1")
 			.number("123")
 			.status(Status.ACTIVE)
 			.build();
@@ -58,7 +51,7 @@ public class AuthorizableMemberTest
 			.permissions(new HashSet<IPermission>(Arrays.asList(perm11, perm12)))
 			.build();
 		
-		IPerson person = new PersonBuilder("username1", "password1")
+		IPerson person = new PersonSimpleBuilder("username1", "password1")
 			.build();		
 		final String OU_ID_1 = UUID.randomUUID().toString();
 		

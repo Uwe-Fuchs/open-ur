@@ -1,5 +1,6 @@
 package org.openur.module.domain.userstructure.person;
 
+import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.person.abstr.AbstractPersonBuilder;
@@ -19,14 +20,16 @@ public class PersonBuilder
   private EMailAddress homeEmailAdress = null;
 	
   // constructors:
-	public PersonBuilder(String username, String password)
-	{
+	public PersonBuilder(String username, String password, Name name)
+	{		
 		super(username, password);
+		Validate.notNull(name, "name must not be null");
 	}
 	
-	public PersonBuilder(String identifier, String username, String password)
+	public PersonBuilder(String identifier, String username, String password, Name name)
 	{
 		super(identifier, username, password);
+		Validate.notNull(name, "name must not be null");
 	}
 
 	// builder-methods:	

@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.UUID;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
@@ -25,17 +26,27 @@ import org.openur.module.domain.security.authorization.PermissionScope;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitSimpleBuilder;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnitBuilder;
 import org.openur.module.domain.userstructure.person.IPerson;
+import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.PersonBuilder;
 
 public class AuthOrganizationalUnitTest
 {
+	private Name name;
+	
+	@Before
+	public void setUp()
+		throws Exception
+	{
+		this.name = Name.create(null, null, "Meier");
+	}
+	
 	@Test
 	public void testFindAuthorizableMember()
 	{
-		IPerson pers1 = new PersonBuilder("username1", "password1")
+		IPerson pers1 = new PersonBuilder("username1", "password1", name)
 			.build();
 		
-		IPerson pers2 = new PersonBuilder("username2", "password2")
+		IPerson pers2 = new PersonBuilder("username2", "password2", name)
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();
@@ -51,7 +62,7 @@ public class AuthOrganizationalUnitTest
 		assertEquals(m2, ou.findMember(m2.getPerson()));
 		assertEquals(m2, ou.findAuthorizableMember(m2.getPerson().getIdentifier()));
 		
-		IPerson pers3 = new PersonBuilder("username3", "password3")
+		IPerson pers3 = new PersonBuilder("username3", "password3", name)
 			.build();
 		IAuthorizableMember m3 = new AuthorizableMember(pers3, OU_ID);
 		
@@ -76,7 +87,7 @@ public class AuthOrganizationalUnitTest
 			.permissions(new HashSet<IPermission>(Arrays.asList(perm11)))
 			.build();
 		
-		IPerson person = new PersonBuilder("username1", "password1")
+		IPerson person = new PersonBuilder("username1", "password1", name)
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();		

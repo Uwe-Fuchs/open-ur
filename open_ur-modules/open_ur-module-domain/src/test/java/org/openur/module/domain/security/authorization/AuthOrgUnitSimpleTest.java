@@ -9,38 +9,22 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.UUID;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
-import org.openur.module.domain.security.authorization.AuthOrgUnitSimple;
-import org.openur.module.domain.security.authorization.AuthorizableMember;
-import org.openur.module.domain.security.authorization.IAuthorizableMember;
-import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
-import org.openur.module.domain.security.authorization.IPermission;
-import org.openur.module.domain.security.authorization.IRole;
-import org.openur.module.domain.security.authorization.OpenURPermissionBuilder;
-import org.openur.module.domain.security.authorization.OpenURRoleBuilder;
-import org.openur.module.domain.security.authorization.PermissionScope;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitSimpleBuilder;
 import org.openur.module.domain.userstructure.person.IPerson;
-import org.openur.module.domain.userstructure.person.PersonBuilder;
+import org.openur.module.domain.userstructure.person.PersonSimpleBuilder;
 
 public class AuthOrgUnitSimpleTest
 {
-	@Before
-	public void setUp()
-		throws Exception
-	{
-	}
-
 	@Test
 	public void testFindAuthorizableMember()
 	{
-		IPerson pers1 = new PersonBuilder("username1", "password1")
+		IPerson pers1 = new PersonSimpleBuilder("username1", "password1")
 			.build();
 		
-		IPerson pers2 = new PersonBuilder("username2", "password2")
+		IPerson pers2 = new PersonSimpleBuilder("username2", "password2")
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();
@@ -56,7 +40,7 @@ public class AuthOrgUnitSimpleTest
 		assertEquals(m2, ou.findMember(m2.getPerson()));
 		assertEquals(m2, ou.findAuthorizableMember(m2.getPerson().getIdentifier()));
 		
-		IPerson pers3 = new PersonBuilder("username3", "password3")
+		IPerson pers3 = new PersonSimpleBuilder("username3", "password3")
 			.build();
 		IAuthorizableMember m3 = new AuthorizableMember(pers3, OU_ID);
 		
@@ -81,7 +65,7 @@ public class AuthOrgUnitSimpleTest
 			.permissions(new HashSet<IPermission>(Arrays.asList(perm11)))
 			.build();
 		
-		IPerson person = new PersonBuilder("username1", "password1")
+		IPerson person = new PersonSimpleBuilder("username1", "password1")
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();		

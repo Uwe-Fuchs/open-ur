@@ -16,8 +16,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.openur.module.domain.userstructure.person.IPerson;
-import org.openur.module.domain.userstructure.person.Person;
-import org.openur.module.domain.userstructure.person.PersonBuilder;
+import org.openur.module.domain.userstructure.person.PersonSimpleBuilder;
 import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUserBuilder;
 import org.openur.module.persistence.dao.IUserStructureDao;
@@ -43,19 +42,19 @@ public class UserServicesTest
 		String uuid = UUID.randomUUID().toString();
 		String uuid2 = UUID.randomUUID().toString();
 		
-		IPerson person = new PersonBuilder(uuid, "name", "pw").build();
-		IPerson person2 = new PersonBuilder(uuid2, "name2", "pw2").build();
+		IPerson person = new PersonSimpleBuilder(uuid, "name", "pw").build();
+		IPerson person2 = new PersonSimpleBuilder(uuid2, "name2", "pw2").build();
 		
 		Mockito.when(dao.findPersonById(uuid)).thenReturn(person);
 		Mockito.when(dao.findPersonById(uuid2)).thenReturn(person2);	
 		
 		IPerson p = userServices.findPersonById(uuid);		
 		assertNotNull(p);
-		assertEquals("username", "name", ((Person) p).getUsername());	
+		assertEquals("username", "name", p.getUsername());	
 		
 		IPerson p2 = userServices.findPersonById(uuid2);		
 		assertNotNull(p2);
-		assertEquals("username", "name2", ((Person) p2).getUsername());
+		assertEquals("username", "name2", p2.getUsername());
 	}
 
 	@Test
@@ -64,19 +63,19 @@ public class UserServicesTest
 		String personalNo1 = "no123";
 		String personalNo2 = "no456";
 		
-		IPerson person = new PersonBuilder("name", "pw").number(personalNo1).build();
-		IPerson person2 = new PersonBuilder("name2", "pw2").number(personalNo2).build();
+		IPerson person = new PersonSimpleBuilder("name", "pw").number(personalNo1).build();
+		IPerson person2 = new PersonSimpleBuilder("name2", "pw2").number(personalNo2).build();
 		
 		Mockito.when(dao.findPersonByNumber(personalNo1)).thenReturn(person);
 		Mockito.when(dao.findPersonByNumber(personalNo2)).thenReturn(person2);
 		
 		IPerson p = userServices.findPersonByNumber(personalNo1);		
 		assertNotNull(p);
-		assertEquals("username", "name", ((Person) p).getUsername());	
+		assertEquals("username", "name", p.getUsername());	
 		
 		IPerson p2 = userServices.findPersonByNumber(personalNo2);		
 		assertNotNull(p2);
-		assertEquals("username", "name2", ((Person) p2).getUsername());
+		assertEquals("username", "name2", p2.getUsername());
 	}
 
 	@Test
@@ -85,8 +84,8 @@ public class UserServicesTest
 		String personalNo1 = "no123";
 		String personalNo2 = "no456";
 		
-		IPerson person = new PersonBuilder("name", "pw").number(personalNo1).build();
-		IPerson person2 = new PersonBuilder("name2", "pw2").number(personalNo2).build();
+		IPerson person = new PersonSimpleBuilder("name", "pw").number(personalNo1).build();
+		IPerson person2 = new PersonSimpleBuilder("name2", "pw2").number(personalNo2).build();
 		
 		Mockito.when(dao.obtainAllPersons()).thenReturn(Arrays.asList(person, person2));
 		
