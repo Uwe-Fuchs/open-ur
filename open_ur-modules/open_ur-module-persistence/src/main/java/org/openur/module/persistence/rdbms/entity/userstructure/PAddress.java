@@ -3,7 +3,10 @@ package org.openur.module.persistence.rdbms.entity.userstructure;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openur.module.domain.userstructure.Address;
+import org.openur.module.domain.userstructure.Address.AddressBuilder;
+import org.openur.module.domain.userstructure.Country;
 import org.openur.module.persistence.rdbms.entity.AbstractOpenUrPersistable;
 
 @Entity(name="ADDRESS")
@@ -104,18 +107,38 @@ public class PAddress
 		this.countryCode = countryCode;
 	}
 
-	private PAddress()
+	PAddress()
 	{
 		super();
 	}
 	
-//	public static PAddress mapFromImmutable(Address a)
-//	{
-//		PAddress address = new PAddress();
-//		
-//		address.setCareOf(a.getCareOf());
-//		
-//		
-//		return address;
-//	}
+	public static PAddress mapFromImmutable(Address a)
+	{
+		PAddress address = new PAddress();
+		
+		address.setCareOf(a.getCareOf());
+		address.setCity(a.getCity());
+		address.setPoBox(a.getPoBox());
+		address.setPostcode(a.getPostcode());
+		address.setStreet(a.getStreet());
+		address.setStreetNo(a.getStreetNo());
+		address.setCountryCode(a.getCountry() != null ? a.getCountry().getCountryCode() : null);
+		
+		return address;
+	}
+	
+	public static Address mapFromEntity(PAddress a)
+	{
+		AddressBuilder addressBuilder = Address.builder();
+		
+		addressBuilder.careOf(a.getCareOf());
+		addressBuilder.city(a.getCity());
+		addressBuilder.poBox(a.getPoBox());
+		addressBuilder.postcode(a.getPostcode());
+		addressBuilder.street(a.getStreet());
+		addressBuilder.streetNo(a.getStreetNo());
+		addressBuilder.country(StringUtils.isNotEmpty(a.getCountryCode()) ? Country.byCode(a.getCountryCode()) : null);
+		
+		return addressBuilder.build();
+	}
 }

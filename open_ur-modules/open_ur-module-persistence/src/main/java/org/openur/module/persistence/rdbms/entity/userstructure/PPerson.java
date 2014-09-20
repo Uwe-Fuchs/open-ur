@@ -175,7 +175,7 @@ public class PPerson
 		this.homeEmailAdress = homeEmailAdress;
 	}
 
-	private PPerson()
+	PPerson()
 	{
 		super();
 	}
@@ -183,14 +183,21 @@ public class PPerson
 	public static PPerson mapFromImmutable(Person p)
 	{
 		PPerson person = new PPerson();
-		
+
 		person.setNumber(p.getNumber());
-		person.setEmailAdress(p.getEmailAdress().getAsPlainEMailAddress());
+		person.setEmailAdress(p.getEmailAdress() != null ? p.getEmailAdress().getAsPlainEMailAddress() : null);
 		person.setEmployeeNumber(p.getEmployeeNumber());
 		person.setFaxNumber(p.getFaxNumber());
 		person.setFirstName(p.getName().getFirstName());
 		person.setLastName(p.getName().getLastName());
 		person.setGender(p.getName().getGender());
+		person.setTitle(p.getName().getTitle());
+		person.setHomeEmailAdress(p.getHomeEmailAdress() != null ? p.getHomeEmailAdress().getAsPlainEMailAddress() : null);
+		person.setHomePhoneNumber(p.getHomePhoneNumber());
+		person.setMobileNumber(p.getMobileNumber());
+		person.setPhoneNumber(p.getPhoneNumber());
+		person.setStatus(p.getStatus());
+		person.setHomeAddress(p.getHomeAddress() != null ? PAddress.mapFromImmutable(p.getHomeAddress()) : null);
 		
 		return person;
 	}
