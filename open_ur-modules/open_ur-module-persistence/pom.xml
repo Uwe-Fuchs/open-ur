@@ -31,6 +31,11 @@
       <type>pom</type>
     </dependency>
     <dependency>
+      <groupId>org.open-ur.pom</groupId>
+      <artifactId>open_ur-pom-logging-component</artifactId>
+      <type>pom</type>
+    </dependency>
+    <dependency>
       <groupId>org.open-ur.module</groupId>
       <artifactId>open_ur-module-domain</artifactId>
       <type>jar</type>
