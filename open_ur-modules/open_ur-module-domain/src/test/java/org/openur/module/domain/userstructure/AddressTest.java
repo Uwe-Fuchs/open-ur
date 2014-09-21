@@ -47,10 +47,10 @@ public class AddressTest
 		b.street("street_1");
 		b.streetNo("11");
 		b.poBox("poBox_1");
-		b.careOf("Schulz");
+		b.careOf("Schmidt");
 		address2 = b.build();
 		
-		assertEquals("addresses are equal despite different co's", address1, address2);
+		assertEquals(address1, address2);
 	}
 	
 	@Test

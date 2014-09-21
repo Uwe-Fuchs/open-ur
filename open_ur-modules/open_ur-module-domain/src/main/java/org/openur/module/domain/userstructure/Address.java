@@ -77,26 +77,7 @@ public class Address
 	@Override
 	public boolean equals(Object obj)
 	{
-		if (obj == null || !this.getClass().equals(obj.getClass()))
-		{
-			return false;
-		}
-		
-		if (this == obj)
-		{
-			return true;
-		}
-		
-		Address other = (Address) obj;
-		
-		return new EqualsBuilder()
-											.append(this.getCountry(), other.getCountry())
-											.append(this.getCity(), other.getCity())
-											.append(this.getPostcode(), other.getPostcode())
-											.append(this.getStreet(), other.getStreet())
-											.append(this.getStreetNo(), other.getStreetNo())
-											.append(this.getPoBox(), other.getPoBox())
-											.isEquals();
+		return EqualsBuilder.reflectionEquals(this, obj);
 	}
 
 	@Override
