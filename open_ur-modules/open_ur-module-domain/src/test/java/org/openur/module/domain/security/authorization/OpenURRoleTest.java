@@ -21,12 +21,12 @@ public class OpenURRoleTest
 	@Test
 	public void testGetPermissions()
 	{
-		OpenURApplication app1 = new OpenURApplicationBuilder("app1", "user1", "pw1")
+		OpenURApplication app1 = new OpenURApplicationBuilder("app1")
 			.build();		
 		OpenURPermission perm1 = new OpenURPermissionBuilder("perm1", PermissionScope.SELECTED, app1)
 			.build();
 		
-		OpenURApplication app2 = new OpenURApplicationBuilder("app2", "user2", "pw2")
+		OpenURApplication app2 = new OpenURApplicationBuilder("app2")
 			.build();
 		OpenURPermission perm2 = new OpenURPermissionBuilder("perm2", PermissionScope.SUB, app2)
 			.build();
@@ -47,13 +47,13 @@ public class OpenURRoleTest
 	@Test
 	public void testCompareTo()
 	{
-		OpenURApplication app1 = new OpenURApplicationBuilder("app1", "user1", "pw1").build();		
+		OpenURApplication app1 = new OpenURApplicationBuilder("app1").build();		
 		OpenURPermission perm1 = new OpenURPermissionBuilder("perm1", PermissionScope.SELECTED, app1).build();		
 		OpenURRole role1 = new OpenURRoleBuilder("role1")
 			.permissions(new HashSet<IPermission>(Arrays.asList(perm1)))
 			.build();
 		
-		OpenURApplication app2 = new OpenURApplicationBuilder("app2", "user2", "pw2")
+		OpenURApplication app2 = new OpenURApplicationBuilder("app2")
 			.build();		
 		OpenURPermission perm2 = new OpenURPermissionBuilder("perm2", PermissionScope.SELECTED_SUB, app2)
 			.build();		

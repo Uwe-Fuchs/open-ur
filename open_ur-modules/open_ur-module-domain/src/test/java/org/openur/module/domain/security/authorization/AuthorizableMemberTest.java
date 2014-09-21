@@ -41,7 +41,7 @@ public class AuthorizableMemberTest
 	@Test
 	public void testHasPermission()
 	{
-		IApplication app1 = new OpenURApplicationBuilder("app1", "user1", "pw1")
+		IApplication app1 = new OpenURApplicationBuilder("app1")
 			.build();		
 		IPermission perm11 = new OpenURPermissionBuilder("perm11", PermissionScope.SELECTED,  app1)
 			.build();
@@ -60,7 +60,7 @@ public class AuthorizableMemberTest
 		assertTrue(member.hasPermission(app1, perm11));
 		assertTrue(member.hasPermission(app1, perm12));
 		
-		IApplication app2 = new OpenURApplicationBuilder("app2", "user2", "pw2")
+		IApplication app2 = new OpenURApplicationBuilder("app2")
 			.build();		
 		IPermission perm21 = new OpenURPermissionBuilder("perm21", PermissionScope.SELECTED,  app2)
 			.build();

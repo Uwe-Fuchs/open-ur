@@ -60,7 +60,7 @@ public class AuthorizationServicesTest
 	@Test
 	public void testHasPermissionIPersonIOrganizationalUnitIPermissionIApplication()
 	{
-		IApplication app1 = new OpenURApplicationBuilder("app1", "user1", "pw1")
+		IApplication app1 = new OpenURApplicationBuilder("app1")
 			.build();		
 		IPermission perm1 = new OpenURPermissionBuilder("perm1", PermissionScope.SELECTED, app1)
 			.build();		
@@ -103,7 +103,7 @@ public class AuthorizationServicesTest
 	@Test
 	public void testHasPermissionStringStringStringIApplication()
 	{
-		IApplication app = new OpenURApplicationBuilder("app", "app", "app_pw")
+		IApplication app = new OpenURApplicationBuilder("app")
 			.build();		
 		final String PERM_NAME_1 = "perm1";
 		IPermission perm1 = new OpenURPermissionBuilder(PERM_NAME_1, PermissionScope.SELECTED,  app)

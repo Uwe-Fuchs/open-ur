@@ -57,7 +57,7 @@ public class AuthOrgUnitSimpleTest
 	@Test
 	public void testHasPermission()
 	{
-		IApplication app1 = new OpenURApplicationBuilder("app1", "user1", "pw1")
+		IApplication app1 = new OpenURApplicationBuilder("app1")
 			.build();		
 		IPermission perm11 = new OpenURPermissionBuilder("perm11", PermissionScope.SELECTED,  app1)
 			.build();		
