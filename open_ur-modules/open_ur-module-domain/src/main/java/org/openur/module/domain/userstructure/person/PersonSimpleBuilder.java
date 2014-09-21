@@ -7,14 +7,14 @@ public class PersonSimpleBuilder
 	extends AbstractPersonBuilder<PersonSimpleBuilder>
 {
 	// constructors:
-	public PersonSimpleBuilder(String username, String password)
+	public PersonSimpleBuilder()
 	{
-		super(username, password);
+		super();
 	}
 	
-	public PersonSimpleBuilder(String identifier, String username, String password)
+	public PersonSimpleBuilder(String identifier)
 	{
-		super(username, password);
+		super(identifier);
 	}
 	
 	public PersonSimple build()

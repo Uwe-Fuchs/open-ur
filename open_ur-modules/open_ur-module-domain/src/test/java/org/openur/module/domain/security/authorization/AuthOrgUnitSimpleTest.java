@@ -21,10 +21,10 @@ public class AuthOrgUnitSimpleTest
 	@Test
 	public void testFindAuthorizableMember()
 	{
-		IPerson pers1 = new PersonSimpleBuilder("username1", "password1")
+		IPerson pers1 = new PersonSimpleBuilder()
 			.build();
 		
-		IPerson pers2 = new PersonSimpleBuilder("username2", "password2")
+		IPerson pers2 = new PersonSimpleBuilder()
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();
@@ -40,7 +40,7 @@ public class AuthOrgUnitSimpleTest
 		assertEquals(m2, ou.findMember(m2.getPerson()));
 		assertEquals(m2, ou.findAuthorizableMember(m2.getPerson().getIdentifier()));
 		
-		IPerson pers3 = new PersonSimpleBuilder("username3", "password3")
+		IPerson pers3 = new PersonSimpleBuilder()
 			.build();
 		IAuthorizableMember m3 = new AuthorizableMember(pers3, OU_ID);
 		
@@ -65,7 +65,7 @@ public class AuthOrgUnitSimpleTest
 			.permissions(new HashSet<IPermission>(Arrays.asList(perm11)))
 			.build();
 		
-		IPerson person = new PersonSimpleBuilder("username1", "password1")
+		IPerson person = new PersonSimpleBuilder()
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();		

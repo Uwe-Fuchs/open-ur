@@ -42,19 +42,23 @@ public class UserServicesTest
 		String uuid = UUID.randomUUID().toString();
 		String uuid2 = UUID.randomUUID().toString();
 		
-		IPerson person = new PersonSimpleBuilder(uuid, "name", "pw").build();
-		IPerson person2 = new PersonSimpleBuilder(uuid2, "name2", "pw2").build();
+		IPerson person = new PersonSimpleBuilder(uuid)
+			.number("number1")
+			.build();
+		IPerson person2 = new PersonSimpleBuilder(uuid2)
+			.number("number2")
+			.build();
 		
 		Mockito.when(dao.findPersonById(uuid)).thenReturn(person);
 		Mockito.when(dao.findPersonById(uuid2)).thenReturn(person2);	
 		
 		IPerson p = userServices.findPersonById(uuid);		
 		assertNotNull(p);
-		assertEquals("username", "name", p.getUsername());	
+		assertEquals("personal number", "number1", p.getNumber());	
 		
 		IPerson p2 = userServices.findPersonById(uuid2);		
 		assertNotNull(p2);
-		assertEquals("username", "name2", p2.getUsername());
+		assertEquals("personal number", "number2", p2.getNumber());
 	}
 
 	@Test
@@ -63,29 +67,30 @@ public class UserServicesTest
 		String personalNo1 = "no123";
 		String personalNo2 = "no456";
 		
-		IPerson person = new PersonSimpleBuilder("name", "pw").number(personalNo1).build();
-		IPerson person2 = new PersonSimpleBuilder("name2", "pw2").number(personalNo2).build();
+		IPerson person = new PersonSimpleBuilder()
+			.number(personalNo1)
+			.build();	
+		IPerson person2 = new PersonSimpleBuilder()
+			.number(personalNo2)
+			.build();
 		
 		Mockito.when(dao.findPersonByNumber(personalNo1)).thenReturn(person);
 		Mockito.when(dao.findPersonByNumber(personalNo2)).thenReturn(person2);
 		
 		IPerson p = userServices.findPersonByNumber(personalNo1);		
 		assertNotNull(p);
-		assertEquals("username", "name", p.getUsername());	
+		assertEquals(person, p);	
 		
 		IPerson p2 = userServices.findPersonByNumber(personalNo2);		
 		assertNotNull(p2);
-		assertEquals("username", "name2", p2.getUsername());
+		assertEquals(person2, p2);
 	}
 
 	@Test
 	public void testObtainAllPersons()
 	{
-		String personalNo1 = "no123";
-		String personalNo2 = "no456";
-		
-		IPerson person = new PersonSimpleBuilder("name", "pw").number(personalNo1).build();
-		IPerson person2 = new PersonSimpleBuilder("name2", "pw2").number(personalNo2).build();
+		IPerson person = new PersonSimpleBuilder().build();
+		IPerson person2 = new PersonSimpleBuilder().build();
 		
 		Mockito.when(dao.obtainAllPersons()).thenReturn(Arrays.asList(person, person2));
 		
@@ -108,8 +113,8 @@ public class UserServicesTest
 		String uuid = UUID.randomUUID().toString();
 		String uuid2 = UUID.randomUUID().toString();
 		
-		ITechnicalUser techUser = new TechnicalUserBuilder(uuid, "name", "pw").build();
-		ITechnicalUser techUser2 = new TechnicalUserBuilder(uuid2, "name2", "pw2").build();
+		ITechnicalUser techUser = new TechnicalUserBuilder(uuid).build();
+		ITechnicalUser techUser2 = new TechnicalUserBuilder(uuid2).build();
 		
 		Mockito.when(dao.findTechnicalUserById(uuid)).thenReturn(techUser);
 		Mockito.when(dao.findTechnicalUserById(uuid2)).thenReturn(techUser2);	
@@ -129,8 +134,8 @@ public class UserServicesTest
 		String personalNo1 = "no123";
 		String personalNo2 = "no456";
 		
-		ITechnicalUser techUser = new TechnicalUserBuilder("name", "pw").number(personalNo1).build();
-		ITechnicalUser techUser2 = new TechnicalUserBuilder("name2", "pw2").number(personalNo2).build();
+		ITechnicalUser techUser = new TechnicalUserBuilder().number(personalNo1).build();
+		ITechnicalUser techUser2 = new TechnicalUserBuilder().number(personalNo2).build();
 		
 		Mockito.when(dao.findTechnicalUserByNumber(personalNo1)).thenReturn(techUser);
 		Mockito.when(dao.findTechnicalUserByNumber(personalNo2)).thenReturn(techUser2);	
@@ -150,8 +155,8 @@ public class UserServicesTest
 		String personalNo1 = "no123";
 		String personalNo2 = "no456";
 		
-		ITechnicalUser techUser = new TechnicalUserBuilder("name", "pw").number(personalNo1).build();
-		ITechnicalUser techUser2 = new TechnicalUserBuilder("name2", "pw2").number(personalNo2).build();
+		ITechnicalUser techUser = new TechnicalUserBuilder().number(personalNo1).build();
+		ITechnicalUser techUser2 = new TechnicalUserBuilder().number(personalNo2).build();
 		
 		Mockito.when(dao.obtainAllTechnicalUsers()).thenReturn(Arrays.asList(techUser, techUser2));
 		

@@ -68,7 +68,7 @@ public class AuthorizationServicesTest
 			.permissions(new HashSet<IPermission>(Arrays.asList(perm1)))
 			.build();
 		
-		IPerson person = new PersonSimpleBuilder("username1", "password1")
+		IPerson person = new PersonSimpleBuilder()
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();
@@ -113,7 +113,7 @@ public class AuthorizationServicesTest
 			.build();
 		
 		final String PERS_ID = UUID.randomUUID().toString();		
-		IPerson person = new PersonSimpleBuilder(PERS_ID, "username1", "password1")
+		IPerson person = new PersonSimpleBuilder(PERS_ID)
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();

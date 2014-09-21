@@ -12,12 +12,12 @@ public class TechnicalUserTest
 	@Test
 	public void testCompareTo()
 	{
-		TechnicalUserBuilder tub = new TechnicalUserBuilder("user1", "pw1");
+		TechnicalUserBuilder tub = new TechnicalUserBuilder();
 		tub.number("abc");
 		tub.status(Status.ACTIVE);
 		TechnicalUser tu1 = tub.build();
 		
-		tub = new TechnicalUserBuilder("user2", "pw2");
+		tub = new TechnicalUserBuilder();
 		tub.number("xyz");
 		TechnicalUser tu2 = tub.build();
 		

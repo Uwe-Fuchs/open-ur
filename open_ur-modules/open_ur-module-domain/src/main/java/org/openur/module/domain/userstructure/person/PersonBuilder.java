@@ -20,15 +20,17 @@ public class PersonBuilder
   private EMailAddress homeEmailAdress = null;
 	
   // constructors:
-	public PersonBuilder(String username, String password, Name name)
+	public PersonBuilder(Name name)
 	{		
-		super(username, password);
+		super();
+		
 		Validate.notNull(name, "name must not be null");
 	}
 	
-	public PersonBuilder(String identifier, String username, String password, Name name)
+	public PersonBuilder(String identifier, Name name)
 	{
-		super(identifier, username, password);
+		super(identifier);
+		
 		Validate.notNull(name, "name must not be null");
 	}
 

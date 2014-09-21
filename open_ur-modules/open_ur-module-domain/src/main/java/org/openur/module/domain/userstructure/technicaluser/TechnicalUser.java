@@ -8,28 +8,10 @@ public class TechnicalUser
 	implements ITechnicalUser
 {
 	private static final long serialVersionUID = 4476135911103120283L;
-	
-	// properties:
-  private final String username;
-  private final String password;
 
 	TechnicalUser(TechnicalUserBuilder b)
 	{
 		super(b);
-		this.username = b.getUsername();
-		this.password = b.getPassword();
-	}
-
-	@Override
-	public String getUsername()
-	{
-		return username;
-	}
-
-	@Override
-	public String getPassword()
-	{
-		return password;
 	}
 
 	@Override

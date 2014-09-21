@@ -153,10 +153,10 @@ public class OrgUnitServicesTest
 		assertTrue(orgUnitSet.contains(orgUnit2));
 		
 		
-		IPerson persA = new PersonBuilder("usernameA", "passwordA", Name.create(null, null, "Meier")).build();
+		IPerson persA = new PersonBuilder(Name.create(null, null, "Meier")).build();
 		IOrgUnitMember mA = new OrgUnitMember(persA, OU_ID_2);
 		
-		IPerson persB = new PersonBuilder("usernameB", "passwordB", Name.create(null, null, "Meier")).build();
+		IPerson persB = new PersonBuilder(Name.create(null, null, "Meier")).build();
 		IOrgUnitMember mB = new OrgUnitMember(persB, OU_ID_2);
 		
 		IOrganizationalUnit orgUnit2_m = new OrganizationalUnitBuilder(OU_ID_2, rootOu)

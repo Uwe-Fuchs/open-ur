@@ -43,10 +43,10 @@ public class AuthOrganizationalUnitTest
 	@Test
 	public void testFindAuthorizableMember()
 	{
-		IPerson pers1 = new PersonBuilder("username1", "password1", name)
+		IPerson pers1 = new PersonBuilder(name)
 			.build();
 		
-		IPerson pers2 = new PersonBuilder("username2", "password2", name)
+		IPerson pers2 = new PersonBuilder(name)
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();
@@ -62,7 +62,7 @@ public class AuthOrganizationalUnitTest
 		assertEquals(m2, ou.findMember(m2.getPerson()));
 		assertEquals(m2, ou.findAuthorizableMember(m2.getPerson().getIdentifier()));
 		
-		IPerson pers3 = new PersonBuilder("username3", "password3", name)
+		IPerson pers3 = new PersonBuilder(name)
 			.build();
 		IAuthorizableMember m3 = new AuthorizableMember(pers3, OU_ID);
 		
@@ -87,7 +87,7 @@ public class AuthOrganizationalUnitTest
 			.permissions(new HashSet<IPermission>(Arrays.asList(perm11)))
 			.build();
 		
-		IPerson person = new PersonBuilder("username1", "password1", name)
+		IPerson person = new PersonBuilder(name)
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();		

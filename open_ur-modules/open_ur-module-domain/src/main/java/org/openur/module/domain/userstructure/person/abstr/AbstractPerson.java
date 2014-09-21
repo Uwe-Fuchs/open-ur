@@ -16,16 +16,13 @@ public abstract class AbstractPerson
 	
 	// properties:
 	private final Set<IApplication> apps;
-	private final String username;
-	private final String password;
 
 	// constructor:
 	protected AbstractPerson(AbstractPersonBuilder<? extends AbstractPersonBuilder<?>> b)
 	{
 		super(b);
+		
 		this.apps = Collections.unmodifiableSet(b.getApps());
-		this.username = b.getUsername();
-		this.password = b.getPassword();
 	}
 
 	// accessors:
@@ -33,18 +30,6 @@ public abstract class AbstractPerson
 	public Set<IApplication> getApps()
 	{
 		return apps;
-	}
-
-	@Override
-	public String getUsername()
-	{
-		return username;
-	}
-
-	@Override
-	public String getPassword()
-	{
-		return password;
 	}
 
 	// operations:

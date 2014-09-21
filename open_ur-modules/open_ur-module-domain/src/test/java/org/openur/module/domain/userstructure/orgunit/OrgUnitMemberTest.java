@@ -15,7 +15,7 @@ public class OrgUnitMemberTest
 	@Test
 	public void testEqualsObject()
 	{
-		IPerson pers1 = new PersonSimpleBuilder("username1", "password1")
+		IPerson pers1 = new PersonSimpleBuilder()
 			.number("123abc")
 			.status(Status.ACTIVE)
 			.build();
@@ -25,7 +25,7 @@ public class OrgUnitMemberTest
 		
 		assertTrue(m11.equals(m11));
 		
-		IPerson pers2 = new PersonSimpleBuilder("username2", "password2")
+		IPerson pers2 = new PersonSimpleBuilder()
 			.build();
 		IOrgUnitMember m21 = new OrgUnitMember(pers2, OU_ID_1);	
 		
@@ -47,7 +47,7 @@ public class OrgUnitMemberTest
 	@Test
 	public void testCompareTo()
 	{		
-		IPerson pers1 = new PersonSimpleBuilder("username1", "password1")
+		IPerson pers1 = new PersonSimpleBuilder()
 			.number("123")
 			.status(Status.ACTIVE)
 			.build();
@@ -56,7 +56,7 @@ public class OrgUnitMemberTest
 		
 		assertTrue(m11.compareTo(m11) == 0);
 		
-		IPerson pers2 = new PersonSimpleBuilder("username2", "password2")
+		IPerson pers2 = new PersonSimpleBuilder()
 			.number("456")
 			.status(Status.ACTIVE)
 			.build();

@@ -21,7 +21,7 @@ public class AuthorizableMemberTest
 	{
 		IRole role1 = new OpenURRoleBuilder("role1")
 			.build();		
-		IPerson pers = new PersonSimpleBuilder("username1", "password1")
+		IPerson pers = new PersonSimpleBuilder()
 			.number("123")
 			.status(Status.ACTIVE)
 			.build();
@@ -51,7 +51,7 @@ public class AuthorizableMemberTest
 			.permissions(new HashSet<IPermission>(Arrays.asList(perm11, perm12)))
 			.build();
 		
-		IPerson person = new PersonSimpleBuilder("username1", "password1")
+		IPerson person = new PersonSimpleBuilder()
 			.build();		
 		final String OU_ID_1 = UUID.randomUUID().toString();
 		

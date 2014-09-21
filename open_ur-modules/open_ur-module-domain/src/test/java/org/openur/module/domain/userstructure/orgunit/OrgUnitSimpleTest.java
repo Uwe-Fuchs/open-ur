@@ -20,10 +20,10 @@ public class OrgUnitSimpleTest
 	@Test
 	public void testFindMember()
 	{
-		IPerson pers1 = new PersonSimpleBuilder("username1", "password1")
+		IPerson pers1 = new PersonSimpleBuilder()
 			.build();
 		
-		IPerson pers2 = new PersonSimpleBuilder("username2", "password2")
+		IPerson pers2 = new PersonSimpleBuilder()
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();
@@ -40,7 +40,7 @@ public class OrgUnitSimpleTest
 		assertEquals(m2, ou.findMember(m2.getPerson()));
 		assertEquals(m2, ou.findMember(m2.getPerson().getIdentifier()));
 		
-		IPerson pers3 = new PersonSimpleBuilder("username3", "password3")
+		IPerson pers3 = new PersonSimpleBuilder()
 			.build();
 		IOrgUnitMember m3 = new OrgUnitMember(pers3, OU_ID);
 		
@@ -57,10 +57,10 @@ public class OrgUnitSimpleTest
 	@Test
 	public void testIsMember()
 	{
-		IPerson pers1 = new PersonSimpleBuilder("username1", "password1")
+		IPerson pers1 = new PersonSimpleBuilder()
 			.build();
 	
-		IPerson pers2 = new PersonSimpleBuilder("username2", "password2")
+		IPerson pers2 = new PersonSimpleBuilder()
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();
@@ -77,7 +77,7 @@ public class OrgUnitSimpleTest
 		assertTrue(ou.isMember(m2.getPerson()));
 		assertTrue(ou.isMember(m2.getPerson().getIdentifier()));
 		
-		IPerson pers3 = new PersonSimpleBuilder("username3", "password3")
+		IPerson pers3 = new PersonSimpleBuilder()
 			.build();
 		IOrgUnitMember m3 = new OrgUnitMember(pers3, OU_ID);
 		
@@ -95,7 +95,7 @@ public class OrgUnitSimpleTest
 	@Test(expected=OpenURRuntimeException.class)
 	public void testCreateWithWrongOrgUnitID()
 	{
-		IPerson pers = new PersonSimpleBuilder("username1", "password1").build();
+		IPerson pers = new PersonSimpleBuilder().build();
 		IOrgUnitMember member = new OrgUnitMember(pers, "123");
 		
 		OrgUnitSimpleBuilder oub = new OrgUnitSimpleBuilder("456");
