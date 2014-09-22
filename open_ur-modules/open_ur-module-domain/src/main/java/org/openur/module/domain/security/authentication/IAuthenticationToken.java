@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 // TODO: extends Shiro-AuthenticationToken, Spring-AuthenticationToken, 
 // JAAS-AuthenticationToken
-public interface IAuthenticationToken
+public interface IAuthenticationToken<T>
 	extends Serializable
 {
 
