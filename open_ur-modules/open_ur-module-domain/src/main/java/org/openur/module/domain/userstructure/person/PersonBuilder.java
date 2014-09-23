@@ -24,23 +24,23 @@ public class PersonBuilder
 	{		
 		super();
 		
-		Validate.notNull(name, "name must not be null");
+		init(name);
 	}
 	
 	public PersonBuilder(String identifier, Name name)
 	{
 		super(identifier);
 		
+		init(name);
+	}
+	
+	private void init(Name name)
+	{
 		Validate.notNull(name, "name must not be null");
+		this.name = name;
 	}
 
 	// builder-methods:	
-	public PersonBuilder name(Name name)
-	{
-		this.name = name;			
-		return this;
-	}
-	
 	public PersonBuilder employeeNumber(String employeeNumber)
 	{
 		this.employeeNumber = employeeNumber;			

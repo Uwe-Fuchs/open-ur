@@ -4,31 +4,16 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.UUID;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.Status;
-import org.openur.module.domain.userstructure.person.Gender;
-import org.openur.module.domain.userstructure.person.IPerson;
-import org.openur.module.domain.userstructure.person.Name;
-import org.openur.module.domain.userstructure.person.PersonBuilder;
-import org.openur.module.domain.userstructure.person.PersonSimpleBuilder;
 
 public class PersonTest
 {
-	private Name name;
-	
-	@Before
-	public void setUp()
-		throws Exception
-	{
-		this.name = Name.create(null, null, "Meier");
-	}
-	
 	@Test(expected=NullPointerException.class)
 	public void checkEmptyID()
 	{
-		new PersonBuilder(null, name);
+		new PersonBuilder(null, Name.create(Gender.MALE, "Uwe", "Fuchs"));
 	}
 	
 	@Test(expected=NullPointerException.class)
@@ -40,31 +25,28 @@ public class PersonTest
 	@Test
 	public void testCompareTo()
 	{
-		PersonBuilder pb = new PersonBuilder(UUID.randomUUID().toString(), name)
+		PersonBuilder pb = new PersonBuilder(UUID.randomUUID().toString(), Name.create(Gender.MALE, "Uwe", "Fuchs"))
 			.number("123abc")
 			.status(Status.ACTIVE)
-			.name(Name.create(Gender.MALE, "Uwe", "Fuchs"))
-			.emailAdress(new EMailAddress("mail@uwefuchs.de"));
+			.emailAdress(new EMailAddress("info@uwefuchs.com"));
 		IPerson p1 = pb.build();
 		
-		pb = new PersonBuilder(UUID.randomUUID().toString(), name)
-			.number("456xyz")
-			.name(Name.create(Gender.FEMALE, "Angela", "Merkel"));
+		pb = new PersonBuilder(UUID.randomUUID().toString(), Name.create(Gender.FEMALE, Title.DR, "Angela", "Merkel"))
+			.number("456xyz");
 		IPerson p2 = pb.build();
 		assertTrue("different names", p1.compareTo(p2) < 0);
 		
-		pb = new PersonBuilder(name)
-			.number("456xyz")
-			.name(Name.create(Gender.MALE, "Arne", "Fuchs"));
+		pb = new PersonBuilder(Name.create(Gender.MALE, "Arne", "Fuchs"))
+			.number("456xyz");
 		p2 = pb.build();	
 		assertTrue("same last names, but different first names", p1.compareTo(p2) > 0);
 
-		pb.name(Name.create(Gender.MALE, "Uwe", "Fuchs"))
+		pb = new PersonBuilder(Name.create(Gender.MALE, "Uwe", "Fuchs"))
 			.emailAdress(new EMailAddress("fuchsuwe@gmx.de"));
 		p2 = pb.build();
 		assertTrue("same names, different email-addresses", p1.compareTo(p2) > 0);
 		
-		pb = new PersonBuilder(UUID.randomUUID().toString(), name)
+		pb = new PersonBuilder(UUID.randomUUID().toString(), Name.create(Gender.MALE, "Uwe", "Fuchs"))
 			.number("456xyz")
 			.status(Status.ACTIVE);
 		p1 = pb.build();
