@@ -7,8 +7,12 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 
+import org.apache.commons.lang3.StringUtils;
+import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.person.Gender;
+import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.Person;
+import org.openur.module.domain.userstructure.person.PersonBuilder;
 import org.openur.module.domain.userstructure.person.Title;
 
 @Entity(name="PERSON")
@@ -17,6 +21,7 @@ public class PPerson
 {
 	private static final long serialVersionUID = 1747953676787910440L;
 
+	// properties:
 	@Column(name="EMPLOYEE_NO", length=50, nullable=false)
   private String employeeNumber;
 	
@@ -55,6 +60,7 @@ public class PPerson
 	@Column(name="HOME_EMAIL")
   private String homeEmailAdress;
 
+	// accessors:
 	public Gender getGender()
 	{
 		return gender;
@@ -175,11 +181,13 @@ public class PPerson
 		this.homeEmailAdress = homeEmailAdress;
 	}
 
+	// constructor
+	// package-scope for unit-testing:
 	PPerson()
 	{
 		super();
 	}
-	
+
 	public static PPerson mapFromImmutable(Person p)
 	{
 		PPerson person = new PPerson();
@@ -198,6 +206,34 @@ public class PPerson
 		person.setPhoneNumber(p.getPhoneNumber());
 		person.setStatus(p.getStatus());
 		person.setHomeAddress(p.getHomeAddress() != null ? PAddress.mapFromImmutable(p.getHomeAddress()) : null);
+		
+		return person;
+	}
+	
+	public static Person mapToImmutable(PPerson p)
+	{
+		Name name;
+		
+		if (p.getTitle() != null)
+		{
+			name = Name.create(p.getGender(), p.getTitle(), p.getFirstName(), p.getLastName());			
+		} else
+		{
+			name = Name.create(p.getGender(), p.getFirstName(), p.getLastName());
+		}
+		
+		Person person = new PersonBuilder(name)
+				.number(p.getNumber())
+				.emailAdress(StringUtils.isNotEmpty(p.getEmailAdress()) ? new EMailAddress(p.getEmailAdress()) : null)
+				.employeeNumber(p.getEmployeeNumber())
+				.faxNumber(p.getFaxNumber())
+				.homeEmailAdress(StringUtils.isNotEmpty(p.getHomeEmailAdress()) ? new EMailAddress(p.getHomeEmailAdress()) : null)
+				.homePhoneNumber(p.getHomePhoneNumber())
+				.mobileNumber(p.getMobileNumber())
+				.phoneNumber(p.getPhoneNumber())
+				.status(p.getStatus())
+				.homeAddress(p.getHomeAddress() != null ? PAddress.mapFromEntity(p.getHomeAddress()) : null)
+				.build();
 		
 		return person;
 	}
