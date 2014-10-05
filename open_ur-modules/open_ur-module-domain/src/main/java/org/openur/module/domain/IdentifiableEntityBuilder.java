@@ -1,6 +1,7 @@
 package org.openur.module.domain;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.UUID;
 
 import org.apache.commons.lang3.Validate;
@@ -10,8 +11,8 @@ public abstract class IdentifiableEntityBuilder<T extends IdentifiableEntityBuil
 {
 	// properties:
 	private String identifier = null;
-	private Date changeDate = null;
-	private Date creationDate = null;
+	private LocalDateTime lastModifiedDate = null;
+	private LocalDateTime creationDate = null;
 	
 	// constructors:
 	protected IdentifiableEntityBuilder()
@@ -19,7 +20,7 @@ public abstract class IdentifiableEntityBuilder<T extends IdentifiableEntityBuil
 		super();
 		
 		this.identifier = createIdentifier();
-		this.creationDate = new Date();
+		this.creationDate = LocalDateTime.now(ZoneId.systemDefault());
 	}
 	
 	protected IdentifiableEntityBuilder(String identifier)
@@ -29,10 +30,10 @@ public abstract class IdentifiableEntityBuilder<T extends IdentifiableEntityBuil
 		Validate.notEmpty(identifier, "identifier must not be empty!");
 		
 		this.identifier = identifier;
-		this.creationDate = new Date();
+		this.creationDate = LocalDateTime.now(ZoneId.systemDefault());
 	}
 	
-	protected IdentifiableEntityBuilder(Date creationDate)
+	protected IdentifiableEntityBuilder(LocalDateTime creationDate)
 	{
 		super();
 		
@@ -42,7 +43,7 @@ public abstract class IdentifiableEntityBuilder<T extends IdentifiableEntityBuil
 		this.creationDate = creationDate;
 	}
 	
-	protected IdentifiableEntityBuilder(String identifier, Date creationDate)
+	protected IdentifiableEntityBuilder(String identifier, LocalDateTime creationDate)
 	{
 		super();
 		
@@ -59,16 +60,16 @@ public abstract class IdentifiableEntityBuilder<T extends IdentifiableEntityBuil
 	}
 	
 	// builder-methods:
-	public T creationDate(Date creationDate)
+	public T creationDate(LocalDateTime creationDate)
 	{
 		this.creationDate = creationDate;	
 		
 		return (T) this;
 	}
 
-	public T changeDate(Date changeDate)
+	public T lastModifiedDate(LocalDateTime changeDate)
 	{
-		this.changeDate = changeDate;			
+		this.lastModifiedDate = changeDate;			
 		
 		return (T) this;
 	}
@@ -79,13 +80,13 @@ public abstract class IdentifiableEntityBuilder<T extends IdentifiableEntityBuil
 		return identifier;
 	}
 	
-	protected Date getCreationDate()
+	protected LocalDateTime getCreationDate()
 	{
 		return creationDate;
 	}	
 	
-	protected Date getChangeDate()
+	protected LocalDateTime getLastModifiedDate()
 	{
-		return changeDate;
+		return lastModifiedDate;
 	}	
 }

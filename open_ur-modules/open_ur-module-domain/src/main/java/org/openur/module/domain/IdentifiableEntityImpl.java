@@ -1,6 +1,6 @@
 package org.openur.module.domain;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public abstract class IdentifiableEntityImpl
 	extends GraphNode
@@ -9,8 +9,8 @@ public abstract class IdentifiableEntityImpl
 	private static final long serialVersionUID = 1L;
 
 	private final String identifier;
-	private final Date changeDate;
-	private final Date creationDate;
+	private final LocalDateTime lastModifiedDate;
+	private final LocalDateTime creationDate;
 
 	protected IdentifiableEntityImpl(IdentifiableEntityBuilder<? extends IdentifiableEntityBuilder<?>> b)
 	{
@@ -18,7 +18,7 @@ public abstract class IdentifiableEntityImpl
 
 		this.identifier = b.getIdentifier();
 		this.creationDate = b.getCreationDate();
-		this.changeDate = b.getChangeDate();
+		this.lastModifiedDate = b.getLastModifiedDate();
 	}
 
 	@Override
@@ -28,13 +28,13 @@ public abstract class IdentifiableEntityImpl
 	}
 
 	@Override
-	public Date getChangeDate()
+	public LocalDateTime getLastModifiedDate()
 	{
-		return changeDate;
+		return lastModifiedDate;
 	}
 
 	@Override
-	public Date getCreationDate()
+	public LocalDateTime getCreationDate()
 	{
 		return creationDate;
 	}

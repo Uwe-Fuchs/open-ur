@@ -1,6 +1,6 @@
 package org.openur.module.domain;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public interface IIdentifiableEntity
 {
@@ -14,16 +14,16 @@ public interface IIdentifiableEntity
 	/**
 	 * the date or timestamp of changing this entity (may be empty).
 	 * 
-	 * @return date.
+	 * @return LocalDateTime
 	 */
-	Date getChangeDate();
+	LocalDateTime getLastModifiedDate();
 	
 	/**
 	 * the date or timestamp of creating this entity.
 	 * 
-	 * @return date.
+	 * @return LocalDateTime.
 	 */
-	Date getCreationDate();
+	LocalDateTime getCreationDate();
 	
 	/**
 	 * identity-objects should be equal if they have the same identifier.

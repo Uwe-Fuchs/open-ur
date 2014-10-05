@@ -1,10 +1,11 @@
 package org.openur.module.domain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.ZoneId;
 import java.util.UUID;
 
 import org.junit.Test;
@@ -27,10 +28,9 @@ public class IdentifiableEntityTest
 	public void testCreate()
 		throws Exception
 	{
-		String id = UUID.randomUUID().toString();		
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		Date d = df.parse("2012-04-05");
-		Date d2 = df.parse("2012-04-05");
+		String id = UUID.randomUUID().toString();				
+		LocalDateTime d = LocalDateTime.of(2012, Month.APRIL, 05, 11, 30);
+		LocalDateTime d2 = LocalDateTime.of(2012, Month.APRIL, 05, 11, 30);
 		
 		IdentifiableEntityBuilderTestImpl ieb = new IdentifiableEntityBuilderTestImpl(id);
 		IdentifiableEntityImpl ie = new IdentifiableEntityTestImpl(ieb);
@@ -55,7 +55,7 @@ public class IdentifiableEntityTest
 	@Test(expected=NullPointerException.class)
 	public void testExceptionCreateWithEmptyDate()
 	{
-		new IdentifiableEntityBuilderTestImpl((Date) null);
+		new IdentifiableEntityBuilderTestImpl((LocalDateTime) null);
 	}
 	
 	@Test(expected=NullPointerException.class)
@@ -67,7 +67,7 @@ public class IdentifiableEntityTest
 	@Test(expected=IllegalArgumentException.class)
 	public void testExceptionCreateWithEmptyIdAndDate()
 	{
-		new IdentifiableEntityBuilderTestImpl("", new Date());
+		new IdentifiableEntityBuilderTestImpl("", LocalDateTime.now(ZoneId.systemDefault()));
 	}
 	
 	@Test(expected=NullPointerException.class)
@@ -99,12 +99,12 @@ public class IdentifiableEntityTest
 			super(identifier);
 		}
 		
-		public IdentifiableEntityBuilderTestImpl(Date creationDate)
+		public IdentifiableEntityBuilderTestImpl(LocalDateTime creationDate)
 		{
 			super(creationDate);
 		}
 		
-		public IdentifiableEntityBuilderTestImpl(String identifier, Date creationDate)
+		public IdentifiableEntityBuilderTestImpl(String identifier, LocalDateTime creationDate)
 		{
 			super(identifier, creationDate);
 		}
