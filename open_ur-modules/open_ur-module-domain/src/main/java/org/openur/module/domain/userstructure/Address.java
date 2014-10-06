@@ -1,12 +1,12 @@
 package org.openur.module.domain.userstructure;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.openur.module.domain.GraphNode;
+import org.openur.module.domain.IdentifiableEntityBuilder;
+import org.openur.module.domain.IdentifiableEntityImpl;
 
 public class Address
-	extends GraphNode
-	implements Comparable<Address>
+	extends IdentifiableEntityImpl
+	implements IAddress
 {
 	private static final long serialVersionUID = -6280694056713764480L;
 	
@@ -22,7 +22,8 @@ public class Address
 	// constructor:
 	private Address(AddressBuilder b)
 	{
-		super();
+		super(b);
+		
 		this.careOf = b.careOf;
 		this.poBox = b.poBox;
 		this.street = b.street;
@@ -38,36 +39,43 @@ public class Address
 		return new AddressBuilder();
 	}
 
+	@Override
 	public String getCareOf()
 	{
 		return careOf;
 	}
 
+	@Override
 	public String getPoBox()
 	{
 		return poBox;
 	}
 
+	@Override
 	public String getStreet()
 	{
 		return street;
 	}
 
+	@Override
 	public String getStreetNo()
 	{
 		return streetNo;
 	}
 
+	@Override
 	public String getPostcode()
 	{
 		return postcode;
 	}
 
+	@Override
 	public String getCity()
 	{
 		return city;
 	}
 
+	@Override
 	public Country getCountry()
 	{
 		return country;
@@ -75,13 +83,7 @@ public class Address
 	
 	// operations:
 	@Override
-	public boolean equals(Object obj)
-	{
-		return EqualsBuilder.reflectionEquals(this, obj);
-	}
-
-	@Override
-	public int compareTo(Address other)
+	public int compareTo(IAddress other)
 	{
 		int comparison = new CompareToBuilder()
 											.append(this.getCountry(), other.getCountry())
@@ -103,6 +105,7 @@ public class Address
 
 	// builder-class:
 	public static class AddressBuilder
+		extends IdentifiableEntityBuilder<AddressBuilder>
 	{
 		// properties:
 		private String careOf = null;
@@ -114,7 +117,9 @@ public class Address
 		private Country country = null;
 		
 		// constructor:
-		private AddressBuilder() {			
+		private AddressBuilder()
+		{
+			super();
 		}
 
 		// builder-methods:

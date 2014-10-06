@@ -1,11 +1,13 @@
 package org.openur.module.persistence.rdbms.entity.userstructure;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.openur.module.domain.userstructure.Address;
-import org.openur.module.domain.userstructure.Country;
 import org.openur.module.domain.userstructure.Address.AddressBuilder;
+import org.openur.module.domain.userstructure.Country;
+import org.openur.module.domain.userstructure.IAddress;
 
 public class PAddressTest
 {
@@ -47,7 +49,7 @@ public class PAddressTest
 		pAddress.setStreetNo("11");
 		pAddress.setCountryCode("DE");
 		
-		Address address = PAddress.mapFromEntity(pAddress);
+		IAddress address = PAddress.mapFromEntity(pAddress);
 		
 		assertNotNull(address);
 		assertEquals(address.getCareOf(), pAddress.getCareOf());

@@ -5,8 +5,8 @@ import javax.persistence.Entity;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openur.module.domain.userstructure.Address;
-import org.openur.module.domain.userstructure.Address.AddressBuilder;
 import org.openur.module.domain.userstructure.Country;
+import org.openur.module.domain.userstructure.IAddress;
 import org.openur.module.persistence.rdbms.entity.AbstractOpenUrPersistable;
 
 @Entity(name="ADDRESS")
@@ -112,33 +112,35 @@ public class PAddress
 		super();
 	}
 	
-	public static PAddress mapFromImmutable(Address a)
+	public static PAddress mapFromImmutable(IAddress immutable)
 	{
-		PAddress address = new PAddress();
+		PAddress persistable = new PAddress();
 		
-		address.setCareOf(a.getCareOf());
-		address.setCity(a.getCity());
-		address.setPoBox(a.getPoBox());
-		address.setPostcode(a.getPostcode());
-		address.setStreet(a.getStreet());
-		address.setStreetNo(a.getStreetNo());
-		address.setCountryCode(a.getCountry() != null ? a.getCountry().getCountryCode() : null);
+		persistable.setCareOf(immutable.getCareOf());
+		persistable.setCity(immutable.getCity());
+		persistable.setPoBox(immutable.getPoBox());
+		persistable.setPostcode(immutable.getPostcode());
+		persistable.setStreet(immutable.getStreet());
+		persistable.setStreetNo(immutable.getStreetNo());
+		persistable.setCountryCode(immutable.getCountry() != null ? immutable.getCountry().getCountryCode() : null);
 		
-		return address;
+		return persistable;
 	}
 	
-	public static Address mapFromEntity(PAddress a)
+	public static Address mapFromEntity(PAddress persistable)
 	{
-		AddressBuilder addressBuilder = Address.builder();
+		Address immutable = Address.builder()
+				.careOf(persistable.getCareOf())
+				.city(persistable.getCity())
+				.poBox(persistable.getPoBox())
+				.postcode(persistable.getPostcode())
+				.street(persistable.getStreet())
+				.streetNo(persistable.getStreetNo())
+				.country(StringUtils.isNotEmpty(persistable.getCountryCode()) ? Country.byCode(persistable.getCountryCode()) : null)
+				.creationDate(persistable.getCreationDate())
+				.lastModifiedDate(persistable.getLastModifiedDate())
+				.build();
 		
-		addressBuilder.careOf(a.getCareOf());
-		addressBuilder.city(a.getCity());
-		addressBuilder.poBox(a.getPoBox());
-		addressBuilder.postcode(a.getPostcode());
-		addressBuilder.street(a.getStreet());
-		addressBuilder.streetNo(a.getStreetNo());
-		addressBuilder.country(StringUtils.isNotEmpty(a.getCountryCode()) ? Country.byCode(a.getCountryCode()) : null);
-		
-		return addressBuilder.build();
+		return immutable;
 	}
 }

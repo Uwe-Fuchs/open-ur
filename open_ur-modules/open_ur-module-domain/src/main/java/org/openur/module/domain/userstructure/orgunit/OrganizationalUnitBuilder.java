@@ -1,7 +1,7 @@
 package org.openur.module.domain.userstructure.orgunit;
 
-import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.EMailAddress;
+import org.openur.module.domain.userstructure.IAddress;
 import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnitBuilder;
 
 public class OrganizationalUnitBuilder
@@ -11,7 +11,7 @@ public class OrganizationalUnitBuilder
 	private String name = null;
 	private String shortName = null;
 	private String description = null;
-	private Address address = null;
+	private IAddress address = null;
 	private EMailAddress emailAdress = null;
 
 	// constructors:
@@ -54,7 +54,7 @@ public class OrganizationalUnitBuilder
 		return this;
 	}
 
-	public OrganizationalUnitBuilder address(Address address)
+	public OrganizationalUnitBuilder address(IAddress address)
 	{
 		this.address = address;
 		return this;
@@ -90,7 +90,7 @@ public class OrganizationalUnitBuilder
 		return description;
 	}
 
-	Address getAddress()
+	IAddress getAddress()
 	{
 		return address;
 	}

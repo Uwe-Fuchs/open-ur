@@ -188,53 +188,62 @@ public class PPerson
 		super();
 	}
 
-	public static PPerson mapFromImmutable(Person p)
+	public static PPerson mapFromImmutable(Person immutable)
 	{
-		PPerson person = new PPerson();
+		PPerson persistable = new PPerson();
 
-		person.setNumber(p.getNumber());
-		person.setEmailAdress(p.getEmailAdress() != null ? p.getEmailAdress().getAsPlainEMailAddress() : null);
-		person.setEmployeeNumber(p.getEmployeeNumber());
-		person.setFaxNumber(p.getFaxNumber());
-		person.setFirstName(p.getName().getFirstName());
-		person.setLastName(p.getName().getLastName());
-		person.setGender(p.getName().getGender());
-		person.setTitle(p.getName().getTitle());
-		person.setHomeEmailAdress(p.getHomeEmailAdress() != null ? p.getHomeEmailAdress().getAsPlainEMailAddress() : null);
-		person.setHomePhoneNumber(p.getHomePhoneNumber());
-		person.setMobileNumber(p.getMobileNumber());
-		person.setPhoneNumber(p.getPhoneNumber());
-		person.setStatus(p.getStatus());
-		person.setHomeAddress(p.getHomeAddress() != null ? PAddress.mapFromImmutable(p.getHomeAddress()) : null);
+		persistable.setNumber(immutable.getNumber());
+		persistable.setEmailAdress(immutable.getEmailAdress() != null ? immutable.getEmailAdress().getAsPlainEMailAddress() : null);
+		persistable.setEmployeeNumber(immutable.getEmployeeNumber());
+		persistable.setFaxNumber(immutable.getFaxNumber());
+		persistable.setFirstName(immutable.getName().getFirstName());
+		persistable.setLastName(immutable.getName().getLastName());
+		persistable.setGender(immutable.getName().getGender());
+		persistable.setTitle(immutable.getName().getTitle());
+		persistable.setHomeEmailAdress(immutable.getHomeEmailAdress() != null ? immutable.getHomeEmailAdress().getAsPlainEMailAddress() : null);
+		persistable.setHomePhoneNumber(immutable.getHomePhoneNumber());
+		persistable.setMobileNumber(immutable.getMobileNumber());
+		persistable.setPhoneNumber(immutable.getPhoneNumber());
+		persistable.setStatus(immutable.getStatus());
+		persistable.setHomeAddress(immutable.getHomeAddress() != null ? PAddress.mapFromImmutable(immutable.getHomeAddress()) : null);
 		
-		return person;
+		return persistable;
 	}
 	
-	public static Person mapToImmutable(PPerson p)
+	public static Person mapToImmutable(PPerson persistable)
 	{
 		Name name;
 		
-		if (p.getTitle() != null)
+		if (persistable.getTitle() != null)
 		{
-			name = Name.create(p.getGender(), p.getTitle(), p.getFirstName(), p.getLastName());			
+			name = Name.create(
+				persistable.getGender(), 
+				persistable.getTitle(), 
+				persistable.getFirstName(), 
+				persistable.getLastName());			
 		} else
 		{
-			name = Name.create(p.getGender(), p.getFirstName(), p.getLastName());
+			name = Name.create(
+				persistable.getGender(), 
+				persistable.getFirstName(), 
+				persistable.getLastName());
 		}
 		
-		Person person = new PersonBuilder(name)
-				.number(p.getNumber())
-				.emailAdress(StringUtils.isNotEmpty(p.getEmailAdress()) ? new EMailAddress(p.getEmailAdress()) : null)
-				.employeeNumber(p.getEmployeeNumber())
-				.faxNumber(p.getFaxNumber())
-				.homeEmailAdress(StringUtils.isNotEmpty(p.getHomeEmailAdress()) ? new EMailAddress(p.getHomeEmailAdress()) : null)
-				.homePhoneNumber(p.getHomePhoneNumber())
-				.mobileNumber(p.getMobileNumber())
-				.phoneNumber(p.getPhoneNumber())
-				.status(p.getStatus())
-				.homeAddress(p.getHomeAddress() != null ? PAddress.mapFromEntity(p.getHomeAddress()) : null)
+		Person immutable = new PersonBuilder(name)
+				.number(persistable.getNumber())
+				.emailAdress(StringUtils.isNotEmpty(persistable.getEmailAdress()) ? new EMailAddress(persistable.getEmailAdress()) : null)
+				.employeeNumber(persistable.getEmployeeNumber())
+				.faxNumber(persistable.getFaxNumber())
+				.homeEmailAdress(StringUtils.isNotEmpty(persistable.getHomeEmailAdress()) ? new EMailAddress(persistable.getHomeEmailAdress()) : null)
+				.homePhoneNumber(persistable.getHomePhoneNumber())
+				.mobileNumber(persistable.getMobileNumber())
+				.phoneNumber(persistable.getPhoneNumber())
+				.status(persistable.getStatus())
+				.homeAddress(persistable.getHomeAddress() != null ? PAddress.mapFromEntity(persistable.getHomeAddress()) : null)
+				.creationDate(persistable.getCreationDate())
+				.lastModifiedDate(persistable.getLastModifiedDate())
 				.build();
 		
-		return person;
+		return immutable;
 	}
 }
