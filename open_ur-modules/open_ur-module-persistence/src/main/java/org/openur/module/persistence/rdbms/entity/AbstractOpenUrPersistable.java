@@ -58,13 +58,13 @@ public abstract class AbstractOpenUrPersistable
 	}
 
 	@PrePersist
-	public void setCreationDate()
+	void setCreationDate()
 	{
 		this.creationDate = LocalDateTime.now(ZoneId.systemDefault());
 	}
 
 	@PreUpdate
-	public void setLastModifiedDate()
+	void setLastModifiedDate()
 	{
 		this.lastModifiedDate = LocalDateTime.now(ZoneId.systemDefault());
 	}

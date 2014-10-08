@@ -37,14 +37,10 @@ public class PAddress
 	@Column(name="COUNTRY_CODE", nullable=false)
 	private String countryCode;
 
+	// accessors:
 	public String getCareOf()
 	{
 		return careOf;
-	}
-
-	public void setCareOf(String careOf)
-	{
-		this.careOf = careOf;
 	}
 
 	public String getPoBox()
@@ -52,19 +48,9 @@ public class PAddress
 		return poBox;
 	}
 
-	public void setPoBox(String poBox)
-	{
-		this.poBox = poBox;
-	}
-
 	public String getStreet()
 	{
 		return street;
-	}
-
-	public void setStreet(String street)
-	{
-		this.street = street;
 	}
 
 	public String getStreetNo()
@@ -72,19 +58,9 @@ public class PAddress
 		return streetNo;
 	}
 
-	public void setStreetNo(String streetNo)
-	{
-		this.streetNo = streetNo;
-	}
-
 	public String getPostcode()
 	{
 		return postcode;
-	}
-
-	public void setPostcode(String postcode)
-	{
-		this.postcode = postcode;
 	}
 
 	public String getCity()
@@ -92,21 +68,47 @@ public class PAddress
 		return city;
 	}
 
-	public void setCity(String city)
-	{
-		this.city = city;
-	}
-
 	public String getCountryCode()
 	{
 		return countryCode;
 	}
 
-	public void setCountryCode(String countryCode)
+	void setCareOf(String careOf)
+	{
+		this.careOf = careOf;
+	}
+
+	void setPoBox(String poBox)
+	{
+		this.poBox = poBox;
+	}
+
+	void setStreet(String street)
+	{
+		this.street = street;
+	}
+
+	void setStreetNo(String streetNo)
+	{
+		this.streetNo = streetNo;
+	}
+
+	void setPostcode(String postcode)
+	{
+		this.postcode = postcode;
+	}
+
+	void setCity(String city)
+	{
+		this.city = city;
+	}
+
+	void setCountryCode(String countryCode)
 	{
 		this.countryCode = countryCode;
 	}
 
+	// constructor:
 	PAddress()
 	{
 		super();

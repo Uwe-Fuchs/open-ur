@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.Country;
 import org.openur.module.domain.userstructure.EMailAddress;
+import org.openur.module.domain.userstructure.IAddress;
 import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.userstructure.Address.AddressBuilder;
 import org.openur.module.domain.userstructure.person.Gender;
@@ -17,7 +18,7 @@ import org.openur.module.domain.userstructure.person.PersonBuilder;
 public class PPersonTest
 {
 	private Name name;
-	private Address address;
+	private IAddress address;
 	
 	@Before
 	public void setUp()
@@ -57,9 +58,9 @@ public class PPersonTest
 		assertEquals(person.getNumber(), pPerson.getNumber());
 	}
 
-	@Test
-	public void testMapFromEntity()
-	{
-		fail("Not yet implemented");
-	}
+//	@Test
+//	public void testMapFromEntity()
+//	{
+//		fail("Not yet implemented");
+//	}
 }

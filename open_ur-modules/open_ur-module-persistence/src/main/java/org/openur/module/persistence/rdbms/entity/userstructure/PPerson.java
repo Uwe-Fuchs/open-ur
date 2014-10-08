@@ -14,6 +14,7 @@ import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.person.PersonBuilder;
 import org.openur.module.domain.userstructure.person.Title;
+import org.openur.module.persistence.rdbms.entity.application.PApplication;
 
 @Entity(name="PERSON")
 public class PPerson
@@ -60,25 +61,18 @@ public class PPerson
 	@Column(name="HOME_EMAIL")
   private String homeEmailAdress;
 
+	@ManyToOne
+  private PApplication application;
+
 	// accessors:
+	public String getEmployeeNumber()
+	{
+		return employeeNumber;
+	}
+
 	public Gender getGender()
 	{
 		return gender;
-	}
-
-	public void setGender(Gender gender)
-	{
-		this.gender = gender;
-	}
-
-	public Title getTitle()
-	{
-		return title;
-	}
-
-	public void setTitle(Title title)
-	{
-		this.title = title;
 	}
 
 	public String getFirstName()
@@ -86,29 +80,9 @@ public class PPerson
 		return firstName;
 	}
 
-	public void setFirstName(String firstName)
-	{
-		this.firstName = firstName;
-	}
-
 	public String getLastName()
 	{
 		return lastName;
-	}
-
-	public void setLastName(String lastName)
-	{
-		this.lastName = lastName;
-	}
-
-	public String getEmployeeNumber()
-	{
-		return employeeNumber;
-	}
-
-	public void setEmployeeNumber(String employeeNumber)
-	{
-		this.employeeNumber = employeeNumber;
 	}
 
 	public String getPhoneNumber()
@@ -116,19 +90,9 @@ public class PPerson
 		return phoneNumber;
 	}
 
-	public void setPhoneNumber(String phoneNumber)
-	{
-		this.phoneNumber = phoneNumber;
-	}
-
 	public String getFaxNumber()
 	{
 		return faxNumber;
-	}
-
-	public void setFaxNumber(String faxNumber)
-	{
-		this.faxNumber = faxNumber;
 	}
 
 	public String getEmailAdress()
@@ -136,19 +100,9 @@ public class PPerson
 		return emailAdress;
 	}
 
-	public void setEmailAdress(String emailAdress)
-	{
-		this.emailAdress = emailAdress;
-	}
-
 	public String getMobileNumber()
 	{
 		return mobileNumber;
-	}
-
-	public void setMobileNumber(String mobileNumber)
-	{
-		this.mobileNumber = mobileNumber;
 	}
 
 	public PAddress getHomeAddress()
@@ -156,19 +110,9 @@ public class PPerson
 		return homeAddress;
 	}
 
-	public void setHomeAddress(PAddress homeAddress)
-	{
-		this.homeAddress = homeAddress;
-	}
-
 	public String getHomePhoneNumber()
 	{
 		return homePhoneNumber;
-	}
-
-	public void setHomePhoneNumber(String homePhoneNumber)
-	{
-		this.homePhoneNumber = homePhoneNumber;
 	}
 
 	public String getHomeEmailAdress()
@@ -176,13 +120,82 @@ public class PPerson
 		return homeEmailAdress;
 	}
 
-	public void setHomeEmailAdress(String homeEmailAdress)
+	public PApplication getApplication()
+	{
+		return application;
+	}
+
+	Title getTitle()
+	{
+		return title;
+	}
+
+	void setTitle(Title title)
+	{
+		this.title = title;
+	}
+
+	void setEmployeeNumber(String employeeNumber)
+	{
+		this.employeeNumber = employeeNumber;
+	}
+
+	void setGender(Gender gender)
+	{
+		this.gender = gender;
+	}
+
+	void setFirstName(String firstName)
+	{
+		this.firstName = firstName;
+	}
+
+	void setLastName(String lastName)
+	{
+		this.lastName = lastName;
+	}
+
+	void setPhoneNumber(String phoneNumber)
+	{
+		this.phoneNumber = phoneNumber;
+	}
+
+	void setFaxNumber(String faxNumber)
+	{
+		this.faxNumber = faxNumber;
+	}
+
+	void setEmailAdress(String emailAdress)
+	{
+		this.emailAdress = emailAdress;
+	}
+
+	void setMobileNumber(String mobileNumber)
+	{
+		this.mobileNumber = mobileNumber;
+	}
+
+	void setHomeAddress(PAddress homeAddress)
+	{
+		this.homeAddress = homeAddress;
+	}
+
+	void setHomePhoneNumber(String homePhoneNumber)
+	{
+		this.homePhoneNumber = homePhoneNumber;
+	}
+
+	void setHomeEmailAdress(String homeEmailAdress)
 	{
 		this.homeEmailAdress = homeEmailAdress;
 	}
 
-	// constructor
-	// package-scope for unit-testing:
+	void setApplication(PApplication application)
+	{
+		this.application = application;
+	}
+
+	// constructor:
 	PPerson()
 	{
 		super();

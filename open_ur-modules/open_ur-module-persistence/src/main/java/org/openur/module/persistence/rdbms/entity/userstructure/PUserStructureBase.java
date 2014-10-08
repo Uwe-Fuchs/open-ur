@@ -26,17 +26,17 @@ public abstract class PUserStructureBase
 		return number;
 	}
 
-	public void setNumber(String number)
-	{
-		this.number = number;
-	}
-
 	public Status getStatus()
 	{
 		return status;
 	}
 
-	public void setStatus(Status status)
+	protected void setNumber(String number)
+	{
+		this.number = number;
+	}
+
+	protected void setStatus(Status status)
 	{
 		this.status = status;
 	}
