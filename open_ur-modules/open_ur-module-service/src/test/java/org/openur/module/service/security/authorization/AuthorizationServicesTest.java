@@ -69,6 +69,7 @@ public class AuthorizationServicesTest
 			.build();
 		
 		IPerson person = new PersonSimpleBuilder()
+			.apps(new HashSet<IApplication>(Arrays.asList(app1)))
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();
@@ -114,6 +115,7 @@ public class AuthorizationServicesTest
 		
 		final String PERS_ID = UUID.randomUUID().toString();		
 		IPerson person = new PersonSimpleBuilder(PERS_ID)
+			.apps(new HashSet<IApplication>(Arrays.asList(app)))
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();

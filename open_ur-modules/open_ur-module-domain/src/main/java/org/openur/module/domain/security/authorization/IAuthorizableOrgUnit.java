@@ -18,6 +18,11 @@ public interface IAuthorizableOrgUnit
 	 */
 	default boolean hasPermission(IPerson person, IApplication app, IPermission permission)
 	{
+		if (!person.getApps().contains(app))
+		{
+			return false;
+		}
+		
 		IAuthorizableMember member = findAuthorizableMember(person.getIdentifier());
 		
 		if (member == null)

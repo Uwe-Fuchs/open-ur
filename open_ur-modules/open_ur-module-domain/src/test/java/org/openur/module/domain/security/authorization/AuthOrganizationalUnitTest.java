@@ -88,6 +88,7 @@ public class AuthOrganizationalUnitTest
 			.build();
 		
 		IPerson person = new PersonBuilder(name)
+			.apps(new HashSet<IApplication>(Arrays.asList(app1)))
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();		
