@@ -66,6 +66,7 @@ public class AuthOrgUnitSimpleTest
 			.build();
 		
 		IPerson person = new PersonSimpleBuilder()
+			.apps(new HashSet<IApplication>(Arrays.asList(app1)))
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();		
