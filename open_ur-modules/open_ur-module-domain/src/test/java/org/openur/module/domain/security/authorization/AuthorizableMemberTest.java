@@ -19,7 +19,7 @@ public class AuthorizableMemberTest
 	@Test
 	public void testHasRole()
 	{
-		IRole role1 = new OpenURRoleBuilder("role1")
+		OpenURRole role1 = new OpenURRoleBuilder("role1")
 			.build();		
 		IPerson pers = new PersonSimpleBuilder()
 			.number("123")
@@ -29,7 +29,7 @@ public class AuthorizableMemberTest
 		IAuthorizableMember member = new AuthorizableMember(pers, OU_ID_1, Arrays.asList(role1));		
 		assertTrue(member.hasRole(role1));
 		
-		IRole role2 = new OpenURRoleBuilder("role2")
+		OpenURRole role2 = new OpenURRoleBuilder("role2")
 			.build();		
 		assertFalse(member.hasRole(role2));
 		
@@ -47,7 +47,7 @@ public class AuthorizableMemberTest
 			.build();
 		OpenURPermission perm12 = new OpenURPermissionBuilder("perm12", PermissionScope.SELECTED_SUB,  app1)
 			.build();		
-		IRole role1 = new OpenURRoleBuilder("role1")
+		OpenURRole role1 = new OpenURRoleBuilder("role1")
 			.permissions(new HashSet<IPermission>(Arrays.asList(perm11, perm12)))
 			.build();
 		
@@ -66,7 +66,7 @@ public class AuthorizableMemberTest
 			.build();
 		OpenURPermission perm22 = new OpenURPermissionBuilder("perm22", PermissionScope.SUB,  app2)
 			.build();		
-		IRole role2 = new OpenURRoleBuilder("role2")
+		OpenURRole role2 = new OpenURRoleBuilder("role2")
 		.permissions(new HashSet<IPermission>(Arrays.asList(perm21, perm22)))
 		.build();
 		

@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.openur.module.domain.IdentifiableEntityImpl;
 import org.openur.module.domain.application.IApplication;
 
@@ -59,20 +58,5 @@ public class OpenURRole
 	}
 	
 	// operations:
-	@Override
-	public int compareTo(IRole other)
-	{
-		int comparison = new CompareToBuilder()
-												.append(this.getRole(), other.getRole())
-												.toComparison();
-		
-		if (comparison != 0)
-		{
-			return comparison;
-		} else
-		{
-			// this should never happen because two roles shouldn't have the same name
-			return this.getIdentifier().compareTo(other.getIdentifier());
-		}
-	}
+	
 }

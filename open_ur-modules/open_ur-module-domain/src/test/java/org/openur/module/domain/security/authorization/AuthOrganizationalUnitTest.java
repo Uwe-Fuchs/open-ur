@@ -14,16 +14,6 @@ import org.junit.Test;
 import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
-import org.openur.module.domain.security.authorization.AuthOrgUnitSimple;
-import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
-import org.openur.module.domain.security.authorization.AuthorizableMember;
-import org.openur.module.domain.security.authorization.IAuthorizableMember;
-import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
-import org.openur.module.domain.security.authorization.IPermission;
-import org.openur.module.domain.security.authorization.IRole;
-import org.openur.module.domain.security.authorization.OpenURPermissionBuilder;
-import org.openur.module.domain.security.authorization.OpenURRoleBuilder;
-import org.openur.module.domain.security.authorization.PermissionScope;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitSimpleBuilder;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnitBuilder;
 import org.openur.module.domain.userstructure.person.IPerson;
@@ -84,7 +74,7 @@ public class AuthOrganizationalUnitTest
 			.build();		
 		OpenURPermission perm11 = new OpenURPermissionBuilder("perm11", PermissionScope.SELECTED,  app1)
 			.build();		
-		IRole role1 = new OpenURRoleBuilder("role1")
+		OpenURRole role1 = new OpenURRoleBuilder("role1")
 			.permissions(new HashSet<IPermission>(Arrays.asList(perm11)))
 			.build();
 		
