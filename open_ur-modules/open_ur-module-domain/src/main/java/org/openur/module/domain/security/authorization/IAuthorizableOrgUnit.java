@@ -18,7 +18,7 @@ public interface IAuthorizableOrgUnit
 	 */
 	default boolean hasPermission(IPerson person, IApplication app, IPermission permission)
 	{
-		if (!person.getApps().contains(app))
+		if (!person.getApplications().contains(app))
 		{
 			return false;
 		}

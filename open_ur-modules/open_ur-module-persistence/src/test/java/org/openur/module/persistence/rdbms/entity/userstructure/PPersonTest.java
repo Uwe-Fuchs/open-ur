@@ -2,14 +2,19 @@ package org.openur.module.persistence.rdbms.entity.userstructure;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.Before;
 import org.junit.Test;
+import org.openur.module.domain.application.IApplication;
+import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.Country;
 import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.IAddress;
 import org.openur.module.domain.userstructure.Status;
-import org.openur.module.domain.userstructure.Address.AddressBuilder;
 import org.openur.module.domain.userstructure.person.Gender;
 import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.Person;
@@ -19,6 +24,9 @@ public class PPersonTest
 {
 	private Name name;
 	private IAddress address;
+	private IApplication app1;
+	private IApplication app2;
+	private Set<IApplication> applications;
 	
 	@Before
 	public void setUp()
@@ -26,14 +34,18 @@ public class PPersonTest
 	{
 		this.name = Name.create(Gender.MALE, "Uwe", "Fuchs");
 		
-		AddressBuilder b = Address.builder();		
-		b.country(Country.byCode("DE"));
-		b.city("city_1");
-		b.postcode("11");
-		b.street("street_1");
-		b.streetNo("11");
-		b.poBox("poBox_1");	
-		this.address = b.build();
+		this.address = Address.builder()
+			.country(Country.byCode("DE"))
+			.city("city_1")
+			.postcode("11")
+			.street("street_1")
+			.streetNo("11")
+			.poBox("poBox_1")	
+			.build();
+		
+		app1 = new OpenURApplicationBuilder("app1").build();
+		app2 = new OpenURApplicationBuilder("app2").build();
+		this.applications = new HashSet<>(Arrays.asList(app1, app2));
 	}
 
 	@Test
@@ -49,13 +61,17 @@ public class PPersonTest
 			.mobileNumber("0049111222333")
 			.homeAddress(this.address)
 			.homePhoneNumber("0049444555666")
-			.homeEmailAdress(new EMailAddress("home@uwefuchs.com"));
+			.homeEmailAdress(new EMailAddress("home@uwefuchs.com"))
+			.apps(this.applications);
 
-		Person person = pb.build();
-		PPerson pPerson = PPerson.mapFromImmutable(person);
+		Person immutable = pb.build();
+		PPerson persistable = PPerson.mapFromImmutable(immutable);
 		
-		assertNotNull(pPerson);
-		assertEquals(person.getNumber(), pPerson.getNumber());
+		assertNotNull(persistable);
+		assertEquals(immutable.getNumber(), persistable.getNumber());
+		assertEquals(immutable.getHomeEmailAddress().getAsPlainEMailAddress(), persistable.getHomeEmailAddress());
+//		assertTrue(immutable.getApplications().size() == 2);
+//		assertTrue(persistable.getApplications().size() == 2);
 	}
 
 //	@Test

@@ -18,5 +18,5 @@ public interface IPerson
 	 * 
 	 * @return Set of applications (may be empty).
 	 */
-	Set<IApplication> getApps();
+	Set<IApplication> getApplications();
 }

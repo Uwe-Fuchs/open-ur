@@ -1,10 +1,16 @@
 package org.openur.module.persistence.rdbms.entity.userstructure;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import org.apache.commons.lang3.StringUtils;
@@ -47,22 +53,28 @@ public class PPerson
 	private String faxNumber;
 	
 	@Column(name="EMAIL")
-	private String emailAdress;
+	private String emailAddress;
 	
 	@Column(name="MOBILE_NO", length=20)
   private String mobileNumber;
 
 	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="HOME_ADDRESS_ID", referencedColumnName="ID")
   private PAddress homeAddress;
   
 	@Column(name="HOME_PHONE_NO", length=20)
   private String homePhoneNumber;
   
 	@Column(name="HOME_EMAIL")
-  private String homeEmailAdress;
+  private String homeEmailAddress;
 
-	@ManyToOne
-  private PApplication application;
+	@ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinTable(
+		name="PERSONS_APPS",
+		joinColumns={@JoinColumn(name="ID_PERSON", referencedColumnName="ID")},
+		inverseJoinColumns={@JoinColumn(name="ID_APPLICATION", referencedColumnName="ID")}
+	)
+  private List<PApplication> applications;
 
 	// accessors:
 	public String getEmployeeNumber()
@@ -95,9 +107,9 @@ public class PPerson
 		return faxNumber;
 	}
 
-	public String getEmailAdress()
+	public String getEmailAddress()
 	{
-		return emailAdress;
+		return emailAddress;
 	}
 
 	public String getMobileNumber()
@@ -115,19 +127,19 @@ public class PPerson
 		return homePhoneNumber;
 	}
 
-	public String getHomeEmailAdress()
+	public String getHomeEmailAddress()
 	{
-		return homeEmailAdress;
+		return homeEmailAddress;
 	}
 
-	public PApplication getApplication()
-	{
-		return application;
-	}
-
-	Title getTitle()
+	public Title getTitle()
 	{
 		return title;
+	}
+
+	public List<PApplication> getApplications()
+	{
+		return applications;
 	}
 
 	void setTitle(Title title)
@@ -167,7 +179,7 @@ public class PPerson
 
 	void setEmailAdress(String emailAdress)
 	{
-		this.emailAdress = emailAdress;
+		this.emailAddress = emailAdress;
 	}
 
 	void setMobileNumber(String mobileNumber)
@@ -187,12 +199,12 @@ public class PPerson
 
 	void setHomeEmailAdress(String homeEmailAdress)
 	{
-		this.homeEmailAdress = homeEmailAdress;
+		this.homeEmailAddress = homeEmailAdress;
 	}
 
-	void setApplication(PApplication application)
+	void setApplications(List<PApplication> applications)
 	{
-		this.application = application;
+		this.applications = applications;
 	}
 
 	// constructor:
@@ -206,14 +218,14 @@ public class PPerson
 		PPerson persistable = new PPerson();
 
 		persistable.setNumber(immutable.getNumber());
-		persistable.setEmailAdress(immutable.getEmailAdress() != null ? immutable.getEmailAdress().getAsPlainEMailAddress() : null);
+		persistable.setEmailAdress(immutable.getEmailAddress() != null ? immutable.getEmailAddress().getAsPlainEMailAddress() : null);
 		persistable.setEmployeeNumber(immutable.getEmployeeNumber());
 		persistable.setFaxNumber(immutable.getFaxNumber());
 		persistable.setFirstName(immutable.getName().getFirstName());
 		persistable.setLastName(immutable.getName().getLastName());
 		persistable.setGender(immutable.getName().getGender());
 		persistable.setTitle(immutable.getName().getTitle());
-		persistable.setHomeEmailAdress(immutable.getHomeEmailAdress() != null ? immutable.getHomeEmailAdress().getAsPlainEMailAddress() : null);
+		persistable.setHomeEmailAdress(immutable.getHomeEmailAddress() != null ? immutable.getHomeEmailAddress().getAsPlainEMailAddress() : null);
 		persistable.setHomePhoneNumber(immutable.getHomePhoneNumber());
 		persistable.setMobileNumber(immutable.getMobileNumber());
 		persistable.setPhoneNumber(immutable.getPhoneNumber());
@@ -244,10 +256,10 @@ public class PPerson
 		
 		Person immutable = new PersonBuilder(name)
 				.number(persistable.getNumber())
-				.emailAdress(StringUtils.isNotEmpty(persistable.getEmailAdress()) ? new EMailAddress(persistable.getEmailAdress()) : null)
+				.emailAdress(StringUtils.isNotEmpty(persistable.getEmailAddress()) ? new EMailAddress(persistable.getEmailAddress()) : null)
 				.employeeNumber(persistable.getEmployeeNumber())
 				.faxNumber(persistable.getFaxNumber())
-				.homeEmailAdress(StringUtils.isNotEmpty(persistable.getHomeEmailAdress()) ? new EMailAddress(persistable.getHomeEmailAdress()) : null)
+				.homeEmailAdress(StringUtils.isNotEmpty(persistable.getHomeEmailAddress()) ? new EMailAddress(persistable.getHomeEmailAddress()) : null)
 				.homePhoneNumber(persistable.getHomePhoneNumber())
 				.mobileNumber(persistable.getMobileNumber())
 				.phoneNumber(persistable.getPhoneNumber())

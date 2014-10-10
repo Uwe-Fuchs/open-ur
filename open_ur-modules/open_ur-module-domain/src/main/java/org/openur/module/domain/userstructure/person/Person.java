@@ -15,11 +15,11 @@ public class Person
   private final String employeeNumber;	
 	private final String phoneNumber;
 	private final String faxNumber;
-	private final EMailAddress emailAdress;
+	private final EMailAddress emailAddress;
   private final String mobileNumber;
   private final IAddress homeAddress;
   private final String homePhoneNumber;
-  private final EMailAddress homeEmailAdress;
+  private final EMailAddress homeEmailAddress;
 
   // constructor:
 	Person(PersonBuilder b)
@@ -29,11 +29,11 @@ public class Person
 		this.employeeNumber = b.getEmployeeNumber();		
 		this.phoneNumber = b.getPhoneNumber();
 		this.faxNumber = b.getFaxNumber();
-		this.emailAdress = b.getEmailAdress();
+		this.emailAddress = b.getEmailAdress();
 		this.mobileNumber = b.getMobileNumber();
 		this.homeAddress = b.getHomeAddress();
 		this.homePhoneNumber = b.getHomePhoneNumber();
-		this.homeEmailAdress = b.getHomeEmailAdress();
+		this.homeEmailAddress = b.getHomeEmailAdress();
 	}
 
 	// accessors:
@@ -47,9 +47,9 @@ public class Person
 		return faxNumber;
 	}
 
-	public EMailAddress getEmailAdress()
+	public EMailAddress getEmailAddress()
 	{
-		return emailAdress;
+		return emailAddress;
 	}
 
 	public Name getName()
@@ -77,9 +77,9 @@ public class Person
 		return homePhoneNumber;
 	}
 
-	public EMailAddress getHomeEmailAdress()
+	public EMailAddress getHomeEmailAddress()
 	{
-		return homeEmailAdress;
+		return homeEmailAddress;
 	}
 
 	// operations:
@@ -95,7 +95,7 @@ public class Person
 		
 		int comparison = new CompareToBuilder()
 														.append(this.getName(), pers.getName())
-														.append(this.getEmailAdress(), pers.getEmailAdress())
+														.append(this.getEmailAddress(), pers.getEmailAddress())
 														.toComparison();
 
 		if (comparison != 0)

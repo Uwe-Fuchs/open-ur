@@ -15,21 +15,21 @@ public abstract class AbstractPerson
 	private static final long serialVersionUID = -5109626819047294963L;
 	
 	// properties:
-	private final Set<IApplication> apps;
+	private final Set<IApplication> applications;
 
 	// constructor:
 	protected AbstractPerson(AbstractPersonBuilder<? extends AbstractPersonBuilder<?>> b)
 	{
 		super(b);
 		
-		this.apps = Collections.unmodifiableSet(b.getApps());
+		this.applications = Collections.unmodifiableSet(b.getApps());
 	}
 
 	// accessors:
 	@Override
-	public Set<IApplication> getApps()
+	public Set<IApplication> getApplications()
 	{
-		return apps;
+		return applications;
 	}
 
 	// operations:

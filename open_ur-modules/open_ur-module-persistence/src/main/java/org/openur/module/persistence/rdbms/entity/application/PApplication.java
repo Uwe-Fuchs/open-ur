@@ -2,10 +2,13 @@ package org.openur.module.persistence.rdbms.entity.application;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
@@ -21,8 +24,13 @@ public class PApplication
 	// properties:
 	@Column(name="APPLICATION_NAME", nullable=false, unique=true)
 	private String applicationName;
-	
-	@OneToMany(mappedBy="application", fetch=FetchType.EAGER)
+
+	@ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinTable(
+		name="PERSONS_APPS",
+		joinColumns={@JoinColumn(name="ID_APPLICATION", referencedColumnName="ID")},
+		inverseJoinColumns={@JoinColumn(name="ID_PERSON", referencedColumnName="ID")}
+	)
 	private List<PPerson> persons;
 
 	// accessors:
