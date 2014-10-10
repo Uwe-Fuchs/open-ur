@@ -12,4 +12,9 @@ public interface IApplication
 	 * @return String
 	 */
 	String getApplicationName();
+	
+	default int compareTo(IApplication o)
+	{
+		return this.getApplicationName().compareToIgnoreCase(o.getApplicationName());
+	}
 }

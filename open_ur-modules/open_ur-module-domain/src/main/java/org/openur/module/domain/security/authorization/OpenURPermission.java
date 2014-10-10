@@ -1,8 +1,7 @@
 package org.openur.module.domain.security.authorization;
 
-import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.openur.module.domain.IdentifiableEntityImpl;
-import org.openur.module.domain.application.IApplication;
+import org.openur.module.domain.application.OpenURApplication;
 
 public class OpenURPermission
 	extends IdentifiableEntityImpl
@@ -11,7 +10,7 @@ public class OpenURPermission
 	private static final long serialVersionUID = -7018258281730222661L;
 	
 	// properties:
-	private final IApplication app;
+	private final OpenURApplication application;
 	private final String permissionName;
 	private final String description;
 	private final PermissionScope permissionScope;
@@ -21,7 +20,7 @@ public class OpenURPermission
 	{
 		super(b);
 
-		this.app = b.getApp();
+		this.application = b.getApp();
 		this.permissionName = b.getPermissionName();
 		this.description = b.getDescription();
 		this.permissionScope = b.getPermissionScope();
@@ -46,20 +45,11 @@ public class OpenURPermission
 	}
 
 	@Override
-	public IApplication getApp()
+	public OpenURApplication getApplication()
 	{
-		return this.app;
+		return this.application;
 	}
 
 	// operations:
-	@Override
-	public int compareTo(IPermission o)
-	{
-		int comparison = new CompareToBuilder()
-												.append(this.getPermissionName(), o.getPermissionName())
-												.append(this.getApp(), o.getApp())
-												.toComparison();
-		
-		return comparison;
-	}
+
 }

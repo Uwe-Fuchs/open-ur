@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.openur.module.domain.application.IApplication;
+import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.domain.security.authorization.AuthOrgUnitSimple;
 import org.openur.module.domain.security.authorization.AuthorizableMember;
@@ -60,7 +61,7 @@ public class AuthorizationServicesTest
 	@Test
 	public void testHasPermissionIPersonIOrganizationalUnitIPermissionIApplication()
 	{
-		IApplication app1 = new OpenURApplicationBuilder("app1")
+		OpenURApplication app1 = new OpenURApplicationBuilder("app1")
 			.build();		
 		IPermission perm1 = new OpenURPermissionBuilder("perm1", PermissionScope.SELECTED, app1)
 			.build();		
@@ -104,7 +105,7 @@ public class AuthorizationServicesTest
 	@Test
 	public void testHasPermissionStringStringStringIApplication()
 	{
-		IApplication app = new OpenURApplicationBuilder("app")
+		OpenURApplication app = new OpenURApplicationBuilder("app")
 			.build();		
 		final String PERM_NAME_1 = "perm1";
 		IPermission perm1 = new OpenURPermissionBuilder(PERM_NAME_1, PermissionScope.SELECTED,  app)

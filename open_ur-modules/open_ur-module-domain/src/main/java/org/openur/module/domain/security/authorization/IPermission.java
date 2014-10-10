@@ -1,5 +1,6 @@
 package org.openur.module.domain.security.authorization;
 
+import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.openur.module.domain.IIdentifiableEntity;
 import org.openur.module.domain.application.IApplication;
 
@@ -11,7 +12,7 @@ public interface IPermission
 	 * 
 	 * @return IApplication
 	 */
-	IApplication getApp();
+	IApplication getApplication();
 	
 	/**
 	 * the permission-literal.
@@ -26,4 +27,15 @@ public interface IPermission
 	 * @return PermissionScope
 	 */
 	PermissionScope getPermissionScope();
+	
+	// operations:
+	default int compareTo(IPermission o)
+	{
+		int comparison = new CompareToBuilder()
+												.append(this.getPermissionName(), o.getPermissionName())
+												.append(this.getApplication(), o.getApplication())
+												.toComparison();
+		
+		return comparison;
+	}
 }

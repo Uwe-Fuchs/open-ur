@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.UUID;
 
 import org.junit.Test;
-import org.openur.module.domain.application.IApplication;
+import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.userstructure.person.IPerson;
@@ -41,11 +41,11 @@ public class AuthorizableMemberTest
 	@Test
 	public void testHasPermission()
 	{
-		IApplication app1 = new OpenURApplicationBuilder("app1")
+		OpenURApplication app1 = new OpenURApplicationBuilder("app1")
 			.build();		
-		IPermission perm11 = new OpenURPermissionBuilder("perm11", PermissionScope.SELECTED,  app1)
+		OpenURPermission perm11 = new OpenURPermissionBuilder("perm11", PermissionScope.SELECTED,  app1)
 			.build();
-		IPermission perm12 = new OpenURPermissionBuilder("perm12", PermissionScope.SELECTED_SUB,  app1)
+		OpenURPermission perm12 = new OpenURPermissionBuilder("perm12", PermissionScope.SELECTED_SUB,  app1)
 			.build();		
 		IRole role1 = new OpenURRoleBuilder("role1")
 			.permissions(new HashSet<IPermission>(Arrays.asList(perm11, perm12)))
@@ -60,11 +60,11 @@ public class AuthorizableMemberTest
 		assertTrue(member.hasPermission(app1, perm11));
 		assertTrue(member.hasPermission(app1, perm12));
 		
-		IApplication app2 = new OpenURApplicationBuilder("app2")
+		OpenURApplication app2 = new OpenURApplicationBuilder("app2")
 			.build();		
-		IPermission perm21 = new OpenURPermissionBuilder("perm21", PermissionScope.SELECTED,  app2)
+		OpenURPermission perm21 = new OpenURPermissionBuilder("perm21", PermissionScope.SELECTED,  app2)
 			.build();
-		IPermission perm22 = new OpenURPermissionBuilder("perm22", PermissionScope.SUB,  app2)
+		OpenURPermission perm22 = new OpenURPermissionBuilder("perm22", PermissionScope.SUB,  app2)
 			.build();		
 		IRole role2 = new OpenURRoleBuilder("role2")
 		.permissions(new HashSet<IPermission>(Arrays.asList(perm21, perm22)))

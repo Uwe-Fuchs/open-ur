@@ -12,6 +12,7 @@ import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 import org.openur.module.domain.application.IApplication;
+import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.domain.security.authorization.AuthOrgUnitSimple;
 import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
@@ -79,9 +80,9 @@ public class AuthOrganizationalUnitTest
 	@Test
 	public void testHasPermission()
 	{
-		IApplication app1 = new OpenURApplicationBuilder("app1")
+		OpenURApplication app1 = new OpenURApplicationBuilder("app1")
 			.build();		
-		IPermission perm11 = new OpenURPermissionBuilder("perm11", PermissionScope.SELECTED,  app1)
+		OpenURPermission perm11 = new OpenURPermissionBuilder("perm11", PermissionScope.SELECTED,  app1)
 			.build();		
 		IRole role1 = new OpenURRoleBuilder("role1")
 			.permissions(new HashSet<IPermission>(Arrays.asList(perm11)))
@@ -100,7 +101,7 @@ public class AuthOrganizationalUnitTest
 		assertTrue(ou.hasPermission(person, app1, perm11));
 	
 		// doesn't have permission:
-		IPermission perm12 = new OpenURPermissionBuilder("perm12", PermissionScope.SELECTED_SUB,  app1)
+		OpenURPermission perm12 = new OpenURPermissionBuilder("perm12", PermissionScope.SELECTED_SUB,  app1)
 			.build();
 		
 		assertFalse(ou.hasPermission(person, app1, perm12));

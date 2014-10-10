@@ -27,9 +27,5 @@ public class OpenURApplication
 	}
 
 	// operations:
-	@Override
-	public int compareTo(IApplication o)
-	{
-		return this.getApplicationName().compareToIgnoreCase(o.getApplicationName());
-	}
+	
 }

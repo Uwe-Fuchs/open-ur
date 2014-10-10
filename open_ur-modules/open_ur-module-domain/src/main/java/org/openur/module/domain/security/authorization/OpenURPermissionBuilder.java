@@ -2,20 +2,20 @@ package org.openur.module.domain.security.authorization;
 
 import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.IdentifiableEntityBuilder;
-import org.openur.module.domain.application.IApplication;
+import org.openur.module.domain.application.OpenURApplication;
 
 public class OpenURPermissionBuilder
 	extends IdentifiableEntityBuilder<OpenURPermissionBuilder>
 {
 	// properties:
-	private IApplication app = null;
+	private OpenURApplication app = null;
 	private String permissionName = null;
 	private String description = null;
 	private PermissionScope permissionScope = null;
 
 	// constructors:
 	public OpenURPermissionBuilder(String id, String permissionName,
-		PermissionScope permissionScope, IApplication app)
+		PermissionScope permissionScope, OpenURApplication app)
 	{
 		super(id);
 
@@ -23,14 +23,14 @@ public class OpenURPermissionBuilder
 	}
 
 	public OpenURPermissionBuilder(String permissionName,
-		PermissionScope permissionScope, IApplication app)
+		PermissionScope permissionScope, OpenURApplication app)
 	{
 		super();
 
 		init(permissionName, permissionScope, app);
 	}
 
-	private void init(String permissionName, PermissionScope permissionScope, IApplication app)
+	private void init(String permissionName, PermissionScope permissionScope, OpenURApplication app)
 	{
 		Validate.notEmpty(permissionName, "permission-name must not be empty!");
 		Validate.notNull(permissionScope, "scope must not be null!");
@@ -53,7 +53,7 @@ public class OpenURPermissionBuilder
 	}
 
 	// accessors:
-	IApplication getApp()
+	OpenURApplication getApp()
 	{
 		return app;
 	}

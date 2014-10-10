@@ -58,12 +58,12 @@ public class OpenURRoleBuilder
 		
 		for (IPermission p : perms)
 		{
-			Set<IPermission> sp = permsLocal.get(p.getApp());
+			Set<IPermission> sp = permsLocal.get(p.getApplication());
 			
 			if (sp == null)
 			{
 				sp = new HashSet<IPermission>();
-				permsLocal.put(p.getApp(), sp);
+				permsLocal.put(p.getApplication(), sp);
 			}
 
 			sp.add(p);
