@@ -1,8 +1,8 @@
 package org.openur.module.domain.userstructure.orgunit;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.EMailAddress;
-import org.openur.module.domain.userstructure.IAddress;
 import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnit;
 
 public class OrganizationalUnit
@@ -14,7 +14,7 @@ public class OrganizationalUnit
   private final String name;
   private final String shortName;
   private final String description;
-	private final IAddress address;
+	private final Address address;
 	private final EMailAddress emailAdress;
 
 	// constructor:
@@ -44,7 +44,7 @@ public class OrganizationalUnit
 		return description;
 	}
 	
-	public IAddress getAddress()
+	public Address getAddress()
 	{
 		return address;
 	}

@@ -1,8 +1,8 @@
 package org.openur.module.domain.userstructure.person;
 
 import org.apache.commons.lang3.Validate;
+import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.EMailAddress;
-import org.openur.module.domain.userstructure.IAddress;
 import org.openur.module.domain.userstructure.person.abstr.AbstractPersonBuilder;
 
 public class PersonBuilder
@@ -15,7 +15,7 @@ public class PersonBuilder
 	private String faxNumber = null;
 	private EMailAddress emailAdress = null;
   private String mobileNumber = null;
-  private IAddress homeAddress = null;
+  private Address homeAddress = null;
   private String homePhoneNumber = null;
   private EMailAddress homeEmailAdress = null;
 	
@@ -71,7 +71,7 @@ public class PersonBuilder
 		return this;
 	}
 
-	public PersonBuilder homeAddress(IAddress homeAddress)
+	public PersonBuilder homeAddress(Address homeAddress)
 	{
 		this.homeAddress = homeAddress;			
 		return this;
@@ -125,7 +125,7 @@ public class PersonBuilder
 		return mobileNumber;
 	}
 
-	IAddress getHomeAddress()
+	Address getHomeAddress()
 	{
 		return homeAddress;
 	}

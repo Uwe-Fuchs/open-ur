@@ -9,11 +9,11 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.openur.module.domain.application.IApplication;
+import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.Country;
 import org.openur.module.domain.userstructure.EMailAddress;
-import org.openur.module.domain.userstructure.IAddress;
 import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.userstructure.person.Gender;
 import org.openur.module.domain.userstructure.person.Name;
@@ -23,9 +23,9 @@ import org.openur.module.domain.userstructure.person.PersonBuilder;
 public class PPersonTest
 {
 	private Name name;
-	private IAddress address;
-	private IApplication app1;
-	private IApplication app2;
+	private Address address;
+	private OpenURApplication app1;
+	private OpenURApplication app2;
 	private Set<IApplication> applications;
 	
 	@Before

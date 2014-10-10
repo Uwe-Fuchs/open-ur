@@ -1,8 +1,8 @@
 package org.openur.module.domain.userstructure.person;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.EMailAddress;
-import org.openur.module.domain.userstructure.IAddress;
 import org.openur.module.domain.userstructure.person.abstr.AbstractPerson;
 
 public class Person
@@ -17,7 +17,7 @@ public class Person
 	private final String faxNumber;
 	private final EMailAddress emailAddress;
   private final String mobileNumber;
-  private final IAddress homeAddress;
+  private final Address homeAddress;
   private final String homePhoneNumber;
   private final EMailAddress homeEmailAddress;
 
@@ -67,7 +67,7 @@ public class Person
 		return mobileNumber;
 	}
 
-	public IAddress getHomeAddress()
+	public Address getHomeAddress()
 	{
 		return homeAddress;
 	}
