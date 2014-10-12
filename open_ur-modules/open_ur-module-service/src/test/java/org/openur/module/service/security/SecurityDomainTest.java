@@ -1,6 +1,9 @@
 package org.openur.module.service.security;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -12,7 +15,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
@@ -26,7 +28,6 @@ import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnit;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnitBuilder;
 import org.openur.module.persistence.dao.ISecurityDao;
-import org.openur.module.service.security.ISecurityDomainServices;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -136,7 +137,7 @@ public class SecurityDomainTest
 		resultPermission = securityDomainServices.findPermissionByName("abcdef", app);
 		assertEquals(resultPermission, null);
 		
-		IApplication app2 = new OpenURApplicationBuilder("app2").build();	
+		OpenURApplication app2 = new OpenURApplicationBuilder("app2").build();	
 		resultPermission = securityDomainServices.findPermissionByName(PERM_NAME_1, app2);
 		assertEquals(resultPermission, null);
 	}

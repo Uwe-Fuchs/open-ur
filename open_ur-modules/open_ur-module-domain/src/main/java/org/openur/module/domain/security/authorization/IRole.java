@@ -22,7 +22,7 @@ public interface IRole
 	 * 
 	 * @return Map<IApplication, Set<IPermission>>
 	 */
-	Map<IApplication, Set<IPermission>> getAllPermissions();
+	Map<? extends IApplication, Set<? extends IPermission>> getAllPermissions();
 	
 	/**
 	 * the permissions assigned to this role for one special application.
@@ -31,7 +31,7 @@ public interface IRole
 	 * 
 	 * @return Set<IPermission>
 	 */
-	Set<IPermission> getPermissions(IApplication application);
+	Set<? extends IPermission> getPermissions(IApplication application);
 	
 	// operations:
 	@Override

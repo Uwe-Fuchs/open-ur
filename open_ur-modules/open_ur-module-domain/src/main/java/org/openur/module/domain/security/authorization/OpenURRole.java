@@ -1,11 +1,13 @@
 package org.openur.module.domain.security.authorization;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import org.openur.module.domain.IdentifiableEntityImpl;
 import org.openur.module.domain.application.IApplication;
+import org.openur.module.domain.application.OpenURApplication;
 
 public class OpenURRole
 	extends IdentifiableEntityImpl
@@ -16,7 +18,7 @@ public class OpenURRole
 	// properties:
 	private final String roleName;
 	private final String description;
-	private final Map<IApplication, Set<IPermission>> permissions;
+	private final Map<OpenURApplication, Set<OpenURPermission>> permissions;
 
 	// constructor:
 	OpenURRole(OpenURRoleBuilder b)
@@ -36,15 +38,22 @@ public class OpenURRole
 	}
 
 	@Override
-	public Set<IPermission> getPermissions(IApplication app)
+	public Set<OpenURPermission> getPermissions(IApplication app)
 	{
 		return permissions.get(app);
 	}
-	
+
 	@Override
-	public Map<IApplication, Set<IPermission>> getAllPermissions()
+	public Map<OpenURApplication, Set<? extends IPermission>> getAllPermissions()
 	{
-		return this.permissions;
+		Map<OpenURApplication, Set<? extends IPermission>> map = new HashMap<>();
+		
+		for (OpenURApplication app : this.permissions.keySet())
+		{
+			map.put(app, this.getPermissions(app));
+		}
+		
+		return map;
 	}
 
 	public String getRoleName()

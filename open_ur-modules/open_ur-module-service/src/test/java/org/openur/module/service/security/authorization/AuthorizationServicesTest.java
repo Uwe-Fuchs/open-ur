@@ -21,6 +21,7 @@ import org.openur.module.domain.security.authorization.IAuthorizableMember;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
+import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.domain.security.authorization.OpenURPermissionBuilder;
 import org.openur.module.domain.security.authorization.OpenURRoleBuilder;
 import org.openur.module.domain.security.authorization.PermissionScope;
@@ -62,10 +63,10 @@ public class AuthorizationServicesTest
 	{
 		OpenURApplication app1 = new OpenURApplicationBuilder("app1")
 			.build();		
-		IPermission perm1 = new OpenURPermissionBuilder("perm1", PermissionScope.SELECTED, app1)
+		OpenURPermission perm1 = new OpenURPermissionBuilder("perm1", PermissionScope.SELECTED, app1)
 			.build();		
 		IRole role1 = new OpenURRoleBuilder("role1")
-			.permissions(new HashSet<IPermission>(Arrays.asList(perm1)))
+			.permissions(new HashSet<OpenURPermission>(Arrays.asList(perm1)))
 			.build();
 		
 		IPerson person = new PersonSimpleBuilder()
@@ -107,10 +108,10 @@ public class AuthorizationServicesTest
 		OpenURApplication app = new OpenURApplicationBuilder("app")
 			.build();		
 		final String PERM_NAME_1 = "perm1";
-		IPermission perm1 = new OpenURPermissionBuilder(PERM_NAME_1, PermissionScope.SELECTED,  app)
+		OpenURPermission perm1 = new OpenURPermissionBuilder(PERM_NAME_1, PermissionScope.SELECTED,  app)
 			.build();		
 		IRole role1 = new OpenURRoleBuilder("role1")
-			.permissions(new HashSet<IPermission>(Arrays.asList(perm1)))
+			.permissions(new HashSet<OpenURPermission>(Arrays.asList(perm1)))
 			.build();
 		
 		final String PERS_ID = UUID.randomUUID().toString();		

@@ -74,7 +74,7 @@ public class AuthOrganizationalUnitTest
 		OpenURPermission perm11 = new OpenURPermissionBuilder("perm11", PermissionScope.SELECTED,  app1)
 			.build();		
 		OpenURRole role1 = new OpenURRoleBuilder("role1")
-			.permissions(new HashSet<IPermission>(Arrays.asList(perm11)))
+			.permissions(new HashSet<OpenURPermission>(Arrays.asList(perm11)))
 			.build();
 		
 		IPerson person = new PersonBuilder(name)

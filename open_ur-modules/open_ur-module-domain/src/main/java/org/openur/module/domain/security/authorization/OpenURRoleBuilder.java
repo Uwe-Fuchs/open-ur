@@ -8,7 +8,7 @@ import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.IdentifiableEntityBuilder;
-import org.openur.module.domain.application.IApplication;
+import org.openur.module.domain.application.OpenURApplication;
 
 public class OpenURRoleBuilder
 	extends IdentifiableEntityBuilder<OpenURRoleBuilder>
@@ -16,7 +16,7 @@ public class OpenURRoleBuilder
 	// properties:
 	private String roleName = null;
 	private String description = null;
-	private Map<IApplication, Set<IPermission>> permissions = new HashMap<IApplication, Set<IPermission>>();
+	private Map<OpenURApplication, Set<OpenURPermission>> permissions = new HashMap<>();
 
 	// constructors:
 	public OpenURRoleBuilder(String identifer, String roleName)
@@ -52,17 +52,17 @@ public class OpenURRoleBuilder
 		return new OpenURRole(this);
 	}
 	
-	public OpenURRoleBuilder permissions(Set<IPermission> perms)
+	public OpenURRoleBuilder permissions(Set<OpenURPermission> perms)
 	{
-		Map<IApplication, Set<IPermission>> permsLocal = new HashMap<IApplication, Set<IPermission>>();
+		Map<OpenURApplication, Set<OpenURPermission>> permsLocal = new HashMap<>();
 		
-		for (IPermission p : perms)
+		for (OpenURPermission p : perms)
 		{
-			Set<IPermission> sp = permsLocal.get(p.getApplication());
+			Set<OpenURPermission> sp = permsLocal.get(p.getApplication());
 			
 			if (sp == null)
 			{
-				sp = new HashSet<IPermission>();
+				sp = new HashSet<OpenURPermission>();
 				permsLocal.put(p.getApplication(), sp);
 			}
 
@@ -70,7 +70,7 @@ public class OpenURRoleBuilder
 		}
 		
 		// make permission-sets unmodifiable:
-		for (IApplication app : permsLocal.keySet())
+		for (OpenURApplication app : permsLocal.keySet())
 		{
 			this.permissions.put(app, Collections.unmodifiableSet(permsLocal.get(app)));
 		}
@@ -89,7 +89,7 @@ public class OpenURRoleBuilder
 		return description;
 	}
 
-	Map<IApplication, Set<IPermission>> getPermissions()
+	Map<OpenURApplication, Set<OpenURPermission>> getPermissions()
 	{
 		return permissions;
 	}
