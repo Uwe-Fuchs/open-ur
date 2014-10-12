@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -106,10 +107,17 @@ public class OrgUnitSimpleTest
 	public void testCreateWithNullMembers()
 	{
 		OrgUnitSimple ou = new OrgUnitSimpleBuilder()
-			.members(null)
 			.build();
 		
 		assertTrue(ou.getMembers().isEmpty());
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void testCreateWithEmptyMembersList()
+	{
+		new OrgUnitSimpleBuilder()
+			.members(new ArrayList<OrgUnitMember>(0))
+			.build();
 	}
 
 	@Test
