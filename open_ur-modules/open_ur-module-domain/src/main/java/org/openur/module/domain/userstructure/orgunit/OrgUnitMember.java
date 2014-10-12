@@ -1,6 +1,5 @@
 package org.openur.module.domain.userstructure.orgunit;
 
-import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.openur.module.domain.GraphNode;
 import org.openur.module.domain.userstructure.person.IPerson;
@@ -37,20 +36,7 @@ public class OrgUnitMember
 		return orgUnitId;
 	}
 
-	@Override
-	public int compareTo(IOrgUnitMember other)
-	{
-		if (this.equals(other))
-		{
-			return 0;
-		}
-		
-		return new CompareToBuilder()
-										.append(this.getOrgUnitId(), other.getOrgUnitId())
-										.append(this.getPerson(), other.getPerson())
-										.toComparison();
-	}
-
+	// operations:
 	@Override
 	public boolean equals(Object obj)
 	{

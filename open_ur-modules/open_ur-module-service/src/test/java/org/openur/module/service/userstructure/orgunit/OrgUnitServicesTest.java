@@ -19,9 +19,11 @@ import org.mockito.Mockito;
 import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitSimple;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitSimpleBuilder;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnit;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnitBuilder;
+import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnit;
 import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.PersonBuilder;
@@ -122,14 +124,14 @@ public class OrgUnitServicesTest
 	@Test
 	public void testObtainSubOrgUnitsForOrgUnit()
 	{		
-		IOrganizationalUnit rootOu = new OrgUnitSimpleBuilder()
+		OrgUnitSimple rootOu = new OrgUnitSimpleBuilder()
 			.build();
 		
 		final String SUPER_OU_ID = UUID.randomUUID().toString();
 		
 		final String OU_NUMBER_1 = "no123";
 		final String OU_ID_1 = UUID.randomUUID().toString();		
-		IOrganizationalUnit orgUnit1 = new OrganizationalUnitBuilder(OU_ID_1, rootOu)
+		OrganizationalUnit orgUnit1 = new OrganizationalUnitBuilder(OU_ID_1, rootOu)
 				.number(OU_NUMBER_1)
 				.superOuId(SUPER_OU_ID)
 				.build();
@@ -194,7 +196,7 @@ public class OrgUnitServicesTest
 	public void testObtainRootOrgUnits()
 	{		
 		final String SUPER_OU_ID = UUID.randomUUID().toString();
-		IOrganizationalUnit superOu = new OrganizationalUnitBuilder(SUPER_OU_ID)
+		AbstractOrgUnit superOu = new OrganizationalUnitBuilder(SUPER_OU_ID)
 			.build();
 		
 		final String OU_ID_1 = UUID.randomUUID().toString();		

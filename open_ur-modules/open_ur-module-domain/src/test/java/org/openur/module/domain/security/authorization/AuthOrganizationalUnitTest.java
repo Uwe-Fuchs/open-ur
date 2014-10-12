@@ -42,8 +42,8 @@ public class AuthOrganizationalUnitTest
 		
 		final String OU_ID = UUID.randomUUID().toString();
 		
-		IAuthorizableMember m1 = new AuthorizableMember(pers1, OU_ID);
-		IAuthorizableMember m2 = new AuthorizableMember(pers2, OU_ID);
+		AuthorizableMember m1 = new AuthorizableMember(pers1, OU_ID);
+		AuthorizableMember m2 = new AuthorizableMember(pers2, OU_ID);
 		
 		IAuthorizableOrgUnit ou = new AuthorizableOrgUnit(
 			new OrganizationalUnitBuilder(OU_ID), Arrays.asList(m1, m2));
@@ -55,7 +55,7 @@ public class AuthOrganizationalUnitTest
 		
 		IPerson pers3 = new PersonBuilder(name)
 			.build();
-		IAuthorizableMember m3 = new AuthorizableMember(pers3, OU_ID);
+		AuthorizableMember m3 = new AuthorizableMember(pers3, OU_ID);
 		
 		assertNull(ou.findMember(m3.getPerson()));
 		assertNull(ou.findAuthorizableMember(m3.getPerson().getIdentifier()));
@@ -83,8 +83,8 @@ public class AuthOrganizationalUnitTest
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();		
-		IAuthorizableMember member = new AuthorizableMember(person, OU_ID,Arrays.asList(role1));		
-		IAuthorizableOrgUnit ou = new AuthorizableOrgUnit(
+		AuthorizableMember member = new AuthorizableMember(person, OU_ID,Arrays.asList(role1));		
+		AuthorizableOrgUnit ou = new AuthorizableOrgUnit(
 			new OrganizationalUnitBuilder(OU_ID), Arrays.asList(member));
 		
 		// has permission:		

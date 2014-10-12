@@ -2,6 +2,7 @@ package org.openur.module.domain.userstructure.orgunit;
 
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.EMailAddress;
+import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnit;
 import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnitBuilder;
 
 public class OrganizationalUnitBuilder
@@ -25,12 +26,12 @@ public class OrganizationalUnitBuilder
 		super(identifier);
 	}
 
-	public OrganizationalUnitBuilder(IOrganizationalUnit rootOrgUnit)
+	public OrganizationalUnitBuilder(AbstractOrgUnit rootOrgUnit)
 	{
 		super(rootOrgUnit);
 	}
 
-	public OrganizationalUnitBuilder(String identifier, IOrganizationalUnit rootOrgUnit)
+	public OrganizationalUnitBuilder(String identifier, AbstractOrgUnit rootOrgUnit)
 	{
 		super(identifier, rootOrgUnit);
 	}

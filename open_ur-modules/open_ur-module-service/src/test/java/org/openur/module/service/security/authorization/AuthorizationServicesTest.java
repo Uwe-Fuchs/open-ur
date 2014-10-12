@@ -88,11 +88,11 @@ public class AuthorizationServicesTest
 		assertFalse(authorizationServices.hasPermission(person, ou, perm12, app1));
 		
 		// has permission in super-org-unit:
-		IAuthorizableOrgUnit rootOu = new AuthOrgUnitSimple(
+		AuthOrgUnitSimple rootOu = new AuthOrgUnitSimple(
 			new OrgUnitSimpleBuilder()
 		);
 		
-		IAuthorizableOrgUnit sub_ou = new AuthOrgUnitSimple(
+		AuthOrgUnitSimple sub_ou = new AuthOrgUnitSimple(
 			new OrgUnitSimpleBuilder(rootOu)
 				.superOuId(OU_ID)
 		);
@@ -139,12 +139,12 @@ public class AuthorizationServicesTest
 		assertFalse(authorizationServices.hasPermission(PERS_ID, OU_ID, PERM_NAME_2, app));
 		
 		// has permission in super-org-unit:
-		IAuthorizableOrgUnit rootOu = new AuthOrgUnitSimple(
+		AuthOrgUnitSimple rootOu = new AuthOrgUnitSimple(
 			new OrgUnitSimpleBuilder()
 		);
 		
 		final String SUB_OU_ID = UUID.randomUUID().toString();	
-		IAuthorizableOrgUnit sub_ou = new AuthOrgUnitSimple(
+		AuthOrgUnitSimple sub_ou = new AuthOrgUnitSimple(
 			new OrgUnitSimpleBuilder(SUB_OU_ID, rootOu)
 				.superOuId(OU_ID)
 		);

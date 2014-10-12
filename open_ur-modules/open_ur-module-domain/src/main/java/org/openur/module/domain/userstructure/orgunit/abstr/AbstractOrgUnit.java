@@ -3,7 +3,6 @@ package org.openur.module.domain.userstructure.orgunit.abstr;
 import java.util.Collections;
 import java.util.Set;
 
-import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.openur.module.domain.userstructure.UserStructureBase;
 import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
@@ -26,7 +25,7 @@ public abstract class AbstractOrgUnit
 	// properties:
   private final String superOuId;
   private final Set<? extends IOrgUnitMember> members;
-  private final IOrganizationalUnit rootOrgUnit;
+  private final AbstractOrgUnit rootOrgUnit;
   
 	// constructor:
 	protected AbstractOrgUnit(AbstractOrgUnitBuilder<? extends AbstractOrgUnitBuilder<?>> b)
@@ -51,7 +50,7 @@ public abstract class AbstractOrgUnit
 	}
 
 	@Override
-	public IOrganizationalUnit getRootOrgUnit()
+	public AbstractOrgUnit getRootOrgUnit()
 	{
 		return rootOrgUnit;
 	}
@@ -119,16 +118,5 @@ public abstract class AbstractOrgUnit
     }
 
     return findMember(person.getIdentifier());
-	}
-
-	@Override
-	public int compareTo(IOrganizationalUnit ou)
-	{    
-    int comparison = new CompareToBuilder()
-														.append(this.getOrgUnitNumber(), ou.getOrgUnitNumber())
-														.append(this.getStatus(), ou.getStatus())
-														.toComparison();
-
-    return comparison;
 	}
 }

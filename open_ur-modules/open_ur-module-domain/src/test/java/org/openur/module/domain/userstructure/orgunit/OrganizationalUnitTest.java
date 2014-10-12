@@ -17,14 +17,14 @@ public class OrganizationalUnitTest
 			.status(Status.ACTIVE)
 			.name("staff department")
 			.shortName("stf");
-		IOrganizationalUnit ou = oub.build();
+		OrganizationalUnit ou = oub.build();
 		
 		oub = new OrganizationalUnitBuilder(UUID.randomUUID().toString())
 			.number("456xyz")
 			.status(Status.ACTIVE)
 			.name("accounts department")
 			.shortName("acc");
-		IOrganizationalUnit ou2 = oub.build();
+		OrganizationalUnit ou2 = oub.build();
 		
 		assertTrue("ou1 should be after ou2 because of name", ou.compareTo(ou2) > 0);
 		
@@ -54,7 +54,7 @@ public class OrganizationalUnitTest
 		OrgUnitSimpleBuilder soub = new OrgUnitSimpleBuilder()
 			.number("123abc")
 			.status(Status.ACTIVE);
-		IOrganizationalUnit sou = soub.build();
+		OrgUnitSimple sou = soub.build();
 	
 		assertTrue("ou should be after ou-simple because of org-unit-number", ou.compareTo(sou) > 0);
 	}

@@ -9,7 +9,6 @@ import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.userstructure.InconsistentHierarchyException;
 import org.openur.module.domain.userstructure.UserStructureBaseBuilder;
 import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
-import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 import org.openur.module.util.exception.OpenURRuntimeException;
 
 public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>>
@@ -17,7 +16,7 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 {
 	// properties:
 	private String superOuId = null;
-	private IOrganizationalUnit rootOrgUnit = null;
+	private AbstractOrgUnit rootOrgUnit = null;
 	protected Set<IOrgUnitMember> members = new HashSet<IOrgUnitMember>();
 
 	// constructors:
@@ -31,7 +30,7 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 		super(identifier);
 	}
 	
-	public AbstractOrgUnitBuilder(IOrganizationalUnit rootOrgUnit)
+	public AbstractOrgUnitBuilder(AbstractOrgUnit rootOrgUnit)
 	{
 		super();
 		
@@ -39,7 +38,7 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 		this.rootOrgUnit = rootOrgUnit;
 	}
 
-	public AbstractOrgUnitBuilder(String identifier, IOrganizationalUnit rootOrgUnit)
+	public AbstractOrgUnitBuilder(String identifier, AbstractOrgUnit rootOrgUnit)
 	{
 		super(identifier);
 		
@@ -82,7 +81,7 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 		return (T) this;
 	}
 	
-	protected IOrganizationalUnit build()
+	protected AbstractOrgUnit build()
 	{
 		if (getRootOrgUnit() != null && StringUtils.isEmpty(getSuperOuId()))
 		{
@@ -99,7 +98,7 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 		return superOuId;
 	}
 
-	IOrganizationalUnit getRootOrgUnit()
+	AbstractOrgUnit getRootOrgUnit()
 	{
 		return rootOrgUnit;
 	}

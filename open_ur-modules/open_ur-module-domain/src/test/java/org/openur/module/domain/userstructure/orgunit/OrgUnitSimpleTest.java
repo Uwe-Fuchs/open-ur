@@ -31,7 +31,7 @@ public class OrgUnitSimpleTest
 		IOrgUnitMember m2 = new OrgUnitMember(pers2, OU_ID);
 		IOrgUnitMember m1 = new OrgUnitMember(pers1, OU_ID);		
 
-		IOrganizationalUnit ou = new OrgUnitSimpleBuilder(OU_ID)
+		OrgUnitSimple ou = new OrgUnitSimpleBuilder(OU_ID)
 			.members(Arrays.asList(m1, m2))
 			.build();
 		
@@ -68,7 +68,7 @@ public class OrgUnitSimpleTest
 		IOrgUnitMember m2 = new OrgUnitMember(pers2, OU_ID);
 		IOrgUnitMember m1 = new OrgUnitMember(pers1, OU_ID);		
 	
-		IOrganizationalUnit ou = new OrgUnitSimpleBuilder(OU_ID)
+		OrgUnitSimple ou = new OrgUnitSimpleBuilder(OU_ID)
 			.members(Arrays.asList(m1, m2))
 			.build();
 		
@@ -115,12 +115,12 @@ public class OrgUnitSimpleTest
 	@Test
 	public void testCompareTo()
 	{
-		IOrganizationalUnit ou = new OrgUnitSimpleBuilder(UUID.randomUUID().toString())
+		OrgUnitSimple ou = new OrgUnitSimpleBuilder(UUID.randomUUID().toString())
 			.number("123abc")
 			.status(Status.ACTIVE)
 			.build();		
 		
-		IOrganizationalUnit ou2 = new OrgUnitSimpleBuilder()
+		OrgUnitSimple ou2 = new OrgUnitSimpleBuilder()
 			.number("456xyz")
 			.status(Status.ACTIVE)
 			.build();
@@ -137,11 +137,11 @@ public class OrgUnitSimpleTest
 
 	public void testIsRootOrgUnit()
 	{
-		IOrganizationalUnit ou = new OrgUnitSimpleBuilder()
+		OrgUnitSimple ou = new OrgUnitSimpleBuilder()
 			.build();
 		assertTrue(ou.isRootOrgUnit());
 		
-		IOrganizationalUnit rootOu = new OrgUnitSimpleBuilder()
+		OrgUnitSimple rootOu = new OrgUnitSimpleBuilder()
 			.build();
 		
 		ou = new OrgUnitSimpleBuilder(rootOu)
@@ -161,7 +161,7 @@ public class OrgUnitSimpleTest
 	@Test(expected=InconsistentHierarchyException.class)
 	public void testCreateAsNonRootWithoutSuperOuId()
 	{
-		IOrganizationalUnit rootOu = new OrgUnitSimpleBuilder().build();
+		OrgUnitSimple rootOu = new OrgUnitSimpleBuilder().build();
 		
 		new OrgUnitSimpleBuilder(rootOu)
 			.build();
@@ -170,7 +170,7 @@ public class OrgUnitSimpleTest
 	@Test(expected=IllegalArgumentException.class)
 	public void testCreateAsNonRootWithEmptySuperOuId()
 	{
-		IOrganizationalUnit rootOu = new OrgUnitSimpleBuilder().build();
+		OrgUnitSimple rootOu = new OrgUnitSimpleBuilder().build();
 		
 		new OrgUnitSimpleBuilder(rootOu)
 			.superOuId("");
@@ -179,7 +179,7 @@ public class OrgUnitSimpleTest
 	@Test(expected=NullPointerException.class)
 	public void testCreateAsNonRootWithEmptyRoot()
 	{
-		IOrganizationalUnit rootOu = null;
+		OrgUnitSimple rootOu = null;
 		
 		new OrgUnitSimpleBuilder(rootOu);
 	}

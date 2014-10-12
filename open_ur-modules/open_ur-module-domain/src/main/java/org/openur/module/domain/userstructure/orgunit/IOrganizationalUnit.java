@@ -2,6 +2,7 @@ package org.openur.module.domain.userstructure.orgunit;
 
 import java.util.Set;
 
+import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.openur.module.domain.userstructure.IUserStructureBase;
 import org.openur.module.domain.userstructure.person.IPerson;
 
@@ -77,5 +78,16 @@ public interface IOrganizationalUnit
    *
    * @return IOrgUnitMember if found in this org-unit, else null.
    */
-	IOrgUnitMember findMember(IPerson person); 
+	IOrgUnitMember findMember(IPerson person);
+
+	// operations:
+	default int compareTo(IOrganizationalUnit ou)
+	{    
+    int comparison = new CompareToBuilder()
+														.append(this.getOrgUnitNumber(), ou.getOrgUnitNumber())
+														.append(this.getStatus(), ou.getStatus())
+														.toComparison();
+
+    return comparison;
+	}
 }
