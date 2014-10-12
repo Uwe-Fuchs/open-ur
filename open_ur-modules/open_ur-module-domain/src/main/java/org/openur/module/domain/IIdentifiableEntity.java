@@ -24,14 +24,30 @@ public interface IIdentifiableEntity
 	 * @return LocalDateTime.
 	 */
 	LocalDateTime getCreationDate();
-	
+
+	// operations:
 	/**
-	 * identity-objects should be equal if they have the same identifier.
-	 * criteria for equality should be the identifier.
+	 * Identity-objects should be equal if they have the same identifier. 
+	 * Implementations of this interface should use this method when overriding the {@code equals}-method in {@link GraphNode}.
 	 * 
 	 * @param obj the object that is checked in terms of equality.
 	 * 
 	 * @return both objects are equal.
 	 */
-	boolean equals(Object obj);
+	default boolean isEqual(Object obj)
+	{
+		if (obj == null || !this.getClass().equals(obj.getClass()))
+		{
+			return false;
+		}
+		
+		if (this == obj)
+		{
+			return true;
+		}
+
+		IdentifiableEntityImpl ie = (IdentifiableEntityImpl) obj;
+		
+		return this.getIdentifier().equals(ie.getIdentifier());
+	}
 }

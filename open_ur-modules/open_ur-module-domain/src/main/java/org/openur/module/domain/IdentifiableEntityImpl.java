@@ -42,19 +42,7 @@ public abstract class IdentifiableEntityImpl
 	// operations:
 	@Override
 	public boolean equals(Object obj)
-	{
-		if (obj == null || !this.getClass().equals(obj.getClass()))
-		{
-			return false;
-		}
-		
-		if (this == obj)
-		{
-			return true;
-		}
-
-		IdentifiableEntityImpl ie = (IdentifiableEntityImpl) obj;
-		
-		return this.getIdentifier().equals(ie.getIdentifier());
+	{		
+		return isEqual(obj);
 	}
 }
