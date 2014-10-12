@@ -16,7 +16,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitSimple;
@@ -156,10 +155,10 @@ public class OrgUnitServicesTest
 		
 		
 		IPerson persA = new PersonBuilder(Name.create(null, null, "Meier")).build();
-		IOrgUnitMember mA = new OrgUnitMember(persA, OU_ID_2);
+		OrgUnitMember mA = new OrgUnitMember(persA, OU_ID_2);
 		
 		IPerson persB = new PersonBuilder(Name.create(null, null, "Meier")).build();
-		IOrgUnitMember mB = new OrgUnitMember(persB, OU_ID_2);
+		OrgUnitMember mB = new OrgUnitMember(persB, OU_ID_2);
 		
 		IOrganizationalUnit orgUnit2_m = new OrganizationalUnitBuilder(OU_ID_2, rootOu)
 				.number(OU_NUMBER_2)

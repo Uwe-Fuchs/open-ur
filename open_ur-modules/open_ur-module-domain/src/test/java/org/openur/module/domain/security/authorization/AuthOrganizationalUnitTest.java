@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.UUID;
@@ -13,8 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
-import org.openur.module.domain.userstructure.orgunit.OrgUnitSimpleBuilder;
-import org.openur.module.domain.userstructure.orgunit.OrganizationalUnitBuilder;
 import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.PersonBuilder;
@@ -44,8 +43,9 @@ public class AuthOrganizationalUnitTest
 		AuthorizableMember m1 = new AuthorizableMember(pers1, OU_ID);
 		AuthorizableMember m2 = new AuthorizableMember(pers2, OU_ID);
 		
-		IAuthorizableOrgUnit ou = new AuthorizableOrgUnit(
-			new OrganizationalUnitBuilder(OU_ID), Arrays.asList(m1, m2));
+		AuthorizableOrgUnit ou = new AuthorizableOrgUnit.AuthorizableOrgUnitBuilder(OU_ID)
+			.authorizableMembers(Arrays.asList(m1, m2))
+			.build();
 		
 		assertEquals(m1, ou.findMember(m1.getPerson()));
 		assertEquals(m1, ou.findAuthorizableMember(m1.getPerson().getIdentifier()));
@@ -59,8 +59,9 @@ public class AuthOrganizationalUnitTest
 		assertNull(ou.findMember(m3.getPerson()));
 		assertNull(ou.findAuthorizableMember(m3.getPerson().getIdentifier()));
 		
-		ou = new AuthOrgUnitSimple(
-			new OrgUnitSimpleBuilder(OU_ID), Arrays.asList(m1, m2, m3));
+		ou = new AuthorizableOrgUnit.AuthorizableOrgUnitBuilder(OU_ID)
+			.authorizableMembers(Arrays.asList(m1, m2, m3))
+			.build();
 
 		assertEquals(m3, ou.findMember(m3.getPerson()));
 		assertEquals(m3, ou.findAuthorizableMember(m3.getPerson().getIdentifier()));
@@ -82,10 +83,12 @@ public class AuthOrganizationalUnitTest
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();		
-		AuthorizableMember member = new AuthorizableMember(person, OU_ID,Arrays.asList(role1));		
-		AuthorizableOrgUnit ou = new AuthorizableOrgUnit(
-			new OrganizationalUnitBuilder(OU_ID), Arrays.asList(member));
+		AuthorizableMember member = new AuthorizableMember(person, OU_ID,Arrays.asList(role1));
 		
+		AuthorizableOrgUnit ou = new AuthorizableOrgUnit.AuthorizableOrgUnitBuilder(OU_ID)
+			.authorizableMembers(Arrays.asList(member))
+			.build();
+
 		// has permission:		
 		assertTrue(ou.hasPermission(person, app1, perm11));
 	
@@ -99,9 +102,17 @@ public class AuthOrganizationalUnitTest
 	@Test
 	public void testCreateWithNullMembers()
 	{
-		IAuthorizableOrgUnit ou = new AuthorizableOrgUnit(
-			new OrganizationalUnitBuilder(), null);
+		AuthorizableOrgUnit ou = new AuthorizableOrgUnit.AuthorizableOrgUnitBuilder()
+			.build();
 		
 		assertTrue(ou.getMembers().isEmpty());
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void testCreateWithEmptyMembersList()
+	{
+		new AuthorizableOrgUnit.AuthorizableOrgUnitBuilder()
+			.authorizableMembers(new ArrayList<AuthorizableMember>(0))
+			.build();
 	}
 }

@@ -9,6 +9,7 @@ import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.userstructure.InconsistentHierarchyException;
 import org.openur.module.domain.userstructure.UserStructureBaseBuilder;
 import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
 import org.openur.module.util.exception.OpenURRuntimeException;
 
 public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>>
@@ -17,7 +18,7 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 	// properties:
 	private String superOuId = null;
 	private AbstractOrgUnit rootOrgUnit = null;
-	protected Set<IOrgUnitMember> members = new HashSet<IOrgUnitMember>();
+	protected Set<OrgUnitMember> members = new HashSet<>();
 
 	// constructors:
 	public AbstractOrgUnitBuilder()
@@ -63,20 +64,19 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 	}
 
 	@SuppressWarnings("unchecked")
-	public T members(Collection<? extends IOrgUnitMember> members)
+	public T members(Collection<OrgUnitMember> members)
 	{
-		if (members != null)
+		Validate.notEmpty(members, "members-list must not be empty!");
+		
+		for (IOrgUnitMember m : members)
 		{
-			for (IOrgUnitMember m : members)
+			if (!(this.getIdentifier().equals(m.getOrgUnitId())))
 			{
-				if (!(this.getIdentifier().equals(m.getOrgUnitId())))
-				{
-					throw new OpenURRuntimeException("OrgUnit-ID's must be equal!");
-				}
+				throw new OpenURRuntimeException("OrgUnit-ID's must be equal!");
 			}
-
-			this.members.addAll(members);			
 		}
+
+		this.members.addAll(members);
 		
 		return (T) this;
 	}
@@ -103,7 +103,7 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 		return rootOrgUnit;
 	}
 
-	Set<? extends IOrgUnitMember> getMembers()
+	Set<OrgUnitMember> getMembers()
 	{
 		return members;
 	}

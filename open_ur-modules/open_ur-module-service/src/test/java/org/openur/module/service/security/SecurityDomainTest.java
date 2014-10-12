@@ -18,7 +18,6 @@ import org.mockito.Mockito;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
-import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
 import org.openur.module.domain.security.authorization.OpenURPermission;
@@ -27,7 +26,6 @@ import org.openur.module.domain.security.authorization.OpenURRoleBuilder;
 import org.openur.module.domain.security.authorization.PermissionScope;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnit;
-import org.openur.module.domain.userstructure.orgunit.OrganizationalUnitBuilder;
 import org.openur.module.persistence.dao.ISecurityDao;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -202,10 +200,13 @@ public class SecurityDomainTest
 		final String UUID_1 = UUID.randomUUID().toString();
 		final String UUID_2 = UUID.randomUUID().toString();
 		
-		IAuthorizableOrgUnit orgUnit1 = new AuthorizableOrgUnit(
-			new OrganizationalUnitBuilder(UUID_1).name("Human Resources"));
-		IAuthorizableOrgUnit orgUnit2 = new AuthorizableOrgUnit(
-			new OrganizationalUnitBuilder(UUID_2).name("Marketing"));
+		AuthorizableOrgUnit orgUnit1 = new AuthorizableOrgUnit.AuthorizableOrgUnitBuilder(UUID_1)
+			.name("Human Resources")
+			.build();
+		
+		AuthorizableOrgUnit orgUnit2 = new AuthorizableOrgUnit.AuthorizableOrgUnitBuilder(UUID_2)
+			.name("Marketing")
+			.build();
 		
 		Mockito.when(securityDao.findAuthOrgUnitById(UUID_1)).thenReturn(orgUnit1);
 		Mockito.when(securityDao.findAuthOrgUnitById(UUID_2)).thenReturn(orgUnit2);	

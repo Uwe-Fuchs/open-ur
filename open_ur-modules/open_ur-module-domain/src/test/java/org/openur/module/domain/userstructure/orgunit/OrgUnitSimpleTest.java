@@ -28,8 +28,8 @@ public class OrgUnitSimpleTest
 		
 		final String OU_ID = UUID.randomUUID().toString();
 		
-		IOrgUnitMember m2 = new OrgUnitMember(pers2, OU_ID);
-		IOrgUnitMember m1 = new OrgUnitMember(pers1, OU_ID);		
+		OrgUnitMember m2 = new OrgUnitMember(pers2, OU_ID);
+		OrgUnitMember m1 = new OrgUnitMember(pers1, OU_ID);		
 
 		OrgUnitSimple ou = new OrgUnitSimpleBuilder(OU_ID)
 			.members(Arrays.asList(m1, m2))
@@ -42,7 +42,7 @@ public class OrgUnitSimpleTest
 		
 		IPerson pers3 = new PersonSimpleBuilder()
 			.build();
-		IOrgUnitMember m3 = new OrgUnitMember(pers3, OU_ID);
+		OrgUnitMember m3 = new OrgUnitMember(pers3, OU_ID);
 		
 		assertNull(ou.findMember(m3.getPerson()));
 		assertNull(ou.findMember(m3.getPerson().getIdentifier()));
@@ -65,8 +65,8 @@ public class OrgUnitSimpleTest
 		
 		final String OU_ID = UUID.randomUUID().toString();
 		
-		IOrgUnitMember m2 = new OrgUnitMember(pers2, OU_ID);
-		IOrgUnitMember m1 = new OrgUnitMember(pers1, OU_ID);		
+		OrgUnitMember m2 = new OrgUnitMember(pers2, OU_ID);
+		OrgUnitMember m1 = new OrgUnitMember(pers1, OU_ID);		
 	
 		OrgUnitSimple ou = new OrgUnitSimpleBuilder(OU_ID)
 			.members(Arrays.asList(m1, m2))
@@ -79,7 +79,7 @@ public class OrgUnitSimpleTest
 		
 		IPerson pers3 = new PersonSimpleBuilder()
 			.build();
-		IOrgUnitMember m3 = new OrgUnitMember(pers3, OU_ID);
+		OrgUnitMember m3 = new OrgUnitMember(pers3, OU_ID);
 		
 		assertFalse(ou.isMember(m3.getPerson()));
 		assertFalse(ou.isMember(m3.getPerson().getIdentifier()));
@@ -96,7 +96,7 @@ public class OrgUnitSimpleTest
 	public void testCreateWithWrongOrgUnitID()
 	{
 		IPerson pers = new PersonSimpleBuilder().build();
-		IOrgUnitMember member = new OrgUnitMember(pers, "123");
+		OrgUnitMember member = new OrgUnitMember(pers, "123");
 		
 		OrgUnitSimpleBuilder oub = new OrgUnitSimpleBuilder("456");
 		oub.members(Arrays.asList(member));

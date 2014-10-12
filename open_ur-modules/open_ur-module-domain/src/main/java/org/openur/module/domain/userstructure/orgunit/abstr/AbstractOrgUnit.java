@@ -4,8 +4,8 @@ import java.util.Collections;
 import java.util.Set;
 
 import org.openur.module.domain.userstructure.UserStructureBase;
-import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitSimple;
 import org.openur.module.domain.userstructure.person.IPerson;
 
@@ -24,7 +24,7 @@ public abstract class AbstractOrgUnit
 	
 	// properties:
   private final String superOuId;
-  private final Set<? extends IOrgUnitMember> members;
+  private final Set<OrgUnitMember> members;
   private final AbstractOrgUnit rootOrgUnit;
   
 	// constructor:
@@ -56,7 +56,7 @@ public abstract class AbstractOrgUnit
 	}
 
 	@Override
-	public Set<? extends IOrgUnitMember> getMembers()
+	public Set<OrgUnitMember> getMembers()
 	{
 		return members;
 	}
@@ -69,14 +69,14 @@ public abstract class AbstractOrgUnit
 	}	
 
 	@Override
-	public IOrgUnitMember findMember(String id)
+	public OrgUnitMember findMember(String id)
 	{
     if (id == null)
     {
       return null;
     }
 
-    for (IOrgUnitMember m : this.getMembers())
+    for (OrgUnitMember m : this.getMembers())
     {
       if (id.equals(m.getPerson().getIdentifier()))
       {
@@ -110,7 +110,7 @@ public abstract class AbstractOrgUnit
 	}
 
 	@Override
-	public IOrgUnitMember findMember(IPerson person)
+	public OrgUnitMember findMember(IPerson person)
 	{
 		if (person == null)
     {
