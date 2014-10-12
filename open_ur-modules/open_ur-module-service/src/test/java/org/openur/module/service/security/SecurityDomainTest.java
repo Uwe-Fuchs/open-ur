@@ -18,6 +18,7 @@ import org.mockito.Mockito;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
+import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
 import org.openur.module.domain.security.authorization.OpenURPermission;
@@ -211,11 +212,11 @@ public class SecurityDomainTest
 		Mockito.when(securityDao.findAuthOrgUnitById(UUID_1)).thenReturn(orgUnit1);
 		Mockito.when(securityDao.findAuthOrgUnitById(UUID_2)).thenReturn(orgUnit2);	
 		
-		IOrganizationalUnit p = securityDomainServices.findAuthOrgUnitById(UUID_1);		
+		IAuthorizableOrgUnit p = securityDomainServices.findAuthOrgUnitById(UUID_1);		
 		assertNotNull(p);
 		assertEquals("Name", "Human Resources", ((OrganizationalUnit) p).getName());	
 		
-		IOrganizationalUnit p2 = securityDomainServices.findAuthOrgUnitById(UUID_2);		
+		IAuthorizableOrgUnit p2 = securityDomainServices.findAuthOrgUnitById(UUID_2);		
 		assertNotNull(p2);
 		assertEquals("Name", "Marketing", ((OrganizationalUnit) p2).getName());
 	}
