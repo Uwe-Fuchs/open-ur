@@ -11,7 +11,6 @@ import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitSimpleBuilder;
@@ -79,7 +78,7 @@ public class AuthOrganizationalUnitTest
 			.build();
 		
 		IPerson person = new PersonBuilder(name)
-			.apps(new HashSet<IApplication>(Arrays.asList(app1)))
+			.apps(new HashSet<OpenURApplication>(Arrays.asList(app1)))
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();		

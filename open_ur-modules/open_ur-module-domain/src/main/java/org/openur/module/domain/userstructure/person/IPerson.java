@@ -19,7 +19,7 @@ public interface IPerson
 	 * 
 	 * @return Set of applications (may be empty).
 	 */
-	Set<IApplication> getApplications();
+	Set<? extends IApplication> getApplications();
 
 	// operations:
 	default int compareTo(IPerson other)

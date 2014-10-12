@@ -8,7 +8,6 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.domain.userstructure.Address;
@@ -26,7 +25,7 @@ public class PPersonTest
 	private Address address;
 	private OpenURApplication app1;
 	private OpenURApplication app2;
-	private Set<IApplication> applications;
+	private Set<OpenURApplication> applications;
 	
 	@Before
 	public void setUp()
@@ -70,8 +69,8 @@ public class PPersonTest
 		assertNotNull(persistable);
 		assertEquals(immutable.getNumber(), persistable.getNumber());
 		assertEquals(immutable.getHomeEmailAddress().getAsPlainEMailAddress(), persistable.getHomeEmailAddress());
-//		assertTrue(immutable.getApplications().size() == 2);
-//		assertTrue(persistable.getApplications().size() == 2);
+		assertTrue(immutable.getApplications().size() == 2);
+		assertTrue(persistable.getApplications().size() == immutable.getApplications().size());
 	}
 
 //	@Test

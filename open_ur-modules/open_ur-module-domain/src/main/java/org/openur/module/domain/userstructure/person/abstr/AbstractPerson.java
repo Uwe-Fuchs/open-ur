@@ -3,7 +3,7 @@ package org.openur.module.domain.userstructure.person.abstr;
 import java.util.Collections;
 import java.util.Set;
 
-import org.openur.module.domain.application.IApplication;
+import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.userstructure.UserStructureBase;
 import org.openur.module.domain.userstructure.person.IPerson;
 
@@ -14,7 +14,7 @@ public abstract class AbstractPerson
 	private static final long serialVersionUID = -5109626819047294963L;
 	
 	// properties:
-	private final Set<IApplication> applications;
+	private final Set<OpenURApplication> applications;
 
 	// constructor:
 	protected AbstractPerson(AbstractPersonBuilder<? extends AbstractPersonBuilder<?>> b)
@@ -26,7 +26,7 @@ public abstract class AbstractPerson
 
 	// accessors:
 	@Override
-	public Set<IApplication> getApplications()
+	public Set<OpenURApplication> getApplications()
 	{
 		return applications;
 	}

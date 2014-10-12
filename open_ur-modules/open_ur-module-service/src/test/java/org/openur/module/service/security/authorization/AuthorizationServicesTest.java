@@ -12,7 +12,6 @@ import javax.inject.Inject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.domain.security.authorization.AuthOrgUnitSimple;
@@ -70,7 +69,7 @@ public class AuthorizationServicesTest
 			.build();
 		
 		IPerson person = new PersonSimpleBuilder()
-			.apps(new HashSet<IApplication>(Arrays.asList(app1)))
+			.apps(new HashSet<OpenURApplication>(Arrays.asList(app1)))
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();
@@ -116,7 +115,7 @@ public class AuthorizationServicesTest
 		
 		final String PERS_ID = UUID.randomUUID().toString();		
 		IPerson person = new PersonSimpleBuilder(PERS_ID)
-			.apps(new HashSet<IApplication>(Arrays.asList(app)))
+			.apps(new HashSet<OpenURApplication>(Arrays.asList(app)))
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();

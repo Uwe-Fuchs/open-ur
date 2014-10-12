@@ -1,5 +1,6 @@
 package org.openur.module.persistence.rdbms.entity.userstructure;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,6 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import org.apache.commons.lang3.StringUtils;
+import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.person.Gender;
 import org.openur.module.domain.userstructure.person.Name;
@@ -74,7 +76,7 @@ public class PPerson
 		joinColumns={@JoinColumn(name="ID_PERSON", referencedColumnName="ID")},
 		inverseJoinColumns={@JoinColumn(name="ID_APPLICATION", referencedColumnName="ID")}
 	)
-  private List<PApplication> applications;
+  private List<PApplication> applications = new ArrayList<>();
 
 	// accessors:
 	public String getEmployeeNumber()
@@ -232,6 +234,12 @@ public class PPerson
 		persistable.setStatus(immutable.getStatus());
 		persistable.setHomeAddress(immutable.getHomeAddress() != null ? PAddress.mapFromImmutable(immutable.getHomeAddress()) : null);
 		
+		for (OpenURApplication app : immutable.getApplications())
+		{
+			PApplication pApp = PApplication.mapFromImmutable(app);
+			persistable.getApplications().add(pApp);
+		}
+		
 		return persistable;
 	}
 	
@@ -254,7 +262,7 @@ public class PPerson
 				persistable.getLastName());
 		}
 		
-		Person immutable = new PersonBuilder(name)
+		PersonBuilder immutableBuilder = new PersonBuilder(name)
 				.number(persistable.getNumber())
 				.emailAdress(StringUtils.isNotEmpty(persistable.getEmailAddress()) ? new EMailAddress(persistable.getEmailAddress()) : null)
 				.employeeNumber(persistable.getEmployeeNumber())
@@ -266,9 +274,14 @@ public class PPerson
 				.status(persistable.getStatus())
 				.homeAddress(persistable.getHomeAddress() != null ? PAddress.mapFromEntity(persistable.getHomeAddress()) : null)
 				.creationDate(persistable.getCreationDate())
-				.lastModifiedDate(persistable.getLastModifiedDate())
-				.build();
+				.lastModifiedDate(persistable.getLastModifiedDate());
 		
-		return immutable;
+		for (PApplication pApp : persistable.getApplications())
+		{
+			OpenURApplication app = PApplication.mapToImmutable(pApp);
+			immutableBuilder.addApp(app);
+		}
+		
+		return immutableBuilder.build();
 	}
 }
