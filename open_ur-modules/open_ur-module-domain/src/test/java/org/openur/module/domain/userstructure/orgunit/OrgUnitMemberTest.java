@@ -21,20 +21,20 @@ public class OrgUnitMemberTest
 			.build();
 		
 		final String OU_ID_1 = UUID.randomUUID().toString();
-		IOrgUnitMember m11 = new OrgUnitMember(pers1, OU_ID_1);
+		OrgUnitMember m11 = new OrgUnitMember(pers1, OU_ID_1);
 		
 		assertTrue(m11.equals(m11));
 		
 		IPerson pers2 = new PersonSimpleBuilder()
 			.build();
-		IOrgUnitMember m21 = new OrgUnitMember(pers2, OU_ID_1);	
+		OrgUnitMember m21 = new OrgUnitMember(pers2, OU_ID_1);	
 		
 		assertFalse(m11.equals(m21));
 		assertFalse(m21.equals(m11));
 
 		final String OU_ID_2 = UUID.randomUUID().toString();
-		IOrgUnitMember m12 = new OrgUnitMember(pers1, OU_ID_2);
-		IOrgUnitMember m22 = new OrgUnitMember(pers2, OU_ID_2);
+		OrgUnitMember m12 = new OrgUnitMember(pers1, OU_ID_2);
+		OrgUnitMember m22 = new OrgUnitMember(pers2, OU_ID_2);
 		
 		assertFalse(m11.equals(m12));
 		assertFalse(m21.equals(m12));
@@ -52,7 +52,7 @@ public class OrgUnitMemberTest
 			.status(Status.ACTIVE)
 			.build();
 		final String OU_ID_1 = "XYZ";
-		IOrgUnitMember m11 = new OrgUnitMember(pers1, OU_ID_1);
+		OrgUnitMember m11 = new OrgUnitMember(pers1, OU_ID_1);
 		
 		assertTrue(m11.compareTo(m11) == 0);
 		
@@ -60,13 +60,13 @@ public class OrgUnitMemberTest
 			.number("456")
 			.status(Status.ACTIVE)
 			.build();
-		IOrgUnitMember m21 = new OrgUnitMember(pers2, OU_ID_1);
+		OrgUnitMember m21 = new OrgUnitMember(pers2, OU_ID_1);
 		
 		assertTrue(m11.compareTo(m21) < 0);
 		
 		final String OU_ID_2 = "ABC";
-		IOrgUnitMember m12 = new OrgUnitMember(pers1, OU_ID_2);
-		IOrgUnitMember m22 = new OrgUnitMember(pers2, OU_ID_2);
+		OrgUnitMember m12 = new OrgUnitMember(pers1, OU_ID_2);
+		OrgUnitMember m22 = new OrgUnitMember(pers2, OU_ID_2);
 	
 		assertTrue(m11.compareTo(m12) > 0);
 		assertTrue(m11.compareTo(m22) > 0);

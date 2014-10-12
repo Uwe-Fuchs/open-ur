@@ -40,12 +40,12 @@ public class OrgUnitMember
 	@Override
 	public boolean equals(Object obj)
 	{
-		if (!(obj instanceof IOrgUnitMember))
+		if (!(obj instanceof OrgUnitMember))
 		{
 			return false;
 		}
 
-		IOrgUnitMember other = (IOrgUnitMember) obj;
+		OrgUnitMember other = (OrgUnitMember) obj;
 		
 		return new EqualsBuilder()
 										.append(this.getPerson(), other.getPerson())

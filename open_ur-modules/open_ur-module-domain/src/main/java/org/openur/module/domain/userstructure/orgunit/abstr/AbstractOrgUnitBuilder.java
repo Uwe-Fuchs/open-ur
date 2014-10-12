@@ -8,7 +8,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.userstructure.InconsistentHierarchyException;
 import org.openur.module.domain.userstructure.UserStructureBaseBuilder;
-import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
 import org.openur.module.util.exception.OpenURRuntimeException;
 
@@ -68,7 +67,7 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 	{
 		Validate.notEmpty(members, "members-list must not be empty!");
 		
-		for (IOrgUnitMember m : members)
+		for (OrgUnitMember m : members)
 		{
 			if (!(this.getIdentifier().equals(m.getOrgUnitId())))
 			{
