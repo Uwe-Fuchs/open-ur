@@ -21,6 +21,7 @@ import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
+import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.domain.security.authorization.OpenURPermissionBuilder;
 import org.openur.module.domain.security.authorization.OpenURRoleBuilder;
 import org.openur.module.domain.security.authorization.PermissionScope;
@@ -99,9 +100,9 @@ public class SecurityDomainTest
 		OpenURApplication app = new OpenURApplicationBuilder("app").build();		
 		final String PERM_ID_1 = "111aaa";
 		final String PERM_ID_2 = "222bbb";
-		IPermission perm1 = new OpenURPermissionBuilder(
+		OpenURPermission perm1 = new OpenURPermissionBuilder(
 			PERM_ID_1, "perm1", PermissionScope.SELECTED, app).build();		
-		IPermission perm2 = new OpenURPermissionBuilder(
+		OpenURPermission perm2 = new OpenURPermissionBuilder(
 			PERM_ID_2, "perm2", PermissionScope.SELECTED, app).build();
 		
 		Mockito.when(securityDao.findPermissionById(PERM_ID_1)).thenReturn(perm1);
@@ -121,9 +122,9 @@ public class SecurityDomainTest
 		OpenURApplication app = new OpenURApplicationBuilder("app").build();		
 		final String PERM_NAME_1 = "perm1";
 		final String PERM_NAME_2 = "perm2";
-		IPermission perm1 = new OpenURPermissionBuilder(
+		OpenURPermission perm1 = new OpenURPermissionBuilder(
 			PERM_NAME_1, PermissionScope.SELECTED, app).build();		
-		IPermission perm2 = new OpenURPermissionBuilder(
+		OpenURPermission perm2 = new OpenURPermissionBuilder(
 			PERM_NAME_2, PermissionScope.SELECTED, app).build();
 		
 		Mockito.when(securityDao.findPermissionByName(PERM_NAME_1, app)).thenReturn(perm1);
@@ -146,9 +147,9 @@ public class SecurityDomainTest
 	public void testObtainAllPermissions()
 	{
 		OpenURApplication app = new OpenURApplicationBuilder("app").build();
-		IPermission perm1 = new OpenURPermissionBuilder(
+		OpenURPermission perm1 = new OpenURPermissionBuilder(
 			"perm1", PermissionScope.SELECTED, app).build();		
-		IPermission perm2 = new OpenURPermissionBuilder(
+		OpenURPermission perm2 = new OpenURPermissionBuilder(
 			"perm2", PermissionScope.SELECTED, app).build();
 		Mockito.when(securityDao.obtainAllPermissions()).thenReturn(Arrays.asList(perm1, perm2));
 		
@@ -163,17 +164,17 @@ public class SecurityDomainTest
 	public void testObtainPermissionsForApp()
 	{
 		OpenURApplication app1 = new OpenURApplicationBuilder("app1").build();
-		IPermission perm11 = new OpenURPermissionBuilder(
+		OpenURPermission perm11 = new OpenURPermissionBuilder(
 			"perm11", PermissionScope.SELECTED, app1).build();		
-		IPermission perm12 = new OpenURPermissionBuilder(
+		OpenURPermission perm12 = new OpenURPermissionBuilder(
 			"perm12", PermissionScope.SELECTED, app1).build();
 		Mockito.when(securityDao.obtainPermissionsForApp(app1))
 			.thenReturn(Arrays.asList(perm11, perm12));
 		
 		OpenURApplication app2 = new OpenURApplicationBuilder("app2").build();
-		IPermission perm21 = new OpenURPermissionBuilder(
+		OpenURPermission perm21 = new OpenURPermissionBuilder(
 			"perm21", PermissionScope.SELECTED, app2).build();		
-		IPermission perm22 = new OpenURPermissionBuilder(
+		OpenURPermission perm22 = new OpenURPermissionBuilder(
 			"perm22", PermissionScope.SELECTED, app2).build();
 		Mockito.when(securityDao.obtainPermissionsForApp(app2))
 			.thenReturn(Arrays.asList(perm21, perm22));
