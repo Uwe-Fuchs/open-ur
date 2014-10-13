@@ -5,8 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.openur.module.domain.userstructure.Status;
-import org.openur.module.domain.userstructure.person.IPerson;
-import org.openur.module.domain.userstructure.person.PersonSimpleBuilder;
 
 public class PersonSimpleTest
 {
@@ -16,7 +14,7 @@ public class PersonSimpleTest
 		PersonSimpleBuilder pb = new PersonSimpleBuilder()
 			.number("123abc")
 			.status(Status.INACTIVE);		
-		IPerson p1 = pb.build();
+		PersonSimple p1 = pb.build();
 		
 		assertEquals(p1.getNumber(), "123abc");
 	}
@@ -27,12 +25,12 @@ public class PersonSimpleTest
 		PersonSimpleBuilder pb = new PersonSimpleBuilder()
 			.number("123abc")
 			.status(Status.ACTIVE);
-		IPerson p1 = pb.build();
+		PersonSimple p1 = pb.build();
 		
 		pb = new PersonSimpleBuilder()
 			.number("456xyz")
 			.status(Status.ACTIVE);
-		IPerson p2 = pb.build();
+		PersonSimple p2 = pb.build();
 		
 		assertTrue("different personal numbers", p1.compareTo(p2) < 0);
 		

@@ -29,11 +29,11 @@ public class PersonTest
 			.number("123abc")
 			.status(Status.ACTIVE)
 			.emailAdress(new EMailAddress("info@uwefuchs.com"));
-		IPerson p1 = pb.build();
+		Person p1 = pb.build();
 		
 		pb = new PersonBuilder(UUID.randomUUID().toString(), Name.create(Gender.FEMALE, Title.DR, "Angela", "Merkel"))
 			.number("456xyz");
-		IPerson p2 = pb.build();
+		Person p2 = pb.build();
 		assertTrue("different names", p1.compareTo(p2) < 0);
 		
 		pb = new PersonBuilder(Name.create(Gender.MALE, "Arne", "Fuchs"))
@@ -54,7 +54,7 @@ public class PersonTest
 		PersonSimpleBuilder psb = new PersonSimpleBuilder()
 			.number("123abc")
 			.status(Status.ACTIVE);
-		p2 = psb.build();
-		assertTrue("p2 should be before p1 because of personal-number", p1.compareTo(p2) > 0);
+		PersonSimple p3 = psb.build();
+		assertTrue("p3 should be before p1 because of personal-number", p1.compareTo(p3) > 0);
 	}
 }

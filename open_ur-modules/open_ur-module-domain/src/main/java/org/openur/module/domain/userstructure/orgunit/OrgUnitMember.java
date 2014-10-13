@@ -2,7 +2,7 @@ package org.openur.module.domain.userstructure.orgunit;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.openur.module.domain.GraphNode;
-import org.openur.module.domain.userstructure.person.IPerson;
+import org.openur.module.domain.userstructure.person.abstr.AbstractPerson;
 
 public class OrgUnitMember
 	extends GraphNode
@@ -11,11 +11,11 @@ public class OrgUnitMember
 	private static final long serialVersionUID = -8299862057665830750L;
 
 	// properties:
-	private final IPerson person;
+	private final AbstractPerson person;
 	private final String orgUnitId;
 
 	// constructors:
-	public OrgUnitMember(IPerson person, String orgUnitId)
+	public OrgUnitMember(AbstractPerson person, String orgUnitId)
 	{
 		super();
 
@@ -25,7 +25,7 @@ public class OrgUnitMember
 
 	// accessors:
 	@Override
-	public IPerson getPerson()
+	public AbstractPerson getPerson()
 	{
 		return person;
 	}

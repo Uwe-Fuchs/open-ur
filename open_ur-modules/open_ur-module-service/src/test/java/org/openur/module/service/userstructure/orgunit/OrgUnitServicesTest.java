@@ -23,8 +23,8 @@ import org.openur.module.domain.userstructure.orgunit.OrgUnitSimpleBuilder;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnit;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnitBuilder;
 import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnit;
-import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.domain.userstructure.person.Name;
+import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.person.PersonBuilder;
 import org.openur.module.persistence.dao.IUserStructureDao;
 import org.openur.module.service.userstructure.UserStructureTestSpringConfig;
@@ -153,10 +153,10 @@ public class OrgUnitServicesTest
 		assertTrue(orgUnitSet.contains(orgUnit2));
 		
 		
-		IPerson persA = new PersonBuilder(Name.create(null, null, "Meier")).build();
+		Person persA = new PersonBuilder(Name.create(null, null, "Meier")).build();
 		OrgUnitMember mA = new OrgUnitMember(persA, OU_ID_2);
 		
-		IPerson persB = new PersonBuilder(Name.create(null, null, "Meier")).build();
+		Person persB = new PersonBuilder(Name.create(null, null, "Meier")).build();
 		OrgUnitMember mB = new OrgUnitMember(persB, OU_ID_2);
 		
 		OrganizationalUnit orgUnit2_m = new OrganizationalUnitBuilder(OU_ID_2, rootOu)

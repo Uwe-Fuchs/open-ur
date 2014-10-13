@@ -12,7 +12,7 @@ import java.util.UUID;
 import org.junit.Test;
 import org.openur.module.domain.userstructure.InconsistentHierarchyException;
 import org.openur.module.domain.userstructure.Status;
-import org.openur.module.domain.userstructure.person.IPerson;
+import org.openur.module.domain.userstructure.person.PersonSimple;
 import org.openur.module.domain.userstructure.person.PersonSimpleBuilder;
 import org.openur.module.util.exception.OpenURRuntimeException;
 
@@ -21,10 +21,10 @@ public class OrgUnitSimpleTest
 	@Test
 	public void testFindMember()
 	{
-		IPerson pers1 = new PersonSimpleBuilder()
+		PersonSimple pers1 = new PersonSimpleBuilder()
 			.build();
 		
-		IPerson pers2 = new PersonSimpleBuilder()
+		PersonSimple pers2 = new PersonSimpleBuilder()
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();
@@ -41,7 +41,7 @@ public class OrgUnitSimpleTest
 		assertEquals(m2, ou.findMember(m2.getPerson()));
 		assertEquals(m2, ou.findMember(m2.getPerson().getIdentifier()));
 		
-		IPerson pers3 = new PersonSimpleBuilder()
+		PersonSimple pers3 = new PersonSimpleBuilder()
 			.build();
 		OrgUnitMember m3 = new OrgUnitMember(pers3, OU_ID);
 		
@@ -58,10 +58,10 @@ public class OrgUnitSimpleTest
 	@Test
 	public void testIsMember()
 	{
-		IPerson pers1 = new PersonSimpleBuilder()
+		PersonSimple pers1 = new PersonSimpleBuilder()
 			.build();
 	
-		IPerson pers2 = new PersonSimpleBuilder()
+		PersonSimple pers2 = new PersonSimpleBuilder()
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();
@@ -78,7 +78,7 @@ public class OrgUnitSimpleTest
 		assertTrue(ou.isMember(m2.getPerson()));
 		assertTrue(ou.isMember(m2.getPerson().getIdentifier()));
 		
-		IPerson pers3 = new PersonSimpleBuilder()
+		PersonSimple pers3 = new PersonSimpleBuilder()
 			.build();
 		OrgUnitMember m3 = new OrgUnitMember(pers3, OU_ID);
 		
@@ -96,7 +96,7 @@ public class OrgUnitSimpleTest
 	@Test(expected=OpenURRuntimeException.class)
 	public void testCreateWithWrongOrgUnitID()
 	{
-		IPerson pers = new PersonSimpleBuilder().build();
+		PersonSimple pers = new PersonSimpleBuilder().build();
 		OrgUnitMember member = new OrgUnitMember(pers, "123");
 		
 		OrgUnitSimpleBuilder oub = new OrgUnitSimpleBuilder("456");

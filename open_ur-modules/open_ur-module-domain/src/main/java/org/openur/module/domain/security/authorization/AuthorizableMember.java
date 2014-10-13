@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
-import org.openur.module.domain.userstructure.person.IPerson;
+import org.openur.module.domain.userstructure.person.abstr.AbstractPerson;
 
 public class AuthorizableMember
 	extends OrgUnitMember
@@ -15,12 +15,12 @@ public class AuthorizableMember
 	
 	private final Set<IRole> roles = new HashSet<IRole>();
 	
-	public AuthorizableMember(IPerson person, String orgUnitId)
+	public AuthorizableMember(AbstractPerson person, String orgUnitId)
 	{
 		super(person, orgUnitId);
 	}
 
-	public AuthorizableMember(IPerson person, String orgUnitId, Collection<IRole> roles)
+	public AuthorizableMember(AbstractPerson person, String orgUnitId, Collection<IRole> roles)
 	{
 		super(person, orgUnitId);
 		

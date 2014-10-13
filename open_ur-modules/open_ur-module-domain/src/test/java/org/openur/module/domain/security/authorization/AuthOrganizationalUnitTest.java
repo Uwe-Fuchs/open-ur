@@ -14,8 +14,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
-import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.domain.userstructure.person.Name;
+import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.person.PersonBuilder;
 
 public class AuthOrganizationalUnitTest
@@ -32,10 +32,10 @@ public class AuthOrganizationalUnitTest
 	@Test
 	public void testFindAuthorizableMember()
 	{
-		IPerson pers1 = new PersonBuilder(name)
+		Person pers1 = new PersonBuilder(name)
 			.build();
 		
-		IPerson pers2 = new PersonBuilder(name)
+		Person pers2 = new PersonBuilder(name)
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();
@@ -52,7 +52,7 @@ public class AuthOrganizationalUnitTest
 		assertEquals(m2, ou.findMember(m2.getPerson()));
 		assertEquals(m2, ou.findAuthorizableMember(m2.getPerson().getIdentifier()));
 		
-		IPerson pers3 = new PersonBuilder(name)
+		Person pers3 = new PersonBuilder(name)
 			.build();
 		AuthorizableMember m3 = new AuthorizableMember(pers3, OU_ID);
 		
@@ -78,7 +78,7 @@ public class AuthOrganizationalUnitTest
 			.permissions(new HashSet<OpenURPermission>(Arrays.asList(perm11)))
 			.build();
 		
-		IPerson person = new PersonBuilder(name)
+		Person person = new PersonBuilder(name)
 			.apps(new HashSet<OpenURApplication>(Arrays.asList(app1)))
 			.build();
 		

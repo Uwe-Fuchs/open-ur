@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.domain.userstructure.Status;
-import org.openur.module.domain.userstructure.person.IPerson;
+import org.openur.module.domain.userstructure.person.PersonSimple;
 import org.openur.module.domain.userstructure.person.PersonSimpleBuilder;
 
 public class AuthorizableMemberTest
@@ -21,7 +21,7 @@ public class AuthorizableMemberTest
 	{
 		OpenURRole role1 = new OpenURRoleBuilder("role1")
 			.build();		
-		IPerson pers = new PersonSimpleBuilder()
+		PersonSimple pers = new PersonSimpleBuilder()
 			.number("123")
 			.status(Status.ACTIVE)
 			.build();
@@ -51,7 +51,7 @@ public class AuthorizableMemberTest
 			.permissions(new HashSet<OpenURPermission>(Arrays.asList(perm11, perm12)))
 			.build();
 		
-		IPerson person = new PersonSimpleBuilder()
+		PersonSimple person = new PersonSimpleBuilder()
 			.build();		
 		final String OU_ID_1 = UUID.randomUUID().toString();
 		

@@ -23,7 +23,7 @@ import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.domain.security.authorization.OpenURPermissionBuilder;
 import org.openur.module.domain.security.authorization.OpenURRoleBuilder;
 import org.openur.module.domain.security.authorization.PermissionScope;
-import org.openur.module.domain.userstructure.person.IPerson;
+import org.openur.module.domain.userstructure.person.PersonSimple;
 import org.openur.module.domain.userstructure.person.PersonSimpleBuilder;
 import org.openur.module.service.security.ISecurityDomainServices;
 import org.openur.module.service.security.SecurityTestSpringConfig;
@@ -65,7 +65,7 @@ public class AuthorizationServicesTest
 			.permissions(new HashSet<OpenURPermission>(Arrays.asList(perm1)))
 			.build();
 		
-		IPerson person = new PersonSimpleBuilder()
+		PersonSimple person = new PersonSimpleBuilder()
 			.apps(new HashSet<OpenURApplication>(Arrays.asList(app1)))
 			.build();
 		
@@ -111,7 +111,7 @@ public class AuthorizationServicesTest
 			.build();
 		
 		final String PERS_ID = UUID.randomUUID().toString();		
-		IPerson person = new PersonSimpleBuilder(PERS_ID)
+		PersonSimple person = new PersonSimpleBuilder(PERS_ID)
 			.apps(new HashSet<OpenURApplication>(Arrays.asList(app)))
 			.build();
 		
