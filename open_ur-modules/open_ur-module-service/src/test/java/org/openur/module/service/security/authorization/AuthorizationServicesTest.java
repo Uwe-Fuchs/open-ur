@@ -17,7 +17,6 @@ import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.domain.security.authorization.AuthOrgUnitSimple;
 import org.openur.module.domain.security.authorization.AuthorizableMember;
 import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
-import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
 import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.domain.security.authorization.OpenURPermissionBuilder;
@@ -80,7 +79,7 @@ public class AuthorizationServicesTest
 		assertTrue(authorizationServices.hasPermission(person, ou, perm1, app1));
 		
 		// doesn't have permission:
-		IPermission perm12 = new OpenURPermissionBuilder("perm2", PermissionScope.SELECTED_SUB,  app1)
+		OpenURPermission perm12 = new OpenURPermissionBuilder("perm2", PermissionScope.SELECTED_SUB,  app1)
 			.build();
 		
 		assertFalse(authorizationServices.hasPermission(person, ou, perm12, app1));
@@ -130,7 +129,7 @@ public class AuthorizationServicesTest
 		
 		// doesn't have permission:
 		final String PERM_NAME_2 = "perm2";
-		IPermission perm2 = new OpenURPermissionBuilder(PERM_NAME_2, PermissionScope.SELECTED_SUB,  app)
+		OpenURPermission perm2 = new OpenURPermissionBuilder(PERM_NAME_2, PermissionScope.SELECTED_SUB,  app)
 			.build();
 		Mockito.when(securityDomainServices.findPermissionByName(PERM_NAME_2, app)).thenReturn(perm2);
 		assertFalse(authorizationServices.hasPermission(PERS_ID, OU_ID, PERM_NAME_2, app));

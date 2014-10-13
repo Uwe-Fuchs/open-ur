@@ -25,7 +25,6 @@ import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.domain.security.authorization.OpenURPermissionBuilder;
 import org.openur.module.domain.security.authorization.OpenURRoleBuilder;
 import org.openur.module.domain.security.authorization.PermissionScope;
-import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnit;
 import org.openur.module.persistence.dao.ISecurityDao;
 import org.springframework.test.context.ActiveProfiles;
