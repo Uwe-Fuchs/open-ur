@@ -26,7 +26,7 @@ public class AuthorizableMemberTest
 			.status(Status.ACTIVE)
 			.build();
 		final String OU_ID_1 = UUID.randomUUID().toString();
-		IAuthorizableMember member = new AuthorizableMember(pers, OU_ID_1, Arrays.asList(role1));		
+		AuthorizableMember member = new AuthorizableMember(pers, OU_ID_1, Arrays.asList(role1));		
 		assertTrue(member.hasRole(role1));
 		
 		OpenURRole role2 = new OpenURRoleBuilder("role2")
@@ -55,7 +55,7 @@ public class AuthorizableMemberTest
 			.build();		
 		final String OU_ID_1 = UUID.randomUUID().toString();
 		
-		IAuthorizableMember member = new AuthorizableMember(person, OU_ID_1, Arrays.asList(role1));		
+		AuthorizableMember member = new AuthorizableMember(person, OU_ID_1, Arrays.asList(role1));		
 		
 		assertTrue(member.hasPermission(app1, perm11));
 		assertTrue(member.hasPermission(app1, perm12));
