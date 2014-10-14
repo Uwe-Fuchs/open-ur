@@ -23,6 +23,7 @@ import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
 import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.domain.security.authorization.OpenURPermissionBuilder;
+import org.openur.module.domain.security.authorization.OpenURRole;
 import org.openur.module.domain.security.authorization.OpenURRoleBuilder;
 import org.openur.module.domain.security.authorization.PermissionScope;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnit;
@@ -45,8 +46,8 @@ public class SecurityDomainTest
 	@Test
 	public void testObtainAllRoles()
 	{
-		IRole role1 = new OpenURRoleBuilder("role1").build();
-		IRole role2 = new OpenURRoleBuilder("role2").build();		
+		OpenURRole role1 = new OpenURRoleBuilder("role1").build();
+		OpenURRole role2 = new OpenURRoleBuilder("role2").build();		
 		Mockito.when(securityDao.obtainAllRoles()).thenReturn(Arrays.asList(role1, role2));
 		
 		Set<IRole> resultSet = securityDomainServices.obtainAllRoles();
@@ -61,8 +62,8 @@ public class SecurityDomainTest
 	{
 		final String ROLE_ID_1 = "111aaa";
 		final String ROLE_ID_2 = "222bbb";
-		IRole role1 = new OpenURRoleBuilder(ROLE_ID_1, "role1").build();
-		IRole role2 = new OpenURRoleBuilder(ROLE_ID_2, "role2").build();	
+		OpenURRole role1 = new OpenURRoleBuilder(ROLE_ID_1, "role1").build();
+		OpenURRole role2 = new OpenURRoleBuilder(ROLE_ID_2, "role2").build();	
 		Mockito.when(securityDao.findRoleById(ROLE_ID_1)).thenReturn(role1);
 		Mockito.when(securityDao.findRoleById(ROLE_ID_2)).thenReturn(role2);
 		
@@ -79,8 +80,8 @@ public class SecurityDomainTest
 	{
 		final String ROLE_NAME_1 = "role1";
 		final String ROLE_NAME_2 = "role2";
-		IRole role1 = new OpenURRoleBuilder(ROLE_NAME_1).build();
-		IRole role2 = new OpenURRoleBuilder(ROLE_NAME_2).build();
+		OpenURRole role1 = new OpenURRoleBuilder(ROLE_NAME_1).build();
+		OpenURRole role2 = new OpenURRoleBuilder(ROLE_NAME_2).build();
 		Mockito.when(securityDao.findRoleByName(ROLE_NAME_1)).thenReturn(role1);
 		Mockito.when(securityDao.findRoleByName(ROLE_NAME_2)).thenReturn(role2);
 		

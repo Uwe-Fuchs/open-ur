@@ -46,5 +46,5 @@ public interface IAuthorizableMember
 	 * 
 	 * @return roles in a set (or empty set).
 	 */
-	Set<IRole> getRoles();
+	Set<? extends IRole> getRoles();
 }
