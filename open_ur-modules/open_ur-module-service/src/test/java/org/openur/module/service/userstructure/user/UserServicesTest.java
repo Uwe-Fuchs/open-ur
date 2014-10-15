@@ -19,6 +19,7 @@ import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.domain.userstructure.person.PersonSimple;
 import org.openur.module.domain.userstructure.person.PersonSimpleBuilder;
 import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
+import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUserBuilder;
 import org.openur.module.persistence.dao.IUserStructureDao;
 import org.openur.module.service.userstructure.UserStructureTestSpringConfig;
@@ -114,8 +115,8 @@ public class UserServicesTest
 		String uuid = UUID.randomUUID().toString();
 		String uuid2 = UUID.randomUUID().toString();
 		
-		ITechnicalUser techUser = new TechnicalUserBuilder(uuid).build();
-		ITechnicalUser techUser2 = new TechnicalUserBuilder(uuid2).build();
+		TechnicalUser techUser = new TechnicalUserBuilder(uuid).build();
+		TechnicalUser techUser2 = new TechnicalUserBuilder(uuid2).build();
 		
 		Mockito.when(dao.findTechnicalUserById(uuid)).thenReturn(techUser);
 		Mockito.when(dao.findTechnicalUserById(uuid2)).thenReturn(techUser2);	
@@ -135,11 +136,11 @@ public class UserServicesTest
 		String personalNo1 = "no123";
 		String personalNo2 = "no456";
 		
-		ITechnicalUser techUser = new TechnicalUserBuilder()
+		TechnicalUser techUser = new TechnicalUserBuilder()
 				.number(personalNo1)
 				.build();
 		
-		ITechnicalUser techUser2 = new TechnicalUserBuilder()
+		TechnicalUser techUser2 = new TechnicalUserBuilder()
 				.number(personalNo2)
 				.build();
 		
@@ -161,11 +162,11 @@ public class UserServicesTest
 		String personalNo1 = "no123";
 		String personalNo2 = "no456";
 		
-		ITechnicalUser techUser = new TechnicalUserBuilder()
+		TechnicalUser techUser = new TechnicalUserBuilder()
 				.number(personalNo1)
 				.build();
 		
-		ITechnicalUser techUser2 = new TechnicalUserBuilder()
+		TechnicalUser techUser2 = new TechnicalUserBuilder()
 			.number(personalNo2)
 			.build();
 		
