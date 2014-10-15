@@ -26,23 +26,23 @@
       <type>pom</type>
     </dependency>
     <dependency>
-        <groupId>org.open-ur.module</groupId>
-        <artifactId>open_ur-module-util</artifactId>
+      <groupId>org.open-ur.module</groupId>
+      <artifactId>open_ur-module-util</artifactId>
       <type>jar</type>
     </dependency>
     <dependency>
-        <groupId>org.open-ur.module</groupId>
-        <artifactId>open_ur-module-domain</artifactId>
+      <groupId>org.open-ur.module</groupId>
+      <artifactId>open_ur-module-domain</artifactId>
       <type>jar</type>
     </dependency>
     <dependency>
-        <groupId>org.open-ur.module</groupId>
-        <artifactId>open_ur-module-persistence</artifactId>
+      <groupId>org.open-ur.module</groupId>
+      <artifactId>open_ur-module-persistence</artifactId>
       <type>jar</type>
     </dependency>
     <dependency>
-	  <groupId>javax.inject</groupId>
-	  <artifactId>javax.inject</artifactId>
+	<groupId>javax.inject</groupId>
+	<artifactId>javax.inject</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
