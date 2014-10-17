@@ -26,6 +26,11 @@
       <type>jar</type>
     </dependency>
     <dependency>
+      <groupId>org.open-ur.module</groupId>
+      <artifactId>open_ur-module-domain-api</artifactId>
+      <type>jar</type>
+    </dependency>
+    <dependency>
       <groupId>org.apache.commons</groupId>
   	  <artifactId>commons-lang3</artifactId>
     </dependency>
