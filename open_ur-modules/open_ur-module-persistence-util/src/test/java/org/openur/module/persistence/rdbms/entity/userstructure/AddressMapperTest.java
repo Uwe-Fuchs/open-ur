@@ -1,15 +1,14 @@
 package org.openur.module.persistence.rdbms.entity.userstructure;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.openur.module.domain.userstructure.Address;
-import org.openur.module.domain.userstructure.Address.AddressBuilder;
 import org.openur.module.domain.userstructure.Country;
 import org.openur.module.domain.userstructure.IAddress;
+import org.openur.module.domain.userstructure.Address.AddressBuilder;
 
-public class PAddressTest
+public class AddressMapperTest
 {
 	@Test
 	public void testMapFromImmutable()
@@ -24,7 +23,7 @@ public class PAddressTest
 		b.careOf("Schmidt");
 		
 		Address address = b.build();
-		PAddress pAddress = PAddress.mapFromImmutable(address);
+		PAddress pAddress = AddressMapper.mapFromImmutable(address);
 		
 		assertNotNull(pAddress);
 		assertEquals(address.getCareOf(), pAddress.getCareOf());
@@ -49,7 +48,7 @@ public class PAddressTest
 		pAddress.setStreetNo("11");
 		pAddress.setCountryCode("DE");
 		
-		IAddress address = PAddress.mapFromEntity(pAddress);
+		IAddress address = AddressMapper.mapFromEntity(pAddress);
 		
 		assertNotNull(address);
 		assertEquals(address.getCareOf(), pAddress.getCareOf());

@@ -19,7 +19,7 @@ import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.person.PersonBuilder;
 
-public class PPersonTest
+public class PersonMapperTest
 {
 	private Name name;
 	private Address address;
@@ -64,7 +64,7 @@ public class PPersonTest
 			.apps(this.applications);
 
 		Person immutable = pb.build();
-		PPerson persistable = PPerson.mapFromImmutable(immutable);
+		PPerson persistable = PersonMapper.mapFromImmutable(immutable);
 		
 		assertNotNull(persistable);
 		assertEquals(immutable.getNumber(), persistable.getNumber());

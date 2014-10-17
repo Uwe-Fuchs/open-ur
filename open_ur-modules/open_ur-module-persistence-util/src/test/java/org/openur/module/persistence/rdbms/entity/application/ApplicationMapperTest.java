@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
 
-public class PApplicationTest
+public class ApplicationMapperTest
 {
 	private final String APP_NAME = "app1";
 	
@@ -14,7 +14,7 @@ public class PApplicationTest
 	public void testMapFromImmutable()
 	{
 		OpenURApplication immutable = new OpenURApplicationBuilder(APP_NAME).build();
-		PApplication persistable = PApplication.mapFromImmutable(immutable);
+		PApplication persistable = ApplicationMapper.mapFromImmutable(immutable);
 		
 		assertEquals(persistable.getApplicationName(), APP_NAME);
 	}
@@ -24,7 +24,7 @@ public class PApplicationTest
 	{
 		PApplication persistable = new PApplication();
 		persistable.setApplicationName(APP_NAME);
-		OpenURApplication immutable = PApplication.mapToImmutable(persistable);
+		OpenURApplication immutable = ApplicationMapper.mapToImmutable(persistable);
 		
 		assertEquals(immutable.getApplicationName(), APP_NAME);
 	}
