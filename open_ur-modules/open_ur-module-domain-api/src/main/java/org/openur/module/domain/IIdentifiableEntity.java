@@ -46,7 +46,7 @@ public interface IIdentifiableEntity
 			return true;
 		}
 
-		IdentifiableEntityImpl ie = (IdentifiableEntityImpl) obj;
+		IIdentifiableEntity ie = (IIdentifiableEntity) obj;
 		
 		return this.getIdentifier().equals(ie.getIdentifier());
 	}
