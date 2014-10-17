@@ -10,8 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-import org.openur.module.domain.application.OpenURApplication;
-import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.persistence.rdbms.entity.AbstractOpenUrPersistable;
 import org.openur.module.persistence.rdbms.entity.userstructure.PPerson;
 
@@ -58,23 +56,5 @@ public class PApplication
 	PApplication()
 	{
 		super();
-	}
-
-	public static PApplication mapFromImmutable(OpenURApplication immutable)
-	{
-		PApplication persistable = new PApplication();		
-		persistable.setApplicationName(immutable.getApplicationName());
-		
-		return persistable;
-	}
-	
-	public static OpenURApplication mapToImmutable(PApplication persistable)
-	{
-		OpenURApplication immutable = new OpenURApplicationBuilder(persistable.getApplicationName())
-				.creationDate(persistable.getCreationDate())
-				.lastModifiedDate(persistable.getLastModifiedDate())
-				.build();
-		
-		return immutable;
 	}
 }
