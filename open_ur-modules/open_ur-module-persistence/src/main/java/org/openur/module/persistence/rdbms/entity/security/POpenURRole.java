@@ -33,6 +33,14 @@ public class POpenURRole
 		inverseJoinColumns={@JoinColumn(name="ID_PERMISSION", referencedColumnName="ID")}
 	)
 	private Set<PPermission> permissions = new HashSet<>();
+	
+	@ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinTable(
+		name="ROLES_MEMBERS",
+		joinColumns={@JoinColumn(name="ID_ROLE", referencedColumnName="ID")},
+		inverseJoinColumns={@JoinColumn(name="ID_MEMBER", referencedColumnName="ID")}
+	)
+	private Set<PAuthorizableMember> members = new HashSet<>();
 		
 	// accessors:
 	public String getRoleName()
