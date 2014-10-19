@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -14,7 +15,8 @@ import javax.persistence.OneToMany;
 public class POrganizationalUnit
 	extends PUserStructureBase
 {
-	
+	private static final long serialVersionUID = -8093388723274386419L;
+
 	// properties:
 	@ManyToOne(fetch=FetchType.EAGER, optional=true)
 	@JoinColumn(name="SUPER_OU_ID", referencedColumnName="ID")
@@ -27,6 +29,22 @@ public class POrganizationalUnit
 	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	@JoinColumn(name="ORG_UNIT_MEMBER_ID", referencedColumnName="ID")
 	private Set<POrgUnitMember> members = new HashSet<>();
+	
+	@Column(name="NAME", length=50, nullable=false)
+  private String name;
+	
+	@Column(name="SHORT_NAME", length=20)
+  private String shortName;
+	
+	@Column(name="DESCRIPTION")
+	private String description;
+
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="ADDRESS_ID", referencedColumnName="ID")
+  private PAddress address;
+  
+	@Column(name="EMAIL")
+  private String emailAddress;
 		
 	// accessors
 	public POrganizationalUnit getSuperOu()
@@ -57,6 +75,56 @@ public class POrganizationalUnit
 	void setMembers(Set<POrgUnitMember> members)
 	{
 		this.members = members;
+	}
+
+	public String getName()
+	{
+		return name;
+	}
+
+	void setName(String name)
+	{
+		this.name = name;
+	}
+
+	public String getShortName()
+	{
+		return shortName;
+	}
+
+	void setShortName(String shortName)
+	{
+		this.shortName = shortName;
+	}
+
+	public String getDescription()
+	{
+		return description;
+	}
+
+	void setDescription(String description)
+	{
+		this.description = description;
+	}
+
+	public PAddress getAddress()
+	{
+		return address;
+	}
+
+	void setAddress(PAddress address)
+	{
+		this.address = address;
+	}
+
+	public String getEmailAddress()
+	{
+		return emailAddress;
+	}
+
+	void setEmailAddress(String emailAddress)
+	{
+		this.emailAddress = emailAddress;
 	}
 
 	// constructor:
