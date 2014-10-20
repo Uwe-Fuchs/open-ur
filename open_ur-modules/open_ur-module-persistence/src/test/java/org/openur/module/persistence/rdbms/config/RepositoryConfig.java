@@ -25,24 +25,24 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class RepositoryConfig
 	extends AbstractConfig
 {
-	@Override
-	public DataSource dataSource()
-	{
-		EmbeddedDatabaseFactory f = new EmbeddedDatabaseFactory();
-		f.setDatabaseType(EmbeddedDatabaseType.H2);
-		
-		return f.getDatabase();
-	}
-	
 //	@Override
 //	public DataSource dataSource()
 //	{
-//		SimpleDriverDataSource ds = new SimpleDriverDataSource();
-//    ds.setDriverClass(env.getPropertyAsClass("database.driver", Driver.class));
-//    ds.setUrl(env.getProperty("database.url"));
-//    ds.setUsername(env.getProperty("database.username"));
-//    ds.setPassword(env.getProperty("database.password"));
-//    
-//    return ds;
+//		EmbeddedDatabaseFactory f = new EmbeddedDatabaseFactory();
+//		f.setDatabaseType(EmbeddedDatabaseType.H2);
+//		
+//		return f.getDatabase();
 //	}
+	
+	@Override
+	public DataSource dataSource()
+	{
+		SimpleDriverDataSource ds = new SimpleDriverDataSource();
+    ds.setDriverClass(env.getPropertyAsClass("database.driver", Driver.class));
+    ds.setUrl(env.getProperty("database.url"));
+    ds.setUsername(env.getProperty("database.username"));
+    ds.setPassword(env.getProperty("database.password"));
+    
+    return ds;
+	}
 }
