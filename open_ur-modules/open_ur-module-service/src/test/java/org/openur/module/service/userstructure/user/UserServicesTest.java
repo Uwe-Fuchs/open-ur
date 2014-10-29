@@ -1,26 +1,21 @@
 package org.openur.module.service.userstructure.user;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.UUID;
 
 import javax.inject.Inject;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.openur.module.domain.userstructure.person.IPerson;
-import org.openur.module.domain.userstructure.person.PersonSimple;
-import org.openur.module.domain.userstructure.person.PersonSimpleBuilder;
 import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
-import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
-import org.openur.module.domain.userstructure.technicaluser.TechnicalUserBuilder;
 import org.openur.module.persistence.dao.IUserStructureDao;
 import org.openur.module.service.userstructure.UserStructureTestSpringConfig;
 import org.springframework.test.context.ActiveProfiles;
@@ -31,157 +26,186 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {UserStructureTestSpringConfig.class})
 public class UserServicesTest
-{
+{	
+	private final String PERSON_NO_1;	
+	private final String PERSON_NO_2;
+	private final String NUMBER_DIFFERENT_FROM_ALL_OTHERS;
+	private final String UUID_1;
+	private final String UUID_2;
+	private final String OTHER_UUID;	
+	
+	private final IPerson PERSON_1;
+	private final IPerson PERSON_2;
+	private final ITechnicalUser TECH_USER_1;
+	private final ITechnicalUser TECH_USER_2;
+	
 	@Inject
 	private IUserStructureDao dao;
 	
 	@Inject
-	private IUserServices userServices;
+	private IUserServices userServices;	
+	
+	public UserServicesTest()
+	{
+		super();
+		
+		UUID uuidTmp1 = UUID.randomUUID();
+		UUID uuidTmp2;
+		
+		do
+		{
+			uuidTmp2 = UUID.randomUUID();
+		} while (uuidTmp2.equals(uuidTmp1));
+
+		UUID otherUuidTmp;
+		
+		do
+		{
+			otherUuidTmp = UUID.randomUUID();
+		} while (otherUuidTmp.equals(uuidTmp1) || otherUuidTmp.equals(uuidTmp2));
+
+		UUID_1 = uuidTmp1.toString();
+		UUID_2 = uuidTmp2.toString();
+		OTHER_UUID = otherUuidTmp.toString();
+		
+		PERSON_NO_1 = "123";
+		PERSON_NO_2 = "456";
+		NUMBER_DIFFERENT_FROM_ALL_OTHERS = "numberDifferentFromAllOthers";
+		
+		PERSON_1 = new MyPerson(UUID_1, PERSON_NO_1);
+		PERSON_2 = new MyPerson(UUID_2, PERSON_NO_2);
+		
+		TECH_USER_1 = new MyTechnicalUser(UUID_1, PERSON_NO_1);
+		TECH_USER_2 = new MyTechnicalUser(UUID_2, PERSON_NO_2);
+	}
 
 	@Test
 	public void testFindPersonById()
 	{		
-		String uuid = UUID.randomUUID().toString();
-		String uuid2 = UUID.randomUUID().toString();
+		Mockito.when(dao.findPersonById(UUID_1)).thenReturn(PERSON_1);
 		
-		PersonSimple person = new PersonSimpleBuilder(uuid)
-			.number("number1")
-			.build();
-		PersonSimple person2 = new PersonSimpleBuilder(uuid2)
-			.number("number2")
-			.build();
-		
-		Mockito.when(dao.findPersonById(uuid)).thenReturn(person);
-		Mockito.when(dao.findPersonById(uuid2)).thenReturn(person2);	
-		
-		IPerson p = userServices.findPersonById(uuid);		
+		IPerson p = userServices.findPersonById(UUID_1);		
 		assertNotNull(p);
-		assertEquals("personal number", "number1", p.getNumber());	
+		assertEquals("identifier", p.getIdentifier(), UUID_1);
+		assertEquals("personal number", PERSON_NO_1, p.getNumber());
 		
-		IPerson p2 = userServices.findPersonById(uuid2);		
-		assertNotNull(p2);
-		assertEquals("personal number", "number2", p2.getNumber());
+		Mockito.when(dao.findPersonById(UUID_2)).thenReturn(PERSON_2);
+		
+		p = userServices.findPersonById(UUID_2);		
+		assertNotNull(p);
+		assertEquals("identifier", p.getIdentifier(), UUID_2);
+		assertEquals("personal number", PERSON_NO_2, p.getNumber());
+		
+		p = userServices.findPersonById(OTHER_UUID);
+		assertTrue(p == null || !p.getIdentifier().equals(UUID_1) || !p.getIdentifier().equals(UUID_2));
 	}
 
 	@Test
 	public void testFindPersonByNumber()
 	{
-		String personalNo1 = "no123";
-		String personalNo2 = "no456";
+		Mockito.when(dao.findPersonByNumber(PERSON_NO_1)).thenReturn(PERSON_1);
 		
-		PersonSimple person = new PersonSimpleBuilder()
-			.number(personalNo1)
-			.build();	
-		PersonSimple person2 = new PersonSimpleBuilder()
-			.number(personalNo2)
-			.build();
-		
-		Mockito.when(dao.findPersonByNumber(personalNo1)).thenReturn(person);
-		Mockito.when(dao.findPersonByNumber(personalNo2)).thenReturn(person2);
-		
-		IPerson p = userServices.findPersonByNumber(personalNo1);		
+		IPerson p = userServices.findPersonByNumber(PERSON_NO_1);		
 		assertNotNull(p);
-		assertEquals(person, p);	
+		assertEquals("personal number", PERSON_NO_1, p.getNumber());	
+		assertEquals("identifier", p.getIdentifier(), UUID_1);
+
+		Mockito.when(dao.findPersonByNumber(PERSON_NO_2)).thenReturn(PERSON_2);
 		
-		IPerson p2 = userServices.findPersonByNumber(personalNo2);		
-		assertNotNull(p2);
-		assertEquals(person2, p2);
+		p = userServices.findPersonByNumber(PERSON_NO_2);		
+		assertNotNull(p);
+		assertEquals("personal number", PERSON_NO_2, p.getNumber());
+		assertEquals("identifier", p.getIdentifier(), UUID_2);
+
+		p = userServices.findPersonByNumber(NUMBER_DIFFERENT_FROM_ALL_OTHERS);
+		assertTrue(p == null || !p.getNumber().equals(PERSON_NO_1) || !p.getNumber().equals(PERSON_NO_2));
 	}
 
 	@Test
 	public void testObtainAllPersons()
 	{
-		PersonSimple person = new PersonSimpleBuilder().build();
-		PersonSimple person2 = new PersonSimpleBuilder().build();
-		
-		Mockito.when(dao.obtainAllPersons()).thenReturn(Arrays.asList(person, person2));
+		Mockito.when(dao.obtainAllPersons()).thenReturn(Arrays.asList(PERSON_1, PERSON_2));
 		
 		Set<IPerson> personSet = userServices.obtainAllPersons();
 		
-		assertTrue(CollectionUtils.isNotEmpty(personSet));
+		assertTrue(personSet != null);
 		assertEquals(2, personSet.size());
-		assertTrue(personSet.contains(person));
-		assertTrue(personSet.contains(person2));
 		
-		Mockito.when(dao.obtainAllPersons()).thenReturn(new ArrayList<IPerson>(0));
-		personSet = userServices.obtainAllPersons();
-		assertNotNull(personSet);
-		assertTrue(personSet.isEmpty());
+		for (IPerson p : personSet)
+		{
+			assertTrue(UUID_1.equals(p.getIdentifier()) || UUID_2.equals(p.getIdentifier()));
+			assertTrue(PERSON_NO_1.equals(p.getNumber()) || PERSON_NO_2.equals(p.getNumber()));
+		}
+		
+		for (IPerson p : personSet)
+		{
+			assertFalse(OTHER_UUID.equals(p.getIdentifier()));
+			assertFalse(NUMBER_DIFFERENT_FROM_ALL_OTHERS.equals(p.getNumber()));
+		}
 	}
 
 	@Test
 	public void testFindTechnicalUserById()
 	{
-		String uuid = UUID.randomUUID().toString();
-		String uuid2 = UUID.randomUUID().toString();
+		Mockito.when(dao.findTechnicalUserById(UUID_1)).thenReturn(TECH_USER_1);
 		
-		TechnicalUser techUser = new TechnicalUserBuilder(uuid).build();
-		TechnicalUser techUser2 = new TechnicalUserBuilder(uuid2).build();
-		
-		Mockito.when(dao.findTechnicalUserById(uuid)).thenReturn(techUser);
-		Mockito.when(dao.findTechnicalUserById(uuid2)).thenReturn(techUser2);	
-		
-		ITechnicalUser tu = userServices.findTechnicalUserById(uuid);		
+		ITechnicalUser tu = userServices.findTechnicalUserById(UUID_1);		
 		assertNotNull(tu);
-		assertEquals(tu, techUser);	
+		assertEquals(tu.getIdentifier(), TECH_USER_1.getIdentifier());
+		assertEquals(tu.getNumber(), TECH_USER_1.getNumber());
 		
-		ITechnicalUser tu2 = userServices.findTechnicalUserById(uuid2);		
-		assertNotNull(tu2);
-		assertEquals(tu2, techUser2);
+		Mockito.when(dao.findTechnicalUserById(UUID_2)).thenReturn(TECH_USER_2);
+		
+		tu = userServices.findTechnicalUserById(UUID_2);		
+		assertNotNull(tu);
+		assertEquals(tu.getIdentifier(), TECH_USER_2.getIdentifier());
+		assertEquals(tu.getNumber(), TECH_USER_2.getNumber());
+		
+		tu = userServices.findTechnicalUserById(OTHER_UUID);	
+		assertTrue(tu == null || !tu.getIdentifier().equals(UUID_1) || !tu.getIdentifier().equals(UUID_2));
 	}
 
 	@Test
 	public void testFindTechnicalUserByNumber()
 	{
-		String personalNo1 = "no123";
-		String personalNo2 = "no456";
+		Mockito.when(dao.findTechnicalUserByNumber(PERSON_NO_1)).thenReturn(TECH_USER_1);
 		
-		TechnicalUser techUser = new TechnicalUserBuilder()
-				.number(personalNo1)
-				.build();
-		
-		TechnicalUser techUser2 = new TechnicalUserBuilder()
-				.number(personalNo2)
-				.build();
-		
-		Mockito.when(dao.findTechnicalUserByNumber(personalNo1)).thenReturn(techUser);
-		Mockito.when(dao.findTechnicalUserByNumber(personalNo2)).thenReturn(techUser2);	
-		
-		ITechnicalUser tu = userServices.findTechnicalUserByNumber(personalNo1);		
+		ITechnicalUser tu = userServices.findTechnicalUserByNumber(PERSON_NO_1);		
 		assertNotNull(tu);
-		assertEquals(tu, techUser);	
+		assertEquals(tu.getNumber(), TECH_USER_1.getNumber());
+		assertEquals(tu.getIdentifier(), TECH_USER_1.getIdentifier());
 		
-		ITechnicalUser tu2 = userServices.findTechnicalUserByNumber(personalNo2);		
-		assertNotNull(tu2);
-		assertEquals(tu2, techUser2);
+		Mockito.when(dao.findTechnicalUserByNumber(PERSON_NO_2)).thenReturn(TECH_USER_2);
+		
+		tu = userServices.findTechnicalUserByNumber(PERSON_NO_2);		
+		assertNotNull(tu);
+		assertEquals(tu.getNumber(), TECH_USER_2.getNumber());
+		assertEquals(tu.getIdentifier(), TECH_USER_2.getIdentifier());
+		
+		tu = userServices.findTechnicalUserByNumber(NUMBER_DIFFERENT_FROM_ALL_OTHERS);	
+		assertTrue(tu == null || !tu.getNumber().equals(PERSON_NO_1) || !tu.getNumber().equals(PERSON_NO_2));
 	}
 
 	@Test
 	public void testObtainAllTechnicalUsers()
 	{
-		String personalNo1 = "no123";
-		String personalNo2 = "no456";
-		
-		TechnicalUser techUser = new TechnicalUserBuilder()
-				.number(personalNo1)
-				.build();
-		
-		TechnicalUser techUser2 = new TechnicalUserBuilder()
-			.number(personalNo2)
-			.build();
-		
-		Mockito.when(dao.obtainAllTechnicalUsers()).thenReturn(Arrays.asList(techUser, techUser2));
+		Mockito.when(dao.obtainAllTechnicalUsers()).thenReturn(Arrays.asList(TECH_USER_1, TECH_USER_2));
 		
 		Set<ITechnicalUser> techUsersSet = userServices.obtainAllTechnicalUsers();
 		
-		assertTrue(CollectionUtils.isNotEmpty(techUsersSet));
+		assertTrue(techUsersSet != null);
 		assertEquals(2, techUsersSet.size());
-		assertTrue(techUsersSet.contains(techUser));
-		assertTrue(techUsersSet.contains(techUser2));
 		
-		Mockito.when(dao.obtainAllTechnicalUsers()).thenReturn(new ArrayList<ITechnicalUser>(0));
-		techUsersSet = userServices.obtainAllTechnicalUsers();
-		assertNotNull(techUsersSet);
-		assertTrue(techUsersSet.isEmpty());
+		for (ITechnicalUser tu : techUsersSet)
+		{
+			assertTrue(UUID_1.equals(tu.getIdentifier()) || UUID_2.equals(tu.getIdentifier()));
+			assertTrue(PERSON_NO_1.equals(tu.getNumber()) || PERSON_NO_2.equals(tu.getNumber()));
+		}
+		
+		for (ITechnicalUser p : techUsersSet)
+		{
+			assertFalse(OTHER_UUID.equals(p.getIdentifier()));
+			assertFalse(NUMBER_DIFFERENT_FROM_ALL_OTHERS.equals(p.getNumber()));
+		}
 	}
 }
