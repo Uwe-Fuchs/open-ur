@@ -27,12 +27,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {UserStructureTestSpringConfig.class})
 public class UserServicesTest
 {	
-	private final String PERSON_NO_1;	
-	private final String PERSON_NO_2;
-	private final String NUMBER_DIFFERENT_FROM_ALL_OTHERS;
 	private final String UUID_1;
 	private final String UUID_2;
 	private final String OTHER_UUID;	
+	private final String NO_123;	
+	private final String NO_456;
+	private final String NUMBER_DIFFERENT_FROM_ALL_OTHERS;
 	
 	private final IPerson PERSON_1;
 	private final IPerson PERSON_2;
@@ -68,15 +68,15 @@ public class UserServicesTest
 		UUID_2 = uuidTmp2.toString();
 		OTHER_UUID = otherUuidTmp.toString();
 		
-		PERSON_NO_1 = "123";
-		PERSON_NO_2 = "456";
+		NO_123 = "123";
+		NO_456 = "456";
 		NUMBER_DIFFERENT_FROM_ALL_OTHERS = "numberDifferentFromAllOthers";
 		
-		PERSON_1 = new MyPerson(UUID_1, PERSON_NO_1);
-		PERSON_2 = new MyPerson(UUID_2, PERSON_NO_2);
+		PERSON_1 = new MyPerson(UUID_1, NO_123);
+		PERSON_2 = new MyPerson(UUID_2, NO_456);
 		
-		TECH_USER_1 = new MyTechnicalUser(UUID_1, PERSON_NO_1);
-		TECH_USER_2 = new MyTechnicalUser(UUID_2, PERSON_NO_2);
+		TECH_USER_1 = new MyTechnicalUser(UUID_1, NO_123);
+		TECH_USER_2 = new MyTechnicalUser(UUID_2, NO_456);
 	}
 
 	@Test
@@ -87,14 +87,14 @@ public class UserServicesTest
 		IPerson p = userServices.findPersonById(UUID_1);		
 		assertNotNull(p);
 		assertEquals("identifier", p.getIdentifier(), UUID_1);
-		assertEquals("personal number", PERSON_NO_1, p.getNumber());
+		assertEquals("personal number", NO_123, p.getNumber());
 		
 		Mockito.when(dao.findPersonById(UUID_2)).thenReturn(PERSON_2);
 		
 		p = userServices.findPersonById(UUID_2);		
 		assertNotNull(p);
 		assertEquals("identifier", p.getIdentifier(), UUID_2);
-		assertEquals("personal number", PERSON_NO_2, p.getNumber());
+		assertEquals("personal number", NO_456, p.getNumber());
 		
 		p = userServices.findPersonById(OTHER_UUID);
 		assertTrue(p == null || !p.getIdentifier().equals(UUID_1) || !p.getIdentifier().equals(UUID_2));
@@ -103,22 +103,22 @@ public class UserServicesTest
 	@Test
 	public void testFindPersonByNumber()
 	{
-		Mockito.when(dao.findPersonByNumber(PERSON_NO_1)).thenReturn(PERSON_1);
+		Mockito.when(dao.findPersonByNumber(NO_123)).thenReturn(PERSON_1);
 		
-		IPerson p = userServices.findPersonByNumber(PERSON_NO_1);		
+		IPerson p = userServices.findPersonByNumber(NO_123);		
 		assertNotNull(p);
-		assertEquals("personal number", PERSON_NO_1, p.getNumber());	
+		assertEquals("personal number", NO_123, p.getNumber());	
 		assertEquals("identifier", p.getIdentifier(), UUID_1);
 
-		Mockito.when(dao.findPersonByNumber(PERSON_NO_2)).thenReturn(PERSON_2);
+		Mockito.when(dao.findPersonByNumber(NO_456)).thenReturn(PERSON_2);
 		
-		p = userServices.findPersonByNumber(PERSON_NO_2);		
+		p = userServices.findPersonByNumber(NO_456);		
 		assertNotNull(p);
-		assertEquals("personal number", PERSON_NO_2, p.getNumber());
+		assertEquals("personal number", NO_456, p.getNumber());
 		assertEquals("identifier", p.getIdentifier(), UUID_2);
 
 		p = userServices.findPersonByNumber(NUMBER_DIFFERENT_FROM_ALL_OTHERS);
-		assertTrue(p == null || !p.getNumber().equals(PERSON_NO_1) || !p.getNumber().equals(PERSON_NO_2));
+		assertTrue(p == null || !p.getNumber().equals(NO_123) || !p.getNumber().equals(NO_456));
 	}
 
 	@Test
@@ -134,7 +134,7 @@ public class UserServicesTest
 		for (IPerson p : personSet)
 		{
 			assertTrue(UUID_1.equals(p.getIdentifier()) || UUID_2.equals(p.getIdentifier()));
-			assertTrue(PERSON_NO_1.equals(p.getNumber()) || PERSON_NO_2.equals(p.getNumber()));
+			assertTrue(NO_123.equals(p.getNumber()) || NO_456.equals(p.getNumber()));
 		}
 		
 		for (IPerson p : personSet)
@@ -168,22 +168,22 @@ public class UserServicesTest
 	@Test
 	public void testFindTechnicalUserByNumber()
 	{
-		Mockito.when(dao.findTechnicalUserByNumber(PERSON_NO_1)).thenReturn(TECH_USER_1);
+		Mockito.when(dao.findTechnicalUserByNumber(NO_123)).thenReturn(TECH_USER_1);
 		
-		ITechnicalUser tu = userServices.findTechnicalUserByNumber(PERSON_NO_1);		
+		ITechnicalUser tu = userServices.findTechnicalUserByNumber(NO_123);		
 		assertNotNull(tu);
 		assertEquals(tu.getNumber(), TECH_USER_1.getNumber());
 		assertEquals(tu.getIdentifier(), TECH_USER_1.getIdentifier());
 		
-		Mockito.when(dao.findTechnicalUserByNumber(PERSON_NO_2)).thenReturn(TECH_USER_2);
+		Mockito.when(dao.findTechnicalUserByNumber(NO_456)).thenReturn(TECH_USER_2);
 		
-		tu = userServices.findTechnicalUserByNumber(PERSON_NO_2);		
+		tu = userServices.findTechnicalUserByNumber(NO_456);		
 		assertNotNull(tu);
 		assertEquals(tu.getNumber(), TECH_USER_2.getNumber());
 		assertEquals(tu.getIdentifier(), TECH_USER_2.getIdentifier());
 		
 		tu = userServices.findTechnicalUserByNumber(NUMBER_DIFFERENT_FROM_ALL_OTHERS);	
-		assertTrue(tu == null || !tu.getNumber().equals(PERSON_NO_1) || !tu.getNumber().equals(PERSON_NO_2));
+		assertTrue(tu == null || !tu.getNumber().equals(NO_123) || !tu.getNumber().equals(NO_456));
 	}
 
 	@Test
@@ -199,7 +199,7 @@ public class UserServicesTest
 		for (ITechnicalUser tu : techUsersSet)
 		{
 			assertTrue(UUID_1.equals(tu.getIdentifier()) || UUID_2.equals(tu.getIdentifier()));
-			assertTrue(PERSON_NO_1.equals(tu.getNumber()) || PERSON_NO_2.equals(tu.getNumber()));
+			assertTrue(NO_123.equals(tu.getNumber()) || NO_456.equals(tu.getNumber()));
 		}
 		
 		for (ITechnicalUser p : techUsersSet)
