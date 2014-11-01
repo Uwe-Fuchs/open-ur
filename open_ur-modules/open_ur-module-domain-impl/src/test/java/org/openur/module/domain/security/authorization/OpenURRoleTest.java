@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.Test;
@@ -37,6 +38,31 @@ public class OpenURRoleTest
 		perms = role.getPermissions(app2);
 		assertEquals(perms.size(), 1);
 		assertEquals("single element in the returned set should be perm2", perms.iterator().next(), perm2);
+	}
+	
+	@Test
+	public void testGetAllPermissions()
+	{
+		OpenURApplication app1 = new OpenURApplicationBuilder("app1")
+			.build();		
+		OpenURPermission perm1 = new OpenURPermissionBuilder("perm1", PermissionScope.SELECTED, app1)
+			.build();
+		
+		OpenURApplication app2 = new OpenURApplicationBuilder("app2")
+			.build();
+		OpenURPermission perm2 = new OpenURPermissionBuilder("perm2", PermissionScope.SUB, app2)
+			.build();
+	
+		OpenURRole role = new OpenURRoleBuilder("role")
+			.permissions(new HashSet<OpenURPermission>(Arrays.asList(perm1, perm2)))
+			.build();
+		
+		Map<OpenURApplication, Set<? extends IPermission>> perms = role.getAllPermissions();
+		assertEquals(perms.size(), 2);
+		assertEquals(perms.get(app1).size(), 1);
+		assertEquals(perms.get(app1).iterator().next(), perm1);
+		assertEquals(perms.get(app2).size(), 1);
+		assertEquals(perms.get(app2).iterator().next(), perm2);
 	}
 
 	@Test

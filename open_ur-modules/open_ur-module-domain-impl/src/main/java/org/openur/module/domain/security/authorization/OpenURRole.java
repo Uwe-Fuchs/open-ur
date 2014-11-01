@@ -43,19 +43,6 @@ public class OpenURRole
 		return permissions.get(app);
 	}
 
-	@Override
-	public Map<OpenURApplication, Set<? extends IPermission>> getAllPermissions()
-	{
-		Map<OpenURApplication, Set<? extends IPermission>> map = new HashMap<>();
-		
-		for (OpenURApplication app : this.permissions.keySet())
-		{
-			map.put(app, this.getPermissions(app));
-		}
-		
-		return map;
-	}
-
 	public String getRoleName()
 	{
 		return roleName;
@@ -67,5 +54,16 @@ public class OpenURRole
 	}
 	
 	// operations:
-	
+	@Override
+	public Map<OpenURApplication, Set<? extends IPermission>> getAllPermissions()
+	{
+		Map<OpenURApplication, Set<? extends IPermission>> map = new HashMap<>(this.permissions.size());
+		
+		for (OpenURApplication app : this.permissions.keySet())
+		{
+			map.put(app, this.getPermissions(app));
+		}
+		
+		return map;
+	}
 }
