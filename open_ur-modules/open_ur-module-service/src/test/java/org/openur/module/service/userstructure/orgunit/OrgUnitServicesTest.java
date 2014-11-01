@@ -5,29 +5,22 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
 import javax.inject.Inject;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
-import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
-import org.openur.module.domain.userstructure.orgunit.OrgUnitSimple;
-import org.openur.module.domain.userstructure.orgunit.OrgUnitSimpleBuilder;
-import org.openur.module.domain.userstructure.orgunit.OrganizationalUnit;
-import org.openur.module.domain.userstructure.orgunit.OrganizationalUnitBuilder;
-import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnit;
-import org.openur.module.domain.userstructure.person.Name;
-import org.openur.module.domain.userstructure.person.Person;
-import org.openur.module.domain.userstructure.person.PersonBuilder;
+import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.persistence.dao.IUserStructureDao;
 import org.openur.module.service.userstructure.UserStructureTestSpringConfig;
+import org.openur.module.service.userstructure.user.MyPerson;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -37,186 +30,194 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {UserStructureTestSpringConfig.class})
 public class OrgUnitServicesTest
 {
+	private final String UUID_1;
+	private final String UUID_2;
+	private final String OTHER_UUID;	
+	private final String NO_123;	
+	private final String NO_456;
+	private final String NUMBER_DIFFERENT_FROM_ALL_OTHERS;
+
+	private final IOrganizationalUnit ORG_UNIT_1;
+	private final IOrganizationalUnit ORG_UNIT_2;
+	
 	@Inject
 	private IUserStructureDao dao;
 	
 	@Inject
 	private IOrgUnitServices orgUnitServices;
 
+	public OrgUnitServicesTest()
+	{
+		super();
+
+		UUID_1 = UUID.randomUUID().toString();
+		UUID_2 = UUID.randomUUID().toString();
+		OTHER_UUID = UUID.randomUUID().toString();
+		
+		NO_123 = "123";
+		NO_456 = "456";
+		NUMBER_DIFFERENT_FROM_ALL_OTHERS = "numberDifferentFromAllOthers";
+		
+		ORG_UNIT_1 = new MyOrgUnit(UUID_1, NO_123);
+		ORG_UNIT_2 = new MyOrgUnit(UUID_2, NO_456);
+	}
+
 	@Test
 	public void testFindOrgUnitById()
 	{		
-		final String UUID_1 = UUID.randomUUID().toString();
-		final String UUID_2 = UUID.randomUUID().toString();
+		Mockito.when(dao.findOrgUnitById(UUID_1)).thenReturn(ORG_UNIT_1);
+		Mockito.when(dao.findOrgUnitById(UUID_2)).thenReturn(ORG_UNIT_2);	
 		
-		OrganizationalUnit orgUnit1 = new OrganizationalUnitBuilder(UUID_1)
-			.name("Human Resources")
-			.build();
-		OrganizationalUnit orgUnit2 = new OrganizationalUnitBuilder(UUID_2)
-			.name("Marketing")
-			.build();
+		IOrganizationalUnit o = orgUnitServices.findOrgUnitById(UUID_1);		
+		assertNotNull(o);
+		assertEquals("identifier", o.getIdentifier(), UUID_1);
+		assertEquals("orgunit-number", o.getNumber(), NO_123);
 		
-		Mockito.when(dao.findOrgUnitById(UUID_1)).thenReturn(orgUnit1);
-		Mockito.when(dao.findOrgUnitById(UUID_2)).thenReturn(orgUnit2);	
+		o = orgUnitServices.findOrgUnitById(UUID_2);		
+		assertNotNull(o);
+		assertEquals("identifier", o.getIdentifier(), UUID_2);
+		assertEquals("orgunit-number", o.getNumber(), NO_456);
 		
-		IOrganizationalUnit p = orgUnitServices.findOrgUnitById(UUID_1);		
-		assertNotNull(p);
-		assertEquals("Name", "Human Resources", ((OrganizationalUnit) p).getName());
-		
-		IOrganizationalUnit p2 = orgUnitServices.findOrgUnitById(UUID_2);		
-		assertNotNull(p2);
-		assertEquals("Name", "Marketing", ((OrganizationalUnit) p2).getName());
+		o = orgUnitServices.findOrgUnitById(OTHER_UUID);
+		assertTrue(o == null || !o.getIdentifier().equals(UUID_1) || !o.getIdentifier().equals(UUID_2));
 	}
 
 	@Test
 	public void testFindOrgUnitByNumber()
 	{
-		final String NO_123 = "no123";
-		final String NO_456 = "no456";
+		Mockito.when(dao.findOrgUnitByNumber(NO_123)).thenReturn(ORG_UNIT_1);
+		Mockito.when(dao.findOrgUnitByNumber(NO_456)).thenReturn(ORG_UNIT_2);
 		
-		OrganizationalUnit orgUnit1 = new OrganizationalUnitBuilder()
-			.number(NO_123)
-			.name("Human Resources")
-			.build();
-		OrganizationalUnit orgUnit2 = new OrganizationalUnitBuilder()
-			.number(NO_456)
-			.name("Marketing")
-			.build();
+		IOrganizationalUnit o = orgUnitServices.findOrgUnitByNumber(NO_123);		
+		assertNotNull(o);
+		assertEquals("orgunit-number", o.getNumber(), NO_123);
+		assertEquals("identifier", o.getIdentifier(), UUID_1);
 		
-		Mockito.when(dao.findOrgUnitByNumber(NO_123)).thenReturn(orgUnit1);
-		Mockito.when(dao.findOrgUnitByNumber(NO_456)).thenReturn(orgUnit2);
+		o = orgUnitServices.findOrgUnitByNumber(NO_456);		
+		assertNotNull(o);
+		assertEquals("orgunit-number", o.getNumber(), NO_456);
+		assertEquals("identifier", o.getIdentifier(), UUID_2);
 		
-		IOrganizationalUnit p = orgUnitServices.findOrgUnitByNumber(NO_123);		
-		assertNotNull(p);
-		assertEquals("Name", "Human Resources", ((OrganizationalUnit) p).getName());	
-		
-		IOrganizationalUnit p2 = orgUnitServices.findOrgUnitByNumber(NO_456);		
-		assertNotNull(p2);
-		assertEquals("Name", "Marketing", ((OrganizationalUnit) p2).getName());
+		o = orgUnitServices.findOrgUnitById(NUMBER_DIFFERENT_FROM_ALL_OTHERS);
+		assertTrue(o == null || !o.getNumber().equals(NO_123) || !o.getNumber().equals(NO_456));
 	}
 
 	@Test
 	public void testObtainAllOrgUnits()
 	{
-		OrganizationalUnit orgUnit1 = new OrganizationalUnitBuilder()
-			.number("no123")
-			.build();
-		OrganizationalUnit orgUnit2 = new OrganizationalUnitBuilder()
-			.number("no456")
-			.build();
-		
-		Mockito.when(dao.obtainAllOrgUnits()).thenReturn(Arrays.asList(orgUnit1, orgUnit2));
+		Mockito.when(dao.obtainAllOrgUnits()).thenReturn(Arrays.asList(ORG_UNIT_1, ORG_UNIT_2));
 		
 		Set<IOrganizationalUnit> orgUnitSet = orgUnitServices.obtainAllOrgUnits();
 		
-		assertTrue(CollectionUtils.isNotEmpty(orgUnitSet));
-		assertEquals(2, orgUnitSet.size());
-		assertTrue(orgUnitSet.contains(orgUnit1));
-		assertTrue(orgUnitSet.contains(orgUnit2));
-		
-		Mockito.when(dao.obtainAllOrgUnits()).thenReturn(null);
-		orgUnitSet = orgUnitServices.obtainAllOrgUnits();
 		assertNotNull(orgUnitSet);
-		assertTrue(orgUnitSet.isEmpty());
+		assertEquals(2, orgUnitSet.size());
+		
+		for (IOrganizationalUnit o : orgUnitSet)
+		{
+			assertTrue(UUID_1.equals(o.getIdentifier()) || UUID_2.equals(o.getIdentifier()));
+			assertTrue(NO_123.equals(o.getNumber()) || NO_456.equals(o.getNumber()));
+		}
+		
+		for (IOrganizationalUnit o : orgUnitSet)
+		{
+			assertFalse(OTHER_UUID.equals(o.getIdentifier()));
+			assertFalse(NUMBER_DIFFERENT_FROM_ALL_OTHERS.equals(o.getNumber()));
+		}
 	}
 
 	@Test
 	public void testObtainSubOrgUnitsForOrgUnit()
 	{		
-		OrgUnitSimple rootOu = new OrgUnitSimpleBuilder()
-			.build();
-		
-		final String SUPER_OU_ID = UUID.randomUUID().toString();
-		
-		final String OU_NUMBER_1 = "no123";
-		final String OU_ID_1 = UUID.randomUUID().toString();		
-		OrganizationalUnit orgUnit1 = new OrganizationalUnitBuilder(OU_ID_1, rootOu)
-				.number(OU_NUMBER_1)
-				.superOuId(SUPER_OU_ID)
-				.build();
+		final String SUPER_OU_ID = UUID.randomUUID().toString();		
+		final IOrganizationalUnit ROOT_OU = new MyOrgUnit(UUID.randomUUID().toString(), "rootOuNumber");		
 
-		final String OU_NUMBER_2 = "no456";
-		final String OU_ID_2 = UUID.randomUUID().toString();		
-		OrganizationalUnit orgUnit2 = new OrganizationalUnitBuilder(OU_ID_2, rootOu)
-				.number(OU_NUMBER_2)
-				.superOuId(SUPER_OU_ID)
-				.build();
+		MyOrgUnit orgUnit1 = new MyOrgUnit(UUID_1, NO_123);
+		orgUnit1.setSuperOuId(SUPER_OU_ID);
+		orgUnit1.setRootOrgUnit(ROOT_OU);
 		
-		Mockito.when(dao.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID, false))
-			.thenReturn(Arrays.asList(orgUnit1, orgUnit2));
+		MyOrgUnit orgUnit2 = new MyOrgUnit(UUID_2, NO_456);
+		orgUnit2.setSuperOuId(SUPER_OU_ID);
+		orgUnit2.setRootOrgUnit(ROOT_OU);
+		
+		Mockito.when(dao.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID, false)).thenReturn(Arrays.asList(orgUnit1, orgUnit2));
 		
 		Set<IOrganizationalUnit> orgUnitSet = orgUnitServices.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID, false);
 		
-		assertTrue(CollectionUtils.isNotEmpty(orgUnitSet));
+		assertNotNull(orgUnitSet);
 		assertEquals(2, orgUnitSet.size());
-		assertTrue(orgUnitSet.contains(orgUnit1));
-		assertTrue(orgUnitSet.contains(orgUnit2));
 		
+		for (IOrganizationalUnit o : orgUnitSet)
+		{
+			assertTrue(UUID_1.equals(o.getIdentifier()) || UUID_2.equals(o.getIdentifier()));
+			assertTrue(NO_123.equals(o.getNumber()) || NO_456.equals(o.getNumber()));
+		}
 		
-		Person persA = new PersonBuilder(Name.create(null, null, "Meier")).build();
-		OrgUnitMember mA = new OrgUnitMember(persA, OU_ID_2);
+		for (IOrganizationalUnit o : orgUnitSet)
+		{
+			assertFalse(OTHER_UUID.equals(o.getIdentifier()));
+			assertFalse(NUMBER_DIFFERENT_FROM_ALL_OTHERS.equals(o.getNumber()));
+		}
 		
-		Person persB = new PersonBuilder(Name.create(null, null, "Meier")).build();
-		OrgUnitMember mB = new OrgUnitMember(persB, OU_ID_2);
+		final String UUID_PERS_A = UUID.randomUUID().toString();
+		final String UUID_PERS_B = UUID.randomUUID().toString();
+		final String NUMBER_PERS_A = "numberPersA";
+		final String NUMBER_PERS_B = "numberPersB";
 		
-		OrganizationalUnit orgUnit2_m = new OrganizationalUnitBuilder(OU_ID_2, rootOu)
-				.number(OU_NUMBER_2)
-				.superOuId(SUPER_OU_ID)
-				.members(Arrays.asList(mA, mB))
-				.build();
+		IPerson persA = new MyPerson(UUID_PERS_A, NUMBER_PERS_A);
+		IOrgUnitMember mA = new MyMember(persA, UUID_2);
 		
-		Mockito.when(dao.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID, true))
-			.thenReturn(Arrays.asList(orgUnit1, orgUnit2_m));
+		IPerson persB = new MyPerson(UUID_PERS_B, NUMBER_PERS_B);
+		IOrgUnitMember mB = new MyMember(persB, UUID_2);
+		
+		MyOrgUnit orgUnit2_m = new MyOrgUnit(UUID_2, NO_456);
+		orgUnit2_m.setSuperOuId(SUPER_OU_ID);
+		orgUnit2_m.setRootOrgUnit(ROOT_OU);
+		orgUnit2_m.setMembers(new HashSet<IOrgUnitMember>(Arrays.asList(mA, mB)));
+		
+		Mockito.when(dao.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID, true)).thenReturn(Arrays.asList(orgUnit1, orgUnit2_m));
 		
 		orgUnitSet = orgUnitServices.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID, true);
 		
-		assertTrue(orgUnitSet.contains(orgUnit2_m));
+		assertNotNull(orgUnitSet);
+		assertEquals(2, orgUnitSet.size());
 		
 		for (IOrganizationalUnit ou : orgUnitSet)
 		{
-			if (ou.equals(orgUnit2_m))
+			if (UUID_2.equals(ou.getIdentifier()))
 			{
-				assertTrue(CollectionUtils.isNotEmpty(ou.getMembers()));
+				assertNotNull(ou.getMembers());
 				assertEquals(2, ou.getMembers().size());
-				assertTrue(ou.getMembers().contains(mA));
-				assertTrue(ou.getMembers().contains(mB));
+				
+				for (IOrgUnitMember m : ou.getMembers())
+				{
+					assertTrue(UUID_PERS_A.equals(m.getPerson().getIdentifier()) || UUID_PERS_B.equals(m.getPerson().getIdentifier()));
+					assertTrue(NUMBER_PERS_A.equals(m.getPerson().getNumber()) || NUMBER_PERS_B.equals(m.getPerson().getNumber()));
+				}
 				
 				break;
 			}
 		}
-		
-		orgUnitSet = orgUnitServices.obtainSubOrgUnitsForOrgUnit("idOfOuThatNotExtists", true);
-		assertNotNull(orgUnitSet);
-		assertTrue(orgUnitSet.isEmpty());
 	}
 
 	@Test
 	public void testObtainRootOrgUnits()
 	{		
-		final String SUPER_OU_ID = UUID.randomUUID().toString();
-		AbstractOrgUnit superOu = new OrganizationalUnitBuilder(SUPER_OU_ID)
-			.build();
+		final String ROOT_OU_ID = UUID.randomUUID().toString();
+		final String ROOT_OU_NUMBER = "rootOuNumber";
+		IOrganizationalUnit rootOu = new MyOrgUnit(ROOT_OU_ID, ROOT_OU_NUMBER);
+
+		MyOrgUnit orgUnit1 = new MyOrgUnit(UUID_1, NO_123);
+		orgUnit1.setRootOrgUnit(rootOu);
 		
-		final String OU_ID_1 = UUID.randomUUID().toString();		
-		OrganizationalUnit orgUnit1 = new OrganizationalUnitBuilder(OU_ID_1, superOu)
-			.superOuId(SUPER_OU_ID)
-			.build();
-		
-		Mockito.when(dao.obtainRootOrgUnits())
-			.thenReturn(Arrays.asList(superOu));
+		Mockito.when(dao.obtainRootOrgUnits()).thenReturn(Arrays.asList(rootOu));
 		
 		Set<IOrganizationalUnit> orgUnitSet = orgUnitServices.obtainRootOrgUnits();
-		assertTrue(orgUnitSet.contains(superOu));
-		assertFalse(orgUnitSet.contains(orgUnit1));
 		
-		Mockito.when(dao.obtainRootOrgUnits())
-			.thenReturn(null);
-		orgUnitSet = orgUnitServices.obtainRootOrgUnits();
-		assertTrue(orgUnitSet.isEmpty());
-		
-		Mockito.when(dao.obtainRootOrgUnits())
-			.thenReturn(new ArrayList<IOrganizationalUnit>());
-		orgUnitSet = orgUnitServices.obtainRootOrgUnits();
-		assertTrue(orgUnitSet.isEmpty());
+		assertNotNull(orgUnitSet);
+		assertEquals(1, orgUnitSet.size());
+		IOrganizationalUnit resultOu = orgUnitSet.iterator().next();
+		assertEquals(ROOT_OU_ID, resultOu.getIdentifier());
+		assertEquals(ROOT_OU_NUMBER, resultOu.getNumber());
+		assertEquals(resultOu, orgUnit1.getRootOrgUnit());
 	}
 }
