@@ -14,7 +14,15 @@ public class MyRoleImpl
 {
 	private String identifier;
 	private String role;
-	private Map<MyApplicationImpl, Set<MyPermissionImpl>> permissions = new HashMap<>();
+	private Map<MyApplicationImpl, Set<MyPermissionImpl>> permissions = new HashMap<>();	
+
+	public MyRoleImpl(String identifier, String role)
+	{
+		super();
+		
+		this.identifier = identifier;
+		this.role = role;
+	}
 
 	@Override
 	public String getIdentifier()
@@ -29,16 +37,19 @@ public class MyRoleImpl
 	}
 
 	@Override
-	public Map<MyApplicationImpl, Set<? extends IPermission>> getAllPermissions()
+	public Set<? extends IPermission> getPermissions(IApplication application)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return permissions.get(application);
+	}
+	
+	public void addPermissionSet(MyApplicationImpl app, Set<MyPermissionImpl> perms)
+	{
+		this.permissions.put(app, perms);
 	}
 
 	@Override
-	public Set<? extends IPermission> getPermissions(IApplication application)
+	public Map<MyApplicationImpl, Set<? extends IPermission>> getAllPermissions()
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 

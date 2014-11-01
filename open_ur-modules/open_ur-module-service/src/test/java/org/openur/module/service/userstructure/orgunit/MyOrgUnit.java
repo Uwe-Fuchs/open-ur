@@ -16,7 +16,7 @@ public class MyOrgUnit
 	private String number;
 	private String superOuId;
 	private IOrganizationalUnit rootOrgUnit;
-	private Set<IOrgUnitMember> members = new HashSet<>();
+	private Set<MyMember> members = new HashSet<>();
 
 	public MyOrgUnit(String identifier, String number)
 	{
@@ -73,21 +73,33 @@ public class MyOrgUnit
 	}
 
 	@Override
-	public Set<? extends IOrgUnitMember> getMembers()
+	public Set<MyMember> getMembers()
 	{
 		return this.members;
 	}
 
-	public void setMembers(Set<IOrgUnitMember> members)
+	public void addMember(MyMember member)
 	{
-		this.members = members;
+		this.getMembers().add(member);
 	}
 
 	@Override
 	public IOrgUnitMember findMember(String id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+    if (id == null)
+    {
+      return null;
+    }
+
+    for (MyMember m : this.getMembers())
+    {
+      if (id.equals(m.getPerson().getIdentifier()))
+      {
+        return m;
+      }
+    }
+
+    return null;
 	}
 
 	@Override

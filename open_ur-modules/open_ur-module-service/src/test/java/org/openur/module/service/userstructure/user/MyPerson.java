@@ -1,11 +1,12 @@
 package org.openur.module.service.userstructure.user;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
-import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.userstructure.person.IPerson;
+import org.openur.module.service.security.MyApplicationImpl;
 
 /**
  * Simple implementation of {@link IPerson} for test-purposes.
@@ -17,6 +18,7 @@ public class MyPerson
 {
 	private String identifier;
 	private String number;
+	private Set<MyApplicationImpl> applications = new HashSet<>();
 
 	public MyPerson(String identifier, String number)
 	{
@@ -45,6 +47,17 @@ public class MyPerson
 	}
 
 	@Override
+	public Set<MyApplicationImpl> getApplications()
+	{
+		return this.applications;
+	}
+	
+	public void addApplication(MyApplicationImpl app)
+	{
+		this.getApplications().add(app);
+	}
+
+	@Override
 	public Status getStatus()
 	{
 		return null;
@@ -58,12 +71,6 @@ public class MyPerson
 
 	@Override
 	public LocalDateTime getCreationDate()
-	{
-		return null;
-	}
-
-	@Override
-	public Set<? extends IApplication> getApplications()
 	{
 		return null;
 	}

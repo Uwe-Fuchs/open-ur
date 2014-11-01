@@ -1,12 +1,8 @@
 package org.openur.module.service.userstructure.orgunit;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -164,15 +160,16 @@ public class OrgUnitServicesTest
 		final String NUMBER_PERS_B = "numberPersB";
 		
 		IPerson persA = new MyPerson(UUID_PERS_A, NUMBER_PERS_A);
-		IOrgUnitMember mA = new MyMember(persA, UUID_2);
+		MyMember mA = new MyMember(persA, UUID_2);
 		
 		IPerson persB = new MyPerson(UUID_PERS_B, NUMBER_PERS_B);
-		IOrgUnitMember mB = new MyMember(persB, UUID_2);
+		MyMember mB = new MyMember(persB, UUID_2);
 		
 		MyOrgUnit orgUnit2_m = new MyOrgUnit(UUID_2, NO_456);
 		orgUnit2_m.setSuperOuId(SUPER_OU_ID);
 		orgUnit2_m.setRootOrgUnit(ROOT_OU);
-		orgUnit2_m.setMembers(new HashSet<IOrgUnitMember>(Arrays.asList(mA, mB)));
+		orgUnit2_m.addMember(mA);
+		orgUnit2_m.addMember(mB);
 		
 		Mockito.when(dao.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID, true)).thenReturn(Arrays.asList(orgUnit1, orgUnit2_m));
 		

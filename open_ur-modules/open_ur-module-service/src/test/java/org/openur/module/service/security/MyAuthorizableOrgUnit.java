@@ -10,5 +10,10 @@ public class MyAuthorizableOrgUnit
 	public MyAuthorizableOrgUnit(String identifier, String number)
 	{
 		super(identifier, number);
+	}
+
+	public void addMember(MyAuthorizableMember member)
+	{
+		super.addMember(member);
 	}	
 }

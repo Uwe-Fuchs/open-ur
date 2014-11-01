@@ -1,9 +1,6 @@
 package org.openur.module.service.security;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -11,22 +8,13 @@ import java.util.UUID;
 
 import javax.inject.Inject;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.openur.module.domain.application.OpenURApplication;
-import org.openur.module.domain.application.OpenURApplicationBuilder;
-import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
+import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
-import org.openur.module.domain.security.authorization.OpenURPermission;
-import org.openur.module.domain.security.authorization.OpenURPermissionBuilder;
-import org.openur.module.domain.security.authorization.OpenURRole;
-import org.openur.module.domain.security.authorization.OpenURRoleBuilder;
-import org.openur.module.domain.security.authorization.PermissionScope;
-import org.openur.module.domain.userstructure.orgunit.OrganizationalUnit;
 import org.openur.module.persistence.dao.ISecurityDao;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -46,178 +34,271 @@ public class SecurityDomainTest
 	@Test
 	public void testObtainAllRoles()
 	{
-		OpenURRole role1 = new OpenURRoleBuilder("role1").build();
-		OpenURRole role2 = new OpenURRoleBuilder("role2").build();		
+		final String ROLE_1_ID = UUID.randomUUID().toString();
+		final String ROLE_1_NAME = "role1Name";
+		IRole role1 = new MyRoleImpl(ROLE_1_ID, ROLE_1_NAME);
+		
+		final String ROLE_2_ID = UUID.randomUUID().toString();
+		final String ROLE_2_NAME = "role2Name";
+		IRole role2 = new MyRoleImpl(ROLE_2_ID, ROLE_2_NAME);
+
 		Mockito.when(securityDao.obtainAllRoles()).thenReturn(Arrays.asList(role1, role2));
 		
 		Set<IRole> resultSet = securityDomainServices.obtainAllRoles();
-		assertTrue(CollectionUtils.isNotEmpty(resultSet));
+		
+		assertNotNull(resultSet);
 		assertEquals(2, resultSet.size());
-		assertTrue(resultSet.contains(role1));
-		assertTrue(resultSet.contains(role2));
+		
+		for (IRole r : resultSet)
+		{
+			assertTrue(ROLE_1_ID.equals(r.getIdentifier()) || ROLE_2_ID.equals(r.getIdentifier()));
+			assertTrue(ROLE_1_NAME.equals(r.getRole()) || ROLE_2_NAME.equals(r.getRole()));
+		}
+		
+		final String OTHER_ID = UUID.randomUUID().toString();
+		
+		for (IRole r : resultSet)
+		{
+			assertFalse(OTHER_ID.equals(r.getIdentifier()));
+		}
 	}
 
 	@Test
 	public void testFindRoleById()
 	{
-		final String ROLE_ID_1 = "111aaa";
-		final String ROLE_ID_2 = "222bbb";
-		OpenURRole role1 = new OpenURRoleBuilder(ROLE_ID_1, "role1").build();
-		OpenURRole role2 = new OpenURRoleBuilder(ROLE_ID_2, "role2").build();	
-		Mockito.when(securityDao.findRoleById(ROLE_ID_1)).thenReturn(role1);
-		Mockito.when(securityDao.findRoleById(ROLE_ID_2)).thenReturn(role2);
+		final String ROLE_1_ID = UUID.randomUUID().toString();
+		final String ROLE_1_NAME = "role1Name";
+		IRole role1 = new MyRoleImpl(ROLE_1_ID, ROLE_1_NAME);
 		
-		IRole resultRole = securityDomainServices.findRoleById(ROLE_ID_1);
-		assertEquals(resultRole, role1);
-		resultRole = securityDomainServices.findRoleById(ROLE_ID_2);
-		assertEquals(resultRole, role2);
-		resultRole = securityDomainServices.findRoleById("abcdef");
-		assertEquals(resultRole, null);
+		Mockito.when(securityDao.findRoleById(ROLE_1_ID)).thenReturn(role1);
+		
+		IRole resultRole = securityDomainServices.findRoleById(ROLE_1_ID);
+		assertEquals(ROLE_1_ID, resultRole.getIdentifier());
+		assertEquals(ROLE_1_NAME, resultRole.getRole());
+
+		final String ROLE_2_ID = UUID.randomUUID().toString();
+		final String ROLE_2_NAME = "role2Name";
+		IRole role2 = new MyRoleImpl(ROLE_2_ID, ROLE_2_NAME);
+		
+		Mockito.when(securityDao.findRoleById(ROLE_2_ID)).thenReturn(role2);
+		
+		resultRole = securityDomainServices.findRoleById(ROLE_2_ID);
+		assertEquals(ROLE_2_ID, resultRole.getIdentifier());
+		assertEquals(ROLE_2_NAME, resultRole.getRole());
+		
+		final String OTHER_ID = UUID.randomUUID().toString();
+		resultRole = securityDomainServices.findRoleById(OTHER_ID);
+		assertTrue(resultRole == null || !ROLE_1_ID.equals(resultRole.getIdentifier()) || !ROLE_2_ID.equals(resultRole.getIdentifier()));
 	}
 
 	@Test
 	public void testFindRoleByName()
 	{
-		final String ROLE_NAME_1 = "role1";
-		final String ROLE_NAME_2 = "role2";
-		OpenURRole role1 = new OpenURRoleBuilder(ROLE_NAME_1).build();
-		OpenURRole role2 = new OpenURRoleBuilder(ROLE_NAME_2).build();
-		Mockito.when(securityDao.findRoleByName(ROLE_NAME_1)).thenReturn(role1);
-		Mockito.when(securityDao.findRoleByName(ROLE_NAME_2)).thenReturn(role2);
+		final String ROLE_1_ID = UUID.randomUUID().toString();
+		final String ROLE_1_NAME = "role1Name";
+		IRole role1 = new MyRoleImpl(ROLE_1_ID, ROLE_1_NAME);
 		
-		IRole resultRole = securityDomainServices.findRoleByName(ROLE_NAME_1);
-		assertEquals(resultRole, role1);
-		resultRole = securityDomainServices.findRoleByName(ROLE_NAME_2);
-		assertEquals(resultRole, role2);
-		resultRole = securityDomainServices.findRoleByName("abcdef");
-		assertEquals(resultRole, null);	
+		Mockito.when(securityDao.findRoleByName(ROLE_1_ID)).thenReturn(role1);
+		
+		IRole resultRole = securityDomainServices.findRoleByName(ROLE_1_ID);
+		assertEquals(ROLE_1_NAME, resultRole.getRole());
+		assertEquals(ROLE_1_ID, resultRole.getIdentifier());
+
+		final String ROLE_2_ID = UUID.randomUUID().toString();
+		final String ROLE_2_NAME = "role2Name";
+		IRole role2 = new MyRoleImpl(ROLE_2_ID, ROLE_2_NAME);
+		
+		Mockito.when(securityDao.findRoleByName(ROLE_2_ID)).thenReturn(role2);
+		
+		resultRole = securityDomainServices.findRoleByName(ROLE_2_ID);
+		assertEquals(ROLE_2_NAME, resultRole.getRole());
+		assertEquals(ROLE_2_ID, resultRole.getIdentifier());
+		
+		final String OTHER_NAME = "otherName";
+		resultRole = securityDomainServices.findRoleByName(OTHER_NAME);
+		assertTrue(resultRole == null || !OTHER_NAME.equals(resultRole.getRole()) || !OTHER_NAME.equals(resultRole.getRole()));
 	}
 
 	@Test
 	public void testFindPermissionById()
 	{
-		OpenURApplication app = new OpenURApplicationBuilder("app").build();		
-		final String PERM_ID_1 = "111aaa";
-		final String PERM_ID_2 = "222bbb";
-		OpenURPermission perm1 = new OpenURPermissionBuilder(
-			PERM_ID_1, "perm1", PermissionScope.SELECTED, app).build();		
-		OpenURPermission perm2 = new OpenURPermissionBuilder(
-			PERM_ID_2, "perm2", PermissionScope.SELECTED, app).build();
+		final String APP_ID = UUID.randomUUID().toString();
+		final String APP_NAME = "appName";
+		IApplication app = new MyApplicationImpl(APP_ID, APP_NAME);
+		
+		final String PERM_ID_1 = UUID.randomUUID().toString();
+		final String PERM_1_NAME = "perm1Name";
+		IPermission perm1 = new MyPermissionImpl(PERM_ID_1, PERM_1_NAME, app);
+		
+		final String PERM_ID_2 = UUID.randomUUID().toString();
+		final String PERM_2_NAME = "perm2Name";
+		IPermission perm2 = new MyPermissionImpl(PERM_ID_2, PERM_2_NAME, app);
 		
 		Mockito.when(securityDao.findPermissionById(PERM_ID_1)).thenReturn(perm1);
 		Mockito.when(securityDao.findPermissionById(PERM_ID_2)).thenReturn(perm2);
 		
 		IPermission resultPermission = securityDomainServices.findPermissionById(PERM_ID_1);
-		assertEquals(resultPermission, perm1);
+		assertEquals(resultPermission.getIdentifier(), perm1.getIdentifier());
+		assertEquals(resultPermission.getPermissionName(), perm1.getPermissionName());
+		
 		resultPermission = securityDomainServices.findPermissionById(PERM_ID_2);
-		assertEquals(resultPermission, perm2);
-		resultPermission = securityDomainServices.findPermissionById("abcdef");
-		assertEquals(resultPermission, null);
+		assertEquals(resultPermission.getIdentifier(), perm2.getIdentifier());
+		assertEquals(resultPermission.getPermissionName(), perm2.getPermissionName());
+		
+		final String OTHER_ID = UUID.randomUUID().toString();
+		resultPermission = securityDomainServices.findPermissionById(OTHER_ID);
+		assertTrue(resultPermission == null || !PERM_ID_1.equals(resultPermission.getIdentifier()) || !!PERM_ID_2.equals(resultPermission.getIdentifier()));
 	}
 
 	@Test
 	public void testFindPermissionByName()
 	{
-		OpenURApplication app = new OpenURApplicationBuilder("app").build();		
-		final String PERM_NAME_1 = "perm1";
-		final String PERM_NAME_2 = "perm2";
-		OpenURPermission perm1 = new OpenURPermissionBuilder(
-			PERM_NAME_1, PermissionScope.SELECTED, app).build();		
-		OpenURPermission perm2 = new OpenURPermissionBuilder(
-			PERM_NAME_2, PermissionScope.SELECTED, app).build();
+		final String APP_ID = UUID.randomUUID().toString();
+		final String APP_NAME = "appName";
+		IApplication app = new MyApplicationImpl(APP_ID, APP_NAME);
 		
-		Mockito.when(securityDao.findPermissionByName(PERM_NAME_1, app)).thenReturn(perm1);
-		Mockito.when(securityDao.findPermissionByName(PERM_NAME_2, app)).thenReturn(perm2);
+		final String PERM_ID_1 = UUID.randomUUID().toString();
+		final String PERM_1_NAME = "perm1Name";
+		IPermission perm1 = new MyPermissionImpl(PERM_ID_1, PERM_1_NAME, app);
 		
-		IPermission resultPermission 
-			= securityDomainServices.findPermissionByName(PERM_NAME_1, app);
-		assertEquals(resultPermission, perm1);
-		resultPermission = securityDomainServices.findPermissionByName(PERM_NAME_2, app);
-		assertEquals(resultPermission, perm2);
+		final String PERM_ID_2 = UUID.randomUUID().toString();
+		final String PERM_2_NAME = "perm2Name";
+		IPermission perm2 = new MyPermissionImpl(PERM_ID_2, PERM_2_NAME, app);
+		
+		Mockito.when(securityDao.findPermissionByName(PERM_1_NAME, app)).thenReturn(perm1);
+		Mockito.when(securityDao.findPermissionByName(PERM_2_NAME, app)).thenReturn(perm2);
+		
+		IPermission resultPermission = securityDomainServices.findPermissionByName(PERM_1_NAME, app);
+		assertEquals(resultPermission.getPermissionName(), perm1.getPermissionName());
+		assertEquals(resultPermission.getIdentifier(), perm1.getIdentifier());
+		
+		resultPermission = securityDomainServices.findPermissionByName(PERM_2_NAME, app);
+		assertEquals(resultPermission.getPermissionName(), perm2.getPermissionName());
+		assertEquals(resultPermission.getIdentifier(), perm2.getIdentifier());
+		
 		resultPermission = securityDomainServices.findPermissionByName("abcdef", app);
 		assertEquals(resultPermission, null);
 		
-		OpenURApplication app2 = new OpenURApplicationBuilder("app2").build();	
-		resultPermission = securityDomainServices.findPermissionByName(PERM_NAME_1, app2);
-		assertEquals(resultPermission, null);
+		final String OTHER_NAME = "otherName";
+		resultPermission = securityDomainServices.findPermissionByName(OTHER_NAME, app);
+		assertTrue(resultPermission == null || !PERM_ID_1.equals(resultPermission.getPermissionName()) || !!PERM_ID_2.equals(resultPermission.getPermissionName()));
 	}
 
 	@Test
 	public void testObtainAllPermissions()
 	{
-		OpenURApplication app = new OpenURApplicationBuilder("app").build();
-		OpenURPermission perm1 = new OpenURPermissionBuilder(
-			"perm1", PermissionScope.SELECTED, app).build();		
-		OpenURPermission perm2 = new OpenURPermissionBuilder(
-			"perm2", PermissionScope.SELECTED, app).build();
+		final String APP_ID = UUID.randomUUID().toString();
+		final String APP_NAME = "appName";
+		IApplication app = new MyApplicationImpl(APP_ID, APP_NAME);
+		
+		final String PERM_ID_1 = UUID.randomUUID().toString();
+		final String PERM_1_NAME = "perm1Name";
+		IPermission perm1 = new MyPermissionImpl(PERM_ID_1, PERM_1_NAME, app);
+		
+		final String PERM_ID_2 = UUID.randomUUID().toString();
+		final String PERM_2_NAME = "perm2Name";
+		IPermission perm2 = new MyPermissionImpl(PERM_ID_2, PERM_2_NAME, app);
+		
 		Mockito.when(securityDao.obtainAllPermissions()).thenReturn(Arrays.asList(perm1, perm2));
 		
 		Set<IPermission> resultSet = securityDomainServices.obtainAllPermissions();
-		assertTrue(CollectionUtils.isNotEmpty(resultSet));
+		
+		assertNotNull(resultSet);
 		assertEquals(2, resultSet.size());
-		assertTrue(resultSet.contains(perm1));
-		assertTrue(resultSet.contains(perm2));
+		
+		for (IPermission p : resultSet)
+		{
+			assertTrue(PERM_ID_1.equals(p.getIdentifier()) || PERM_ID_2.equals(p.getIdentifier()));
+			assertTrue(PERM_1_NAME.equals(p.getPermissionName()) || PERM_2_NAME.equals(p.getPermissionName()));
+		}
+		
+		final String OTHER_ID = UUID.randomUUID().toString();
+		
+		for (IPermission p : resultSet)
+		{
+			assertFalse(OTHER_ID.equals(p.getIdentifier()));
+		}
 	}
 
 	@Test
 	public void testObtainPermissionsForApp()
 	{
-		OpenURApplication app1 = new OpenURApplicationBuilder("app1").build();
-		OpenURPermission perm11 = new OpenURPermissionBuilder(
-			"perm11", PermissionScope.SELECTED, app1).build();		
-		OpenURPermission perm12 = new OpenURPermissionBuilder(
-			"perm12", PermissionScope.SELECTED, app1).build();
-		Mockito.when(securityDao.obtainPermissionsForApp(app1))
-			.thenReturn(Arrays.asList(perm11, perm12));
+		final String APP_1_ID = UUID.randomUUID().toString();
+		final String APP_1_NAME = "app1Name";
+		IApplication app1 = new MyApplicationImpl(APP_1_ID, APP_1_NAME);
 		
-		OpenURApplication app2 = new OpenURApplicationBuilder("app2").build();
-		OpenURPermission perm21 = new OpenURPermissionBuilder(
-			"perm21", PermissionScope.SELECTED, app2).build();		
-		OpenURPermission perm22 = new OpenURPermissionBuilder(
-			"perm22", PermissionScope.SELECTED, app2).build();
-		Mockito.when(securityDao.obtainPermissionsForApp(app2))
-			.thenReturn(Arrays.asList(perm21, perm22));
+		final String PERM_11_ID = UUID.randomUUID().toString();
+		final String PERM_11_NAME = "perm11Name";
+		IPermission perm11 = new MyPermissionImpl(PERM_11_ID, PERM_11_NAME, app1);
+		
+		final String PERM_12_ID = UUID.randomUUID().toString();
+		final String PERM_12_NAME = "perm12Name";
+		IPermission perm12 = new MyPermissionImpl(PERM_12_ID, PERM_12_NAME, app1);
+
+		Mockito.when(securityDao.obtainPermissionsForApp(app1)).thenReturn(Arrays.asList(perm11, perm12));
+
+		final String APP_2_ID = UUID.randomUUID().toString();
+		final String APP_2_NAME = "app2Name";
+		IApplication app2 = new MyApplicationImpl(APP_2_ID, APP_2_NAME);
+		
+		final String PERM_21_ID = UUID.randomUUID().toString();
+		final String PERM_21_NAME = "perm21Name";
+		IPermission perm21 = new MyPermissionImpl(PERM_21_ID, PERM_21_NAME, app2);
+		
+		final String PERM_22_ID = UUID.randomUUID().toString();
+		final String PERM_22_NAME = "perm22Name";
+		IPermission perm22 = new MyPermissionImpl(PERM_22_ID, PERM_22_NAME, app2);
+
+		Mockito.when(securityDao.obtainPermissionsForApp(app2)).thenReturn(Arrays.asList(perm21, perm22));
 		
 		Set<IPermission> resultSet = securityDomainServices.obtainPermissionsForApp(app1);
-		assertTrue(CollectionUtils.isNotEmpty(resultSet));
+		assertNotNull(resultSet);
 		assertEquals(2, resultSet.size());
-		assertTrue(resultSet.contains(perm11));
-		assertTrue(resultSet.contains(perm12));
-		assertFalse(resultSet.contains(perm21));
-		assertFalse(resultSet.contains(perm22));
+		
+		for (IPermission p : resultSet)
+		{
+			assertTrue(PERM_11_ID.equals(p.getIdentifier()) || PERM_12_ID.equals(p.getIdentifier()));
+			assertFalse(PERM_21_ID.equals(p.getIdentifier()) || PERM_22_ID.equals(p.getIdentifier()));
+		}
 		
 		resultSet = securityDomainServices.obtainPermissionsForApp(app2);
-		assertTrue(CollectionUtils.isNotEmpty(resultSet));
+		assertNotNull(resultSet);
 		assertEquals(2, resultSet.size());
-		assertTrue(resultSet.contains(perm21));
-		assertTrue(resultSet.contains(perm22));
-		assertFalse(resultSet.contains(perm11));
-		assertFalse(resultSet.contains(perm12));
+		
+		for (IPermission p : resultSet)
+		{
+			assertTrue(PERM_21_ID.equals(p.getIdentifier()) || PERM_22_ID.equals(p.getIdentifier()));
+			assertFalse(PERM_11_ID.equals(p.getIdentifier()) || PERM_12_ID.equals(p.getIdentifier()));
+		}
 	}
 
 	@Test
 	public void testFindAuthOrgUnitById()
 	{		
 		final String UUID_1 = UUID.randomUUID().toString();
-		final String UUID_2 = UUID.randomUUID().toString();
-		
-		AuthorizableOrgUnit orgUnit1 = new AuthorizableOrgUnit.AuthorizableOrgUnitBuilder(UUID_1)
-			.name("Human Resources")
-			.build();
-		
-		AuthorizableOrgUnit orgUnit2 = new AuthorizableOrgUnit.AuthorizableOrgUnitBuilder(UUID_2)
-			.name("Marketing")
-			.build();
+		final String NAME_1 = "name1";
+		IAuthorizableOrgUnit orgUnit1 = new MyAuthorizableOrgUnit(UUID_1, NAME_1);
 		
 		Mockito.when(securityDao.findAuthOrgUnitById(UUID_1)).thenReturn(orgUnit1);
-		Mockito.when(securityDao.findAuthOrgUnitById(UUID_2)).thenReturn(orgUnit2);	
 		
-		IAuthorizableOrgUnit p = securityDomainServices.findAuthOrgUnitById(UUID_1);		
-		assertNotNull(p);
-		assertEquals("Name", "Human Resources", ((OrganizationalUnit) p).getName());	
+		IAuthorizableOrgUnit o = securityDomainServices.findAuthOrgUnitById(UUID_1);		
+		assertNotNull(o);
+		assertEquals("identifier", o.getIdentifier(), UUID_1);
+		assertEquals("orgunit-number", o.getNumber(), NAME_1);
 		
-		IAuthorizableOrgUnit p2 = securityDomainServices.findAuthOrgUnitById(UUID_2);		
-		assertNotNull(p2);
-		assertEquals("Name", "Marketing", ((OrganizationalUnit) p2).getName());
+		final String UUID_2 = UUID.randomUUID().toString();
+		final String NAME_2 = "name2";
+		IAuthorizableOrgUnit orgUnit2 = new MyAuthorizableOrgUnit(UUID_2, NAME_2);
+		
+		Mockito.when(securityDao.findAuthOrgUnitById(UUID_2)).thenReturn(orgUnit2);
+		
+		o = securityDomainServices.findAuthOrgUnitById(UUID_1);		
+		assertNotNull(o);
+		assertEquals("identifier", o.getIdentifier(), UUID_1);
+		assertEquals("orgunit-number", o.getNumber(), NAME_1);
+		
+		final String OTHER_UUID = UUID.randomUUID().toString();
+		o = securityDomainServices.findAuthOrgUnitById(OTHER_UUID);
+		assertTrue(o == null || !o.getIdentifier().equals(UUID_1) || !o.getIdentifier().equals(UUID_2));
 	}
 }
