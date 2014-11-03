@@ -1,13 +1,13 @@
 package org.openur.module.persistence.rdbms.entity.userstructure;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.Country;
-import org.openur.module.domain.userstructure.IAddress;
 
 public class AddressMapper
 {	
-	public static PAddress mapFromImmutable(IAddress immutable)
+	public static PAddress mapFromImmutable(Address immutable)
 	{
 		PAddress persistable = new PAddress();
 		
@@ -37,5 +37,23 @@ public class AddressMapper
 				.build();
 		
 		return immutable;
+	}
+	
+	public static boolean immutableEqualsToPersistable(Address immutable, PAddress persistable)
+	{
+		if (immutable == null || persistable == null)
+		{
+			return false;
+		}
+		
+		return new EqualsBuilder()
+				.append(immutable.getCareOf(), persistable.getCareOf())
+				.append(immutable.getCity(), persistable.getCity())
+				.append(immutable.getCountry().getCountryCode(), persistable.getCountryCode())
+				.append(immutable.getPoBox(), persistable.getPoBox())
+				.append(immutable.getPostcode(), persistable.getPostcode())
+				.append(immutable.getStreet(), persistable.getStreet())
+				.append(immutable.getStreetNo(), persistable.getStreetNo())
+				.isEquals();
 	}
 }

@@ -1,6 +1,7 @@
 package org.openur.module.persistence.rdbms.entity.application;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.openur.module.domain.application.OpenURApplication;
@@ -16,7 +17,8 @@ public class ApplicationMapperTest
 		OpenURApplication immutable = new OpenURApplicationBuilder(APP_NAME).build();
 		PApplication persistable = ApplicationMapper.mapFromImmutable(immutable);
 		
-		assertEquals(persistable.getApplicationName(), APP_NAME);
+		assertNotNull(persistable);
+		assertTrue(ApplicationMapper.immutableEqualsToPersistable(immutable, persistable));
 	}
 
 	@Test
@@ -26,6 +28,7 @@ public class ApplicationMapperTest
 		persistable.setApplicationName(APP_NAME);
 		OpenURApplication immutable = ApplicationMapper.mapToImmutable(persistable);
 		
-		assertEquals(immutable.getApplicationName(), APP_NAME);
+		assertNotNull(immutable);
+		assertTrue(ApplicationMapper.immutableEqualsToPersistable(immutable, persistable));
 	}
 }

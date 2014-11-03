@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Before;
@@ -18,14 +19,19 @@ import org.openur.module.domain.userstructure.person.Gender;
 import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.person.PersonBuilder;
+import org.openur.module.domain.userstructure.person.Title;
+import org.openur.module.persistence.rdbms.entity.application.ApplicationMapper;
+import org.openur.module.persistence.rdbms.entity.application.PApplication;
 
 public class PersonMapperTest
 {
 	private Name name;
 	private Address address;
+	private PAddress pAddress;
 	private OpenURApplication app1;
 	private OpenURApplication app2;
 	private Set<OpenURApplication> applications;
+	private List<PApplication> pApplications;
 	
 	@Before
 	public void setUp()
@@ -42,9 +48,15 @@ public class PersonMapperTest
 			.poBox("poBox_1")	
 			.build();
 		
+		this.pAddress = AddressMapper.mapFromImmutable(address);
+		
 		app1 = new OpenURApplicationBuilder("app1").build();
 		app2 = new OpenURApplicationBuilder("app2").build();
 		this.applications = new HashSet<>(Arrays.asList(app1, app2));
+		
+		PApplication pApp1 = ApplicationMapper.mapFromImmutable(app1);
+		PApplication pApp2 = ApplicationMapper.mapFromImmutable(app2);
+		this.pApplications = Arrays.asList(pApp1, pApp2);
 	}
 
 	@Test
@@ -67,15 +79,33 @@ public class PersonMapperTest
 		PPerson persistable = PersonMapper.mapFromImmutable(immutable);
 		
 		assertNotNull(persistable);
-		assertEquals(immutable.getNumber(), persistable.getNumber());
-		assertEquals(immutable.getHomeEmailAddress().getAsPlainEMailAddress(), persistable.getHomeEmailAddress());
-		assertTrue(immutable.getApplications().size() == 2);
-		assertTrue(persistable.getApplications().size() == immutable.getApplications().size());
+		assertTrue(PersonMapper.immutableEqualsToPersistable(immutable, persistable));
 	}
 
-//	@Test
-//	public void testMapFromEntity()
-//	{
-//		fail("Not yet implemented");
-//	}
+	@Test
+	public void testMapFromEntity()
+	{
+		PPerson persistable = new PPerson();
+		
+		persistable.setGender(Gender.MALE);
+		persistable.setTitle(Title.NONE);
+		persistable.setFirstName("Uwe");
+		persistable.setLastName("Fuchs");
+		persistable.setNumber("123abc");
+		persistable.setStatus(Status.ACTIVE);
+		persistable.setEmailAdress("office@uwefuchs.com");
+		persistable.setEmployeeNumber("789xyz");
+		persistable.setPhoneNumber("0049123456789");
+		persistable.setFaxNumber("0049987654321");
+		persistable.setMobileNumber("0049111222333");
+		persistable.setHomePhoneNumber("0049444555666");
+		persistable.setHomeEmailAdress("home@uwefuchs.com");
+		persistable.setHomeAddress(pAddress);
+		persistable.setApplications(pApplications);
+		
+		Person immutable = PersonMapper.mapToImmutable(persistable);
+		
+		assertNotNull(immutable);
+		assertTrue(PersonMapper.immutableEqualsToPersistable(immutable, persistable));		
+	}
 }

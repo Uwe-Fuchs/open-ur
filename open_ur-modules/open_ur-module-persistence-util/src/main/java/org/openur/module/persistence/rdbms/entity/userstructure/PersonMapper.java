@@ -1,6 +1,7 @@
 package org.openur.module.persistence.rdbms.entity.userstructure;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.person.Name;
@@ -46,16 +47,18 @@ public class PersonMapper
 		if (persistable.getTitle() != null)
 		{
 			name = Name.create(
-				persistable.getGender(), 
-				persistable.getTitle(), 
-				persistable.getFirstName(), 
-				persistable.getLastName());			
+					persistable.getGender(), 
+					persistable.getTitle(), 
+					persistable.getFirstName(), 
+					persistable.getLastName()
+				);			
 		} else
 		{
 			name = Name.create(
-				persistable.getGender(), 
-				persistable.getFirstName(), 
-				persistable.getLastName());
+					persistable.getGender(), 
+					persistable.getFirstName(), 
+					persistable.getLastName()
+				);
 		}
 		
 		PersonBuilder immutableBuilder = new PersonBuilder(name)
@@ -79,5 +82,38 @@ public class PersonMapper
 		}
 		
 		return immutableBuilder.build();
+	}
+	
+	public static boolean immutableEqualsToPersistable(Person immutable, PPerson persistable)
+	{
+		if (immutable == null || persistable == null)
+		{
+			return false;
+		}
+		
+		for (PApplication app : persistable.getApplications())
+		{
+			if (!immutable.isInApplication(app.getApplicationName()))
+			{
+				return false;
+			}
+		}
+		
+		if(!AddressMapper.immutableEqualsToPersistable(immutable.getHomeAddress(), persistable.getHomeAddress()))
+		{
+			return false;
+		}
+		
+		return new EqualsBuilder()
+				.append(immutable.getNumber(), persistable.getNumber())
+				.append(immutable.getStatus(), persistable.getStatus())
+				.append(immutable.getEmployeeNumber(), persistable.getEmployeeNumber())
+				.append(immutable.getPhoneNumber(), persistable.getPhoneNumber())
+				.append(immutable.getFaxNumber(), persistable.getFaxNumber())
+				.append(immutable.getMobileNumber(), persistable.getMobileNumber())
+				.append(immutable.getHomePhoneNumber(), persistable.getHomePhoneNumber())
+				.append(immutable.getEmailAddress().getAsPlainEMailAddress(), persistable.getEmailAddress())
+				.append(immutable.getHomeEmailAddress().getAsPlainEMailAddress(), persistable.getHomeEmailAddress())
+				.isEquals();
 	}
 }

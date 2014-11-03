@@ -4,9 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.openur.module.domain.userstructure.Address;
-import org.openur.module.domain.userstructure.Country;
-import org.openur.module.domain.userstructure.IAddress;
 import org.openur.module.domain.userstructure.Address.AddressBuilder;
+import org.openur.module.domain.userstructure.Country;
 
 public class AddressMapperTest
 {
@@ -22,41 +21,29 @@ public class AddressMapperTest
 		b.poBox("poBox_1");
 		b.careOf("Schmidt");
 		
-		Address address = b.build();
-		PAddress pAddress = AddressMapper.mapFromImmutable(address);
+		Address immutable = b.build();
+		PAddress persistable = AddressMapper.mapFromImmutable(immutable);
 		
-		assertNotNull(pAddress);
-		assertEquals(address.getCareOf(), pAddress.getCareOf());
-		assertEquals(address.getCity(), pAddress.getCity());
-		assertEquals(address.getCountry().getCountryCode(), pAddress.getCountryCode());
-		assertEquals(address.getPoBox(), pAddress.getPoBox());
-		assertEquals(address.getPostcode(), pAddress.getPostcode());
-		assertEquals(address.getStreet(), pAddress.getStreet());
-		assertEquals(address.getStreetNo(), pAddress.getStreetNo());
+		assertNotNull(persistable);
+		assertTrue(AddressMapper.immutableEqualsToPersistable(immutable, persistable));
 	}
 
 	@Test
 	public void testMapFromEntity()
 	{
-		PAddress pAddress = new PAddress();
+		PAddress persistable = new PAddress();
 		
-		pAddress.setCareOf("Schmidt");
-		pAddress.setCity("city_1");
-		pAddress.setPoBox("poBox_1");
-		pAddress.setPostcode("11");
-		pAddress.setStreet("street_1");
-		pAddress.setStreetNo("11");
-		pAddress.setCountryCode("DE");
+		persistable.setCareOf("Schmidt");
+		persistable.setCity("city_1");
+		persistable.setPoBox("poBox_1");
+		persistable.setPostcode("11");
+		persistable.setStreet("street_1");
+		persistable.setStreetNo("11");
+		persistable.setCountryCode("DE");
 		
-		IAddress address = AddressMapper.mapFromEntity(pAddress);
+		Address immutable = AddressMapper.mapFromEntity(persistable);
 		
-		assertNotNull(address);
-		assertEquals(address.getCareOf(), pAddress.getCareOf());
-		assertEquals(address.getCity(), pAddress.getCity());
-		assertEquals(address.getCountry().getCountryCode(), pAddress.getCountryCode());
-		assertEquals(address.getPoBox(), pAddress.getPoBox());
-		assertEquals(address.getPostcode(), pAddress.getPostcode());
-		assertEquals(address.getStreet(), pAddress.getStreet());
-		assertEquals(address.getStreetNo(), pAddress.getStreetNo());
+		assertNotNull(immutable);
+		assertTrue(AddressMapper.immutableEqualsToPersistable(immutable, persistable));
 	}
 }
