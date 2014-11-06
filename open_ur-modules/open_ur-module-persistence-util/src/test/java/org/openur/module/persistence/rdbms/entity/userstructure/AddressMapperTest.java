@@ -12,14 +12,14 @@ public class AddressMapperTest
 	@Test
 	public void testMapFromImmutable()
 	{
-		AddressBuilder b = Address.builder();		
-		b.country(Country.byCode("DE"));
-		b.city("city_1");
-		b.postcode("11");
-		b.street("street_1");
-		b.streetNo("11");
-		b.poBox("poBox_1");
-		b.careOf("Schmidt");
+		AddressBuilder b = Address.builder()
+				.country(Country.byCode("DE"))
+				.city("city_1")
+				.postcode("11")
+				.street("street_1")
+				.streetNo("11")
+				.poBox("poBox_1")
+				.careOf("Schmidt");
 		
 		Address immutable = b.build();
 		PAddress persistable = AddressMapper.mapFromImmutable(immutable);

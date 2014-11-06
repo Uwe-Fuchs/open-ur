@@ -54,6 +54,8 @@ public class AddressMapper
 				.append(immutable.getPostcode(), persistable.getPostcode())
 				.append(immutable.getStreet(), persistable.getStreet())
 				.append(immutable.getStreetNo(), persistable.getStreetNo())
+				.append(immutable.getCreationDate(), persistable.getCreationDate())
+				.append(immutable.getLastModifiedDate(), persistable.getLastModifiedDate())
 				.isEquals();
 	}
 }

@@ -38,6 +38,8 @@ public class ApplicationMapper
 		
 		return new EqualsBuilder()
 				.append(immutable.getApplicationName(), persistable.getApplicationName())
+				.append(immutable.getCreationDate(), persistable.getCreationDate())
+				.append(immutable.getLastModifiedDate(), persistable.getLastModifiedDate())
 				.isEquals();
 	}
 }

@@ -1,7 +1,6 @@
 package org.openur.module.domain;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.UUID;
 
 import org.apache.commons.lang3.Validate;
@@ -20,7 +19,6 @@ public abstract class IdentifiableEntityBuilder<T extends IdentifiableEntityBuil
 		super();
 		
 		this.identifier = createIdentifier();
-		this.creationDate = LocalDateTime.now(ZoneId.systemDefault());
 	}
 	
 	protected IdentifiableEntityBuilder(String identifier)
@@ -30,7 +28,6 @@ public abstract class IdentifiableEntityBuilder<T extends IdentifiableEntityBuil
 		Validate.notEmpty(identifier, "identifier must not be empty!");
 		
 		this.identifier = identifier;
-		this.creationDate = LocalDateTime.now(ZoneId.systemDefault());
 	}
 	
 	protected IdentifiableEntityBuilder(LocalDateTime creationDate)
