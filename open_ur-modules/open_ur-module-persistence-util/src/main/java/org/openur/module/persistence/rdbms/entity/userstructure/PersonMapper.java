@@ -86,7 +86,7 @@ public class PersonMapper
 	
 	public static boolean immutableEqualsToPersistable(Person immutable, PPerson persistable)
 	{
-		if (immutable == null || persistable == null)
+		if (!PUserStructureBaseMapper.immutableEqualsToPersistable(immutable, persistable))
 		{
 			return false;
 		}
@@ -109,8 +109,6 @@ public class PersonMapper
 				.append(immutable.getName().getFirstName(), persistable.getFirstName())
 				.append(immutable.getName().getLastName(), persistable.getLastName())
 				.append(immutable.getName().getGender(), persistable.getGender())
-				.append(immutable.getNumber(), persistable.getNumber())
-				.append(immutable.getStatus(), persistable.getStatus())
 				.append(immutable.getEmployeeNumber(), persistable.getEmployeeNumber())
 				.append(immutable.getPhoneNumber(), persistable.getPhoneNumber())
 				.append(immutable.getFaxNumber(), persistable.getFaxNumber())
@@ -118,8 +116,6 @@ public class PersonMapper
 				.append(immutable.getHomePhoneNumber(), persistable.getHomePhoneNumber())
 				.append(immutable.getEmailAddress().getAsPlainEMailAddress(), persistable.getEmailAddress())
 				.append(immutable.getHomeEmailAddress().getAsPlainEMailAddress(), persistable.getHomeEmailAddress())
-				.append(immutable.getCreationDate(), persistable.getCreationDate())
-				.append(immutable.getLastModifiedDate(), persistable.getLastModifiedDate())
 				.isEquals();
 	}
 }
