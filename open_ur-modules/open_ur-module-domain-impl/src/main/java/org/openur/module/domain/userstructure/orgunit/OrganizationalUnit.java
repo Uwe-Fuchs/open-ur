@@ -15,7 +15,7 @@ public class OrganizationalUnit
   private final String shortName;
   private final String description;
 	private final Address address;
-	private final EMailAddress emailAdress;
+	private final EMailAddress emailAddress;
 
 	// constructor:
 	protected OrganizationalUnit(OrganizationalUnitBuilder b)
@@ -25,7 +25,7 @@ public class OrganizationalUnit
 		this.shortName = b.getShortName();
 		this.description = b.getDescription();
 		this.address = b.getAddress();
-		this.emailAdress = b.getEmailAdress();
+		this.emailAddress = b.getEmailAddress();
 	}
 
 	// accessors:
@@ -49,9 +49,9 @@ public class OrganizationalUnit
 		return address;
 	}
 
-	public EMailAddress getEmailAdress()
+	public EMailAddress getEmailAddress()
 	{
-		return emailAdress;
+		return emailAddress;
 	}
 
 	// operations:

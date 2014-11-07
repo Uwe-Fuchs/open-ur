@@ -13,7 +13,7 @@ public class OrganizationalUnitBuilder
 	private String shortName = null;
 	private String description = null;
 	private Address address = null;
-	private EMailAddress emailAdress = null;
+	private EMailAddress emailAddress = null;
 
 	// constructors:
 	public OrganizationalUnitBuilder()
@@ -63,7 +63,7 @@ public class OrganizationalUnitBuilder
 
 	public OrganizationalUnitBuilder emailAdress(EMailAddress emailAdress)
 	{
-		this.emailAdress = emailAdress;
+		this.emailAddress = emailAdress;
 		return this;
 	}
 	
@@ -96,8 +96,8 @@ public class OrganizationalUnitBuilder
 		return address;
 	}
 
-	EMailAddress getEmailAdress()
+	EMailAddress getEmailAddress()
 	{
-		return emailAdress;
+		return emailAddress;
 	}
 }
