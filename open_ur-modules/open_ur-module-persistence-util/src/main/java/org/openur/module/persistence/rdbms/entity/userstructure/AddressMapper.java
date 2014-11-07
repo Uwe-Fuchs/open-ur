@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.Country;
+import org.openur.module.persistence.rdbms.entity.AbstractOpenUrPersistableMapper;
 
 public class AddressMapper
 {	
@@ -41,7 +42,7 @@ public class AddressMapper
 	
 	public static boolean immutableEqualsToPersistable(Address immutable, PAddress persistable)
 	{
-		if (immutable == null || persistable == null)
+		if (!AbstractOpenUrPersistableMapper.immutableEqualsToPersistable(immutable, persistable))
 		{
 			return false;
 		}
@@ -54,8 +55,6 @@ public class AddressMapper
 				.append(immutable.getPostcode(), persistable.getPostcode())
 				.append(immutable.getStreet(), persistable.getStreet())
 				.append(immutable.getStreetNo(), persistable.getStreetNo())
-				.append(immutable.getCreationDate(), persistable.getCreationDate())
-				.append(immutable.getLastModifiedDate(), persistable.getLastModifiedDate())
 				.isEquals();
 	}
 }
