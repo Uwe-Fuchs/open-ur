@@ -4,7 +4,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.openur.module.domain.userstructure.UserStructureBase;
 import org.openur.module.persistence.rdbms.entity.AbstractOpenUrPersistableMapper;
 
-public class PUserStructureBaseMapper
+public class UserStructureBaseMapper
 {
 	public static <I extends UserStructureBase, P extends PUserStructureBase> 
 		boolean immutableEqualsToPersistable(I immutable, P persistable)

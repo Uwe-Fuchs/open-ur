@@ -86,7 +86,7 @@ public class PersonMapper
 	
 	public static boolean immutableEqualsToPersistable(Person immutable, PPerson persistable)
 	{
-		if (!PUserStructureBaseMapper.immutableEqualsToPersistable(immutable, persistable))
+		if (!UserStructureBaseMapper.immutableEqualsToPersistable(immutable, persistable))
 		{
 			return false;
 		}

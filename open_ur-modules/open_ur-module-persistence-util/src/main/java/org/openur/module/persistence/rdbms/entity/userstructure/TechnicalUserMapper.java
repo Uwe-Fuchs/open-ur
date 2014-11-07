@@ -3,7 +3,7 @@ package org.openur.module.persistence.rdbms.entity.userstructure;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUserBuilder;
 
-public class PTechnicalUserMapper
+public class TechnicalUserMapper
 {
 	public static PTechnicalUser mapFromImmutable(TechnicalUser immutable)
 	{
@@ -28,6 +28,6 @@ public class PTechnicalUserMapper
 	
 	public static boolean immutableEqualsToPersistable(TechnicalUser immutable, PTechnicalUser persistable)
 	{
-		return PUserStructureBaseMapper.immutableEqualsToPersistable(immutable, persistable);
+		return UserStructureBaseMapper.immutableEqualsToPersistable(immutable, persistable);
 	}
 }

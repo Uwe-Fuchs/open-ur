@@ -8,7 +8,7 @@ import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUserBuilder;
 
-public class PTechnicalUserMapperTest
+public class TechnicalUserMapperTest
 {
 	@Test
 	public void testMapFromImmutable()
@@ -18,10 +18,10 @@ public class PTechnicalUserMapperTest
 				.status(Status.ACTIVE)
 				.build();
 		
-		PTechnicalUser persistable = PTechnicalUserMapper.mapFromImmutable(immutable);
+		PTechnicalUser persistable = TechnicalUserMapper.mapFromImmutable(immutable);
 		
 		assertNotNull(persistable);
-		assertTrue(PTechnicalUserMapper.immutableEqualsToPersistable(immutable, persistable));
+		assertTrue(TechnicalUserMapper.immutableEqualsToPersistable(immutable, persistable));
 	}
 
 	@Test
@@ -31,9 +31,9 @@ public class PTechnicalUserMapperTest
 		persistable.setNumber("123abc");
 		persistable.setStatus(Status.INACTIVE);
 		
-		TechnicalUser immutable = PTechnicalUserMapper.mapToImmutable(persistable);
+		TechnicalUser immutable = TechnicalUserMapper.mapToImmutable(persistable);
 		
 		assertNotNull(persistable);
-		assertTrue(PTechnicalUserMapper.immutableEqualsToPersistable(immutable, persistable));
+		assertTrue(TechnicalUserMapper.immutableEqualsToPersistable(immutable, persistable));
 	}
 }
