@@ -6,7 +6,6 @@ import java.util.HashSet;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitSimple;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitSimpleBuilder;
-import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnit;
 
 public class AuthOrgUnitSimple
 	extends OrgUnitSimple
@@ -32,12 +31,12 @@ public class AuthOrgUnitSimple
 			super(identifier);
 		}
 
-		public AuthOrgUnitSimpleBuilder(AbstractOrgUnit rootOrgUnit)
+		public AuthOrgUnitSimpleBuilder(OrgUnitSimple rootOrgUnit)
 		{
 			super(rootOrgUnit);
 		}
 
-		public AuthOrgUnitSimpleBuilder(String identifier, 	AbstractOrgUnit rootOrgUnit)
+		public AuthOrgUnitSimpleBuilder(String identifier, 	OrgUnitSimple rootOrgUnit)
 		{
 			super(identifier, rootOrgUnit);
 		}

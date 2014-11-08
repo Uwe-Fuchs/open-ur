@@ -1,6 +1,6 @@
 package org.openur.module.domain.userstructure.orgunit;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.UUID;
 
@@ -58,4 +58,20 @@ public class OrganizationalUnitTest
 	
 		assertTrue("ou should be after ou-simple because of org-unit-number", ou.compareTo(sou) > 0);
 	}
+
+	@Test
+	public void testIsRootOrgUnit()
+	{
+		OrganizationalUnit ou = new OrganizationalUnitBuilder()
+			.build();
+		assertTrue(ou.isRootOrgUnit());
+		
+		OrganizationalUnit rootOu = new OrganizationalUnitBuilder()
+			.build();
+		
+		ou = new OrganizationalUnitBuilder(rootOu)
+			.superOuId("123")
+			.build();
+		assertFalse(ou.isRootOrgUnit());
+	}	
 }

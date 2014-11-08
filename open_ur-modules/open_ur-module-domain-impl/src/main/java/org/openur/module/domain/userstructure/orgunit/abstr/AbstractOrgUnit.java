@@ -25,7 +25,7 @@ public abstract class AbstractOrgUnit
 	// properties:
   private final String superOuId;
   private final Set<OrgUnitMember> members;
-  private final AbstractOrgUnit rootOrgUnit;
+  protected final AbstractOrgUnit rootOrgUnit;
   
 	// constructor:
 	protected AbstractOrgUnit(AbstractOrgUnitBuilder<? extends AbstractOrgUnitBuilder<?>> b)
@@ -47,12 +47,6 @@ public abstract class AbstractOrgUnit
 	public boolean isRootOrgUnit()
 	{
 		return (getRootOrgUnit() == null);
-	}
-
-	@Override
-	public AbstractOrgUnit getRootOrgUnit()
-	{
-		return rootOrgUnit;
 	}
 
 	@Override

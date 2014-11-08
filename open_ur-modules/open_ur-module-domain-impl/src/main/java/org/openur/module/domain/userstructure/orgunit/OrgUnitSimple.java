@@ -12,4 +12,10 @@ public class OrgUnitSimple
 	{
 		super(b);
 	}
+
+	@Override
+	public OrgUnitSimple getRootOrgUnit()
+	{
+		return (OrgUnitSimple) super.rootOrgUnit;
+	}
 }

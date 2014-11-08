@@ -54,6 +54,12 @@ public class OrganizationalUnit
 		return emailAddress;
 	}
 
+	@Override
+	public OrganizationalUnit getRootOrgUnit()
+	{
+		return (OrganizationalUnit) super.rootOrgUnit;
+	}
+
 	// operations:
 	@Override
 	public int compareTo(IOrganizationalUnit ou)

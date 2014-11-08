@@ -8,7 +8,6 @@ import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnit;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnitBuilder;
-import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnit;
 
 public class AuthorizableOrgUnit
 	extends OrganizationalUnit
@@ -34,12 +33,12 @@ public class AuthorizableOrgUnit
 			super(identifier);
 		}
 
-		public AuthorizableOrgUnitBuilder(AbstractOrgUnit rootOrgUnit)
+		public AuthorizableOrgUnitBuilder(OrganizationalUnit rootOrgUnit)
 		{
 			super(rootOrgUnit);
 		}
 
-		public AuthorizableOrgUnitBuilder(String identifier, 	AbstractOrgUnit rootOrgUnit)
+		public AuthorizableOrgUnitBuilder(String identifier, 	OrganizationalUnit rootOrgUnit)
 		{
 			super(identifier, rootOrgUnit);
 		}
