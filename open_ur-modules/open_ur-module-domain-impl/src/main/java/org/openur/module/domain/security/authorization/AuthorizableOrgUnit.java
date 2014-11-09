@@ -8,6 +8,7 @@ import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnit;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnitBuilder;
+import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnit;
 
 public class AuthorizableOrgUnit
 	extends OrganizationalUnit
@@ -18,6 +19,18 @@ public class AuthorizableOrgUnit
 	private AuthorizableOrgUnit(AuthorizableOrgUnitBuilder b)
 	{
 		super(b);
+	}
+
+	@Override
+	public AuthorizableOrgUnit getRootOrgUnit()
+	{
+		return (AuthorizableOrgUnit) super.rootOrgUnit;
+	}
+
+	@Override
+	public AuthorizableOrgUnit getSuperOu()
+	{
+		return (AuthorizableOrgUnit) super.superOrgUnit;
 	}
 	
 	public static class AuthorizableOrgUnitBuilder extends OrganizationalUnitBuilder
@@ -86,9 +99,9 @@ public class AuthorizableOrgUnit
 		}
 
 		@Override
-		public AuthorizableOrgUnitBuilder superOuId(String superOuId)
+		public AuthorizableOrgUnitBuilder superOrgUnit(AbstractOrgUnit superOrgUnit)
 		{
-			super.superOuId(superOuId);
+			super.superOrgUnit(superOrgUnit);
 			return this;
 		}
 		

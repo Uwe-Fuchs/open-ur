@@ -143,17 +143,19 @@ public class OrgUnitSimpleTest
 		assertTrue("ou1 should be before ou2 because of status", ou.compareTo(ou2) < 0);
 	}
 
+	@Test
 	public void testIsRootOrgUnit()
 	{
-		OrgUnitSimple ou = new OrgUnitSimpleBuilder()
-			.build();
-		assertTrue(ou.isRootOrgUnit());
-		
 		OrgUnitSimple rootOu = new OrgUnitSimpleBuilder()
 			.build();
+		assertTrue(rootOu.isRootOrgUnit());
 		
-		ou = new OrgUnitSimpleBuilder(rootOu)
-			.superOuId("123")
+		OrgUnitSimple superOu = new OrgUnitSimpleBuilder(rootOu)
+			.superOrgUnit(rootOu)
+			.build();
+		
+		OrgUnitSimple ou = new OrgUnitSimpleBuilder(rootOu)
+			.superOrgUnit(superOu)
 			.build();
 		assertFalse(ou.isRootOrgUnit());
 	}	
@@ -161,8 +163,11 @@ public class OrgUnitSimpleTest
 	@Test(expected=InconsistentHierarchyException.class)
 	public void testCreateAsRootWithSuperOuId()
 	{
+		OrgUnitSimple ou = new OrgUnitSimpleBuilder()
+			.build();
+		
 		new OrgUnitSimpleBuilder()
-			.superOuId("testId")
+			.superOrgUnit(ou)
 			.build();
 	}
 	
@@ -175,13 +180,14 @@ public class OrgUnitSimpleTest
 			.build();
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
-	public void testCreateAsNonRootWithEmptySuperOuId()
+	@Test(expected=NullPointerException.class)
+	public void testCreateWithEmptySuperOu()
 	{
-		OrgUnitSimple rootOu = new OrgUnitSimpleBuilder().build();
+		OrgUnitSimple rootOu = new OrgUnitSimpleBuilder()
+			.build();
 		
 		new OrgUnitSimpleBuilder(rootOu)
-			.superOuId("");
+			.superOrgUnit(null);
 	}
 	
 	@Test(expected=NullPointerException.class)

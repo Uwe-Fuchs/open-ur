@@ -15,5 +15,27 @@ public class MyAuthorizableOrgUnit
 	public void addMember(MyAuthorizableMember member)
 	{
 		super.addMember(member);
-	}	
+	}
+
+	@Override
+	public MyAuthorizableOrgUnit getSuperOu()
+	{
+		return (MyAuthorizableOrgUnit) super.getSuperOu();
+	}
+
+	@Override
+	public MyAuthorizableOrgUnit getRootOrgUnit()
+	{
+		return (MyAuthorizableOrgUnit) super.getRootOrgUnit();
+	}
+
+	public void setSuperOrgUnit(MyAuthorizableOrgUnit superOrgUnit)
+	{
+		super.setSuperOrgUnit(superOrgUnit);
+	}
+
+	public void setRootOrgUnit(MyAuthorizableOrgUnit rootOrgUnit)
+	{
+		super.setRootOrgUnit(rootOrgUnit);
+	}
 }

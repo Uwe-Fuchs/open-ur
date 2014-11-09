@@ -38,7 +38,7 @@ public class AuthorizationServicesImpl
 		while (!hasPerm && ouTmp != null)
 		{
 			hasPerm = ouTmp.hasPermission(user, app, permission);
-			ouTmp = securityDomainServices.findAuthOrgUnitById(ouTmp.getSuperOuId());
+			ouTmp = ouTmp.getSuperOu();
 		}
 		
 		return hasPerm;

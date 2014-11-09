@@ -13,9 +13,16 @@ public class OrgUnitSimple
 		super(b);
 	}
 
+	// accessors:
 	@Override
 	public OrgUnitSimple getRootOrgUnit()
 	{
 		return (OrgUnitSimple) super.rootOrgUnit;
+	}
+
+	@Override
+	public IOrganizationalUnit getSuperOu()
+	{
+		return (OrgUnitSimple) super.superOrgUnit;
 	}
 }

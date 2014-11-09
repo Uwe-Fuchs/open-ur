@@ -90,7 +90,7 @@ public class AuthorizationServicesTest
 		final String SUB_OU_ID = UUID.randomUUID().toString();
 		final String SUB_OU_NAME = "subOuName";
 		MyAuthorizableOrgUnit subOu = new MyAuthorizableOrgUnit(SUB_OU_ID, SUB_OU_NAME);
-		subOu.setSuperOuId(OU_ID);
+		subOu.setSuperOrgUnit(ou);
 		
 		Mockito.when(securityDomainServices.findAuthOrgUnitById(OU_ID)).thenReturn(ou);
 		
@@ -145,7 +145,7 @@ public class AuthorizationServicesTest
 		final String SUB_OU_ID = UUID.randomUUID().toString();
 		final String SUB_OU_NAME = "subOuName";
 		MyAuthorizableOrgUnit subOu = new MyAuthorizableOrgUnit(SUB_OU_ID, SUB_OU_NAME);
-		subOu.setSuperOuId(OU_ID);
+		subOu.setSuperOrgUnit(ou);
 		
 		Mockito.when(securityDomainServices.findAuthOrgUnitById(SUB_OU_ID)).thenReturn(subOu);
 		

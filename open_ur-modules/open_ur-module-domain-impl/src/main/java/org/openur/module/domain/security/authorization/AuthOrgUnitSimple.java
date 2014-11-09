@@ -6,6 +6,7 @@ import java.util.HashSet;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitSimple;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitSimpleBuilder;
+import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnit;
 
 public class AuthOrgUnitSimple
 	extends OrgUnitSimple
@@ -16,6 +17,19 @@ public class AuthOrgUnitSimple
 	private AuthOrgUnitSimple(AuthOrgUnitSimpleBuilder b)
 	{
 		super(b);
+	}
+
+	// accessors:
+	@Override
+	public AuthOrgUnitSimple getRootOrgUnit()
+	{
+		return (AuthOrgUnitSimple) super.rootOrgUnit;
+	}
+
+	@Override
+	public AuthOrgUnitSimple getSuperOu()
+	{
+		return (AuthOrgUnitSimple) super.superOrgUnit;
 	}
 	
 	public static class AuthOrgUnitSimpleBuilder extends OrgUnitSimpleBuilder
@@ -47,14 +61,14 @@ public class AuthOrgUnitSimple
 			super.members(new HashSet<OrgUnitMember>(authMembers));
 			return this;
 		}
-
+		
 		@Override
-		public AuthOrgUnitSimpleBuilder superOuId(String superOuId)
+		public AuthOrgUnitSimpleBuilder superOrgUnit(AbstractOrgUnit superOrgUnit)
 		{
-			super.superOuId(superOuId);
+			super.superOrgUnit(superOrgUnit);
 			return this;
 		}
-		
+
 		// builder:
 		@Override
 		public AuthOrgUnitSimple build()

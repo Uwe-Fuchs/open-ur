@@ -62,15 +62,16 @@ public class OrganizationalUnitTest
 	@Test
 	public void testIsRootOrgUnit()
 	{
-		OrganizationalUnit ou = new OrganizationalUnitBuilder()
-			.build();
-		assertTrue(ou.isRootOrgUnit());
-		
 		OrganizationalUnit rootOu = new OrganizationalUnitBuilder()
 			.build();
+		assertTrue(rootOu.isRootOrgUnit());
 		
-		ou = new OrganizationalUnitBuilder(rootOu)
-			.superOuId("123")
+		OrganizationalUnit superOu = new OrganizationalUnitBuilder(rootOu)
+		  .superOrgUnit(rootOu)
+			.build();
+		
+		OrganizationalUnit ou = new OrganizationalUnitBuilder(rootOu)
+			.superOrgUnit(superOu)
 			.build();
 		assertFalse(ou.isRootOrgUnit());
 	}	

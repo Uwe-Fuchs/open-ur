@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.userstructure.InconsistentHierarchyException;
 import org.openur.module.domain.userstructure.UserStructureBaseBuilder;
@@ -15,7 +14,7 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 	extends UserStructureBaseBuilder<T>
 {
 	// properties:
-	private String superOuId = null;
+	private AbstractOrgUnit superOrgUnit = null;
 	private AbstractOrgUnit rootOrgUnit = null;
 	protected Set<OrgUnitMember> members = new HashSet<>();
 
@@ -48,7 +47,7 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 
 	// builder-methods:
 	@SuppressWarnings("unchecked")
-	public T superOuId(String superOuId)
+	public T superOrgUnit(AbstractOrgUnit superOrgUnit)
 	{
 		if (this.getRootOrgUnit() == null)
 		{
@@ -56,8 +55,8 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 				"Org-Unit is marked as root, hence no super-org-unit can be set!");
 		}
 		
-		Validate.notEmpty(superOuId, "super-org-unit-id must not be empty!");
-		this.superOuId = superOuId;
+		Validate.notNull(superOrgUnit, "super-org-unit must not be null!");
+		this.superOrgUnit = superOrgUnit;
 		
 		return (T) this;
 	}
@@ -82,7 +81,7 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 	
 	protected AbstractOrgUnit build()
 	{
-		if (getRootOrgUnit() != null && StringUtils.isEmpty(getSuperOuId()))
+		if (getRootOrgUnit() != null && getSuperOrgUnit() == null)
 		{
 			throw new InconsistentHierarchyException(
 				"Org-Unit is not root, hence a super-org-unit must be set!");
@@ -92,14 +91,14 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 	}
 
 	// accessors:
-	String getSuperOuId()
-	{
-		return superOuId;
-	}
-
 	AbstractOrgUnit getRootOrgUnit()
 	{
 		return rootOrgUnit;
+	}
+
+	AbstractOrgUnit getSuperOrgUnit()
+	{
+		return superOrgUnit;
 	}
 
 	Set<OrgUnitMember> getMembers()

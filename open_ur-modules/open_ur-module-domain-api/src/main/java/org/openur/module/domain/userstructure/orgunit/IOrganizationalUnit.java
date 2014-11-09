@@ -15,12 +15,12 @@ public interface IOrganizationalUnit
 	String getOrgUnitNumber();
 	
 	/**
-	 * returns the id of the organizational unit that this ou is subordinated to.
+	 * returns the organizational unit this ou is subordinated to.
 	 * 
-	 * @return the id of the superior ou or null if this ou is the highest ou (thus the "root"
+	 * @return the superior ou or null if this ou is the highest ou (thus the "root"
 	 * of the hierarchy).
 	 */
-	String getSuperOuId();
+	IOrganizationalUnit getSuperOu();
 	
 	/**
 	 * indicates wether this org-unit is the hierachical root of the organization,

@@ -23,26 +23,20 @@ public abstract class AbstractOrgUnit
 	private static final long serialVersionUID = -613869687329884115L;
 	
 	// properties:
-  private final String superOuId;
   private final Set<OrgUnitMember> members;
   protected final AbstractOrgUnit rootOrgUnit;
+	protected final AbstractOrgUnit superOrgUnit;
   
 	// constructor:
 	protected AbstractOrgUnit(AbstractOrgUnitBuilder<? extends AbstractOrgUnitBuilder<?>> b)
 	{
 		super(b);
-		this.superOuId = b.getSuperOuId();
+		this.superOrgUnit = b.getSuperOrgUnit();
 		this.rootOrgUnit = b.getRootOrgUnit();
 		this.members = Collections.unmodifiableSet(b.getMembers());
 	}
 
 	// accessors:
-	@Override
-	public String getSuperOuId()
-	{
-		return superOuId;
-	}
-
 	@Override
 	public boolean isRootOrgUnit()
 	{

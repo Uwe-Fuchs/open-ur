@@ -125,14 +125,15 @@ public class OrgUnitServicesTest
 	public void testObtainSubOrgUnitsForOrgUnit()
 	{		
 		final String SUPER_OU_ID = UUID.randomUUID().toString();		
-		final IOrganizationalUnit ROOT_OU = new MyOrgUnit(UUID.randomUUID().toString(), "rootOuNumber");		
+		final MyOrgUnit SUPER_OU = new MyOrgUnit(SUPER_OU_ID, "superOuNumber");		
+		final MyOrgUnit ROOT_OU = new MyOrgUnit(UUID.randomUUID().toString(), "rootOuNumber");		
 
 		MyOrgUnit orgUnit1 = new MyOrgUnit(UUID_1, NO_123);
-		orgUnit1.setSuperOuId(SUPER_OU_ID);
+		orgUnit1.setSuperOrgUnit(SUPER_OU);
 		orgUnit1.setRootOrgUnit(ROOT_OU);
 		
 		MyOrgUnit orgUnit2 = new MyOrgUnit(UUID_2, NO_456);
-		orgUnit2.setSuperOuId(SUPER_OU_ID);
+		orgUnit2.setSuperOrgUnit(SUPER_OU);
 		orgUnit2.setRootOrgUnit(ROOT_OU);
 		
 		Mockito.when(dao.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID, false)).thenReturn(Arrays.asList(orgUnit1, orgUnit2));
@@ -166,7 +167,7 @@ public class OrgUnitServicesTest
 		MyMember mB = new MyMember(persB, UUID_2);
 		
 		MyOrgUnit orgUnit2_m = new MyOrgUnit(UUID_2, NO_456);
-		orgUnit2_m.setSuperOuId(SUPER_OU_ID);
+		orgUnit2_m.setSuperOrgUnit(SUPER_OU);
 		orgUnit2_m.setRootOrgUnit(ROOT_OU);
 		orgUnit2_m.addMember(mA);
 		orgUnit2_m.addMember(mB);
@@ -201,7 +202,7 @@ public class OrgUnitServicesTest
 	{		
 		final String ROOT_OU_ID = UUID.randomUUID().toString();
 		final String ROOT_OU_NUMBER = "rootOuNumber";
-		IOrganizationalUnit rootOu = new MyOrgUnit(ROOT_OU_ID, ROOT_OU_NUMBER);
+		MyOrgUnit rootOu = new MyOrgUnit(ROOT_OU_ID, ROOT_OU_NUMBER);
 
 		MyOrgUnit orgUnit1 = new MyOrgUnit(UUID_1, NO_123);
 		orgUnit1.setRootOrgUnit(rootOu);

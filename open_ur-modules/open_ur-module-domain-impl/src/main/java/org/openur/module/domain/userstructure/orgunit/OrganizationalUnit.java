@@ -60,6 +60,12 @@ public class OrganizationalUnit
 		return (OrganizationalUnit) super.rootOrgUnit;
 	}
 
+	@Override
+	public OrganizationalUnit getSuperOu()
+	{
+		return (OrganizationalUnit) super.superOrgUnit;
+	}
+
 	// operations:
 	@Override
 	public int compareTo(IOrganizationalUnit ou)

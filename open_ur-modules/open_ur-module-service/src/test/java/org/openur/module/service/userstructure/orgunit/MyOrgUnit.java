@@ -14,8 +14,8 @@ public class MyOrgUnit
 {
 	private String identifier;
 	private String number;
-	private String superOuId;
-	private IOrganizationalUnit rootOrgUnit;
+	private MyOrgUnit superOrgUnit;
+	private MyOrgUnit rootOrgUnit;
 	private Set<MyMember> members = new HashSet<>();
 
 	public MyOrgUnit(String identifier, String number)
@@ -45,14 +45,14 @@ public class MyOrgUnit
 	}
 
 	@Override
-	public String getSuperOuId()
+	public MyOrgUnit getSuperOu()
 	{
-		return this.superOuId;
+		return this.superOrgUnit;
 	}
 
-	public void setSuperOuId(String superOuId)
+	protected void setSuperOrgUnit(MyOrgUnit superOrgUnit)
 	{
-		this.superOuId = superOuId;
+		this.superOrgUnit = superOrgUnit;
 	}
 
 	@Override
@@ -62,12 +62,12 @@ public class MyOrgUnit
 	}
 
 	@Override
-	public IOrganizationalUnit getRootOrgUnit()
+	public MyOrgUnit getRootOrgUnit()
 	{
 		return this.rootOrgUnit;
 	}
 
-	public void setRootOrgUnit(IOrganizationalUnit rootOrgUnit)
+	public void setRootOrgUnit(MyOrgUnit rootOrgUnit)
 	{
 		this.rootOrgUnit = rootOrgUnit;
 	}

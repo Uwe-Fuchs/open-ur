@@ -44,4 +44,19 @@ public interface IAuthorizableOrgUnit
 	{
 		return (IAuthorizableMember) findMember(id);
 	}
+	
+	/**
+	 * returns the authorizable org-unit this ou is subordinated to.
+	 * 
+	 * @return the superior ou or null if this ou is the highest ou (thus the "root"
+	 * of the hierarchy).
+	 */
+	IAuthorizableOrgUnit getSuperOu();
+	
+	/**
+	 * returns the root-org-unit of the hierarchy this org-unit is a part of. 
+	 * 
+	 * @return root-org-unit of this hierarchy.
+	 */
+	IAuthorizableOrgUnit getRootOrgUnit();
 }
