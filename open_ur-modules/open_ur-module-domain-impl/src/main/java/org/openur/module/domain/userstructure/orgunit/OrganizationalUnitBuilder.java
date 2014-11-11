@@ -66,6 +66,13 @@ public class OrganizationalUnitBuilder
 		return this;
 	}
 	
+	public OrganizationalUnitBuilder superOrgUnit(OrganizationalUnit superOrgUnit)
+	{
+		super.superOrgUnit(superOrgUnit);
+		return this;
+	}
+
+	// builder:
 	@Override
 	public OrganizationalUnit build()
 	{

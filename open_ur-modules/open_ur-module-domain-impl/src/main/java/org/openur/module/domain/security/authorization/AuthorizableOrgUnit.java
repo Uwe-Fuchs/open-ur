@@ -8,7 +8,6 @@ import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnit;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnitBuilder;
-import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnit;
 
 public class AuthorizableOrgUnit
 	extends OrganizationalUnit
@@ -98,8 +97,7 @@ public class AuthorizableOrgUnit
 			return this;
 		}
 
-		@Override
-		public AuthorizableOrgUnitBuilder superOrgUnit(AbstractOrgUnit superOrgUnit)
+		public AuthorizableOrgUnitBuilder superOrgUnit(AuthorizableOrgUnit superOrgUnit)
 		{
 			super.superOrgUnit(superOrgUnit);
 			return this;

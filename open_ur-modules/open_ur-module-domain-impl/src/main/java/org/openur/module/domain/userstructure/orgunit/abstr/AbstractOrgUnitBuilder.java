@@ -47,7 +47,7 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 
 	// builder-methods:
 	@SuppressWarnings("unchecked")
-	public T superOrgUnit(AbstractOrgUnit superOrgUnit)
+	protected <OU extends AbstractOrgUnit> T superOrgUnit(OU superOrgUnit)
 	{
 		if (this.getRootOrgUnit() == null)
 		{

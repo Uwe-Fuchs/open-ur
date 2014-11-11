@@ -26,7 +26,15 @@ public class OrgUnitSimpleBuilder
 	{
 		super(identifier, rootOrgUnit);
 	}
+	
+	// builder-methods:
+	public OrgUnitSimpleBuilder superOrgUnit(OrgUnitSimple superOrgUnit)
+	{
+		super.superOrgUnit(superOrgUnit);
+		return this;
+	}	
 
+	// builder:
 	@Override
 	public OrgUnitSimple build()
 	{
