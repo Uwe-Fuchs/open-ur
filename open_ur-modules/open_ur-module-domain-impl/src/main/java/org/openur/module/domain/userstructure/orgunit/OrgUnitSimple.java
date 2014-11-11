@@ -21,7 +21,7 @@ public class OrgUnitSimple
 	}
 
 	@Override
-	public IOrganizationalUnit getSuperOu()
+	public IOrganizationalUnit getSuperOrgUnit()
 	{
 		return (OrgUnitSimple) super.superOrgUnit;
 	}

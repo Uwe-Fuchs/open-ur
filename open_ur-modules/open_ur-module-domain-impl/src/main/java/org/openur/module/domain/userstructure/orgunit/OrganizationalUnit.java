@@ -61,7 +61,7 @@ public class OrganizationalUnit
 	}
 
 	@Override
-	public OrganizationalUnit getSuperOu()
+	public OrganizationalUnit getSuperOrgUnit()
 	{
 		return (OrganizationalUnit) super.superOrgUnit;
 	}

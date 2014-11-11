@@ -45,7 +45,7 @@ public class MyOrgUnit
 	}
 
 	@Override
-	public MyOrgUnit getSuperOu()
+	public MyOrgUnit getSuperOrgUnit()
 	{
 		return this.superOrgUnit;
 	}

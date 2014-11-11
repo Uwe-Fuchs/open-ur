@@ -20,7 +20,7 @@ public interface IOrganizationalUnit
 	 * @return the superior ou or null if this ou is the highest ou (thus the "root"
 	 * of the hierarchy).
 	 */
-	IOrganizationalUnit getSuperOu();
+	IOrganizationalUnit getSuperOrgUnit();
 	
 	/**
 	 * indicates wether this org-unit is the hierachical root of the organization,

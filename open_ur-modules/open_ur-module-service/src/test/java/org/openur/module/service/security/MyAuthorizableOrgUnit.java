@@ -18,9 +18,9 @@ public class MyAuthorizableOrgUnit
 	}
 
 	@Override
-	public MyAuthorizableOrgUnit getSuperOu()
+	public MyAuthorizableOrgUnit getSuperOrgUnit()
 	{
-		return (MyAuthorizableOrgUnit) super.getSuperOu();
+		return (MyAuthorizableOrgUnit) super.getSuperOrgUnit();
 	}
 
 	@Override

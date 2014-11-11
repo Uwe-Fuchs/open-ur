@@ -27,7 +27,7 @@ public class AuthorizableOrgUnit
 	}
 
 	@Override
-	public AuthorizableOrgUnit getSuperOu()
+	public AuthorizableOrgUnit getSuperOrgUnit()
 	{
 		return (AuthorizableOrgUnit) super.superOrgUnit;
 	}

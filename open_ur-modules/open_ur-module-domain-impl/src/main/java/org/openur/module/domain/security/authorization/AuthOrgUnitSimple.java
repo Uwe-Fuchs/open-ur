@@ -26,7 +26,7 @@ public class AuthOrgUnitSimple
 	}
 
 	@Override
-	public AuthOrgUnitSimple getSuperOu()
+	public AuthOrgUnitSimple getSuperOrgUnit()
 	{
 		return (AuthOrgUnitSimple) super.superOrgUnit;
 	}
