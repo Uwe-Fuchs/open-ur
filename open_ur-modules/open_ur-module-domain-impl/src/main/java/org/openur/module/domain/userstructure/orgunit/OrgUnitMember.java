@@ -1,44 +1,24 @@
 package org.openur.module.domain.userstructure.orgunit;
 
-import org.openur.module.domain.GraphNode;
-import org.openur.module.domain.userstructure.person.abstr.AbstractPerson;
+import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnitMember;
+import org.openur.module.domain.userstructure.person.Person;
 
 public class OrgUnitMember
-	extends GraphNode
+	extends AbstractOrgUnitMember
 	implements IOrgUnitMember
 {
-	private static final long serialVersionUID = -8299862057665830750L;
+	private static final long serialVersionUID = -3347655382807063939L;
 
-	// properties:
-	private final AbstractPerson person;
-	private final String orgUnitId;
-
-	// constructors:
-	public OrgUnitMember(AbstractPerson person, String orgUnitId)
+	// constructor:
+	public OrgUnitMember(Person person, String orgUnitId)
 	{
-		super();
-
-		this.person = person;
-		this.orgUnitId = orgUnitId;
+		super(person, orgUnitId);
 	}
 
 	// accessors:
 	@Override
-	public AbstractPerson getPerson()
+	public Person getPerson()
 	{
-		return person;
-	}
-
-	@Override
-	public String getOrgUnitId()
-	{
-		return orgUnitId;
-	}
-
-	// operations:
-	@Override
-	public boolean equals(Object obj)
-	{
-		return isEqual(obj);
+		return (Person) super.getPerson();
 	}
 }

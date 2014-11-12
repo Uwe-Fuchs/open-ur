@@ -1,5 +1,7 @@
 package org.openur.module.domain.userstructure.orgunit;
 
+import java.util.Collection;
+
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnitBuilder;
@@ -69,6 +71,12 @@ public class OrganizationalUnitBuilder
 	public OrganizationalUnitBuilder superOrgUnit(OrganizationalUnit superOrgUnit)
 	{
 		super.superOrgUnit(superOrgUnit);
+		return this;
+	}
+
+	public OrganizationalUnitBuilder orgUnitMembers(Collection<OrgUnitMember> orgUnitMembers)
+	{
+		super.members(orgUnitMembers);
 		return this;
 	}
 

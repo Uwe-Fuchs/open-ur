@@ -29,11 +29,11 @@ public class OrgUnitSimpleTest
 		
 		final String OU_ID = UUID.randomUUID().toString();
 		
-		OrgUnitMember m2 = new OrgUnitMember(pers2, OU_ID);
-		OrgUnitMember m1 = new OrgUnitMember(pers1, OU_ID);		
+		OrgUnitMemberSimple m2 = new OrgUnitMemberSimple(pers2, OU_ID);
+		OrgUnitMemberSimple m1 = new OrgUnitMemberSimple(pers1, OU_ID);		
 
 		OrgUnitSimple ou = new OrgUnitSimpleBuilder(OU_ID)
-			.members(Arrays.asList(m1, m2))
+			.orgUnitMembers(Arrays.asList(m1, m2))
 			.build();
 		
 		assertEquals(m1, ou.findMember(m1.getPerson()));
@@ -43,13 +43,13 @@ public class OrgUnitSimpleTest
 		
 		PersonSimple pers3 = new PersonSimpleBuilder()
 			.build();
-		OrgUnitMember m3 = new OrgUnitMember(pers3, OU_ID);
+		OrgUnitMemberSimple m3 = new OrgUnitMemberSimple(pers3, OU_ID);
 		
 		assertNull(ou.findMember(m3.getPerson()));
 		assertNull(ou.findMember(m3.getPerson().getIdentifier()));
 		
 		ou = new OrgUnitSimpleBuilder(OU_ID)
-			.members(Arrays.asList(m1, m2, m3))
+			.orgUnitMembers(Arrays.asList(m1, m2, m3))
 			.build();
 		assertEquals(m3, ou.findMember(m3.getPerson()));
 		assertEquals(m3, ou.findMember(m3.getPerson().getIdentifier()));
@@ -66,11 +66,11 @@ public class OrgUnitSimpleTest
 		
 		final String OU_ID = UUID.randomUUID().toString();
 		
-		OrgUnitMember m2 = new OrgUnitMember(pers2, OU_ID);
-		OrgUnitMember m1 = new OrgUnitMember(pers1, OU_ID);		
+		OrgUnitMemberSimple m2 = new OrgUnitMemberSimple(pers2, OU_ID);
+		OrgUnitMemberSimple m1 = new OrgUnitMemberSimple(pers1, OU_ID);		
 	
 		OrgUnitSimple ou = new OrgUnitSimpleBuilder(OU_ID)
-			.members(Arrays.asList(m1, m2))
+			.orgUnitMembers(Arrays.asList(m1, m2))
 			.build();
 		
 		assertTrue(ou.isMember(m1.getPerson()));
@@ -80,13 +80,13 @@ public class OrgUnitSimpleTest
 		
 		PersonSimple pers3 = new PersonSimpleBuilder()
 			.build();
-		OrgUnitMember m3 = new OrgUnitMember(pers3, OU_ID);
+		OrgUnitMemberSimple m3 = new OrgUnitMemberSimple(pers3, OU_ID);
 		
 		assertFalse(ou.isMember(m3.getPerson()));
 		assertFalse(ou.isMember(m3.getPerson().getIdentifier()));
 		
 		ou = new OrgUnitSimpleBuilder(OU_ID)
-			.members(Arrays.asList(m1, m2, m3))
+			.orgUnitMembers(Arrays.asList(m1, m2, m3))
 			.build();
 		
 		assertTrue(ou.isMember(m3.getPerson()));
@@ -97,10 +97,10 @@ public class OrgUnitSimpleTest
 	public void testCreateWithWrongOrgUnitID()
 	{
 		PersonSimple pers = new PersonSimpleBuilder().build();
-		OrgUnitMember member = new OrgUnitMember(pers, "123");
+		OrgUnitMemberSimple member = new OrgUnitMemberSimple(pers, "123");
 		
 		OrgUnitSimpleBuilder oub = new OrgUnitSimpleBuilder("456");
-		oub.members(Arrays.asList(member));
+		oub.orgUnitMembers(Arrays.asList(member));
 	}
 	
 	@Test
@@ -116,7 +116,7 @@ public class OrgUnitSimpleTest
 	public void testCreateWithEmptyMembersList()
 	{
 		new OrgUnitSimpleBuilder()
-			.members(new ArrayList<OrgUnitMember>(0))
+			.orgUnitMembers(new ArrayList<OrgUnitMemberSimple>(0))
 			.build();
 	}
 

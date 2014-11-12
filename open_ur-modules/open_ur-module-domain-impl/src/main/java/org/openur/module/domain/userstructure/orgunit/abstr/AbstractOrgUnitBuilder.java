@@ -7,7 +7,6 @@ import java.util.Set;
 import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.userstructure.InconsistentHierarchyException;
 import org.openur.module.domain.userstructure.UserStructureBaseBuilder;
-import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
 import org.openur.module.util.exception.OpenURRuntimeException;
 
 public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>>
@@ -16,7 +15,7 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 	// properties:
 	private AbstractOrgUnit superOrgUnit = null;
 	private AbstractOrgUnit rootOrgUnit = null;
-	protected Set<OrgUnitMember> members = new HashSet<>();
+	protected Set<AbstractOrgUnitMember> members = new HashSet<>();
 
 	// constructors:
 	public AbstractOrgUnitBuilder()
@@ -62,11 +61,11 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 	}
 
 	@SuppressWarnings("unchecked")
-	public T members(Collection<OrgUnitMember> members)
+	protected T members(Collection<? extends AbstractOrgUnitMember> members)
 	{
 		Validate.notEmpty(members, "members-list must not be empty!");
 		
-		for (OrgUnitMember m : members)
+		for (AbstractOrgUnitMember m : members)
 		{
 			if (!(this.getIdentifier().equals(m.getOrgUnitId())))
 			{
@@ -101,7 +100,7 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 		return superOrgUnit;
 	}
 
-	Set<OrgUnitMember> getMembers()
+	Set<AbstractOrgUnitMember> getMembers()
 	{
 		return members;
 	}

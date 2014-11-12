@@ -7,11 +7,12 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.apache.commons.lang3.Validate;
 import org.openur.module.persistence.rdbms.entity.AbstractOpenUrPersistable;
 
 @Entity(name="ORG_UNIT_MEMBER")
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
-public abstract class POrgUnitMember
+public class POrgUnitMember
 	extends AbstractOpenUrPersistable
 {
 	private static final long serialVersionUID = -7790268803941598263L;
@@ -47,8 +48,14 @@ public abstract class POrgUnitMember
 	}
 
 	// protected:
-	protected POrgUnitMember()
+	protected POrgUnitMember(POrganizationalUnit orgUnit, PPerson person)
 	{
 		super();
+		
+		Validate.notNull(orgUnit, "org-unit must not be null!");
+		Validate.notNull(person, "person must not be null!");
+		
+		this.orgUnit = orgUnit;
+		this.person = person;
 	}
 }

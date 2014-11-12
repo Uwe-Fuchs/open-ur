@@ -11,6 +11,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 import org.openur.module.persistence.rdbms.entity.userstructure.POrgUnitMember;
+import org.openur.module.persistence.rdbms.entity.userstructure.POrganizationalUnit;
+import org.openur.module.persistence.rdbms.entity.userstructure.PPerson;
 
 @Entity(name="AUTHORIZABLE_MEMBER")
 public class PAuthorizableMember
@@ -39,8 +41,8 @@ public class PAuthorizableMember
 	}
 
 	// constructor:
-	PAuthorizableMember()
+	PAuthorizableMember(POrganizationalUnit orgUnit, PPerson person)
 	{
-		super();
+		super(orgUnit, person);
 	}
 }

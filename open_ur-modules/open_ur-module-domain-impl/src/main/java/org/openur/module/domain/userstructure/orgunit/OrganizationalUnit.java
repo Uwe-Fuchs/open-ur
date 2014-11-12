@@ -1,5 +1,8 @@
 package org.openur.module.domain.userstructure.orgunit;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.EMailAddress;
@@ -21,6 +24,7 @@ public class OrganizationalUnit
 	protected OrganizationalUnit(OrganizationalUnitBuilder b)
 	{
 		super(b);
+		
 		this.name = b.getName();
 		this.shortName = b.getShortName();
 		this.description = b.getDescription();
@@ -64,6 +68,15 @@ public class OrganizationalUnit
 	public OrganizationalUnit getSuperOrgUnit()
 	{
 		return (OrganizationalUnit) super.superOrgUnit;
+	}
+
+	@Override
+	public Set<OrgUnitMember> getMembers()
+	{
+		return super.getMembers()
+			.stream()
+			.map(member -> (OrgUnitMember) member)
+			.collect(Collectors.toSet()); 
 	}
 
 	// operations:

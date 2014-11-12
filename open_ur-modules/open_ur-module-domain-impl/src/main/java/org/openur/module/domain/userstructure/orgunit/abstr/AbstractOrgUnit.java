@@ -5,7 +5,6 @@ import java.util.Set;
 
 import org.openur.module.domain.userstructure.UserStructureBase;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
-import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitSimple;
 import org.openur.module.domain.userstructure.person.IPerson;
 
@@ -23,7 +22,7 @@ public abstract class AbstractOrgUnit
 	private static final long serialVersionUID = -613869687329884115L;
 	
 	// properties:
-  private final Set<OrgUnitMember> members;
+  private final Set<? extends AbstractOrgUnitMember> members;
   protected final AbstractOrgUnit rootOrgUnit;
 	protected final AbstractOrgUnit superOrgUnit;
   
@@ -44,7 +43,7 @@ public abstract class AbstractOrgUnit
 	}
 
 	@Override
-	public Set<OrgUnitMember> getMembers()
+	public Set<? extends AbstractOrgUnitMember> getMembers()
 	{
 		return members;
 	}
@@ -57,14 +56,14 @@ public abstract class AbstractOrgUnit
 	}	
 
 	@Override
-	public OrgUnitMember findMember(String id)
+	public AbstractOrgUnitMember findMember(String id)
 	{
     if (id == null)
     {
       return null;
     }
 
-    for (OrgUnitMember m : this.getMembers())
+    for (AbstractOrgUnitMember m : this.getMembers())
     {
       if (id.equals(m.getPerson().getIdentifier()))
       {
@@ -98,7 +97,7 @@ public abstract class AbstractOrgUnit
 	}
 
 	@Override
-	public OrgUnitMember findMember(IPerson person)
+	public AbstractOrgUnitMember findMember(IPerson person)
 	{
 		if (person == null)
     {

@@ -1,18 +1,20 @@
 package org.openur.module.domain.security.authorization;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
-import org.openur.module.domain.userstructure.orgunit.OrgUnitSimple;
-import org.openur.module.domain.userstructure.orgunit.OrgUnitSimpleBuilder;
+import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnit;
+import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnitBuilder;
+import org.openur.module.domain.userstructure.person.IPerson;
 
 public class AuthOrgUnitSimple
-	extends OrgUnitSimple
+	extends AbstractOrgUnit
 	implements IAuthorizableOrgUnit
 {
 	private static final long serialVersionUID = -9115069249614557685L;
 
+	// constructor:
 	private AuthOrgUnitSimple(AuthOrgUnitSimpleBuilder b)
 	{
 		super(b);
@@ -31,7 +33,29 @@ public class AuthOrgUnitSimple
 		return (AuthOrgUnitSimple) super.superOrgUnit;
 	}
 	
-	public static class AuthOrgUnitSimpleBuilder extends OrgUnitSimpleBuilder
+	@Override
+	public Set<AuthorizableMember> getMembers()
+	{
+		return super.getMembers()
+			.stream()
+			.map(member -> (AuthorizableMember) member)
+			.collect(Collectors.toSet());
+	}
+
+	@Override
+	public AuthorizableMember findMember(String id)
+	{
+		return (AuthorizableMember) super.findMember(id);
+	}
+
+	@Override
+	public AuthorizableMember findMember(IPerson person)
+	{
+		return (AuthorizableMember) super.findMember(person);
+	}
+
+	// builder-class:
+	public static class AuthOrgUnitSimpleBuilder extends AbstractOrgUnitBuilder<AuthOrgUnitSimpleBuilder>
 	{
 		// constructors:
 		public AuthOrgUnitSimpleBuilder()
@@ -44,12 +68,12 @@ public class AuthOrgUnitSimple
 			super(identifier);
 		}
 
-		public AuthOrgUnitSimpleBuilder(OrgUnitSimple rootOrgUnit)
+		public AuthOrgUnitSimpleBuilder(AuthOrgUnitSimple rootOrgUnit)
 		{
 			super(rootOrgUnit);
 		}
 
-		public AuthOrgUnitSimpleBuilder(String identifier, 	OrgUnitSimple rootOrgUnit)
+		public AuthOrgUnitSimpleBuilder(String identifier, 	AuthOrgUnitSimple rootOrgUnit)
 		{
 			super(identifier, rootOrgUnit);
 		}
@@ -57,7 +81,7 @@ public class AuthOrgUnitSimple
 		// accessors:
 		public AuthOrgUnitSimpleBuilder authorizableMembers(Collection<AuthorizableMember> authMembers)
 		{
-			super.members(new HashSet<OrgUnitMember>(authMembers));
+			super.members(authMembers);
 			return this;
 		}
 

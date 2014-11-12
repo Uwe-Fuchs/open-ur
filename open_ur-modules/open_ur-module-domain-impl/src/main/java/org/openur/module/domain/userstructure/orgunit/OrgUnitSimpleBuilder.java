@@ -1,5 +1,7 @@
 package org.openur.module.domain.userstructure.orgunit;
 
+import java.util.Collection;
+
 import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnitBuilder;
 
 
@@ -33,6 +35,12 @@ public class OrgUnitSimpleBuilder
 		super.superOrgUnit(superOrgUnit);
 		return this;
 	}	
+
+	public OrgUnitSimpleBuilder orgUnitMembers(Collection<OrgUnitMemberSimple> orgUnitMembers)
+	{
+		super.members(orgUnitMembers);
+		return this;
+	}
 
 	// builder:
 	@Override

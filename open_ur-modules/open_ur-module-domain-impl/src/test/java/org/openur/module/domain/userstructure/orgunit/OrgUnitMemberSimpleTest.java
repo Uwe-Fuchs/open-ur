@@ -10,7 +10,7 @@ import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.userstructure.person.PersonSimple;
 import org.openur.module.domain.userstructure.person.PersonSimpleBuilder;
 
-public class OrgUnitMemberTest
+public class OrgUnitMemberSimpleTest
 {
 	@Test
 	public void testEqualsObject()
@@ -21,20 +21,20 @@ public class OrgUnitMemberTest
 			.build();
 		
 		final String OU_ID_1 = UUID.randomUUID().toString();
-		OrgUnitMember m11 = new OrgUnitMember(pers1, OU_ID_1);
+		OrgUnitMemberSimple m11 = new OrgUnitMemberSimple(pers1, OU_ID_1);
 		
 		assertTrue(m11.equals(m11));
 		
 		PersonSimple pers2 = new PersonSimpleBuilder()
 			.build();
-		OrgUnitMember m21 = new OrgUnitMember(pers2, OU_ID_1);	
+		OrgUnitMemberSimple m21 = new OrgUnitMemberSimple(pers2, OU_ID_1);	
 		
 		assertFalse(m11.equals(m21));
 		assertFalse(m21.equals(m11));
 
 		final String OU_ID_2 = UUID.randomUUID().toString();
-		OrgUnitMember m12 = new OrgUnitMember(pers1, OU_ID_2);
-		OrgUnitMember m22 = new OrgUnitMember(pers2, OU_ID_2);
+		OrgUnitMemberSimple m12 = new OrgUnitMemberSimple(pers1, OU_ID_2);
+		OrgUnitMemberSimple m22 = new OrgUnitMemberSimple(pers2, OU_ID_2);
 		
 		assertFalse(m11.equals(m12));
 		assertFalse(m21.equals(m12));
@@ -52,7 +52,7 @@ public class OrgUnitMemberTest
 			.status(Status.ACTIVE)
 			.build();
 		final String OU_ID_1 = "XYZ";
-		OrgUnitMember m11 = new OrgUnitMember(pers1, OU_ID_1);
+		OrgUnitMemberSimple m11 = new OrgUnitMemberSimple(pers1, OU_ID_1);
 		
 		assertTrue(m11.compareTo(m11) == 0);
 		
@@ -60,13 +60,13 @@ public class OrgUnitMemberTest
 			.number("456")
 			.status(Status.ACTIVE)
 			.build();
-		OrgUnitMember m21 = new OrgUnitMember(pers2, OU_ID_1);
+		OrgUnitMemberSimple m21 = new OrgUnitMemberSimple(pers2, OU_ID_1);
 		
 		assertTrue(m11.compareTo(m21) < 0);
 		
 		final String OU_ID_2 = "ABC";
-		OrgUnitMember m12 = new OrgUnitMember(pers1, OU_ID_2);
-		OrgUnitMember m22 = new OrgUnitMember(pers2, OU_ID_2);
+		OrgUnitMemberSimple m12 = new OrgUnitMemberSimple(pers1, OU_ID_2);
+		OrgUnitMemberSimple m22 = new OrgUnitMemberSimple(pers2, OU_ID_2);
 	
 		assertTrue(m11.compareTo(m12) > 0);
 		assertTrue(m11.compareTo(m22) > 0);

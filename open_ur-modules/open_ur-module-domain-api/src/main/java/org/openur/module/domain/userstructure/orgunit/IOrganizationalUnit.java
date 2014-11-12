@@ -38,7 +38,7 @@ public interface IOrganizationalUnit
 	IOrganizationalUnit getRootOrgUnit();
 	
 	/**
-	 * returns the members of this orgaizational-unit in a set.
+	 * returns the members of this organizational-unit in a set.
 	 * 
 	 * @return set of members (maybe empty if the org-unit has no members).
 	 */

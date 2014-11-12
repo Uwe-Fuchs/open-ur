@@ -4,11 +4,11 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
+import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnitMember;
 import org.openur.module.domain.userstructure.person.abstr.AbstractPerson;
 
 public class AuthorizableMember
-	extends OrgUnitMember
+	extends AbstractOrgUnitMember
 	implements IAuthorizableMember
 {
 	private static final long serialVersionUID = 1090300386847874882L;
