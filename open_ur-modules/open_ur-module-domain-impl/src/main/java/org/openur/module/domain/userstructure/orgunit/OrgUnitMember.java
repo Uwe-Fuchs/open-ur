@@ -1,6 +1,5 @@
 package org.openur.module.domain.userstructure.orgunit;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.openur.module.domain.GraphNode;
 import org.openur.module.domain.userstructure.person.abstr.AbstractPerson;
 
@@ -40,16 +39,6 @@ public class OrgUnitMember
 	@Override
 	public boolean equals(Object obj)
 	{
-		if (!(obj instanceof OrgUnitMember))
-		{
-			return false;
-		}
-
-		OrgUnitMember other = (OrgUnitMember) obj;
-		
-		return new EqualsBuilder()
-										.append(this.getPerson(), other.getPerson())
-										.append(this.getOrgUnitId(), other.getOrgUnitId())
-										.isEquals();
+		return isEqual(obj);
 	}
 }
