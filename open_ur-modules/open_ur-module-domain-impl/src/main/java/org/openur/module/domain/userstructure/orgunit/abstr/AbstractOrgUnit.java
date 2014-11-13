@@ -37,24 +37,18 @@ public abstract class AbstractOrgUnit
 
 	// accessors:
 	@Override
-	public boolean isRootOrgUnit()
-	{
-		return (getRootOrgUnit() == null);
-	}
-
-	@Override
 	public Set<? extends AbstractOrgUnitMember> getMembers()
 	{
 		return members;
 	}
-
-	// operations:
+	
 	@Override
 	public String getOrgUnitNumber()
 	{
 		return super.getNumber();
 	}	
 
+	// operations:
 	@Override
 	public AbstractOrgUnitMember findMember(String id)
 	{
@@ -72,28 +66,6 @@ public abstract class AbstractOrgUnit
     }
 
     return null;
-	}
-
-	@Override
-	public boolean isMember(String id)
-	{
-    if (id == null)
-    {
-      return false;
-    }
-
-    return (this.findMember(id) != null);
-	}
-
-	@Override
-	public boolean isMember(IPerson person)
-	{
-		if (person == null)
-    {
-      return false;
-    }
-
-    return (this.findMember(person) != null);
 	}
 
 	@Override

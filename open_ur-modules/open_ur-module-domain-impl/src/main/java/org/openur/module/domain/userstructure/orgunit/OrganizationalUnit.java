@@ -7,6 +7,7 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnit;
+import org.openur.module.domain.userstructure.person.IPerson;
 
 public class OrganizationalUnit
 	extends AbstractOrgUnit
@@ -101,5 +102,17 @@ public class OrganizationalUnit
     }
     
     return super.compareTo(ou);
+	}
+
+	@Override
+	public OrgUnitMember findMember(String id)
+	{
+		return (OrgUnitMember) super.findMember(id);
+	}
+
+	@Override
+	public OrgUnitMember findMember(IPerson person)
+	{
+		return (OrgUnitMember) super.findMember(person);
 	}
 }

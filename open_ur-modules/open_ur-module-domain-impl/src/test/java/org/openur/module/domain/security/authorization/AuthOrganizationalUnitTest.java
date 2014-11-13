@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
+import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.person.PersonBuilder;
@@ -43,10 +44,16 @@ public class AuthOrganizationalUnitTest
 		AuthorizableMember m1 = new AuthorizableMember(pers1, OU_ID);
 		AuthorizableMember m2 = new AuthorizableMember(pers2, OU_ID);
 		
+		final String NAME_STAFF_DEPARTMENT = "staff department";
 		AuthorizableOrgUnit ou = new AuthorizableOrgUnit.AuthorizableOrgUnitBuilder(OU_ID)
+			.number("123abc")
+			.status(Status.ACTIVE)
+			.name(NAME_STAFF_DEPARTMENT)
+			.shortName("stf")
 			.authorizableMembers(Arrays.asList(m1, m2))
 			.build();
 		
+		assertEquals(NAME_STAFF_DEPARTMENT, ou.getName());
 		assertEquals(m1, ou.findMember(m1.getPerson()));
 		assertEquals(m1, ou.findAuthorizableMember(m1.getPerson().getIdentifier()));
 		assertEquals(m2, ou.findMember(m2.getPerson()));
@@ -60,6 +67,10 @@ public class AuthOrganizationalUnitTest
 		assertNull(ou.findAuthorizableMember(m3.getPerson().getIdentifier()));
 		
 		ou = new AuthorizableOrgUnit.AuthorizableOrgUnitBuilder(OU_ID)
+			.number("123abc")
+			.status(Status.ACTIVE)
+			.name("staff department")
+			.shortName("stf")
 			.authorizableMembers(Arrays.asList(m1, m2, m3))
 			.build();
 

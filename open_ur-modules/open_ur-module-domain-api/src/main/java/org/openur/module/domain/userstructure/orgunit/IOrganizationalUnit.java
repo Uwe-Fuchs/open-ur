@@ -23,14 +23,6 @@ public interface IOrganizationalUnit
 	IOrganizationalUnit getSuperOrgUnit();
 	
 	/**
-	 * indicates wether this org-unit is the hierachical root of the organization,
-	 * i.e.: no super-org-unit exists for this org-unit.
-	 * 
-	 * @return this org-unit is the hierachical root of the organization
-	 */
-	boolean isRootOrgUnit();
-	
-	/**
 	 * returns the root-org-unit of the hierarchy this org-unit is a part of. 
 	 * 
 	 * @return root-org-unit of this hierarchy.
@@ -54,24 +46,6 @@ public interface IOrganizationalUnit
 	IOrgUnitMember findMember(String id);
 	
   /**
-   * indicates if a person is a member in this org-unit.
-   * 
-   * @param id : the id of the person.
-   * 
-   * @return the given person is a member in this org-unit.
-   */
-  boolean isMember(String id);
-	
-  /**
-   * indicates if a person is a member in this org-unit.
-   * 
-   * @param id : the person.
-   * 
-   * @return the given person is a member in this org-unit.
-   */
-  boolean isMember(IPerson person);
-	
-  /**
    * searches the given person in this org-unit.
    *
    * @param id : the person that is searched.
@@ -80,7 +54,52 @@ public interface IOrganizationalUnit
    */
 	IOrgUnitMember findMember(IPerson person);
 
-	// operations:
+	// operations:	
+	/**
+	 * indicates wether this org-unit is the hierachical root of the organization,
+	 * i.e.: no super-org-unit exists for this org-unit.
+	 * 
+	 * @return this org-unit is the hierachical root of the organization
+	 */
+	default boolean isRootOrgUnit()
+	{
+		return (getRootOrgUnit() == null);
+	}
+	
+  /**
+   * indicates if a person is a member in this org-unit.
+   * 
+   * @param id : the id of the person.
+   * 
+   * @return the given person is a member in this org-unit.
+   */
+	default boolean isMember(String id)
+	{
+    if (id == null)
+    {
+      return false;
+    }
+
+    return (this.findMember(id) != null);
+	}
+	
+  /**
+   * indicates if a person is a member in this org-unit.
+   * 
+   * @param id : the person.
+   * 
+   * @return the given person is a member in this org-unit.
+   */
+	default boolean isMember(IPerson person)
+	{
+		if (person == null)
+    {
+      return false;
+    }
+
+    return (this.findMember(person) != null);
+	}
+	
 	default int compareTo(IOrganizationalUnit ou)
 	{    
     int comparison = new CompareToBuilder()
