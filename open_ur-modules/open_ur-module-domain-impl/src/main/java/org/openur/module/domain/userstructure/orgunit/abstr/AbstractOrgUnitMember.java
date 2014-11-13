@@ -1,5 +1,6 @@
 package org.openur.module.domain.userstructure.orgunit.abstr;
 
+import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.GraphNode;
 import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
 import org.openur.module.domain.userstructure.person.abstr.AbstractPerson;
@@ -18,6 +19,9 @@ public abstract class AbstractOrgUnitMember
 	protected AbstractOrgUnitMember(AbstractPerson person, String orgUnitId)
 	{
 		super();
+		
+		Validate.notNull(person, "person must not be null!");
+		Validate.notEmpty(orgUnitId, "org-unit-id must not be empty!");
 
 		this.person = person;
 		this.orgUnitId = orgUnitId;
