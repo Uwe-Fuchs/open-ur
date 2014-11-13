@@ -7,9 +7,9 @@ import org.openur.module.persistence.rdbms.entity.AbstractOpenUrPersistableMappe
 public class UserStructureBaseMapper
 {
 	public static <I extends UserStructureBase, P extends PUserStructureBase> 
-		boolean immutableEqualsToPersistable(I immutable, P persistable)
+		boolean immutableEqualsToEntity(I immutable, P persistable)
 	{
-		if (!AbstractOpenUrPersistableMapper.immutableEqualsToPersistable(immutable, persistable))
+		if (!AbstractOpenUrPersistableMapper.immutableEqualsToEntity(immutable, persistable))
 		{
 			return false;
 		}

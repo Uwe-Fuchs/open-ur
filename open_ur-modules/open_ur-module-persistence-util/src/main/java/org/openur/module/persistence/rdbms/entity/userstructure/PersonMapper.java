@@ -40,7 +40,7 @@ public class PersonMapper
 		return persistable;
 	}
 	
-	public static Person mapToImmutable(PPerson persistable)
+	public static Person mapFromEntity(PPerson persistable)
 	{
 		Name name;
 		
@@ -77,16 +77,16 @@ public class PersonMapper
 		
 		for (PApplication pApp : persistable.getApplications())
 		{
-			OpenURApplication app = ApplicationMapper.mapToImmutable(pApp);
+			OpenURApplication app = ApplicationMapper.mapFromEntity(pApp);
 			immutableBuilder.addApp(app);
 		}
 		
 		return immutableBuilder.build();
 	}
 	
-	public static boolean immutableEqualsToPersistable(Person immutable, PPerson persistable)
+	public static boolean immutableEqualsToEntity(Person immutable, PPerson persistable)
 	{
-		if (!UserStructureBaseMapper.immutableEqualsToPersistable(immutable, persistable))
+		if (!UserStructureBaseMapper.immutableEqualsToEntity(immutable, persistable))
 		{
 			return false;
 		}

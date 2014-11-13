@@ -79,7 +79,7 @@ public class PersonMapperTest
 		PPerson persistable = PersonMapper.mapFromImmutable(immutable);
 		
 		assertNotNull(persistable);
-		assertTrue(PersonMapper.immutableEqualsToPersistable(immutable, persistable));
+		assertTrue(PersonMapper.immutableEqualsToEntity(immutable, persistable));
 	}
 
 	@Test
@@ -103,9 +103,9 @@ public class PersonMapperTest
 		persistable.setHomeAddress(pAddress);
 		persistable.setApplications(pApplications);
 		
-		Person immutable = PersonMapper.mapToImmutable(persistable);
+		Person immutable = PersonMapper.mapFromEntity(persistable);
 		
 		assertNotNull(immutable);
-		assertTrue(PersonMapper.immutableEqualsToPersistable(immutable, persistable));		
+		assertTrue(PersonMapper.immutableEqualsToEntity(immutable, persistable));		
 	}
 }

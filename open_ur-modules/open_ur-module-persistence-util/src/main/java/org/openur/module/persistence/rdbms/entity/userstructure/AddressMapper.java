@@ -42,7 +42,7 @@ public class AddressMapper
 	
 	public static boolean immutableEqualsToPersistable(Address immutable, PAddress persistable)
 	{
-		if (!AbstractOpenUrPersistableMapper.immutableEqualsToPersistable(immutable, persistable))
+		if (!AbstractOpenUrPersistableMapper.immutableEqualsToEntity(immutable, persistable))
 		{
 			return false;
 		}

@@ -18,7 +18,7 @@ public class ApplicationMapperTest
 		PApplication persistable = ApplicationMapper.mapFromImmutable(immutable);
 		
 		assertNotNull(persistable);
-		assertTrue(ApplicationMapper.immutableEqualsToPersistable(immutable, persistable));
+		assertTrue(ApplicationMapper.immutableEqualsToEntity(immutable, persistable));
 	}
 
 	@Test
@@ -26,9 +26,9 @@ public class ApplicationMapperTest
 	{
 		PApplication persistable = new PApplication();
 		persistable.setApplicationName(APP_NAME);
-		OpenURApplication immutable = ApplicationMapper.mapToImmutable(persistable);
+		OpenURApplication immutable = ApplicationMapper.mapFromEntity(persistable);
 		
 		assertNotNull(immutable);
-		assertTrue(ApplicationMapper.immutableEqualsToPersistable(immutable, persistable));
+		assertTrue(ApplicationMapper.immutableEqualsToEntity(immutable, persistable));
 	}
 }

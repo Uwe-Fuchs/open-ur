@@ -19,7 +19,7 @@ public class ApplicationMapper
 		return persistable;
 	}
 	
-	public static OpenURApplication mapToImmutable(PApplication persistable)
+	public static OpenURApplication mapFromEntity(PApplication persistable)
 	{
 		OpenURApplication immutable = new OpenURApplicationBuilder(persistable.getApplicationName())
 				.creationDate(persistable.getCreationDate())
@@ -29,7 +29,7 @@ public class ApplicationMapper
 		return immutable;
 	}
 	
-	public static boolean immutableEqualsToPersistable(OpenURApplication immutable, PApplication persistable)
+	public static boolean immutableEqualsToEntity(OpenURApplication immutable, PApplication persistable)
 	{
 		if (immutable == null || persistable == null)
 		{

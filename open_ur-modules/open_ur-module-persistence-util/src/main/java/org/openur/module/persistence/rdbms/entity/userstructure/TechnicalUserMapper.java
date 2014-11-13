@@ -15,7 +15,7 @@ public class TechnicalUserMapper
 		return persistable;
 	}
 	
-	public static TechnicalUser mapToImmutable(PTechnicalUser persistable)
+	public static TechnicalUser mapFromEntity(PTechnicalUser persistable)
 	{
 		TechnicalUserBuilder builder = new TechnicalUserBuilder()
 				.number(persistable.getNumber())
@@ -26,8 +26,8 @@ public class TechnicalUserMapper
 		return builder.build();
 	}
 	
-	public static boolean immutableEqualsToPersistable(TechnicalUser immutable, PTechnicalUser persistable)
+	public static boolean immutableEqualsToEntity(TechnicalUser immutable, PTechnicalUser persistable)
 	{
-		return UserStructureBaseMapper.immutableEqualsToPersistable(immutable, persistable);
+		return UserStructureBaseMapper.immutableEqualsToEntity(immutable, persistable);
 	}
 }

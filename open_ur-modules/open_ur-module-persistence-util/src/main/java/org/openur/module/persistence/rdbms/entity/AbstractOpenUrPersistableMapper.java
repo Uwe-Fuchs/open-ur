@@ -6,7 +6,7 @@ import org.openur.module.domain.IdentifiableEntityImpl;
 public class AbstractOpenUrPersistableMapper
 {
 	public static <I extends IdentifiableEntityImpl, P extends AbstractOpenUrPersistable> 
-		boolean immutableEqualsToPersistable(I immutable, P persistable)
+		boolean immutableEqualsToEntity(I immutable, P persistable)
 	{
 		if (immutable == null || persistable == null)
 		{

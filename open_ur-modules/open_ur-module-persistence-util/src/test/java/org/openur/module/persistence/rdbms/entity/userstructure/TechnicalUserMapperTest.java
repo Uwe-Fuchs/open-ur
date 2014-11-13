@@ -21,7 +21,7 @@ public class TechnicalUserMapperTest
 		PTechnicalUser persistable = TechnicalUserMapper.mapFromImmutable(immutable);
 		
 		assertNotNull(persistable);
-		assertTrue(TechnicalUserMapper.immutableEqualsToPersistable(immutable, persistable));
+		assertTrue(TechnicalUserMapper.immutableEqualsToEntity(immutable, persistable));
 	}
 
 	@Test
@@ -31,9 +31,9 @@ public class TechnicalUserMapperTest
 		persistable.setNumber("123abc");
 		persistable.setStatus(Status.INACTIVE);
 		
-		TechnicalUser immutable = TechnicalUserMapper.mapToImmutable(persistable);
+		TechnicalUser immutable = TechnicalUserMapper.mapFromEntity(persistable);
 		
 		assertNotNull(persistable);
-		assertTrue(TechnicalUserMapper.immutableEqualsToPersistable(immutable, persistable));
+		assertTrue(TechnicalUserMapper.immutableEqualsToEntity(immutable, persistable));
 	}
 }
