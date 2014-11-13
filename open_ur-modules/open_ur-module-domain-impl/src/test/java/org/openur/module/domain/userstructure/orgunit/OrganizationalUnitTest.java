@@ -2,10 +2,16 @@ package org.openur.module.domain.userstructure.orgunit;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 import org.junit.Test;
 import org.openur.module.domain.userstructure.Status;
+import org.openur.module.domain.userstructure.person.Gender;
+import org.openur.module.domain.userstructure.person.Name;
+import org.openur.module.domain.userstructure.person.Person;
+import org.openur.module.domain.userstructure.person.PersonBuilder;
+import org.openur.module.domain.userstructure.person.Title;
 
 public class OrganizationalUnitTest
 {
@@ -74,5 +80,42 @@ public class OrganizationalUnitTest
 			.superOrgUnit(superOu)
 			.build();
 		assertFalse(ou.isRootOrgUnit());
-	}	
+	}
+	
+	@Test
+	public void testFindMember()
+	{
+		Person pers1 = new PersonBuilder(Name.create(Gender.MALE, "Barack", "Obama"))
+			.build();
+		
+		Person pers2 = new PersonBuilder(Name.create(Gender.FEMALE, Title.DR, "Angela", "Merkel"))
+			.build();
+		
+		final String OU_ID = UUID.randomUUID().toString();
+		
+		OrgUnitMember m2 = new OrgUnitMember(pers2, OU_ID);
+		OrgUnitMember m1 = new OrgUnitMember(pers1, OU_ID);		
+		
+		OrganizationalUnitBuilder ouBuilder = new OrganizationalUnitBuilder(OU_ID)
+			.orgUnitMembers(Arrays.asList(m1, m2));
+
+		OrganizationalUnit ou = ouBuilder.build();
+		
+		assertEquals(m1, ou.findMember(m1.getPerson()));
+		assertEquals(m1, ou.findMember(m1.getPerson().getIdentifier()));
+		assertEquals(m2, ou.findMember(m2.getPerson()));
+		assertEquals(m2, ou.findMember(m2.getPerson().getIdentifier()));
+		
+		Person pers3 = new PersonBuilder(Name.create(Gender.MALE, "Francois", "Hollande"))
+			.build();
+		OrgUnitMember m3 = new OrgUnitMember(pers3, OU_ID);
+		
+		assertNull(ou.findMember(m3.getPerson()));
+		assertNull(ou.findMember(m3.getPerson().getIdentifier()));
+		
+		ouBuilder.addMember(m3);		
+		ou = ouBuilder.build();
+		assertEquals(m3, ou.findMember(m3.getPerson()));
+		assertEquals(m3, ou.findMember(m3.getPerson().getIdentifier()));
+	}
 }

@@ -32,9 +32,10 @@ public class AuthOrgUnitSimpleTest
 		AuthorizableMember m1 = new AuthorizableMember(pers1, OU_ID);
 		AuthorizableMember m2 = new AuthorizableMember(pers2, OU_ID);
 		
-		AuthOrgUnitSimple ou = new AuthOrgUnitSimple.AuthOrgUnitSimpleBuilder(OU_ID)
-			.authorizableMembers(Arrays.asList(m1, m2))
-			.build();
+		AuthOrgUnitSimple.AuthOrgUnitSimpleBuilder ouBuilder = new AuthOrgUnitSimple.AuthOrgUnitSimpleBuilder(OU_ID)
+			.authorizableMembers(Arrays.asList(m1, m2));
+		
+		AuthOrgUnitSimple ou = ouBuilder.build();
 		
 		assertEquals(m1, ou.findMember(m1.getPerson()));
 		assertEquals(m1, ou.findAuthorizableMember(m1.getPerson().getIdentifier()));
@@ -48,9 +49,8 @@ public class AuthOrgUnitSimpleTest
 		assertNull(ou.findMember(m3.getPerson()));
 		assertNull(ou.findAuthorizableMember(m3.getPerson().getIdentifier()));
 		
-		ou = new AuthOrgUnitSimple.AuthOrgUnitSimpleBuilder(OU_ID)
-			.authorizableMembers(Arrays.asList(m1, m2, m3))
-			.build();
+		ouBuilder.addMember(m3);		
+		ou = ouBuilder.build();
 
 		assertEquals(m3, ou.findMember(m3.getPerson()));
 		assertEquals(m3, ou.findAuthorizableMember(m3.getPerson().getIdentifier()));

@@ -99,6 +99,12 @@ public class AuthorizableOrgUnit
 			return this;
 		}
 
+		public AuthorizableOrgUnitBuilder addMember(AuthorizableMember member)
+		{
+			super.addMember(member);
+			return this;
+		}
+
 		public AuthorizableOrgUnitBuilder name(String name)
 		{
 			builderDelegate.name(name);

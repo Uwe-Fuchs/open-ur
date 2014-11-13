@@ -80,6 +80,12 @@ public class OrganizationalUnitBuilder
 		return this;
 	}
 
+	public OrganizationalUnitBuilder addMember(OrgUnitMember member)
+	{
+		super.addMember(member);
+		return this;
+	}
+
 	// builder:
 	@Override
 	public OrganizationalUnit build()

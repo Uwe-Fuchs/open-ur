@@ -42,6 +42,12 @@ public class OrgUnitSimpleBuilder
 		return this;
 	}
 
+	public OrgUnitSimpleBuilder addMember(OrgUnitMemberSimple member)
+	{
+		super.addMember(member);
+		return this;
+	}
+
 	// builder:
 	@Override
 	public OrgUnitSimple build()

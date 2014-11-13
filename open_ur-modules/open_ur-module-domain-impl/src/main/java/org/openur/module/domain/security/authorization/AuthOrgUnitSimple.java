@@ -78,10 +78,16 @@ public class AuthOrgUnitSimple
 			super(identifier, rootOrgUnit);
 		}
 
-		// accessors:
+		// builder-methods:
 		public AuthOrgUnitSimpleBuilder authorizableMembers(Collection<AuthorizableMember> authMembers)
 		{
 			super.members(authMembers);
+			return this;
+		}
+
+		public AuthOrgUnitSimpleBuilder addMember(AuthorizableMember member)
+		{
+			super.addMember(member);
 			return this;
 		}
 

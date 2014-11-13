@@ -31,10 +31,11 @@ public class OrgUnitSimpleTest
 		
 		OrgUnitMemberSimple m2 = new OrgUnitMemberSimple(pers2, OU_ID);
 		OrgUnitMemberSimple m1 = new OrgUnitMemberSimple(pers1, OU_ID);		
+		
+		OrgUnitSimpleBuilder ouBuilder = new OrgUnitSimpleBuilder(OU_ID)
+			.orgUnitMembers(Arrays.asList(m1, m2));
 
-		OrgUnitSimple ou = new OrgUnitSimpleBuilder(OU_ID)
-			.orgUnitMembers(Arrays.asList(m1, m2))
-			.build();
+		OrgUnitSimple ou = ouBuilder.build();
 		
 		assertEquals(m1, ou.findMember(m1.getPerson()));
 		assertEquals(m1, ou.findMember(m1.getPerson().getIdentifier()));
@@ -48,9 +49,8 @@ public class OrgUnitSimpleTest
 		assertNull(ou.findMember(m3.getPerson()));
 		assertNull(ou.findMember(m3.getPerson().getIdentifier()));
 		
-		ou = new OrgUnitSimpleBuilder(OU_ID)
-			.orgUnitMembers(Arrays.asList(m1, m2, m3))
-			.build();
+		ouBuilder.addMember(m3);		
+		ou = ouBuilder.build();
 		assertEquals(m3, ou.findMember(m3.getPerson()));
 		assertEquals(m3, ou.findMember(m3.getPerson().getIdentifier()));
 	}

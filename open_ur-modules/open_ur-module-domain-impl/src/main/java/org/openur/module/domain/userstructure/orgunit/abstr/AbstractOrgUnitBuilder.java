@@ -78,6 +78,21 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 		return (T) this;
 	}
 	
+	@SuppressWarnings("unchecked")
+	protected <M extends AbstractOrgUnitMember> T addMember(M member)	
+	{
+		Validate.notNull(member, "member must not be null!");
+		
+		if (!(this.getIdentifier().equals(member.getOrgUnitId())))
+		{
+			throw new OpenURRuntimeException("OrgUnit-ID's must be equal!");
+		}
+		
+		this.members.add(member);
+		
+		return (T) this;
+	}
+	
 	protected AbstractOrgUnit build()
 	{
 		if (getRootOrgUnit() != null && getSuperOrgUnit() == null)
