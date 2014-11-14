@@ -1,5 +1,7 @@
 package org.openur.module.domain.userstructure.orgunit;
 
+import java.time.LocalDateTime;
+
 import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnitMember;
 import org.openur.module.domain.userstructure.person.Person;
 
@@ -13,6 +15,11 @@ public class OrgUnitMember
 	public OrgUnitMember(Person person, String orgUnitId)
 	{
 		super(person, orgUnitId);
+	}
+	
+	public OrgUnitMember(Person person, String orgUnitId, LocalDateTime creationDate)
+	{
+		super(person, orgUnitId, creationDate);
 	}
 
 	// accessors:

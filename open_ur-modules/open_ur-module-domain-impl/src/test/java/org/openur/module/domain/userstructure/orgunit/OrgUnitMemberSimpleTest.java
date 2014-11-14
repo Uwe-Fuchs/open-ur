@@ -3,6 +3,8 @@ package org.openur.module.domain.userstructure.orgunit;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.UUID;
 
 import org.junit.Test;
@@ -21,7 +23,8 @@ public class OrgUnitMemberSimpleTest
 			.build();
 		
 		final String OU_ID_1 = UUID.randomUUID().toString();
-		OrgUnitMemberSimple m11 = new OrgUnitMemberSimple(pers1, OU_ID_1);
+		LocalDateTime d = LocalDateTime.of(2012, Month.APRIL, 05, 11, 30);
+		OrgUnitMemberSimple m11 = new OrgUnitMemberSimple(pers1, OU_ID_1, d);
 		
 		assertTrue(m11.equals(m11));
 		
