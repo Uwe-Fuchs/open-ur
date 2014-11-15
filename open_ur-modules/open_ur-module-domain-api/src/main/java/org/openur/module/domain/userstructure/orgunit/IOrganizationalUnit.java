@@ -35,15 +35,32 @@ public interface IOrganizationalUnit
 	 * @return set of members (maybe empty if the org-unit has no members).
 	 */
 	Set<? extends IOrgUnitMember> getMembers();
-	
+
+	// operations:		
   /**
    * searches the member with the given userId in this org-unit.
    *
-   * @param id : the id of the member that is searched.
+   * @param id : the id of the searched member.
    *
    * @return IOrgUnitMember if found in this org-unit, else null.
    */
-	IOrgUnitMember findMember(String id);
+	default IOrgUnitMember findMember(String id)
+	{
+    if (id == null)
+    {
+      return null;
+    }
+
+    for (IOrgUnitMember m : this.getMembers())
+    {
+      if (id.equals(m.getPerson().getIdentifier()))
+      {
+        return m;
+      }
+    }
+
+    return null;
+	}
 	
   /**
    * searches the given person in this org-unit.
@@ -52,9 +69,16 @@ public interface IOrganizationalUnit
    *
    * @return IOrgUnitMember if found in this org-unit, else null.
    */
-	IOrgUnitMember findMember(IPerson person);
+	default IOrgUnitMember findMember(IPerson person)
+	{
+		if (person == null)
+    {
+      return null;
+    }
 
-	// operations:	
+    return findMember(person.getIdentifier());
+	}
+	
 	/**
 	 * indicates wether this org-unit is the hierachical root of the organization,
 	 * i.e.: no super-org-unit exists for this org-unit.

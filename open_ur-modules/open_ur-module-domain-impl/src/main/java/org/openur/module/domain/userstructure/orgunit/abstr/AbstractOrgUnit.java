@@ -46,36 +46,17 @@ public abstract class AbstractOrgUnit
 	public String getOrgUnitNumber()
 	{
 		return super.getNumber();
-	}	
+	}
 
 	// operations:
-	@Override
 	public AbstractOrgUnitMember findMember(String id)
 	{
-    if (id == null)
-    {
-      return null;
-    }
-
-    for (AbstractOrgUnitMember m : this.getMembers())
-    {
-      if (id.equals(m.getPerson().getIdentifier()))
-      {
-        return m;
-      }
-    }
-
-    return null;
+		return (AbstractOrgUnitMember) IOrganizationalUnit.super.findMember(id);
 	}
 
 	@Override
 	public AbstractOrgUnitMember findMember(IPerson person)
 	{
-		if (person == null)
-    {
-      return null;
-    }
-
-    return findMember(person.getIdentifier());
-	}
+		return (AbstractOrgUnitMember) IOrganizationalUnit.super.findMember(person);
+	}	
 }
