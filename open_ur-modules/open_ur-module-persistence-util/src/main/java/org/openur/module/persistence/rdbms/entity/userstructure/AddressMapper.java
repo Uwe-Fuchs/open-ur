@@ -40,7 +40,7 @@ public class AddressMapper
 		return immutable;
 	}
 	
-	public static boolean immutableEqualsToPersistable(Address immutable, PAddress persistable)
+	public static boolean immutableEqualsToEntity(Address immutable, PAddress persistable)
 	{
 		if (!AbstractOpenUrPersistableMapper.immutableEqualsToEntity(immutable, persistable))
 		{

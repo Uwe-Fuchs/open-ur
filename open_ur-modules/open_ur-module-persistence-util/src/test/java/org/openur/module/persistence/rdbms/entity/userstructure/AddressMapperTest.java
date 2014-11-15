@@ -25,7 +25,7 @@ public class AddressMapperTest
 		PAddress persistable = AddressMapper.mapFromImmutable(immutable);
 		
 		assertNotNull(persistable);
-		assertTrue(AddressMapper.immutableEqualsToPersistable(immutable, persistable));
+		assertTrue(AddressMapper.immutableEqualsToEntity(immutable, persistable));
 	}
 
 	@Test
@@ -44,6 +44,6 @@ public class AddressMapperTest
 		Address immutable = AddressMapper.mapFromEntity(persistable);
 		
 		assertNotNull(immutable);
-		assertTrue(AddressMapper.immutableEqualsToPersistable(immutable, persistable));
+		assertTrue(AddressMapper.immutableEqualsToEntity(immutable, persistable));
 	}
 }

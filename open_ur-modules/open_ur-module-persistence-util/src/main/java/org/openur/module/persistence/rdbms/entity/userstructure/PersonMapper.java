@@ -99,7 +99,7 @@ public class PersonMapper
 			}
 		}
 		
-		if(!AddressMapper.immutableEqualsToPersistable(immutable.getHomeAddress(), persistable.getHomeAddress()))
+		if(!AddressMapper.immutableEqualsToEntity(immutable.getHomeAddress(), persistable.getHomeAddress()))
 		{
 			return false;
 		}
