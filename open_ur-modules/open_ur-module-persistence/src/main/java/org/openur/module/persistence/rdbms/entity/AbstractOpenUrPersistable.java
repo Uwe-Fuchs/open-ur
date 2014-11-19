@@ -44,8 +44,13 @@ public abstract class AbstractOpenUrPersistable
 	@Override
 	public boolean isNew()
 	{
-		return this.id == null;
+		return (this.getId() == null);
 	}
+	
+	public String getIdentifier()
+	{
+		return (this.getId() != null) ? this.getId().toString() : null;
+	} 
 
 	public LocalDateTime getCreationDate()
 	{
@@ -84,7 +89,7 @@ public abstract class AbstractOpenUrPersistable
 
 		AbstractOpenUrPersistable that = (AbstractOpenUrPersistable) obj;
 
-		return (this.getId() == null ? false : this.getId().equals(that.getId()));
+		return ((this.getId() == null) ? false : this.getId().equals(that.getId()));
 	}
 
   @Override
