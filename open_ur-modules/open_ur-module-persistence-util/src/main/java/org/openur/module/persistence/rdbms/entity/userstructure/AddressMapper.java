@@ -3,8 +3,8 @@ package org.openur.module.persistence.rdbms.entity.userstructure;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.openur.module.domain.userstructure.Address;
-import org.openur.module.domain.userstructure.Country;
 import org.openur.module.domain.userstructure.Address.AddressBuilder;
+import org.openur.module.domain.userstructure.Country;
 import org.openur.module.persistence.rdbms.entity.AbstractOpenUrPersistableMapper;
 
 public class AddressMapper
@@ -26,7 +26,17 @@ public class AddressMapper
 	
 	public static Address mapFromEntity(PAddress persistable)
 	{
-		Address immutable = new AddressBuilder()
+		AddressBuilder immutableBuilder;
+		
+		if (StringUtils.isNotEmpty(persistable.getIdentifier()))
+		{
+			immutableBuilder = new AddressBuilder(persistable.getIdentifier());
+		} else
+		{
+			immutableBuilder = new AddressBuilder();
+		}
+		
+		immutableBuilder
 				.careOf(persistable.getCareOf())
 				.city(persistable.getCity())
 				.poBox(persistable.getPoBox())
@@ -38,7 +48,7 @@ public class AddressMapper
 				.lastModifiedDate(persistable.getLastModifiedDate())
 				.build();
 		
-		return immutable;
+		return immutableBuilder.build();
 	}
 	
 	public static boolean immutableEqualsToEntity(Address immutable, PAddress persistable)
