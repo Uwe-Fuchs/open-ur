@@ -1,5 +1,6 @@
 package org.openur.module.persistence.rdbms.entity.application;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
@@ -21,12 +22,23 @@ public class ApplicationMapper
 	
 	public static OpenURApplication mapFromEntity(PApplication persistable)
 	{
-		OpenURApplication immutable = new OpenURApplicationBuilder(persistable.getApplicationName())
+		OpenURApplicationBuilder immutableBuilder;
+		
+		if (StringUtils.isNotEmpty(persistable.getIdentifier()))
+		{
+			immutableBuilder = new OpenURApplicationBuilder(persistable.getIdentifier(), persistable.getApplicationName());			
+		}
+		else
+		{
+			immutableBuilder = new OpenURApplicationBuilder(persistable.getApplicationName());
+		}			
+		
+		immutableBuilder
 				.creationDate(persistable.getCreationDate())
 				.lastModifiedDate(persistable.getLastModifiedDate())
 				.build();
 		
-		return immutable;
+		return immutableBuilder.build();
 	}
 	
 	public static boolean immutableEqualsToEntity(OpenURApplication immutable, PApplication persistable)

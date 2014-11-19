@@ -33,11 +33,6 @@ public class Address
 	}
 
 	// accessors:
-	public static AddressBuilder builder()
-	{
-		return new AddressBuilder();
-	}
-
 	@Override
 	public String getCareOf()
 	{
@@ -93,10 +88,15 @@ public class Address
 		private String postcode = null;
 		private Country country = null;
 		
-		// constructor:
-		private AddressBuilder()
+		// constructors:
+		public AddressBuilder()
 		{
 			super();
+		}
+		
+		public AddressBuilder(String identifier)
+		{
+			super(identifier);
 		}
 
 		// builder-methods:

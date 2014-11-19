@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.Country;
+import org.openur.module.domain.userstructure.Address.AddressBuilder;
 import org.openur.module.persistence.rdbms.entity.AbstractOpenUrPersistableMapper;
 
 public class AddressMapper
@@ -25,7 +26,7 @@ public class AddressMapper
 	
 	public static Address mapFromEntity(PAddress persistable)
 	{
-		Address immutable = Address.builder()
+		Address immutable = new AddressBuilder()
 				.careOf(persistable.getCareOf())
 				.city(persistable.getCity())
 				.poBox(persistable.getPoBox())

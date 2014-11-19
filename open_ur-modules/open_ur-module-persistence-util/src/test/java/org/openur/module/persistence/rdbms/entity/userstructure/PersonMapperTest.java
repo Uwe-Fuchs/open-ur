@@ -15,6 +15,7 @@ import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.Country;
 import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.Status;
+import org.openur.module.domain.userstructure.Address.AddressBuilder;
 import org.openur.module.domain.userstructure.person.Gender;
 import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.Person;
@@ -39,7 +40,7 @@ public class PersonMapperTest
 	{
 		this.name = Name.create(Gender.MALE, "Uwe", "Fuchs");
 		
-		this.address = Address.builder()
+		this.address = new AddressBuilder()
 			.country(Country.byCode("DE"))
 			.city("city_1")
 			.postcode("11")

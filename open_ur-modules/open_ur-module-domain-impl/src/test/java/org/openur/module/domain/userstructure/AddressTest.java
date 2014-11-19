@@ -12,7 +12,7 @@ public class AddressTest
 	@Test
 	public void testCompareTo()
 	{
-		AddressBuilder b = Address.builder();
+		AddressBuilder b = new AddressBuilder();
 		Address address1;
 		Address address2;
 		
