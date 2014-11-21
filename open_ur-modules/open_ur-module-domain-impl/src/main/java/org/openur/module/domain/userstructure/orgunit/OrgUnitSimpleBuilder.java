@@ -36,6 +36,12 @@ public class OrgUnitSimpleBuilder
 		return this;
 	}	
 
+	public OrgUnitSimpleBuilder rootOrgUnit(OrgUnitSimple rootOrgUnit)
+	{
+		super.rootOrgUnit(rootOrgUnit);
+		return this;
+	}
+
 	public OrgUnitSimpleBuilder orgUnitMembers(Collection<OrgUnitMemberSimple> orgUnitMembers)
 	{
 		super.members(orgUnitMembers);

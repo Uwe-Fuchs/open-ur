@@ -74,6 +74,12 @@ public class OrganizationalUnitBuilder
 		return this;
 	}
 
+	public OrganizationalUnitBuilder rootOrgUnit(OrganizationalUnit rootOrgUnit)
+	{
+		super.rootOrgUnit(rootOrgUnit);
+		return this;
+	}
+
 	public OrganizationalUnitBuilder orgUnitMembers(Collection<OrgUnitMember> orgUnitMembers)
 	{
 		super.members(orgUnitMembers);

@@ -140,6 +140,12 @@ public class AuthorizableOrgUnit
 			super.superOrgUnit(superOrgUnit);
 			return this;
 		}
+
+		public AuthorizableOrgUnitBuilder rootOrgUnit(AuthorizableOrgUnit rootOrgUnit)
+		{
+			super.rootOrgUnit(rootOrgUnit);
+			return this;
+		}
 		
 		// accessors:
 		OrganizationalUnit getDelegate()

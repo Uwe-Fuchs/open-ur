@@ -48,14 +48,25 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 	@SuppressWarnings("unchecked")
 	protected <OU extends AbstractOrgUnit> T superOrgUnit(OU superOrgUnit)
 	{
+		Validate.notNull(superOrgUnit, "super-org-unit must not be null!");
+		
 		if (this.getRootOrgUnit() == null)
 		{
 			throw new InconsistentHierarchyException(
 				"Org-Unit is marked as root, hence no super-org-unit can be set!");
 		}
 		
-		Validate.notNull(superOrgUnit, "super-org-unit must not be null!");
 		this.superOrgUnit = superOrgUnit;
+		
+		return (T) this;
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected <OU extends AbstractOrgUnit> T rootOrgUnit(OU rootOrgUnit)
+	{
+		Validate.notNull(rootOrgUnit, "root-orgunit must not be null!");
+		
+		this.rootOrgUnit = rootOrgUnit;
 		
 		return (T) this;
 	}

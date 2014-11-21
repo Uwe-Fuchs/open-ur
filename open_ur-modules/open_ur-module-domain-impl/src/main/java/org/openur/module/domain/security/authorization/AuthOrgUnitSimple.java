@@ -97,6 +97,12 @@ public class AuthOrgUnitSimple
 			return this;
 		}
 
+		public AuthOrgUnitSimpleBuilder rootOrgUnit(AuthOrgUnitSimple rootOrgUnit)
+		{
+			super.rootOrgUnit(rootOrgUnit);
+			return this;
+		}
+
 		// builder:
 		@Override
 		public AuthOrgUnitSimple build()
