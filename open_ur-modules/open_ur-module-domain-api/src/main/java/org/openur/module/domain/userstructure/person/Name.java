@@ -25,8 +25,7 @@ public class Name
 	private Name(Gender gender, Title title, String firstName, String lastName)
 	{
 		super();
-
-		Validate.notEmpty(lastName, "last name must not be empty");
+		
 		this.gender = gender;
 		this.title = title;
 		this.firstName = firstName;
@@ -42,6 +41,9 @@ public class Name
 	public static Name create(Gender gender, Title title, String firstName, String lastName)
 	{
 		TRANSLATION_HELPER = ResourceBundle.getBundle("org.openur.module.domain.Messages");
+
+		Validate.notEmpty(lastName, "last name must not be empty!");
+		Validate.notNull(title, "title must not be null!");
 
 		return new Name(gender, title, firstName, lastName);
 	}
