@@ -61,7 +61,7 @@ public class AddressMapper
 		return new EqualsBuilder()
 				.append(immutable.getCareOf(), persistable.getCareOf())
 				.append(immutable.getCity(), persistable.getCity())
-				.append(immutable.getCountry().getCountryCode(), persistable.getCountryCode())
+				.append(immutable.getCountry() != null ? immutable.getCountry().getCountryCode() : null, persistable.getCountryCode())
 				.append(immutable.getPoBox(), persistable.getPoBox())
 				.append(immutable.getPostcode(), persistable.getPostcode())
 				.append(immutable.getStreet(), persistable.getStreet())
