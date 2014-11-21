@@ -131,7 +131,7 @@ public class AuthorizableOrgUnit
 
 		public AuthorizableOrgUnitBuilder emailAdress(EMailAddress emailAdress)
 		{
-			builderDelegate.emailAdress(emailAdress);
+			builderDelegate.emailAddress(emailAdress);
 			return this;
 		}
 

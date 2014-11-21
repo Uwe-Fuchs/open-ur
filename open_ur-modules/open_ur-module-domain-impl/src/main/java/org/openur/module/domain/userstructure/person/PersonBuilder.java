@@ -13,11 +13,11 @@ public class PersonBuilder
   private String employeeNumber = null;
 	private String phoneNumber = null;
 	private String faxNumber = null;
-	private EMailAddress emailAdress = null;
+	private EMailAddress emailAddress = null;
   private String mobileNumber = null;
   private Address homeAddress = null;
   private String homePhoneNumber = null;
-  private EMailAddress homeEmailAdress = null;
+  private EMailAddress homeEmailAddress = null;
 	
   // constructors:
 	public PersonBuilder(Name name)
@@ -59,9 +59,9 @@ public class PersonBuilder
 		return this;
 	}
 
-	public PersonBuilder emailAdress(EMailAddress emailAdress)
+	public PersonBuilder emailAddress(EMailAddress emailAddress)
 	{
-		this.emailAdress = emailAdress;			
+		this.emailAddress = emailAddress;			
 		return this;
 	}
 	
@@ -83,9 +83,9 @@ public class PersonBuilder
 		return this;
 	}
 
-	public PersonBuilder homeEmailAdress(EMailAddress homeEmailAdress)
+	public PersonBuilder homeEmailAddress(EMailAddress homeEmailAddress)
 	{
-		this.homeEmailAdress = homeEmailAdress;			
+		this.homeEmailAddress = homeEmailAddress;			
 		return this;
 	}
 	
@@ -115,9 +115,9 @@ public class PersonBuilder
 		return faxNumber;
 	}
 
-	EMailAddress getEmailAdress()
+	EMailAddress getEmailAddress()
 	{
-		return emailAdress;
+		return emailAddress;
 	}
 
 	String getMobileNumber()
@@ -135,8 +135,8 @@ public class PersonBuilder
 		return homePhoneNumber;
 	}
 
-	EMailAddress getHomeEmailAdress()
+	EMailAddress getHomeEmailAddress()
 	{
-		return homeEmailAdress;
+		return homeEmailAddress;
 	}
 }

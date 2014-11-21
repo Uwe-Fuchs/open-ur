@@ -66,14 +66,14 @@ public class PersonMapperTest
 		PersonBuilder pb = new PersonBuilder(this.name)
 			.number("123abc")
 			.status(Status.ACTIVE)
-			.emailAdress(new EMailAddress("office@uwefuchs.com"))
+			.emailAddress(new EMailAddress("office@uwefuchs.com"))
 			.employeeNumber("789xyz")
 			.phoneNumber("0049123456789")
 			.faxNumber("0049987654321")
 			.mobileNumber("0049111222333")
 			.homeAddress(this.address)
 			.homePhoneNumber("0049444555666")
-			.homeEmailAdress(new EMailAddress("home@uwefuchs.com"))
+			.homeEmailAddress(new EMailAddress("home@uwefuchs.com"))
 			.apps(this.applications);
 
 		Person immutable = pb.build();

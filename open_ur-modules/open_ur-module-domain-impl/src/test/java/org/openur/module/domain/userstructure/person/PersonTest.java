@@ -28,7 +28,7 @@ public class PersonTest
 		PersonBuilder pb = new PersonBuilder(UUID.randomUUID().toString(), Name.create(Gender.MALE, "Uwe", "Fuchs"))
 			.number("123abc")
 			.status(Status.ACTIVE)
-			.emailAdress(new EMailAddress("info@uwefuchs.com"));
+			.emailAddress(new EMailAddress("info@uwefuchs.com"));
 		Person p1 = pb.build();
 		
 		pb = new PersonBuilder(UUID.randomUUID().toString(), Name.create(Gender.FEMALE, Title.DR, "Angela", "Merkel"))
@@ -42,7 +42,7 @@ public class PersonTest
 		assertTrue("same last names, but different first names", p1.compareTo(p2) > 0);
 
 		pb = new PersonBuilder(Name.create(Gender.MALE, "Uwe", "Fuchs"))
-			.emailAdress(new EMailAddress("fuchsuwe@gmx.de"));
+			.emailAddress(new EMailAddress("fuchsuwe@gmx.de"));
 		p2 = pb.build();
 		assertTrue("same names, different email-addresses", p1.compareTo(p2) > 0);
 		

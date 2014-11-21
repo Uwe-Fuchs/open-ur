@@ -62,9 +62,9 @@ public class OrganizationalUnitBuilder
 		return this;
 	}
 
-	public OrganizationalUnitBuilder emailAdress(EMailAddress emailAdress)
+	public OrganizationalUnitBuilder emailAddress(EMailAddress emailAddress)
 	{
-		this.emailAddress = emailAdress;
+		this.emailAddress = emailAddress;
 		return this;
 	}
 	

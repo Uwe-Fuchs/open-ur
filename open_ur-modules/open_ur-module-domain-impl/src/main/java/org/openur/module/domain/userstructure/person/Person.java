@@ -29,11 +29,11 @@ public class Person
 		this.employeeNumber = b.getEmployeeNumber();		
 		this.phoneNumber = b.getPhoneNumber();
 		this.faxNumber = b.getFaxNumber();
-		this.emailAddress = b.getEmailAdress();
+		this.emailAddress = b.getEmailAddress();
 		this.mobileNumber = b.getMobileNumber();
 		this.homeAddress = b.getHomeAddress();
 		this.homePhoneNumber = b.getHomePhoneNumber();
-		this.homeEmailAddress = b.getHomeEmailAdress();
+		this.homeEmailAddress = b.getHomeEmailAddress();
 	}
 
 	// accessors:
