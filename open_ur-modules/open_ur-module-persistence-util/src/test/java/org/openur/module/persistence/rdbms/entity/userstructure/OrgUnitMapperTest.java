@@ -65,7 +65,7 @@ public class OrgUnitMapperTest
 			.superOrgUnit(superOu)
 			.orgUnitMembers(Arrays.asList(m1, m2))
 			.address(address)
-			.emailAddress(new EMailAddress("staff@company.com"))
+			.emailAddress(EMailAddress.create("staff@company.com"))
 			.build();
 		
 		POrganizationalUnit pRootOu = OrganizationalUnitMapper.mapFromImmutable(rootOu, null, null);

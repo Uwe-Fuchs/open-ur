@@ -73,10 +73,10 @@ public class PersonMapper
 		
 		immutableBuilder
 				.number(persistable.getNumber())
-				.emailAddress(StringUtils.isNotEmpty(persistable.getEmailAddress()) ? new EMailAddress(persistable.getEmailAddress()) : null)
+				.emailAddress(StringUtils.isNotEmpty(persistable.getEmailAddress()) ? EMailAddress.create(persistable.getEmailAddress()) : null)
 				.employeeNumber(persistable.getEmployeeNumber())
 				.faxNumber(persistable.getFaxNumber())
-				.homeEmailAddress(StringUtils.isNotEmpty(persistable.getHomeEmailAddress()) ? new EMailAddress(persistable.getHomeEmailAddress()) : null)
+				.homeEmailAddress(StringUtils.isNotEmpty(persistable.getHomeEmailAddress()) ? EMailAddress.create(persistable.getHomeEmailAddress()) : null)
 				.homePhoneNumber(persistable.getHomePhoneNumber())
 				.mobileNumber(persistable.getMobileNumber())
 				.phoneNumber(persistable.getPhoneNumber())

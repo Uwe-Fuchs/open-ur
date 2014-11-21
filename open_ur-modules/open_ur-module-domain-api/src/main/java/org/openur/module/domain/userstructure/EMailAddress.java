@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
+import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.GraphNode;
 import org.openur.module.util.exception.OpenURRuntimeException;
 
@@ -22,9 +23,14 @@ public class EMailAddress
 
 	private final String email;
 
-	public EMailAddress(String email)
+	private EMailAddress(String email)
 	{
 		this.email = email;
+	}
+
+	public static EMailAddress create(String email)
+	{
+		Validate.notEmpty(email, "email must not be empty!");
 
 		try
 		{
@@ -33,6 +39,8 @@ public class EMailAddress
 		{
 			throw new IllegalArgumentException("email address is not valid: " + email, e);
 		}
+		
+		return new EMailAddress(email);
 	}
 
 	public InternetAddress convertToInternetAddress(String name)
@@ -54,14 +62,14 @@ public class EMailAddress
 	@Override
 	public boolean equals(Object obj)
 	{
-		if (!(obj instanceof EMailAddress))
+		if ((null == obj) || (obj.getClass() != this.getClass()))
 		{
 			return false;
 		}
 
-		EMailAddress adr = (EMailAddress) obj;
+		EMailAddress other = (EMailAddress) obj;
 
-		return this.getAsPlainEMailAddress().equalsIgnoreCase(adr.getAsPlainEMailAddress());
+		return this.getAsPlainEMailAddress().equalsIgnoreCase(other.getAsPlainEMailAddress());
 	}
 
 	@Override

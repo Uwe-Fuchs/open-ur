@@ -9,7 +9,7 @@ public class EMailAddressTest
 	@Test
 	public void testConvertToInternetAddress()
 	{
-		EMailAddress address = new EMailAddress("uwe@uwefuchs.com");
+		EMailAddress address = EMailAddress.create("uwe@uwefuchs.com");
 		assertEquals(
 			"Uwe Fuchs <uwe@uwefuchs.com>", address.convertToInternetAddress("Uwe Fuchs").toString());
 	}

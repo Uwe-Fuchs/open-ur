@@ -69,8 +69,7 @@ public class OrganizationalUnitMapper
 			.shortName(persistable.getShortName())
 			.description(persistable.getDescription())
 			.address(persistable.getAddress() != null ? AddressMapper.mapFromEntity(persistable.getAddress()) : null)
-			.emailAddress(StringUtils.isNotEmpty(persistable.getEmailAddress()) ? new EMailAddress(
-					persistable.getEmailAddress()) : null)
+			.emailAddress(StringUtils.isNotEmpty(persistable.getEmailAddress()) ? EMailAddress.create(persistable.getEmailAddress()) : null)
 			.creationDate(persistable.getCreationDate())
 			.lastModifiedDate(persistable.getLastModifiedDate());
 
