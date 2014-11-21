@@ -109,7 +109,8 @@ public class PersonMapper
 			}
 		}
 		
-		if(!AddressMapper.immutableEqualsToEntity(immutable.getHomeAddress(), persistable.getHomeAddress()))
+		if ((immutable.getHomeAddress() != null || persistable.getHomeAddress() != null)
+			&& !AddressMapper.immutableEqualsToEntity(immutable.getHomeAddress(), persistable.getHomeAddress()))
 		{
 			return false;
 		}
@@ -124,8 +125,10 @@ public class PersonMapper
 				.append(immutable.getFaxNumber(), persistable.getFaxNumber())
 				.append(immutable.getMobileNumber(), persistable.getMobileNumber())
 				.append(immutable.getHomePhoneNumber(), persistable.getHomePhoneNumber())
-				.append(immutable.getEmailAddress().getAsPlainEMailAddress(), persistable.getEmailAddress())
-				.append(immutable.getHomeEmailAddress().getAsPlainEMailAddress(), persistable.getHomeEmailAddress())
+				.append(immutable.getEmailAddress() != null ? immutable.getEmailAddress().getAsPlainEMailAddress() : null, 
+						persistable.getEmailAddress())
+				.append(immutable.getHomeEmailAddress() != null ? immutable.getHomeEmailAddress().getAsPlainEMailAddress() : null, 
+						persistable.getHomeEmailAddress())
 				.isEquals();
 	}
 }
