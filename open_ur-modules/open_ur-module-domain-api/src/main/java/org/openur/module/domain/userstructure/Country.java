@@ -135,7 +135,7 @@ public class Country
 	@Override
 	public boolean equals(Object obj)
 	{
-		if ((null == obj) || (obj.getClass() != Country.class))
+		if ((null == obj) || (obj.getClass() != this.getClass()))
 		{
 			return false;
 		}
