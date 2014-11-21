@@ -34,7 +34,7 @@ public class PPerson
 	
 	@Column(name="TITLE")
 	@Enumerated(EnumType.STRING)
-	private Title title;
+	private Title title = Title.NONE;
 	
 	@Column(name="FIRSTNAME", length=50)
 	private String firstName;
