@@ -43,7 +43,7 @@ public class Name
 		TRANSLATION_HELPER = ResourceBundle.getBundle("org.openur.module.domain.Messages");
 
 		Validate.notEmpty(lastName, "last name must not be empty!");
-		Validate.notNull(title, "title must not be null!");
+		Validate.notNull(title, "title must not be null! Use other constructor instead!");
 
 		return new Name(gender, title, firstName, lastName);
 	}

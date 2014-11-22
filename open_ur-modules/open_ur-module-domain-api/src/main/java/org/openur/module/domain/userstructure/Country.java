@@ -9,6 +9,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.commons.lang3.LocaleUtils;
+import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.GraphNode;
 
 public class Country
@@ -31,7 +32,9 @@ public class Country
 	// factory-methods:
 	public static Country byCode(String countryCode)
 	{
-		if (countryCode != null && countryCodes.contains(countryCode.toUpperCase()))
+		Validate.notEmpty(countryCode, "country-code must not be empty!");
+		
+		if (countryCodes.contains(countryCode.toUpperCase()))
 		{
 			return new Country(countryCode);
 		}
@@ -41,6 +44,9 @@ public class Country
 
 	public static Country byCode(String countryCode, String defaultCode)
 	{
+		Validate.notEmpty(countryCode, "country-code must not be empty!");
+		Validate.notEmpty(defaultCode, "default country-code must not be empty! Use other constructor instead!");
+		
 		Country c = byCode(countryCode);
 
 		if (c != null)
@@ -54,6 +60,8 @@ public class Country
 
 	public static Country byLocale(Locale locale)
 	{
+		Validate.notNull(locale, "locale must not be null!");
+		
 		return byCode(locale.getCountry());
 	}
 
