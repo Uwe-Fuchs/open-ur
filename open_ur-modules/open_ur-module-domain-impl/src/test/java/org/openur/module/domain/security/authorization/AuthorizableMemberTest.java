@@ -3,6 +3,8 @@ package org.openur.module.domain.security.authorization;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.UUID;
@@ -10,9 +12,12 @@ import java.util.UUID;
 import org.junit.Test;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
+import org.openur.module.domain.security.authorization.AuthorizableMember.AuthorizableMemberBuilder;
 import org.openur.module.domain.userstructure.Status;
-import org.openur.module.domain.userstructure.person.PersonSimple;
-import org.openur.module.domain.userstructure.person.PersonSimpleBuilder;
+import org.openur.module.domain.userstructure.person.Gender;
+import org.openur.module.domain.userstructure.person.Name;
+import org.openur.module.domain.userstructure.person.Person;
+import org.openur.module.domain.userstructure.person.PersonBuilder;
 
 public class AuthorizableMemberTest
 {
@@ -21,19 +26,23 @@ public class AuthorizableMemberTest
 	{
 		OpenURRole role1 = new OpenURRoleBuilder("role1")
 			.build();		
-		PersonSimple pers = new PersonSimpleBuilder()
-			.number("123")
+		Person person = new PersonBuilder("numberPers1", Name.create(Gender.MALE, "Barack", "Obama"))
 			.status(Status.ACTIVE)
 			.build();
 		final String OU_ID_1 = UUID.randomUUID().toString();
-		AuthorizableMember member = new AuthorizableMember(pers, OU_ID_1, Arrays.asList(role1));		
+		AuthorizableMember member = new AuthorizableMemberBuilder(person, OU_ID_1)
+			.addRole(role1)
+			.creationDate(LocalDateTime.of(2012, Month.APRIL, 05, 11, 30))
+			.build();		
 		assertTrue(member.hasRole(role1));
 		
 		OpenURRole role2 = new OpenURRoleBuilder("role2")
 			.build();		
 		assertFalse(member.hasRole(role2));
 		
-		member = new AuthorizableMember(pers, OU_ID_1, Arrays.asList(role1, role2));
+		member = new AuthorizableMemberBuilder(person, OU_ID_1)
+			.roles(Arrays.asList(role1, role2))
+			.build();
 		assertTrue(member.hasRole(role1));
 		assertTrue(member.hasRole(role2));
 	}
@@ -43,28 +52,29 @@ public class AuthorizableMemberTest
 	{
 		OpenURApplication app1 = new OpenURApplicationBuilder("app1")
 			.build();		
-		OpenURPermission perm11 = new OpenURPermissionBuilder("perm11", PermissionScope.SELECTED,  app1)
+		OpenURPermission perm11 = new OpenURPermissionBuilder("perm11", app1)
 			.build();
-		OpenURPermission perm12 = new OpenURPermissionBuilder("perm12", PermissionScope.SELECTED_SUB,  app1)
+		OpenURPermission perm12 = new OpenURPermissionBuilder("perm12", app1)
 			.build();		
 		OpenURRole role1 = new OpenURRoleBuilder("role1")
 			.permissions(new HashSet<OpenURPermission>(Arrays.asList(perm11, perm12)))
 			.build();
 		
-		PersonSimple person = new PersonSimpleBuilder()
+		Person person = new PersonBuilder("numberPers1", Name.create(Gender.MALE, "Barack", "Obama"))
 			.build();		
 		final String OU_ID_1 = UUID.randomUUID().toString();
 		
-		AuthorizableMember member = new AuthorizableMember(person, OU_ID_1, Arrays.asList(role1));		
-		
+		AuthorizableMember member = new AuthorizableMemberBuilder(person, OU_ID_1)
+			.addRole(role1)
+			.build();		
 		assertTrue(member.hasPermission(app1, perm11));
 		assertTrue(member.hasPermission(app1, perm12));
 		
 		OpenURApplication app2 = new OpenURApplicationBuilder("app2")
 			.build();		
-		OpenURPermission perm21 = new OpenURPermissionBuilder("perm21", PermissionScope.SELECTED,  app2)
+		OpenURPermission perm21 = new OpenURPermissionBuilder("perm21", app2)
 			.build();
-		OpenURPermission perm22 = new OpenURPermissionBuilder("perm22", PermissionScope.SUB,  app2)
+		OpenURPermission perm22 = new OpenURPermissionBuilder("perm22", app2)
 			.build();		
 		OpenURRole role2 = new OpenURRoleBuilder("role2")
 		.permissions(new HashSet<OpenURPermission>(Arrays.asList(perm21, perm22)))
@@ -73,7 +83,9 @@ public class AuthorizableMemberTest
 		assertFalse(member.hasPermission(app2, perm22));
 		assertFalse(member.hasPermission(app2, perm22));
 		
-		member = new AuthorizableMember(person, OU_ID_1, Arrays.asList(role1, role2));
+		member = new AuthorizableMemberBuilder(person, OU_ID_1)
+			.roles(Arrays.asList(role1, role2))
+			.build();
 		assertTrue(member.hasPermission(app2, perm22));
 		assertTrue(member.hasPermission(app2, perm22));
 	}

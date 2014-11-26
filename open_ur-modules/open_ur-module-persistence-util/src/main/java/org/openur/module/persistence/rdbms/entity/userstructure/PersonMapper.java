@@ -61,18 +61,14 @@ public class PersonMapper
 				);
 		}
 		
-		PersonBuilder immutableBuilder;
+		PersonBuilder immutableBuilder = new PersonBuilder(persistable.getNumber(), name);
 		
 		if (StringUtils.isNotEmpty(persistable.getIdentifier()))
 		{
-			immutableBuilder = new PersonBuilder(persistable.getIdentifier(), name);
-		} else
-		{
-			immutableBuilder = new PersonBuilder(name);
+			immutableBuilder.identifier(persistable.getIdentifier());
 		}
 		
 		immutableBuilder
-				.number(persistable.getNumber())
 				.emailAddress(StringUtils.isNotEmpty(persistable.getEmailAddress()) ? EMailAddress.create(persistable.getEmailAddress()) : null)
 				.employeeNumber(persistable.getEmployeeNumber())
 				.faxNumber(persistable.getFaxNumber())

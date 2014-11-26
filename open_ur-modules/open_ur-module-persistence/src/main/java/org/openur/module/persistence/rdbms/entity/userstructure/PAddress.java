@@ -1,8 +1,11 @@
 package org.openur.module.persistence.rdbms.entity.userstructure;
 
+import java.util.Locale;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
+import org.openur.module.domain.userstructure.Country;
 import org.openur.module.persistence.rdbms.entity.AbstractOpenUrPersistable;
 
 @Entity(name="ADDRESS")
@@ -31,7 +34,7 @@ public class PAddress
 	private String city;
 	
 	@Column(name="COUNTRY_CODE", nullable=false)
-	private String countryCode;
+	private String countryCode = Country.byLocale(Locale.getDefault()).getCountryCode();
 
 	// accessors:
 	public String getCareOf()

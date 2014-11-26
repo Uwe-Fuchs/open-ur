@@ -8,31 +8,22 @@ public class OpenURApplicationBuilder
 {
 	private String applicationName = null;
 	
+	// constructor:
 	public OpenURApplicationBuilder(String applicationName)
 	{
 		super();
 		
-		init(applicationName);
-	}
-	
-	public OpenURApplicationBuilder(String identifier, String applicationName)
-	{
-		super(identifier);
-		
-		init(applicationName);
-	}
-	
-	private void init(String applicationName)
-	{
 		Validate.notEmpty(applicationName, "application-name must not be empty!");
 		this.applicationName = applicationName;
 	}
 	
+	// builder:
 	public OpenURApplication build()
 	{
 		return new OpenURApplication(this);
 	}
 	
+	// accessors:
 	String getApplicationName()
 	{
 		return applicationName;

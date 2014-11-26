@@ -6,15 +6,14 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
-import org.openur.module.domain.userstructure.technicaluser.TechnicalUserBuilder;
+import org.openur.module.domain.userstructure.technicaluser.TechnicalUser.TechnicalUserBuilder;
 
 public class TechnicalUserMapperTest
 {
 	@Test
 	public void testMapFromImmutable()
 	{
-		TechnicalUser immutable = new TechnicalUserBuilder()
-				.number("123abc")
+		TechnicalUser immutable = new TechnicalUserBuilder("123abc")
 				.status(Status.ACTIVE)
 				.build();
 		

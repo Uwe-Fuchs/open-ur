@@ -1,5 +1,8 @@
 package org.openur.module.domain.userstructure;
 
+import java.util.Locale;
+
+import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.IdentifiableEntityBuilder;
 import org.openur.module.domain.IdentifiableEntityImpl;
 
@@ -86,19 +89,17 @@ public class Address
 		private String streetNo = null;
 		private String city = null;
 		private String postcode = null;
-		private Country country = null;
+		private Country country = Country.byLocale(Locale.getDefault());
 		
 		// constructors:
-		public AddressBuilder()
+		public AddressBuilder(String postcode)
 		{
 			super();
+			
+			Validate.notEmpty(postcode, "post-code must not be empty!");			
+			this.postcode = postcode;
 		}
 		
-		public AddressBuilder(String identifier)
-		{
-			super(identifier);
-		}
-
 		// builder-methods:
 		public Address.AddressBuilder careOf(String careOf)
 		{
@@ -130,14 +131,9 @@ public class Address
 			return this;
 		}
 
-		public Address.AddressBuilder postcode(String postcode)
-		{
-			this.postcode = postcode;
-			return this;
-		}
-
 		public Address.AddressBuilder country(Country country)
 		{
+			Validate.notNull(country, "country must not be null!");
 			this.country = country;
 			return this;
 		}

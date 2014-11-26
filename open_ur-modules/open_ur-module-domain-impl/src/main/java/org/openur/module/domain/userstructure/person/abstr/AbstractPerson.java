@@ -6,7 +6,14 @@ import java.util.Set;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.userstructure.UserStructureBase;
 import org.openur.module.domain.userstructure.person.IPerson;
+import org.openur.module.domain.userstructure.person.Person;
 
+/**
+ * A basic implementation of {@link IPerson}. Extend this to create a suitable domain-object,
+ * in case {@link Person} does't meet your needs.
+ * 
+ * @author fuchs
+ */
 public abstract class AbstractPerson
 	extends UserStructureBase
 	implements IPerson

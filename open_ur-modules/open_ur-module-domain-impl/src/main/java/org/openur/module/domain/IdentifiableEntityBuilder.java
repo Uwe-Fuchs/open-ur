@@ -9,54 +9,26 @@ import org.apache.commons.lang3.Validate;
 public abstract class IdentifiableEntityBuilder<T extends IdentifiableEntityBuilder<T>>
 {
 	// properties:
-	private String identifier = null;
-	private LocalDateTime lastModifiedDate = null;
+	private String identifier = UUID.randomUUID().toString();
 	private LocalDateTime creationDate = null;
+	private LocalDateTime lastModifiedDate = null;
 	
-	// constructors:
+	// constructor:
 	protected IdentifiableEntityBuilder()
 	{
 		super();
-		
-		this.identifier = createIdentifier();
-	}
-	
-	protected IdentifiableEntityBuilder(String identifier)
-	{
-		super();
-
-		Validate.notEmpty(identifier, "identifier must not be empty!");
-		
-		this.identifier = identifier;
-	}
-	
-	protected IdentifiableEntityBuilder(LocalDateTime creationDate)
-	{
-		super();
-		
-		Validate.notNull(creationDate, "creation-date must not be null!");
-		
-		this.identifier = createIdentifier();
-		this.creationDate = creationDate;
-	}
-	
-	protected IdentifiableEntityBuilder(String identifier, LocalDateTime creationDate)
-	{
-		super();
-		
-		Validate.notEmpty(identifier, "identifier must nor be empty!");
-		Validate.notNull(creationDate, "creation-date must not be null!");
-		
-		this.identifier = identifier;
-		this.creationDate = creationDate;
-	}
-	
-	private String createIdentifier()
-	{
-		return UUID.randomUUID().toString();
 	}
 	
 	// builder-methods:
+	public T identifier(String identifier)
+	{
+		Validate.notEmpty(identifier, "identifier must not be empty!");
+		
+		this.identifier = identifier;	
+		
+		return (T) this;
+	}
+	
 	public T creationDate(LocalDateTime creationDate)
 	{
 		this.creationDate = creationDate;	
@@ -85,5 +57,5 @@ public abstract class IdentifiableEntityBuilder<T extends IdentifiableEntityBuil
 	protected LocalDateTime getLastModifiedDate()
 	{
 		return lastModifiedDate;
-	}	
+	}
 }

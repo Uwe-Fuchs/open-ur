@@ -13,6 +13,7 @@ import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.userstructure.Address.AddressBuilder;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitMember.OrgUnitMemberBuilder;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnit;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnitBuilder;
 import org.openur.module.domain.userstructure.person.Gender;
@@ -26,42 +27,38 @@ public class OrgUnitMapperTest
 	@Test
 	public void testMapFromImmutable()
 	{
-		Person pers1 = new PersonBuilder(Name.create(Gender.MALE, "Barack", "Obama"))
-			.number("persNo1")
+		Person pers1 = new PersonBuilder("persNo1", Name.create(Gender.MALE, "Barack", "Obama"))
 			.build();
 		
-		Person pers2 = new PersonBuilder(Name.create(Gender.FEMALE, Title.DR, "Angela", "Merkel"))
-			.number("persNo2")
+		Person pers2 = new PersonBuilder("persNo2", Name.create(Gender.FEMALE, Title.DR, "Angela", "Merkel"))
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();
 	
-		OrgUnitMember m2 = new OrgUnitMember(pers2, OU_ID);
-		OrgUnitMember m1 = new OrgUnitMember(pers1, OU_ID);		
+		OrgUnitMember m2 = new OrgUnitMemberBuilder(pers2, OU_ID).build();
+		OrgUnitMember m1 = new OrgUnitMemberBuilder(pers1, OU_ID).build();		
 		
-		OrganizationalUnit rootOu = new OrganizationalUnitBuilder()
-			.number("rootOuNo")
+		OrganizationalUnit rootOu = new OrganizationalUnitBuilder("rootOuNo", "rootOu")
 			.build();
 		
-		OrganizationalUnit superOu = new OrganizationalUnitBuilder(rootOu)
-			.number("superOuNo")
+		OrganizationalUnit superOu = new OrganizationalUnitBuilder("superOuNo", "superOu")
+			.rootOrgUnit(rootOu)
 		  .superOrgUnit(rootOu)
 			.build();
 		
-		Address address = new AddressBuilder()
+		Address address = new AddressBuilder("11")
 			.country(Country.byCode("DE"))
 			.city("city_1")
-			.postcode("11")
 			.street("street_1")
 			.poBox("poBox_1")
 			.build();
 		
-		OrganizationalUnit orgUnit = new OrganizationalUnitBuilder(OU_ID, rootOu)
-			.number("orgUnitNo")
+		OrganizationalUnit orgUnit = new OrganizationalUnitBuilder("orgUnitNo", "staff department")
+			.identifier(OU_ID)
 			.status(Status.ACTIVE)
-			.name("staff department")
 			.shortName("stf")
 			.description("managing staff")
+			.rootOrgUnit(rootOu)
 			.superOrgUnit(superOu)
 			.orgUnitMembers(Arrays.asList(m1, m2))
 			.address(address)
@@ -83,14 +80,16 @@ public class OrgUnitMapperTest
 	{
 		POrganizationalUnit pRootOu = new POrganizationalUnit();
 		pRootOu.setNumber("rootOuNo");
+		pRootOu.setName("rootOu");
 		
 		POrganizationalUnit pSuperOu = new POrganizationalUnit();
 		pSuperOu.setNumber("superOuNo");
+		pSuperOu.setName("superOu");
 		pSuperOu.setSuperOu(pRootOu);
 		pSuperOu.setRootOu(pRootOu);	
 		
 		POrganizationalUnit pOrgUnit = new POrganizationalUnit();
-		pOrgUnit.setNumber("orgUnitno");
+		pOrgUnit.setNumber("orgUnitNo");
 		pOrgUnit.setSuperOu(pSuperOu);
 		pOrgUnit.setRootOu(pRootOu);
 		pOrgUnit.setName("staff department");

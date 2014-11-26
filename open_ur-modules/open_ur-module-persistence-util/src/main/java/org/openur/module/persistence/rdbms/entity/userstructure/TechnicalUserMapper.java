@@ -2,7 +2,7 @@ package org.openur.module.persistence.rdbms.entity.userstructure;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
-import org.openur.module.domain.userstructure.technicaluser.TechnicalUserBuilder;
+import org.openur.module.domain.userstructure.technicaluser.TechnicalUser.TechnicalUserBuilder;
 
 public class TechnicalUserMapper
 {
@@ -18,18 +18,14 @@ public class TechnicalUserMapper
 	
 	public static TechnicalUser mapFromEntity(PTechnicalUser persistable)
 	{
-		TechnicalUserBuilder immutableBuilder;
+		TechnicalUserBuilder immutableBuilder = new TechnicalUserBuilder(persistable.getNumber());
 		
 		if (StringUtils.isNotEmpty(persistable.getIdentifier()))
 		{
 			immutableBuilder = new TechnicalUserBuilder(persistable.getIdentifier());
-		} else
-		{
-			immutableBuilder = new TechnicalUserBuilder();
 		}
 		
 		immutableBuilder
-				.number(persistable.getNumber())
 				.status(persistable.getStatus())
 				.creationDate(persistable.getCreationDate())
 				.lastModifiedDate(persistable.getLastModifiedDate());

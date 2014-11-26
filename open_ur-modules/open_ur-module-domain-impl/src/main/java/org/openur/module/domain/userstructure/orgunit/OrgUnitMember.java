@@ -1,7 +1,5 @@
 package org.openur.module.domain.userstructure.orgunit;
 
-import java.time.LocalDateTime;
-
 import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnitMember;
 import org.openur.module.domain.userstructure.person.Person;
 
@@ -12,14 +10,9 @@ public class OrgUnitMember
 	private static final long serialVersionUID = -3347655382807063939L;
 
 	// constructor:
-	public OrgUnitMember(Person person, String orgUnitId)
+	public OrgUnitMember(OrgUnitMemberBuilder b)
 	{
-		super(person, orgUnitId);
-	}
-	
-	public OrgUnitMember(Person person, String orgUnitId, LocalDateTime creationDate)
-	{
-		super(person, orgUnitId, creationDate);
+		super(b);
 	}
 
 	// accessors:
@@ -27,5 +20,21 @@ public class OrgUnitMember
 	public Person getPerson()
 	{
 		return (Person) super.getPerson();
+	}
+	
+	// builder-class:
+	public static class OrgUnitMemberBuilder
+		extends AbstractOrgUnitMemberBuilder<OrgUnitMemberBuilder>
+	{
+		public OrgUnitMemberBuilder(Person person, String orgUnitId)
+		{
+			super(person, orgUnitId);
+		}
+
+		@Override
+		public OrgUnitMember build()
+		{
+			return new OrgUnitMember(this);
+		}
 	}
 }

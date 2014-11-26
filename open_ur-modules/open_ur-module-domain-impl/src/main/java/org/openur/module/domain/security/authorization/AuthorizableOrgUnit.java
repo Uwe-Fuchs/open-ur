@@ -64,32 +64,20 @@ public class AuthorizableOrgUnit
 		return (AuthorizableOrgUnit) super.superOrgUnit;
 	}
 	
+	// builder-class:
 	public static class AuthorizableOrgUnitBuilder
 		extends AbstractOrgUnitBuilder<AuthorizableOrgUnitBuilder>
 	{
 		// delegates:
-		private OrganizationalUnitBuilder builderDelegate = new OrganizationalUnitBuilder();
+		private OrganizationalUnitBuilder builderDelegate = null;
 		private OrganizationalUnit delegate = null;
 		
 		// constructors:
-		public AuthorizableOrgUnitBuilder()
+		public AuthorizableOrgUnitBuilder(String number, String name)
 		{
-			super();
-		}
-
-		public AuthorizableOrgUnitBuilder(String identifier)
-		{
-			super(identifier);
-		}
-
-		public AuthorizableOrgUnitBuilder(OrganizationalUnit rootOrgUnit)
-		{
-			super(rootOrgUnit);
-		}
-
-		public AuthorizableOrgUnitBuilder(String identifier, 	OrganizationalUnit rootOrgUnit)
-		{
-			super(identifier, rootOrgUnit);
+			super(number);
+			
+			this.builderDelegate = new OrganizationalUnitBuilder(number, name);
 		}
 
 		// builder-methods:
@@ -102,12 +90,6 @@ public class AuthorizableOrgUnit
 		public AuthorizableOrgUnitBuilder addMember(AuthorizableMember member)
 		{
 			super.addMember(member);
-			return this;
-		}
-
-		public AuthorizableOrgUnitBuilder name(String name)
-		{
-			builderDelegate.name(name);
 			return this;
 		}
 

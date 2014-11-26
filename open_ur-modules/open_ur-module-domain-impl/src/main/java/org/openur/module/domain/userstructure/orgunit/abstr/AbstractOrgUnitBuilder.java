@@ -17,33 +17,12 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 	private AbstractOrgUnit rootOrgUnit = null;
 	protected Set<AbstractOrgUnitMember> members = new HashSet<>();
 
-	// constructors:
-	public AbstractOrgUnitBuilder()
+	// constructor:
+	protected AbstractOrgUnitBuilder(String number)
 	{
-		super();
-	}
-
-	public AbstractOrgUnitBuilder(String identifier)
-	{
-		super(identifier);
+		super(number);
 	}
 	
-	public AbstractOrgUnitBuilder(AbstractOrgUnit rootOrgUnit)
-	{
-		super();
-		
-		Validate.notNull(rootOrgUnit, "root-org-unit must not be null!");
-		this.rootOrgUnit = rootOrgUnit;
-	}
-
-	public AbstractOrgUnitBuilder(String identifier, AbstractOrgUnit rootOrgUnit)
-	{
-		super(identifier);
-		
-		Validate.notNull(rootOrgUnit, "root-org-unit must not be null!");
-		this.rootOrgUnit = rootOrgUnit;
-	}
-
 	// builder-methods:
 	@SuppressWarnings("unchecked")
 	protected <OU extends AbstractOrgUnit> T superOrgUnit(OU superOrgUnit)
@@ -103,17 +82,6 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 		
 		return (T) this;
 	}
-	
-	protected AbstractOrgUnit build()
-	{
-		if (getRootOrgUnit() != null && getSuperOrgUnit() == null)
-		{
-			throw new InconsistentHierarchyException(
-				"Org-Unit is not root, hence a super-org-unit must be set!");
-		}
-		
-		return null;
-	}
 
 	// accessors:
 	AbstractOrgUnit getRootOrgUnit()
@@ -129,5 +97,17 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 	Set<AbstractOrgUnitMember> getMembers()
 	{
 		return members;
+	}
+	
+	// builder:
+	protected AbstractOrgUnit build()
+	{
+		if (getRootOrgUnit() != null && getSuperOrgUnit() == null)
+		{
+			throw new InconsistentHierarchyException(
+				"Org-Unit is not root, hence a super-org-unit must be set!");
+		}
+		
+		return null;
 	}
 }

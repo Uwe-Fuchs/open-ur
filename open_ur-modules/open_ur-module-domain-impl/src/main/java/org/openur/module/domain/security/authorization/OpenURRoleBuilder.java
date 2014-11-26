@@ -18,24 +18,12 @@ public class OpenURRoleBuilder
 	private String description = null;
 	private Map<OpenURApplication, Set<OpenURPermission>> permissions = new HashMap<>();
 
-	// constructors:
-	public OpenURRoleBuilder(String identifer, String roleName)
-	{
-		super(identifer);
-
-		init(roleName);
-	}
-
 	public OpenURRoleBuilder(String roleName)
 	{
 		super();
 
-		init(roleName);
-	}
-	
-	private void init(String roleName)
-	{
 		Validate.notEmpty(roleName, "role-name must not be empty!");
+		
 		this.roleName = roleName;
 	}
 	

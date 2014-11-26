@@ -5,13 +5,12 @@ import java.util.Set;
 
 import org.openur.module.domain.userstructure.UserStructureBase;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
-import org.openur.module.domain.userstructure.orgunit.OrgUnitSimple;
+import org.openur.module.domain.userstructure.orgunit.OrganizationalUnit;
 import org.openur.module.domain.userstructure.person.IPerson;
 
 /**
- * A basic implementation of {@link IOrganizationalUnit}. If this meets your needs,
- * use {@link OrgUnitSimple} as a concrete implementation, otherwise extend this to
- * create a suitable domain-object.
+ * A basic implementation of {@link IOrganizationalUnit}. Extend this to create a suitable domain-object,
+ * in case {@link OrganizationalUnit} does't meet your needs.
  * 
  * @author fuchs
  */
@@ -30,6 +29,7 @@ public abstract class AbstractOrgUnit
 	protected AbstractOrgUnit(AbstractOrgUnitBuilder<? extends AbstractOrgUnitBuilder<?>> b)
 	{
 		super(b);
+		
 		this.superOrgUnit = b.getSuperOrgUnit();
 		this.rootOrgUnit = b.getRootOrgUnit();
 		this.members = Collections.unmodifiableSet(b.getMembers());

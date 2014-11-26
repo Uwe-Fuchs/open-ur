@@ -28,52 +28,40 @@ public class IdentifiableEntityTest
 	public void testCreate()
 		throws Exception
 	{
-		String id = UUID.randomUUID().toString();				
-		LocalDateTime d = LocalDateTime.of(2012, Month.APRIL, 05, 11, 30);
-		LocalDateTime d2 = LocalDateTime.of(2012, Month.APRIL, 05, 11, 30);
+		final String ID = UUID.randomUUID().toString();				
+		final LocalDateTime D = LocalDateTime.of(2012, Month.APRIL, 05, 11, 30);
+		final LocalDateTime D2 = LocalDateTime.of(2012, Month.APRIL, 05, 11, 30);
 		
-		IdentifiableEntityBuilderTestImpl ieb = new IdentifiableEntityBuilderTestImpl(id);
+		IdentifiableEntityBuilderTestImpl ieb = new IdentifiableEntityBuilderTestImpl().identifier(ID);
 		IdentifiableEntityImpl ie = new IdentifiableEntityTestImpl(ieb);
-		assertEquals("id's should be equal", id, ie.getIdentifier());
+		assertEquals("id's should be equal", ID, ie.getIdentifier());
 		
-		ieb = new IdentifiableEntityBuilderTestImpl(d);
+		ieb = new IdentifiableEntityBuilderTestImpl().creationDate(D);
 		ie = new IdentifiableEntityTestImpl(ieb);	
-		assertEquals("creation dates should be equal", d2, ie.getCreationDate());
+		assertEquals("creation dates should be equal", D2, ie.getCreationDate());
 		
-		ieb = new IdentifiableEntityBuilderTestImpl(id, d);
+		ieb = new IdentifiableEntityBuilderTestImpl().identifier(ID).creationDate(D);
 		ie = new IdentifiableEntityTestImpl(ieb);
-		assertEquals("id's should be equal", id, ie.getIdentifier());
-		assertEquals("creation dates should be equal", d2, ie.getCreationDate());
+		assertEquals("id's should be equal", ID, ie.getIdentifier());
+		assertEquals("creation dates should be equal", D2, ie.getCreationDate());
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testExceptionCreateWithEmptyId()
 	{
-		new IdentifiableEntityBuilderTestImpl("");
-	}
-	
-	@Test(expected=NullPointerException.class)
-	public void testExceptionCreateWithEmptyDate()
-	{
-		new IdentifiableEntityBuilderTestImpl((LocalDateTime) null);
-	}
-	
-	@Test(expected=NullPointerException.class)
-	public void testExceptionCreateWithIdAndEmptyDate()
-	{
-		new IdentifiableEntityBuilderTestImpl(UUID.randomUUID().toString(), null);
+		new IdentifiableEntityBuilderTestImpl().identifier("");
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testExceptionCreateWithEmptyIdAndDate()
 	{
-		new IdentifiableEntityBuilderTestImpl("", LocalDateTime.now(ZoneId.systemDefault()));
+		new IdentifiableEntityBuilderTestImpl().identifier("").creationDate(LocalDateTime.now(ZoneId.systemDefault()));
 	}
 	
 	@Test(expected=NullPointerException.class)
 	public void testExceptionCreateWithEmptyIdAndEmptyDate()
 	{
-		new IdentifiableEntityBuilderTestImpl(null, null);
+		new IdentifiableEntityBuilderTestImpl().identifier(null).creationDate(null);
 	}
 
 	@SuppressWarnings("serial")
@@ -92,21 +80,6 @@ public class IdentifiableEntityTest
 		public IdentifiableEntityBuilderTestImpl()
 		{
 			super();
-		}
-		
-		public IdentifiableEntityBuilderTestImpl(String identifier)
-		{
-			super(identifier);
-		}
-		
-		public IdentifiableEntityBuilderTestImpl(LocalDateTime creationDate)
-		{
-			super(creationDate);
-		}
-		
-		public IdentifiableEntityBuilderTestImpl(String identifier, LocalDateTime creationDate)
-		{
-			super(identifier, creationDate);
 		}
 	}
 }

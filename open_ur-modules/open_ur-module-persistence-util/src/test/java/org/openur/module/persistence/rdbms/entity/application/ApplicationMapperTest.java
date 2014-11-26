@@ -9,7 +9,7 @@ import org.openur.module.domain.application.OpenURApplicationBuilder;
 
 public class ApplicationMapperTest
 {
-	private final String APP_NAME = "app1";
+	private final String APP_NAME = "appName";
 	
 	@Test
 	public void testMapFromImmutable()

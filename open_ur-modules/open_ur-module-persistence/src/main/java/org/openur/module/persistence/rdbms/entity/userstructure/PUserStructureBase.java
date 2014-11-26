@@ -19,8 +19,15 @@ public abstract class PUserStructureBase
 	private String number;
 	
 	@Column(name="STATUS", nullable=false)
-	private Status status;
+	private Status status = Status.ACTIVE;
 
+	// constructor:
+	protected PUserStructureBase()
+	{
+		super();
+	}
+
+	// accessors:
 	public String getNumber()
 	{
 		return number;
@@ -39,10 +46,5 @@ public abstract class PUserStructureBase
 	protected void setStatus(Status status)
 	{
 		this.status = status;
-	}
-
-	protected PUserStructureBase()
-	{
-		super();
 	}
 }

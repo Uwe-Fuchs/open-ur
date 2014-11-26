@@ -13,35 +13,28 @@ public class OpenURPermissionTest
 	{
 		OpenURApplication app = new OpenURApplicationBuilder("app").build();		
 		
-		OpenURPermission perm1 = new OpenURPermissionBuilder("perm1", PermissionScope.SELECTED, app).build();		
-		OpenURPermission perm2 = new OpenURPermissionBuilder("perm2", PermissionScope.SELECTED, app).build();
+		OpenURPermission perm1 = new OpenURPermissionBuilder("perm1", app).build();		
+		OpenURPermission perm2 = new OpenURPermissionBuilder("perm2", app).build();
 		
 		assertTrue(perm1.compareTo(perm2) < 0);
 	}
 	
-//	@Test(expected=IllegalArgumentException.class)
-//	public void testExceptionCreateWithEmptyNameAndEmptyApp()
-//	{
-//		new OpenURPermissionBuilder("", null);
-//	}
+	@Test(expected=IllegalArgumentException.class)
+	public void testExceptionCreateWithEmptyNameAndEmptyApp()
+	{
+		new OpenURPermissionBuilder("", null);
+	}
 	
 	@Test(expected=NullPointerException.class)
 	public void testExceptionCreateWithNameAndEmptyApp()
 	{
-		new OpenURPermissionBuilder("perm", PermissionScope.SELECTED, null);
-	}
-	
-	@Test(expected=NullPointerException.class)
-	public void testExceptionCreateWithNameAndAppAndEmptyScope()
-	{
-		OpenURApplication app = new OpenURApplicationBuilder("app").build();
-		new OpenURPermissionBuilder("perm", null, app);
+		new OpenURPermissionBuilder("perm", null);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testExceptionCreateWithEmptyNameAndApp()
 	{
 		OpenURApplication app = new OpenURApplicationBuilder("app").build();
-		new OpenURPermissionBuilder("", PermissionScope.SELECTED, app);
+		new OpenURPermissionBuilder("", app);
 	}
 }

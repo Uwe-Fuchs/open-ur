@@ -1,7 +1,5 @@
 package org.openur.module.domain.userstructure.orgunit.abstr;
 
-import java.time.LocalDateTime;
-
 import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.IdentifiableEntityBuilder;
 import org.openur.module.domain.IdentifiableEntityImpl;
@@ -19,30 +17,12 @@ public abstract class AbstractOrgUnitMember
 	private final String orgUnitId;
 
 	// constructors:
-	protected AbstractOrgUnitMember(AbstractPerson person, String orgUnitId)
+	protected AbstractOrgUnitMember(AbstractOrgUnitMemberBuilder<? extends AbstractOrgUnitMemberBuilder<?>> b)
 	{
-		super(new OrgUnitBuilderImpl());
-		
-		validateFields(person, orgUnitId);
+		super(b);
 
-		this.person = person;
-		this.orgUnitId = orgUnitId;		
-	}
-	
-	protected AbstractOrgUnitMember(AbstractPerson person, String orgUnitId, LocalDateTime creationDate)
-	{
-		super(new OrgUnitBuilderImpl(creationDate));
-		
-		validateFields(person, orgUnitId);
-
-		this.person = person;
-		this.orgUnitId = orgUnitId;		
-	}
-	
-	private void validateFields(AbstractPerson person, String orgUnitId)
-	{		
-		Validate.notNull(person, "person must not be null!");
-		Validate.notEmpty(orgUnitId, "org-unit-id must not be empty!");
+		this.person = b.person;
+		this.orgUnitId = b.orgUnitId;
 	}
 
 	// accessors:
@@ -66,17 +46,26 @@ public abstract class AbstractOrgUnitMember
 	}
 	
 	// builder-class:
-	private static class OrgUnitBuilderImpl
-		extends IdentifiableEntityBuilder<OrgUnitBuilderImpl>
+	public static abstract class AbstractOrgUnitMemberBuilder<T extends AbstractOrgUnitMemberBuilder<T>>
+		extends IdentifiableEntityBuilder<T>
 	{
-		public OrgUnitBuilderImpl()
+		// properties:
+		private AbstractPerson person = null;
+		private String orgUnitId = null;
+		
+		// constructor:
+		protected AbstractOrgUnitMemberBuilder(AbstractPerson person, String orgUnitId)
 		{
 			super();
+			
+			Validate.notNull(person, "person must not be null!");
+			Validate.notEmpty(orgUnitId, "org-unit-id must not be empty!");
+
+			this.person = person;
+			this.orgUnitId = orgUnitId;		
 		}
 		
-		public OrgUnitBuilderImpl(LocalDateTime creationDate)
-		{
-			super(creationDate);
-		}
+		// builder:
+		protected abstract AbstractOrgUnitMember build();
 	}
 }

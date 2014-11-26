@@ -2,6 +2,7 @@ package org.openur.module.domain.userstructure.orgunit;
 
 import java.util.Collection;
 
+import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnitBuilder;
@@ -16,34 +17,16 @@ public class OrganizationalUnitBuilder
 	private Address address = null;
 	private EMailAddress emailAddress = null;
 
-	// constructors:
-	public OrganizationalUnitBuilder()
+	// constructor:
+	public OrganizationalUnitBuilder(String number, String name)
 	{
-		super();
-	}
-
-	public OrganizationalUnitBuilder(String identifier)
-	{
-		super(identifier);
-	}
-
-	public OrganizationalUnitBuilder(OrganizationalUnit rootOrgUnit)
-	{
-		super(rootOrgUnit);
-	}
-
-	public OrganizationalUnitBuilder(String identifier, OrganizationalUnit rootOrgUnit)
-	{
-		super(identifier, rootOrgUnit);
+		super(number);
+		
+		Validate.notEmpty(name, "name must not be empty!");
+		this.name = name;
 	}
 
 	// builder-methods:
-	public OrganizationalUnitBuilder name(String name)
-	{
-		this.name = name;
-		return this;
-	}
-
 	public OrganizationalUnitBuilder shortName(String shortName)
 	{
 		this.shortName = shortName;
@@ -92,15 +75,6 @@ public class OrganizationalUnitBuilder
 		return this;
 	}
 
-	// builder:
-	@Override
-	public OrganizationalUnit build()
-	{
-		super.build();
-		
-		return new OrganizationalUnit(this);
-	}
-
 	// accessors:
 	String getName()
 	{
@@ -125,5 +99,14 @@ public class OrganizationalUnitBuilder
 	EMailAddress getEmailAddress()
 	{
 		return emailAddress;
+	}
+
+	// builder:
+	@Override
+	public OrganizationalUnit build()
+	{
+		super.build();
+		
+		return new OrganizationalUnit(this);
 	}
 }

@@ -1,6 +1,7 @@
 package org.openur.module.persistence.rdbms.entity.userstructure;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -12,10 +13,10 @@ import org.junit.Test;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.domain.userstructure.Address;
+import org.openur.module.domain.userstructure.Address.AddressBuilder;
 import org.openur.module.domain.userstructure.Country;
 import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.Status;
-import org.openur.module.domain.userstructure.Address.AddressBuilder;
 import org.openur.module.domain.userstructure.person.Gender;
 import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.Person;
@@ -29,8 +30,6 @@ public class PersonMapperTest
 	private Name name;
 	private Address address;
 	private PAddress pAddress;
-	private OpenURApplication app1;
-	private OpenURApplication app2;
 	private Set<OpenURApplication> applications;
 	private List<PApplication> pApplications;
 	
@@ -40,19 +39,18 @@ public class PersonMapperTest
 	{
 		this.name = Name.create(Gender.MALE, "Uwe", "Fuchs");
 		
-		this.address = new AddressBuilder()
+		this.address = new AddressBuilder("11")
 			.country(Country.byCode("DE"))
 			.city("city_1")
-			.postcode("11")
 			.street("street_1")
 			.streetNo("11")
 			.poBox("poBox_1")	
 			.build();
 		
-		this.pAddress = AddressMapper.mapFromImmutable(address);
+		this.pAddress = AddressMapper.mapFromImmutable(this.address);
 		
-		app1 = new OpenURApplicationBuilder("app1").build();
-		app2 = new OpenURApplicationBuilder("app2").build();
+		OpenURApplication app1 = new OpenURApplicationBuilder("app1").build();
+		OpenURApplication app2 = new OpenURApplicationBuilder("app2").build();
 		this.applications = new HashSet<>(Arrays.asList(app1, app2));
 		
 		PApplication pApp1 = ApplicationMapper.mapFromImmutable(app1);
@@ -63,8 +61,7 @@ public class PersonMapperTest
 	@Test
 	public void testMapFromImmutable()
 	{
-		PersonBuilder pb = new PersonBuilder(this.name)
-			.number("123abc")
+		PersonBuilder pb = new PersonBuilder("123abc", this.name)
 			.status(Status.ACTIVE)
 			.emailAddress(EMailAddress.create("office@uwefuchs.com"))
 			.employeeNumber("789xyz")

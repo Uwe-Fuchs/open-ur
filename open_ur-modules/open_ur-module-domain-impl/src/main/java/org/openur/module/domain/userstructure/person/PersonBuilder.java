@@ -19,23 +19,11 @@ public class PersonBuilder
   private String homePhoneNumber = null;
   private EMailAddress homeEmailAddress = null;
 	
-  // constructors:
-	public PersonBuilder(Name name)
-	{		
-		super();
-		
-		init(name);
-	}
-	
-	public PersonBuilder(String identifier, Name name)
+  // constructor:
+  public PersonBuilder(String number, Name name)
 	{
-		super(identifier);
+		super(number);
 		
-		init(name);
-	}
-	
-	private void init(Name name)
-	{
 		Validate.notNull(name, "name must not be null");
 		this.name = name;
 	}
@@ -88,11 +76,6 @@ public class PersonBuilder
 		this.homeEmailAddress = homeEmailAddress;			
 		return this;
 	}
-	
-	public Person build()
-	{
-		return new Person(this);
-	}
 
 	// accessors:
 	Name getName()
@@ -138,5 +121,11 @@ public class PersonBuilder
 	EMailAddress getHomeEmailAddress()
 	{
 		return homeEmailAddress;
+	}
+	
+	// builder:
+	public Person build()
+	{
+		return new Person(this);
 	}
 }

@@ -22,14 +22,11 @@ public class ApplicationMapper
 
 	public static OpenURApplication mapFromEntity(PApplication persistable)
 	{
-		OpenURApplicationBuilder immutableBuilder;
+		OpenURApplicationBuilder immutableBuilder = new OpenURApplicationBuilder(persistable.getApplicationName());
 
 		if (StringUtils.isNotEmpty(persistable.getIdentifier()))
 		{
-			immutableBuilder = new OpenURApplicationBuilder(persistable.getIdentifier(), persistable.getApplicationName());
-		} else
-		{
-			immutableBuilder = new OpenURApplicationBuilder(persistable.getApplicationName());
+			immutableBuilder.identifier(persistable.getIdentifier());
 		}
 
 		immutableBuilder

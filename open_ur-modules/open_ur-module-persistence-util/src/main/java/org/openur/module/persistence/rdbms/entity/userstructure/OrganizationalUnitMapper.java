@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitMember.OrgUnitMemberBuilder;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnit;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnitBuilder;
 import org.openur.module.domain.userstructure.person.Person;
@@ -45,7 +46,7 @@ public class OrganizationalUnitMapper
 	{
 		final String IDENTIFIER = StringUtils.isNotEmpty(persistable.getIdentifier()) ? persistable.getIdentifier() : UUID.randomUUID().toString();
 
-		OrganizationalUnitBuilder immutableBuilder = new OrganizationalUnitBuilder(IDENTIFIER);
+		OrganizationalUnitBuilder immutableBuilder = new OrganizationalUnitBuilder(persistable.getNumber(), persistable.getName());
 
 		if (rootOu != null)
 		{
@@ -63,9 +64,8 @@ public class OrganizationalUnitMapper
 		}
 
 		immutableBuilder
-			.number(persistable.getNumber())
+			.identifier(IDENTIFIER)
 			.status(persistable.getStatus())
-			.name(persistable.getName())
 			.shortName(persistable.getShortName())
 			.description(persistable.getDescription())
 			.address(persistable.getAddress() != null ? AddressMapper.mapFromEntity(persistable.getAddress()) : null)
@@ -76,7 +76,7 @@ public class OrganizationalUnitMapper
 		for (POrgUnitMember pMember : persistable.getMembers())
 		{
 			Person pPerson = PersonMapper.mapFromEntity(pMember.getPerson());
-			immutableBuilder.addMember(new OrgUnitMember(pPerson, IDENTIFIER));
+			immutableBuilder.addMember(new OrgUnitMemberBuilder(pPerson, IDENTIFIER).build());
 		}
 
 		return immutableBuilder.build();

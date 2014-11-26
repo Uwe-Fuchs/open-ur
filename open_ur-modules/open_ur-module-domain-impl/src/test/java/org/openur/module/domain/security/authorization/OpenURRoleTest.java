@@ -19,12 +19,12 @@ public class OpenURRoleTest
 	{
 		OpenURApplication app1 = new OpenURApplicationBuilder("app1")
 			.build();		
-		OpenURPermission perm1 = new OpenURPermissionBuilder("perm1", PermissionScope.SELECTED, app1)
+		OpenURPermission perm1 = new OpenURPermissionBuilder("perm1", app1)
 			.build();
 		
 		OpenURApplication app2 = new OpenURApplicationBuilder("app2")
 			.build();
-		OpenURPermission perm2 = new OpenURPermissionBuilder("perm2", PermissionScope.SUB, app2)
+		OpenURPermission perm2 = new OpenURPermissionBuilder("perm2", app2)
 			.build();
 
 		OpenURRole role = new OpenURRoleBuilder("role1")
@@ -45,12 +45,12 @@ public class OpenURRoleTest
 	{
 		OpenURApplication app1 = new OpenURApplicationBuilder("app1")
 			.build();		
-		OpenURPermission perm1 = new OpenURPermissionBuilder("perm1", PermissionScope.SELECTED, app1)
+		OpenURPermission perm1 = new OpenURPermissionBuilder("perm1", app1)
 			.build();
 		
 		OpenURApplication app2 = new OpenURApplicationBuilder("app2")
 			.build();
-		OpenURPermission perm2 = new OpenURPermissionBuilder("perm2", PermissionScope.SUB, app2)
+		OpenURPermission perm2 = new OpenURPermissionBuilder("perm2", app2)
 			.build();
 	
 		OpenURRole role = new OpenURRoleBuilder("role")
@@ -69,14 +69,14 @@ public class OpenURRoleTest
 	public void testCompareTo()
 	{
 		OpenURApplication app1 = new OpenURApplicationBuilder("app1").build();		
-		OpenURPermission perm1 = new OpenURPermissionBuilder("perm1", PermissionScope.SELECTED, app1).build();		
+		OpenURPermission perm1 = new OpenURPermissionBuilder("perm1", app1).build();		
 		OpenURRole role1 = new OpenURRoleBuilder("role1")
 			.permissions(new HashSet<OpenURPermission>(Arrays.asList(perm1)))
 			.build();
 		
 		OpenURApplication app2 = new OpenURApplicationBuilder("app2")
 			.build();		
-		OpenURPermission perm2 = new OpenURPermissionBuilder("perm2", PermissionScope.SELECTED_SUB, app2)
+		OpenURPermission perm2 = new OpenURPermissionBuilder("perm2", app2)
 			.build();		
 		OpenURRole role2 = new OpenURRoleBuilder("role2")
 			.permissions(new HashSet<OpenURPermission>(Arrays.asList(perm2)))

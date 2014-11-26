@@ -12,10 +12,9 @@ public class AddressMapperTest
 	@Test
 	public void testMapFromImmutable()
 	{
-		AddressBuilder b = new AddressBuilder()
+		AddressBuilder b = new AddressBuilder("11")
 				.country(Country.byCode("DE"))
 				.city("city_1")
-				.postcode("11")
 				.street("street_1")
 				.streetNo("11")
 				.poBox("poBox_1")

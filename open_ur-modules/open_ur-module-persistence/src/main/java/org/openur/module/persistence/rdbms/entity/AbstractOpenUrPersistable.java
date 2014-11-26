@@ -1,7 +1,6 @@
 package org.openur.module.persistence.rdbms.entity;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -21,7 +20,7 @@ public abstract class AbstractOpenUrPersistable
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="ID")
+	@Column(name="ID", nullable=false)
 	private Long id;
 
 	@Column(name="CREATED", nullable=false)
@@ -65,13 +64,13 @@ public abstract class AbstractOpenUrPersistable
 	@PrePersist
 	void setCreationDate()
 	{
-		this.creationDate = LocalDateTime.now(ZoneId.systemDefault());
+		this.creationDate = LocalDateTime.now();
 	}
 
 	@PreUpdate
 	void setLastModifiedDate()
 	{
-		this.lastModifiedDate = LocalDateTime.now(ZoneId.systemDefault());
+		this.lastModifiedDate = LocalDateTime.now();
 	}
 
 	@Override

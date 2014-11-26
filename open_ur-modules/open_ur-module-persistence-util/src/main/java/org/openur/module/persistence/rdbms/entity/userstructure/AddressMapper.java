@@ -26,21 +26,17 @@ public class AddressMapper
 	
 	public static Address mapFromEntity(PAddress persistable)
 	{
-		AddressBuilder immutableBuilder;
+		AddressBuilder immutableBuilder = new AddressBuilder(persistable.getPostcode());
 		
 		if (StringUtils.isNotEmpty(persistable.getIdentifier()))
 		{
-			immutableBuilder = new AddressBuilder(persistable.getIdentifier());
-		} else
-		{
-			immutableBuilder = new AddressBuilder();
+			immutableBuilder.identifier(persistable.getIdentifier());
 		}
 		
 		immutableBuilder
 				.careOf(persistable.getCareOf())
 				.city(persistable.getCity())
 				.poBox(persistable.getPoBox())
-				.postcode(persistable.getPostcode())
 				.street(persistable.getStreet())
 				.streetNo(persistable.getStreetNo())
 				.country(StringUtils.isNotEmpty(persistable.getCountryCode()) ? Country.byCode(persistable.getCountryCode()) : null)
