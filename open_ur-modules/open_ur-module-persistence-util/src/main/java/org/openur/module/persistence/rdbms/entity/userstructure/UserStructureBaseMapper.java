@@ -15,7 +15,6 @@ public class UserStructureBaseMapper
 		}
 		
 		return new EqualsBuilder()
-				.append(immutable.getNumber(), persistable.getNumber())
 				.append(immutable.getStatus(), persistable.getStatus())
 				.isEquals();
 	}

@@ -114,6 +114,7 @@ public class OrganizationalUnitMapper
 		}
 
 		boolean isEqual = new EqualsBuilder()
+			.append(immutable.getNumber(), persistable.getOrgUnitNumber())
 			.append(immutable.getName(), persistable.getName())
 			.append(immutable.getShortName(), persistable.getShortName())
 			.append(immutable.getDescription(), persistable.getDescription())
