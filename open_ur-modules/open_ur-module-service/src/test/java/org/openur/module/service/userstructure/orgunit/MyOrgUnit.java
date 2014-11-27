@@ -18,12 +18,12 @@ public class MyOrgUnit
 	private MyOrgUnit rootOrgUnit;
 	private Set<MyMember> members = new HashSet<>();
 
-	public MyOrgUnit(String identifier, String number)
+	public MyOrgUnit(String identifier, String orgUnitNumber)
 	{
 		super();
 		
 		this.identifier = identifier;
-		this.number = number;
+		this.number = orgUnitNumber;
 	}
 
 	@Override

@@ -22,9 +22,9 @@ public class TechnicalUser
 		// properties:
 	  
 	  // constructors:
-		public TechnicalUserBuilder(String number)
+		public TechnicalUserBuilder(String techUserNumber)
 		{
-			super(number);
+			super(techUserNumber);
 		}
 		
 		public TechnicalUser build()

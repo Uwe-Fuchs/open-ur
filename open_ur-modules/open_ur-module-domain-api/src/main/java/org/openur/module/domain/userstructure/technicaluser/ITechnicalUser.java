@@ -7,6 +7,14 @@ public interface ITechnicalUser
 	extends IUserStructureBase, Comparable<ITechnicalUser>
 {
 	// operations:
+	/**
+	 * returns the (domain-specific) number of this tech-user.
+	 */
+	default String getTechUserNumber()
+	{
+		return getNumber();
+	}
+	
 	default int compareTo(ITechnicalUser other)
 	{
 		int comparison = new CompareToBuilder()

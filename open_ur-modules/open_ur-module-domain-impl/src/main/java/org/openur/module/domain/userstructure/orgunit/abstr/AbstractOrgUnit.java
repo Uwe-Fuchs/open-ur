@@ -41,12 +41,6 @@ public abstract class AbstractOrgUnit
 	{
 		return members;
 	}
-	
-	@Override
-	public String getOrgUnitNumber()
-	{
-		return super.getNumber();
-	}
 
 	// operations:
 	public AbstractOrgUnitMember findMember(String id)

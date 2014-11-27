@@ -20,12 +20,12 @@ public class MyPerson
 	private String number;
 	private Set<MyApplicationImpl> applications = new HashSet<>();
 
-	public MyPerson(String identifier, String number)
+	public MyPerson(String identifier, String employeeNumber)
 	{
 		super();
 		
 		this.identifier = identifier;
-		this.number = number;
+		this.number = employeeNumber;
 	}
 
 	@Override
@@ -38,12 +38,6 @@ public class MyPerson
 	public String getNumber()
 	{
 		return number;
-	}
-
-	@Override
-	public String getPersonNumber()
-	{
-		return getNumber();
 	}
 
 	@Override

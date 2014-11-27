@@ -64,7 +64,6 @@ public class PersonMapperTest
 		PersonBuilder pb = new PersonBuilder("123abc", this.name)
 			.status(Status.ACTIVE)
 			.emailAddress(EMailAddress.create("office@uwefuchs.com"))
-			.employeeNumber("789xyz")
 			.phoneNumber("0049123456789")
 			.faxNumber("0049987654321")
 			.mobileNumber("0049111222333")
@@ -92,7 +91,6 @@ public class PersonMapperTest
 		persistable.setLastName("Fuchs");
 		persistable.setStatus(Status.ACTIVE);
 		persistable.setEmailAdress("office@uwefuchs.com");
-		persistable.setEmployeeNumber("789xyz");
 		persistable.setPhoneNumber("0049123456789");
 		persistable.setFaxNumber("0049987654321");
 		persistable.setMobileNumber("0049111222333");

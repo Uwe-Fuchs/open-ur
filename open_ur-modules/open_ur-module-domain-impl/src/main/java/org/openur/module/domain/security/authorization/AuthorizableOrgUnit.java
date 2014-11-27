@@ -73,11 +73,11 @@ public class AuthorizableOrgUnit
 		private OrganizationalUnit delegate = null;
 		
 		// constructors:
-		public AuthorizableOrgUnitBuilder(String number, String name)
+		public AuthorizableOrgUnitBuilder(String orgUnitNumber, String name)
 		{
-			super(number);
+			super(orgUnitNumber);
 			
-			this.builderDelegate = new OrganizationalUnitBuilder(number, name);
+			this.builderDelegate = new OrganizationalUnitBuilder(orgUnitNumber, name);
 		}
 
 		// builder-methods:

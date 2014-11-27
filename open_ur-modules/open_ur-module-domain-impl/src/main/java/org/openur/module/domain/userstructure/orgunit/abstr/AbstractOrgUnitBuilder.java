@@ -18,9 +18,9 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 	protected Set<AbstractOrgUnitMember> members = new HashSet<>();
 
 	// constructor:
-	protected AbstractOrgUnitBuilder(String number)
+	protected AbstractOrgUnitBuilder(String orgUnitNumber)
 	{
-		super(number);
+		super(orgUnitNumber);
 	}
 	
 	// builder-methods:

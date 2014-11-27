@@ -18,9 +18,9 @@ public class OrganizationalUnitBuilder
 	private EMailAddress emailAddress = null;
 
 	// constructor:
-	public OrganizationalUnitBuilder(String number, String name)
+	public OrganizationalUnitBuilder(String orgUnitNumber, String name)
 	{
-		super(number);
+		super(orgUnitNumber);
 		
 		Validate.notEmpty(name, "name must not be empty!");
 		this.name = name;

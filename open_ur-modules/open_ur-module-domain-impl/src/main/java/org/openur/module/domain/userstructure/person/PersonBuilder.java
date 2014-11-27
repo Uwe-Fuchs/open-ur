@@ -10,8 +10,7 @@ public class PersonBuilder
 {
 	// properties:
 	private Name name = null;
-  private String employeeNumber = null;
-	private String phoneNumber = null;
+  private String phoneNumber = null;
 	private String faxNumber = null;
 	private EMailAddress emailAddress = null;
   private String mobileNumber = null;
@@ -20,21 +19,15 @@ public class PersonBuilder
   private EMailAddress homeEmailAddress = null;
 	
   // constructor:
-  public PersonBuilder(String number, Name name)
+  public PersonBuilder(String employeeNumber, Name name)
 	{
-		super(number);
+		super(employeeNumber);
 		
 		Validate.notNull(name, "name must not be null");
 		this.name = name;
 	}
 
 	// builder-methods:	
-	public PersonBuilder employeeNumber(String employeeNumber)
-	{
-		this.employeeNumber = employeeNumber;			
-		return this;
-	}
-	
 	public PersonBuilder phoneNumber(String phoneNumber)
 	{
 		this.phoneNumber = phoneNumber;			
@@ -81,11 +74,6 @@ public class PersonBuilder
 	Name getName()
 	{
 		return name;
-	}
-
-	String getEmployeeNumber()
-	{
-		return employeeNumber;
 	}
 
 	String getPhoneNumber()

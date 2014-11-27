@@ -15,6 +15,7 @@ public abstract class UserStructureBase
 	protected UserStructureBase(UserStructureBaseBuilder<? extends UserStructureBaseBuilder<?>> b)
 	{
 		super(b);
+		
 		this.number = b.getNumber();
 		this.status = b.getStatus();
 	}

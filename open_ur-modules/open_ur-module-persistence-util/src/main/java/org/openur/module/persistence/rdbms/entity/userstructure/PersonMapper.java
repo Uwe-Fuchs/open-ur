@@ -16,7 +16,7 @@ public class PersonMapper
 	{
 		PPerson persistable = new PPerson();
 
-		persistable.setEmployeeNumber(immutable.getNumber());
+		persistable.setEmployeeNumber(immutable.getEmployeeNumber());
 		persistable.setEmailAdress(immutable.getEmailAddress() != null ? immutable.getEmailAddress().getAsPlainEMailAddress() : null);
 		persistable.setFaxNumber(immutable.getFaxNumber());
 		persistable.setFirstName(immutable.getName().getFirstName());
@@ -110,7 +110,7 @@ public class PersonMapper
 		}
 		
 		return new EqualsBuilder()
-				.append(immutable.getNumber(), persistable.getEmployeeNumber())
+				.append(immutable.getEmployeeNumber(), persistable.getEmployeeNumber())
 				.append(immutable.getName().getTitle(), persistable.getTitle())
 				.append(immutable.getName().getFirstName(), persistable.getFirstName())
 				.append(immutable.getName().getLastName(), persistable.getLastName())

@@ -11,7 +11,7 @@ public class TechnicalUserMapper
 	{
 		PTechnicalUser persistable = new PTechnicalUser();
 		
-		persistable.setTechUserNumber(immutable.getNumber());
+		persistable.setTechUserNumber(immutable.getTechUserNumber());
 		persistable.setStatus(immutable.getStatus());
 		
 		return persistable;
@@ -42,7 +42,7 @@ public class TechnicalUserMapper
 		}
 		
 		return new EqualsBuilder()
-				.append(immutable.getNumber(), persistable.getTechUserNumber())
+				.append(immutable.getTechUserNumber(), persistable.getTechUserNumber())
 				.isEquals();
 	}
 }

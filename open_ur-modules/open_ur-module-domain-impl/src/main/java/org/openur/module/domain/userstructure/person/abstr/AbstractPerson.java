@@ -39,9 +39,5 @@ public abstract class AbstractPerson
 	}
 
 	// operations:
-	@Override
-	public String getPersonNumber()
-	{
-		return getNumber();
-	}
+
 }

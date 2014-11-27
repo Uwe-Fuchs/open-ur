@@ -12,8 +12,7 @@ public class Person
 	
 	// properties:
 	private final Name name;
-  private final String employeeNumber;	
-	private final String phoneNumber;
+  private final String phoneNumber;
 	private final String faxNumber;
 	private final EMailAddress emailAddress;
   private final String mobileNumber;
@@ -26,7 +25,6 @@ public class Person
 	{
 		super(b);
 		this.name = b.getName();
-		this.employeeNumber = b.getEmployeeNumber();		
 		this.phoneNumber = b.getPhoneNumber();
 		this.faxNumber = b.getFaxNumber();
 		this.emailAddress = b.getEmailAddress();
@@ -55,11 +53,6 @@ public class Person
 	public Name getName()
 	{
 		return name;
-	}
-
-	public String getEmployeeNumber()
-	{
-		return employeeNumber;
 	}
 
 	public String getMobileNumber()

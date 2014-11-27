@@ -9,12 +9,7 @@ import org.openur.module.domain.userstructure.IUserStructureBase;
 
 public interface IPerson
 	extends IUserStructureBase, Comparable<IPerson>
-{
-	/**
-	 * returns the (domain-specific) number of the person.
-	 */
-	String getPersonNumber();
-	
+{	
 	/**
 	 * get the applications the person is taking part in.
 	 * 
@@ -23,6 +18,14 @@ public interface IPerson
 	Set<? extends IApplication> getApplications();
 
 	// operations:
+	/**
+	 * returns the (domain-specific) number of the person.
+	 */
+	default String getEmployeeNumber()
+	{
+		return getNumber();
+	}
+	
 	default boolean isInApplication(String applicationName)
 	{
 		if (StringUtils.isEmpty(applicationName))
@@ -44,7 +47,7 @@ public interface IPerson
 	default int compareTo(IPerson other)
 	{
 		int comparison = new CompareToBuilder()
-				.append(this.getPersonNumber(), other.getPersonNumber())
+				.append(this.getEmployeeNumber(), other.getEmployeeNumber())
 				.append(this.getStatus(), other.getStatus())
 				.toComparison();
 

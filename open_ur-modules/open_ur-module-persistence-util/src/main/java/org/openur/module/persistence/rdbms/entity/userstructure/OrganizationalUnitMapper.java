@@ -19,7 +19,7 @@ public class OrganizationalUnitMapper
 	{
 		POrganizationalUnit persistable = new POrganizationalUnit();
 
-		persistable.setOrgUnitNumber(immutable.getNumber());
+		persistable.setOrgUnitNumber(immutable.getOrgUnitNumber());
 		persistable.setStatus(immutable.getStatus());
 		persistable.setRootOu(rootOu);
 		persistable.setSuperOu(superOu);
@@ -114,7 +114,7 @@ public class OrganizationalUnitMapper
 		}
 
 		boolean isEqual = new EqualsBuilder()
-			.append(immutable.getNumber(), persistable.getOrgUnitNumber())
+			.append(immutable.getOrgUnitNumber(), persistable.getOrgUnitNumber())
 			.append(immutable.getName(), persistable.getName())
 			.append(immutable.getShortName(), persistable.getShortName())
 			.append(immutable.getDescription(), persistable.getDescription())

@@ -8,12 +8,7 @@ import org.openur.module.domain.userstructure.person.IPerson;
 
 public interface IOrganizationalUnit 
 	extends IUserStructureBase, Comparable<IOrganizationalUnit>
-{		
-	/**
-	 * returns the (domain-specific) number of this org-unit.
-	 */
-	String getOrgUnitNumber();
-	
+{			
 	/**
 	 * returns the organizational unit this ou is subordinated to.
 	 * 
@@ -36,7 +31,15 @@ public interface IOrganizationalUnit
 	 */
 	Set<? extends IOrgUnitMember> getMembers();
 
-	// operations:		
+	// operations:
+	/**
+	 * returns the (domain-specific) number of this org-unit.
+	 */
+	default String getOrgUnitNumber()
+	{
+		return getNumber();
+	}
+	
   /**
    * searches the member with the given userId in this org-unit.
    *
