@@ -2,9 +2,9 @@ package org.openur.module.domain.security.authorization;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.IdentifiableEntityBuilder;
@@ -41,21 +41,10 @@ public class OpenURRoleBuilder
 	}
 	
 	public OpenURRoleBuilder permissions(Set<OpenURPermission> perms)
-	{
-		Map<OpenURApplication, Set<OpenURPermission>> permsLocal = new HashMap<>();
-		
-		for (OpenURPermission p : perms)
-		{
-			Set<OpenURPermission> sp = permsLocal.get(p.getApplication());
-			
-			if (sp == null)
-			{
-				sp = new HashSet<OpenURPermission>();
-				permsLocal.put(p.getApplication(), sp);
-			}
-
-			sp.add(p);
-		}
+	{		
+		Map<OpenURApplication, Set<OpenURPermission>> permsLocal = perms
+			.stream()
+			.collect(Collectors.groupingBy(OpenURPermission::getApplication, Collectors.toSet()));
 		
 		// make permission-sets unmodifiable:
 		for (OpenURApplication app : permsLocal.keySet())
