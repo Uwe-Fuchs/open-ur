@@ -16,7 +16,7 @@ public abstract class PUserStructureBase
 {
 	private static final long serialVersionUID = -1175370888285671616L;
 
-	@Column(name="NUMBER", nullable=false, unique=true)
+	@Column(name="NUMBER", length=50, nullable=false, unique=true)
 	private String number;
 	
 	@Column(name="STATUS", nullable=false)
@@ -29,7 +29,7 @@ public abstract class PUserStructureBase
 	}
 
 	// accessors:
-	public String getNumber()
+	protected String getNumber()
 	{
 		return number;
 	}

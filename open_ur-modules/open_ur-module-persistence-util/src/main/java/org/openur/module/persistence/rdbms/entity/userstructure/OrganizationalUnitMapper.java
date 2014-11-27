@@ -19,7 +19,7 @@ public class OrganizationalUnitMapper
 	{
 		POrganizationalUnit persistable = new POrganizationalUnit();
 
-		persistable.setNumber(immutable.getNumber());
+		persistable.setOrgUnitNumber(immutable.getNumber());
 		persistable.setStatus(immutable.getStatus());
 		persistable.setRootOu(rootOu);
 		persistable.setSuperOu(superOu);
@@ -54,7 +54,7 @@ public class OrganizationalUnitMapper
 	{
 		final String IDENTIFIER = StringUtils.isNotEmpty(persistable.getIdentifier()) ? persistable.getIdentifier() : UUID.randomUUID().toString();
 
-		OrganizationalUnitBuilder immutableBuilder = new OrganizationalUnitBuilder(persistable.getNumber(), persistable.getName());
+		OrganizationalUnitBuilder immutableBuilder = new OrganizationalUnitBuilder(persistable.getOrgUnitNumber(), persistable.getName());
 
 		if (rootOu != null)
 		{

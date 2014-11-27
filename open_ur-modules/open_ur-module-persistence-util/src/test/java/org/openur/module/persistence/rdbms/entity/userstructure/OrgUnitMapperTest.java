@@ -79,17 +79,17 @@ public class OrgUnitMapperTest
 	public void testMapFromEntity()
 	{
 		POrganizationalUnit pRootOu = new POrganizationalUnit();
-		pRootOu.setNumber("rootOuNo");
+		pRootOu.setOrgUnitNumber("rootOuNo");
 		pRootOu.setName("rootOu");
 		
 		POrganizationalUnit pSuperOu = new POrganizationalUnit();
-		pSuperOu.setNumber("superOuNo");
+		pSuperOu.setOrgUnitNumber("superOuNo");
 		pSuperOu.setName("superOu");
 		pSuperOu.setSuperOu(pRootOu);
 		pSuperOu.setRootOu(pRootOu);	
 		
 		POrganizationalUnit pOrgUnit = new POrganizationalUnit();
-		pOrgUnit.setNumber("orgUnitNo");
+		pOrgUnit.setOrgUnitNumber("orgUnitNo");
 		pOrgUnit.setSuperOu(pSuperOu);
 		pOrgUnit.setRootOu(pRootOu);
 		pOrgUnit.setName("staff department");
@@ -106,13 +106,13 @@ public class OrgUnitMapperTest
 		pOrgUnit.setAddress(pAddress);
 		
 		PPerson pPerson1 = new PPerson();
-		pPerson1.setNumber("persNo1");
+		pPerson1.setEmployeeNumber("persNo1");
 		pPerson1.setGender(Gender.MALE);
 		pPerson1.setFirstName("Barack");
 		pPerson1.setLastName("Obama");
 		
 		PPerson pPerson2 = new PPerson();
-		pPerson2.setNumber("persNo2");
+		pPerson2.setEmployeeNumber("persNo2");
 		pPerson2.setGender(Gender.FEMALE);
 		pPerson2.setTitle(Title.DR);
 		pPerson2.setFirstName("Angela");

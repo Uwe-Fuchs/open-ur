@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 @Entity(name="ORGANIZATIONAL_UNIT")
 public class POrganizationalUnit
@@ -125,6 +126,18 @@ public class POrganizationalUnit
 	void setEmailAddress(String emailAddress)
 	{
 		this.emailAddress = emailAddress;
+	}
+	
+	@Transient
+	public String getOrgUnitNumber()
+	{
+		return super.getNumber();
+	}
+	
+	@Transient
+	public void setOrgUnitNumber(String employeeNumber)
+	{
+		super.setNumber(employeeNumber);
 	}
 
 	// constructor:

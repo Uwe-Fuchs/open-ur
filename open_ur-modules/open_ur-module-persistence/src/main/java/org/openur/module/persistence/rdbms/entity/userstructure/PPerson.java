@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import org.openur.module.domain.userstructure.person.Gender;
 import org.openur.module.domain.userstructure.person.Title;
@@ -25,9 +26,6 @@ public class PPerson
 	private static final long serialVersionUID = 1747953676787910440L;
 
 	// properties:
-	@Column(name="EMPLOYEE_NO", length=50, nullable=false)
-  private String employeeNumber;
-	
 	@Column(name="GENDER")
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
@@ -73,11 +71,6 @@ public class PPerson
   private List<PApplication> applications = new ArrayList<>();
 
 	// accessors:
-	public String getEmployeeNumber()
-	{
-		return employeeNumber;
-	}
-
 	public Gender getGender()
 	{
 		return gender;
@@ -143,11 +136,6 @@ public class PPerson
 		this.title = title;
 	}
 
-	void setEmployeeNumber(String employeeNumber)
-	{
-		this.employeeNumber = employeeNumber;
-	}
-
 	void setGender(Gender gender)
 	{
 		this.gender = gender;
@@ -201,6 +189,18 @@ public class PPerson
 	void setApplications(List<PApplication> applications)
 	{
 		this.applications = applications;
+	}
+	
+	@Transient
+	public String getEmployeeNumber()
+	{
+		return super.getNumber();
+	}
+	
+	@Transient
+	public void setEmployeeNumber(String employeeNumber)
+	{
+		super.setNumber(employeeNumber);
 	}
 
 	// constructor:

@@ -27,7 +27,7 @@ public class TechnicalUserMapperTest
 	public void testMapToImmutable()
 	{
 		PTechnicalUser persistable = new PTechnicalUser();
-		persistable.setNumber("123abc");
+		persistable.setTechUserNumber("123abc");
 		persistable.setStatus(Status.INACTIVE);
 		
 		TechnicalUser immutable = TechnicalUserMapper.mapFromEntity(persistable);

@@ -10,7 +10,7 @@ public class TechnicalUserMapper
 	{
 		PTechnicalUser persistable = new PTechnicalUser();
 		
-		persistable.setNumber(immutable.getNumber());
+		persistable.setTechUserNumber(immutable.getNumber());
 		persistable.setStatus(immutable.getStatus());
 		
 		return persistable;
@@ -18,7 +18,7 @@ public class TechnicalUserMapper
 	
 	public static TechnicalUser mapFromEntity(PTechnicalUser persistable)
 	{
-		TechnicalUserBuilder immutableBuilder = new TechnicalUserBuilder(persistable.getNumber());
+		TechnicalUserBuilder immutableBuilder = new TechnicalUserBuilder(persistable.getTechUserNumber());
 		
 		if (StringUtils.isNotEmpty(persistable.getIdentifier()))
 		{

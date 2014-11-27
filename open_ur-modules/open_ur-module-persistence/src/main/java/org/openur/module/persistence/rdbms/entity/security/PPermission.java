@@ -26,7 +26,7 @@ public class PPermission
 	private static final long serialVersionUID = 15325108663313105L;
 
 	// properties:
-	@Column(name="PERMISSION_NAME", length=50, unique=true, nullable=false)
+	@Column(name="PERMISSION_NAME", length=50, nullable=false, unique=true)
   private String permissionName;
 	
 	@Column(name="DESCRIPTION")

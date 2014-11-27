@@ -16,9 +16,8 @@ public class PersonMapper
 	{
 		PPerson persistable = new PPerson();
 
-		persistable.setNumber(immutable.getNumber());
-		persistable.setEmailAdress(immutable.getEmailAddress() != null ? immutable.getEmailAddress().getAsPlainEMailAddress() : null);
 		persistable.setEmployeeNumber(immutable.getEmployeeNumber());
+		persistable.setEmailAdress(immutable.getEmailAddress() != null ? immutable.getEmailAddress().getAsPlainEMailAddress() : null);
 		persistable.setFaxNumber(immutable.getFaxNumber());
 		persistable.setFirstName(immutable.getName().getFirstName());
 		persistable.setLastName(immutable.getName().getLastName());
@@ -61,7 +60,7 @@ public class PersonMapper
 				);
 		}
 		
-		PersonBuilder immutableBuilder = new PersonBuilder(persistable.getNumber(), name);
+		PersonBuilder immutableBuilder = new PersonBuilder(persistable.getEmployeeNumber(), name);
 		
 		if (StringUtils.isNotEmpty(persistable.getIdentifier()))
 		{
@@ -70,7 +69,6 @@ public class PersonMapper
 		
 		immutableBuilder
 				.emailAddress(StringUtils.isNotEmpty(persistable.getEmailAddress()) ? EMailAddress.create(persistable.getEmailAddress()) : null)
-				.employeeNumber(persistable.getEmployeeNumber())
 				.faxNumber(persistable.getFaxNumber())
 				.homeEmailAddress(StringUtils.isNotEmpty(persistable.getHomeEmailAddress()) ? EMailAddress.create(persistable.getHomeEmailAddress()) : null)
 				.homePhoneNumber(persistable.getHomePhoneNumber())

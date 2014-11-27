@@ -20,7 +20,7 @@ public class POpenURRole
 	private static final long serialVersionUID = 4450642055287859526L;
 
 	// properties:
-	@Column(name="ROLE_NAME", length=50, unique=true, nullable=false)
+	@Column(name="ROLE_NAME", length=50, nullable=false, unique=true)
   private String roleName;
 	
 	@Column(name="DESCRIPTION")
