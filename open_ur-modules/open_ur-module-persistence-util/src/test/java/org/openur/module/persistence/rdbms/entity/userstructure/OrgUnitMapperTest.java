@@ -3,9 +3,11 @@ package org.openur.module.persistence.rdbms.entity.userstructure;
 import static org.junit.Assert.*;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.UUID;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.junit.Test;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.Country;
@@ -21,6 +23,7 @@ import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.person.PersonBuilder;
 import org.openur.module.domain.userstructure.person.Title;
+import org.openur.module.persistence.rdbms.entity.AbstractEntityMapperTest;
 
 public class OrgUnitMapperTest
 {
@@ -66,13 +69,13 @@ public class OrgUnitMapperTest
 			.build();
 		
 		POrganizationalUnit pRootOu = OrganizationalUnitMapper.mapRootOuFromImmutable(rootOu);
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity(rootOu, pRootOu));
+		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity(rootOu, pRootOu));
 		
 		POrganizationalUnit pSuperOu = OrganizationalUnitMapper.mapSuperOuFromImmutable(superOu, pRootOu);
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity(superOu, pSuperOu));
+		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity(superOu, pSuperOu));
 		
 		POrganizationalUnit pOrgUnit = OrganizationalUnitMapper.mapFromImmutable(orgUnit, pRootOu, pSuperOu);		
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity(orgUnit, pOrgUnit));
+		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity(orgUnit, pOrgUnit));
 	}
 
 	@Test
@@ -123,12 +126,68 @@ public class OrgUnitMapperTest
 		pOrgUnit.setMembers(new HashSet<POrgUnitMember>(Arrays.asList(pMember1, pMember2)));
 		
 		OrganizationalUnit rootOu = OrganizationalUnitMapper.mapRootOuFromEntity(pRootOu);
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity(rootOu, pRootOu));
+		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity(rootOu, pRootOu));
 		
 		OrganizationalUnit superOu = OrganizationalUnitMapper.mapSuperOuFromEntity(pSuperOu, rootOu);
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity(superOu, pSuperOu));
+		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity(superOu, pSuperOu));
 		
 		OrganizationalUnit orgUnit = OrganizationalUnitMapper.mapFromEntity(pOrgUnit, rootOu, superOu);		
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity(orgUnit, pOrgUnit));
+		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity(orgUnit, pOrgUnit));
+	}
+
+	public static boolean immutableEqualsToEntity(OrganizationalUnit immutable, POrganizationalUnit persistable)
+	{
+		if (!AbstractEntityMapperTest.immutableEqualsToEntityUserStructureBase(immutable, persistable))
+		{
+			return false;
+		}
+	
+		if ((immutable.getAddress() != null || persistable.getAddress() != null)
+			&& !AddressMapperTest.immutableEqualsToEntity(immutable.getAddress(),	persistable.getAddress()))
+		{
+			return false;
+		}
+	
+		boolean isEqual = new EqualsBuilder()
+			.append(immutable.getOrgUnitNumber(), persistable.getOrgUnitNumber())
+			.append(immutable.getName(), persistable.getName())
+			.append(immutable.getShortName(), persistable.getShortName())
+			.append(immutable.getDescription(), persistable.getDescription())
+			.append(immutable.getEmailAddress() != null ? immutable.getEmailAddress()
+					.getAsPlainEMailAddress() : null, persistable.getEmailAddress())
+			.isEquals();
+	
+		if (!isEqual)
+		{
+			return false;
+		}
+	
+		for (POrgUnitMember pMember : persistable.getMembers())
+		{
+			OrgUnitMember member = findMemberInImmutable(pMember,	immutable.getMembers());
+	
+			if (member == null
+				|| member.getPerson() == null
+				|| pMember.getPerson() == null
+				|| !PersonMapperTest.immutableEqualsToEntity(member.getPerson(), pMember.getPerson()))
+			{
+				return false;
+			}
+		}
+	
+		return true;
+	}
+
+	private static OrgUnitMember findMemberInImmutable(POrgUnitMember pMember, Collection<OrgUnitMember> members)
+	{
+		for (OrgUnitMember member : members)
+		{
+			if (PersonMapperTest.immutableEqualsToEntity(member.getPerson(), pMember.getPerson()))
+			{
+				return member;
+			}
+		}
+	
+		return null;
 	}
 }

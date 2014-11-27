@@ -1,10 +1,8 @@
 package org.openur.module.persistence.rdbms.entity.userstructure;
 
-import java.util.Collection;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitMember.OrgUnitMemberBuilder;
@@ -98,61 +96,5 @@ public class OrganizationalUnitMapper
 	public static OrganizationalUnit mapSuperOuFromEntity(POrganizationalUnit pSuperOu, OrganizationalUnit rootOu)
 	{
 		return OrganizationalUnitMapper.mapFromEntity(pSuperOu, rootOu, null);
-	}
-
-	public static boolean immutableEqualsToEntity(OrganizationalUnit immutable, POrganizationalUnit persistable)
-	{
-		if (!UserStructureBaseMapper.immutableEqualsToEntity(immutable, persistable))
-		{
-			return false;
-		}
-
-		if ((immutable.getAddress() != null || persistable.getAddress() != null)
-			&& !AddressMapper.immutableEqualsToEntity(immutable.getAddress(),	persistable.getAddress()))
-		{
-			return false;
-		}
-
-		boolean isEqual = new EqualsBuilder()
-			.append(immutable.getOrgUnitNumber(), persistable.getOrgUnitNumber())
-			.append(immutable.getName(), persistable.getName())
-			.append(immutable.getShortName(), persistable.getShortName())
-			.append(immutable.getDescription(), persistable.getDescription())
-			.append(immutable.getEmailAddress() != null ? immutable.getEmailAddress()
-					.getAsPlainEMailAddress() : null, persistable.getEmailAddress())
-			.isEquals();
-
-		if (!isEqual)
-		{
-			return false;
-		}
-
-		for (POrgUnitMember pMember : persistable.getMembers())
-		{
-			OrgUnitMember member = findMemberInImmutable(pMember,	immutable.getMembers());
-
-			if (member == null
-				|| member.getPerson() == null
-				|| pMember.getPerson() == null
-				|| !PersonMapper.immutableEqualsToEntity(member.getPerson(), pMember.getPerson()))
-			{
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	private static OrgUnitMember findMemberInImmutable(POrgUnitMember pMember, Collection<OrgUnitMember> members)
-	{
-		for (OrgUnitMember member : members)
-		{
-			if (PersonMapper.immutableEqualsToEntity(member.getPerson(), pMember.getPerson()))
-			{
-				return member;
-			}
-		}
-
-		return null;
 	}
 }

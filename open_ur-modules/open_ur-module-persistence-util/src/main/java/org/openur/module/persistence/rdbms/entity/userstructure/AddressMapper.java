@@ -1,11 +1,9 @@
 package org.openur.module.persistence.rdbms.entity.userstructure;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.Address.AddressBuilder;
 import org.openur.module.domain.userstructure.Country;
-import org.openur.module.persistence.rdbms.entity.AbstractOpenUrPersistableMapper;
 
 public class AddressMapper
 {	
@@ -45,23 +43,5 @@ public class AddressMapper
 				.build();
 		
 		return immutableBuilder.build();
-	}
-	
-	public static boolean immutableEqualsToEntity(Address immutable, PAddress persistable)
-	{
-		if (!AbstractOpenUrPersistableMapper.immutableEqualsToEntity(immutable, persistable))
-		{
-			return false;
-		}
-		
-		return new EqualsBuilder()
-				.append(immutable.getCareOf(), persistable.getCareOf())
-				.append(immutable.getCity(), persistable.getCity())
-				.append(immutable.getCountry() != null ? immutable.getCountry().getCountryCode() : null, persistable.getCountryCode())
-				.append(immutable.getPoBox(), persistable.getPoBox())
-				.append(immutable.getPostcode(), persistable.getPostcode())
-				.append(immutable.getStreet(), persistable.getStreet())
-				.append(immutable.getStreetNo(), persistable.getStreetNo())
-				.isEquals();
 	}
 }

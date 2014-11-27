@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.openur.module.domain.application.OpenURApplication;
@@ -22,6 +23,7 @@ import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.person.PersonBuilder;
 import org.openur.module.domain.userstructure.person.Title;
+import org.openur.module.persistence.rdbms.entity.AbstractEntityMapperTest;
 import org.openur.module.persistence.rdbms.entity.application.ApplicationMapper;
 import org.openur.module.persistence.rdbms.entity.application.PApplication;
 
@@ -76,7 +78,7 @@ public class PersonMapperTest
 		PPerson persistable = PersonMapper.mapFromImmutable(immutable);
 		
 		assertNotNull(persistable);
-		assertTrue(PersonMapper.immutableEqualsToEntity(immutable, persistable));
+		assertTrue(PersonMapperTest.immutableEqualsToEntity(immutable, persistable));
 	}
 
 	@Test
@@ -102,6 +104,44 @@ public class PersonMapperTest
 		Person immutable = PersonMapper.mapFromEntity(persistable);
 		
 		assertNotNull(immutable);
-		assertTrue(PersonMapper.immutableEqualsToEntity(immutable, persistable));		
+		assertTrue(PersonMapperTest.immutableEqualsToEntity(immutable, persistable));		
+	}
+
+	public static boolean immutableEqualsToEntity(Person immutable, PPerson persistable)
+	{
+		if (!AbstractEntityMapperTest.immutableEqualsToEntityUserStructureBase(immutable, persistable))
+		{
+			return false;
+		}
+		
+		for (PApplication app : persistable.getApplications())
+		{
+			if (!immutable.isInApplication(app.getApplicationName()))
+			{
+				return false;
+			}
+		}
+		
+		if ((immutable.getHomeAddress() != null || persistable.getHomeAddress() != null)
+			&& !AddressMapperTest.immutableEqualsToEntity(immutable.getHomeAddress(), persistable.getHomeAddress()))
+		{
+			return false;
+		}
+		
+		return new EqualsBuilder()
+				.append(immutable.getEmployeeNumber(), persistable.getEmployeeNumber())
+				.append(immutable.getName().getTitle(), persistable.getTitle())
+				.append(immutable.getName().getFirstName(), persistable.getFirstName())
+				.append(immutable.getName().getLastName(), persistable.getLastName())
+				.append(immutable.getName().getGender(), persistable.getGender())
+				.append(immutable.getPhoneNumber(), persistable.getPhoneNumber())
+				.append(immutable.getFaxNumber(), persistable.getFaxNumber())
+				.append(immutable.getMobileNumber(), persistable.getMobileNumber())
+				.append(immutable.getHomePhoneNumber(), persistable.getHomePhoneNumber())
+				.append(immutable.getEmailAddress() != null ? immutable.getEmailAddress().getAsPlainEMailAddress() : null, 
+						persistable.getEmailAddress())
+				.append(immutable.getHomeEmailAddress() != null ? immutable.getHomeEmailAddress().getAsPlainEMailAddress() : null, 
+						persistable.getHomeEmailAddress())
+				.isEquals();
 	}
 }
