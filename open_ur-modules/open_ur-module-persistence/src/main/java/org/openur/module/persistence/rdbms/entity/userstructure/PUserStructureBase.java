@@ -6,6 +6,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
 import org.openur.module.domain.userstructure.Status;
+import org.openur.module.domain.util.DefaultsUtil;
 import org.openur.module.persistence.rdbms.entity.AbstractOpenUrPersistable;
 
 @Entity(name="USER_STRUCTURE_BASE")
@@ -19,7 +20,7 @@ public abstract class PUserStructureBase
 	private String number;
 	
 	@Column(name="STATUS", nullable=false)
-	private Status status = Status.ACTIVE;
+	private Status status = DefaultsUtil.getDefaultStatus();
 
 	// constructor:
 	protected PUserStructureBase()

@@ -1,10 +1,9 @@
 package org.openur.module.domain.userstructure;
 
-import java.util.Locale;
-
 import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.IdentifiableEntityBuilder;
 import org.openur.module.domain.IdentifiableEntityImpl;
+import org.openur.module.domain.util.DefaultsUtil;
 
 public class Address
 	extends IdentifiableEntityImpl
@@ -89,7 +88,7 @@ public class Address
 		private String streetNo = null;
 		private String city = null;
 		private String postcode = null;
-		private Country country = Country.byLocale(Locale.getDefault());
+		private Country country = DefaultsUtil.getDefaultCountry();
 		
 		// constructors:
 		public AddressBuilder(String postcode)

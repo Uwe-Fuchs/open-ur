@@ -15,6 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import org.openur.module.domain.security.authorization.PermissionScope;
+import org.openur.module.domain.util.DefaultsUtil;
 import org.openur.module.persistence.rdbms.entity.AbstractOpenUrPersistable;
 import org.openur.module.persistence.rdbms.entity.application.PApplication;
 
@@ -25,7 +26,7 @@ public class PPermission
 	private static final long serialVersionUID = 15325108663313105L;
 
 	// properties:
-	@Column(name="PERMISSION_NAME", length=50, nullable=false)
+	@Column(name="PERMISSION_NAME", length=50, unique=true, nullable=false)
   private String permissionName;
 	
 	@Column(name="DESCRIPTION")
@@ -33,7 +34,7 @@ public class PPermission
 	
 	@Column(name="PERMISSION_SCOPE", nullable=false)
 	@Enumerated(EnumType.STRING)
-	private PermissionScope permissionScope = PermissionScope.SELECTED_SUB;
+	private PermissionScope permissionScope = DefaultsUtil.getDefaultPermissionScope();
 
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="APPLICATION_ID", referencedColumnName="ID", unique=true, nullable=false)

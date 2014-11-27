@@ -2,13 +2,14 @@ package org.openur.module.domain.userstructure;
 
 import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.IdentifiableEntityBuilder;
+import org.openur.module.domain.util.DefaultsUtil;
 
 public abstract class UserStructureBaseBuilder<T extends UserStructureBaseBuilder<T>>
 	extends IdentifiableEntityBuilder<T>
 {
 	// properties:
 	private String number = null;
-	private Status status = Status.ACTIVE;
+	private Status status = DefaultsUtil.getDefaultStatus();
 
 	// constructors:
 	protected UserStructureBaseBuilder(String number)

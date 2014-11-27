@@ -1,15 +1,15 @@
 package org.openur.module.domain;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import org.apache.commons.lang3.Validate;
+import org.openur.module.domain.util.DefaultsUtil;
 
 @SuppressWarnings("unchecked")
 public abstract class IdentifiableEntityBuilder<T extends IdentifiableEntityBuilder<T>>
 {
 	// properties:
-	private String identifier = UUID.randomUUID().toString();
+	private String identifier = DefaultsUtil.getRandomIdentifierByDefaultMechanism();
 	private LocalDateTime creationDate = null;
 	private LocalDateTime lastModifiedDate = null;
 	

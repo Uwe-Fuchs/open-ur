@@ -3,6 +3,7 @@ package org.openur.module.domain.security.authorization;
 import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.IdentifiableEntityBuilder;
 import org.openur.module.domain.application.OpenURApplication;
+import org.openur.module.domain.util.DefaultsUtil;
 
 public class OpenURPermissionBuilder
 	extends IdentifiableEntityBuilder<OpenURPermissionBuilder>
@@ -11,7 +12,7 @@ public class OpenURPermissionBuilder
 	private OpenURApplication app = null;
 	private String permissionName = null;
 	private String description = null;
-	private PermissionScope permissionScope = PermissionScope.SELECTED_SUB;
+	private PermissionScope permissionScope = DefaultsUtil.getDefaultPermissionScope();
 
 	public OpenURPermissionBuilder(String permissionName, OpenURApplication app)
 	{
