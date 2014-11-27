@@ -1,6 +1,6 @@
 package org.openur.module.persistence.rdbms.entity.userstructure;
 
-import java.util.Set;
+import java.util.Collection;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
@@ -15,8 +15,7 @@ import org.openur.module.domain.userstructure.person.Person;
 public class OrganizationalUnitMapper
 {
 	public static POrganizationalUnit mapFromImmutable(
-		OrganizationalUnit immutable, POrganizationalUnit rootOu,
-		POrganizationalUnit superOu)
+		OrganizationalUnit immutable, POrganizationalUnit rootOu,	POrganizationalUnit superOu)
 	{
 		POrganizationalUnit persistable = new POrganizationalUnit();
 
@@ -39,10 +38,19 @@ public class OrganizationalUnitMapper
 
 		return persistable;
 	}
+	
+	public static POrganizationalUnit mapRootOuFromImmutable(OrganizationalUnit rootOu)
+	{
+		return OrganizationalUnitMapper.mapFromImmutable(rootOu, null, null);
+	}
+	
+	public static POrganizationalUnit mapSuperOuFromImmutable(OrganizationalUnit superOu, POrganizationalUnit pRootOu)
+	{
+		return OrganizationalUnitMapper.mapFromImmutable(superOu, pRootOu, null);
+	}
 
 	public static OrganizationalUnit mapFromEntity(
-		POrganizationalUnit persistable, OrganizationalUnit rootOu,
-		OrganizationalUnit superOu)
+		POrganizationalUnit persistable, OrganizationalUnit rootOu,	OrganizationalUnit superOu)
 	{
 		final String IDENTIFIER = StringUtils.isNotEmpty(persistable.getIdentifier()) ? persistable.getIdentifier() : UUID.randomUUID().toString();
 
@@ -81,9 +89,18 @@ public class OrganizationalUnitMapper
 
 		return immutableBuilder.build();
 	}
+	
+	public static OrganizationalUnit mapRootOuFromEntity(POrganizationalUnit pRootOu)
+	{
+		return OrganizationalUnitMapper.mapFromEntity(pRootOu, null, null);
+	}
+	
+	public static OrganizationalUnit mapSuperOuFromEntity(POrganizationalUnit pSuperOu, OrganizationalUnit rootOu)
+	{
+		return OrganizationalUnitMapper.mapFromEntity(pSuperOu, rootOu, null);
+	}
 
-	public static boolean immutableEqualsToEntity(OrganizationalUnit immutable,
-		POrganizationalUnit persistable)
+	public static boolean immutableEqualsToEntity(OrganizationalUnit immutable, POrganizationalUnit persistable)
 	{
 		if (!UserStructureBaseMapper.immutableEqualsToEntity(immutable, persistable))
 		{
@@ -125,7 +142,7 @@ public class OrganizationalUnitMapper
 		return true;
 	}
 
-	private static OrgUnitMember findMemberInImmutable(POrgUnitMember pMember, Set<OrgUnitMember> members)
+	private static OrgUnitMember findMemberInImmutable(POrgUnitMember pMember, Collection<OrgUnitMember> members)
 	{
 		for (OrgUnitMember member : members)
 		{

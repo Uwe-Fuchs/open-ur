@@ -65,10 +65,10 @@ public class OrgUnitMapperTest
 			.emailAddress(EMailAddress.create("staff@company.com"))
 			.build();
 		
-		POrganizationalUnit pRootOu = OrganizationalUnitMapper.mapFromImmutable(rootOu, null, null);
+		POrganizationalUnit pRootOu = OrganizationalUnitMapper.mapRootOuFromImmutable(rootOu);
 		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity(rootOu, pRootOu));
 		
-		POrganizationalUnit pSuperOu = OrganizationalUnitMapper.mapFromImmutable(superOu, pRootOu, null);
+		POrganizationalUnit pSuperOu = OrganizationalUnitMapper.mapSuperOuFromImmutable(superOu, pRootOu);
 		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity(superOu, pSuperOu));
 		
 		POrganizationalUnit pOrgUnit = OrganizationalUnitMapper.mapFromImmutable(orgUnit, pRootOu, pSuperOu);		
@@ -122,10 +122,10 @@ public class OrgUnitMapperTest
 		POrgUnitMember pMember2 = new POrgUnitMember(pOrgUnit, pPerson2);
 		pOrgUnit.setMembers(new HashSet<POrgUnitMember>(Arrays.asList(pMember1, pMember2)));
 		
-		OrganizationalUnit rootOu = OrganizationalUnitMapper.mapFromEntity(pRootOu, null, null);
+		OrganizationalUnit rootOu = OrganizationalUnitMapper.mapRootOuFromEntity(pRootOu);
 		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity(rootOu, pRootOu));
 		
-		OrganizationalUnit superOu = OrganizationalUnitMapper.mapFromEntity(pSuperOu, rootOu, null);
+		OrganizationalUnit superOu = OrganizationalUnitMapper.mapSuperOuFromEntity(pSuperOu, rootOu);
 		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity(superOu, pSuperOu));
 		
 		OrganizationalUnit orgUnit = OrganizationalUnitMapper.mapFromEntity(pOrgUnit, rootOu, superOu);		
