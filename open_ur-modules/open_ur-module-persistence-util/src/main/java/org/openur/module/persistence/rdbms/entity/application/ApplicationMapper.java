@@ -28,11 +28,9 @@ public class ApplicationMapper
 			immutableBuilder.identifier(persistable.getIdentifier());
 		}
 
-		immutableBuilder
+		return immutableBuilder
 				.creationDate(persistable.getCreationDate())
 				.lastModifiedDate(persistable.getLastModifiedDate())
 				.build();
-
-		return immutableBuilder.build();
 	}
 }
