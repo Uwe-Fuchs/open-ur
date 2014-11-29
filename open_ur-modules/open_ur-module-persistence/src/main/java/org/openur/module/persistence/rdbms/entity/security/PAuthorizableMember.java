@@ -27,15 +27,15 @@ public class PAuthorizableMember
 		joinColumns={@JoinColumn(name="ID_MEMBER", referencedColumnName="ID")},
 		inverseJoinColumns={@JoinColumn(name="ID_ROLE", referencedColumnName="ID")}
 	)
-	private Set<POpenURRole> roles= new HashSet<>();
+	private Set<PRRole> roles= new HashSet<>();
 	
 	//accessors:
-	public Set<POpenURRole> getRoles()
+	public Set<PRRole> getRoles()
 	{
 		return roles;
 	}
 
-	void setRoles(Set<POpenURRole> roles)
+	void setRoles(Set<PRRole> roles)
 	{
 		this.roles = roles;
 	}

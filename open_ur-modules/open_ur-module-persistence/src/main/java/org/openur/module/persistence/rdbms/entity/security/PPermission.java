@@ -46,7 +46,7 @@ public class PPermission
 		joinColumns={@JoinColumn(name="ID_PERMISSION", referencedColumnName="ID")},
 		inverseJoinColumns={@JoinColumn(name="ID_ROLE", referencedColumnName="ID")}
 	)
-	private Set<POpenURRole> roles = new HashSet<>();
+	private Set<PRRole> roles = new HashSet<>();
 
 	// accessors:
 	public String getPermissionName()
