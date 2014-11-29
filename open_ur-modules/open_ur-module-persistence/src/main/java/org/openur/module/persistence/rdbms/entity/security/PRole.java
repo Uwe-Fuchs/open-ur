@@ -14,7 +14,7 @@ import javax.persistence.ManyToMany;
 import org.openur.module.persistence.rdbms.entity.AbstractOpenUrPersistable;;
 
 @Entity(name="ROLE")
-public class PRRole
+public class PRole
 	extends AbstractOpenUrPersistable
 {
 	private static final long serialVersionUID = 4450642055287859526L;
@@ -74,7 +74,7 @@ public class PRRole
 	}
 	
 	// constructor:
-	PRRole()
+	PRole()
 	{
 		super();
 	}	
