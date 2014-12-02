@@ -13,6 +13,7 @@ public interface IApplication
 	 */
 	String getApplicationName();
 	
+	@Override
 	default int compareTo(IApplication o)
 	{
 		return this.getApplicationName().compareToIgnoreCase(o.getApplicationName());

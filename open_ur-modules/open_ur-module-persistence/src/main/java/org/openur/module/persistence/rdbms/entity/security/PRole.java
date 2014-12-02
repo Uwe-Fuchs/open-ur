@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.Transient;
 
 import org.openur.module.persistence.rdbms.entity.AbstractOpenUrPersistable;;
 
@@ -71,6 +72,13 @@ public class PRole
 	void setPermissions(Set<PPermission> permissions)
 	{
 		this.permissions = permissions;
+	}
+	
+	// operations:
+	@Transient
+	void addPermssion(PPermission permission)
+	{
+		this.getPermissions().add(permission);
 	}
 	
 	// constructor:
