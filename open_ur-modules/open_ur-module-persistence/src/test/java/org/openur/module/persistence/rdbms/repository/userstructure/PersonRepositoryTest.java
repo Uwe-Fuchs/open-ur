@@ -8,7 +8,7 @@ import javax.transaction.Transactional;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openur.module.persistence.rdbms.config.RepositoryConfig;
-import org.openur.module.persistence.rdbms.repository.userstructure.PersonRepository;
+import org.openur.module.persistence.rdbms.repository.PersonRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;

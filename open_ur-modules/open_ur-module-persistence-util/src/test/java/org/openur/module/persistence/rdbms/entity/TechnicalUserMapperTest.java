@@ -1,4 +1,4 @@
-package org.openur.module.persistence.rdbms.entity.userstructure;
+package org.openur.module.persistence.rdbms.entity;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -8,7 +8,8 @@ import org.junit.Test;
 import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUser.TechnicalUserBuilder;
-import org.openur.module.persistence.rdbms.entity.AbstractEntityMapperTest;
+import org.openur.module.persistence.rdbms.entity.PTechnicalUser;
+import org.openur.module.persistence.rdbms.entity.TechnicalUserMapper;
 
 public class TechnicalUserMapperTest
 {

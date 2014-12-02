@@ -1,4 +1,4 @@
-package org.openur.module.persistence.rdbms.entity.userstructure;
+package org.openur.module.persistence.rdbms.entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,6 @@ import javax.persistence.Transient;
 
 import org.openur.module.domain.userstructure.person.Gender;
 import org.openur.module.domain.userstructure.person.Title;
-import org.openur.module.persistence.rdbms.entity.application.PApplication;
 
 @Entity(name="PERSON")
 public class PPerson

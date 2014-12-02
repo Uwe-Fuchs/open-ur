@@ -1,4 +1,4 @@
-package org.openur.module.persistence.rdbms.entity.userstructure;
+package org.openur.module.persistence.rdbms.entity;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openur.module.domain.application.OpenURApplication;
@@ -6,8 +6,8 @@ import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.person.PersonBuilder;
-import org.openur.module.persistence.rdbms.entity.application.ApplicationMapper;
-import org.openur.module.persistence.rdbms.entity.application.PApplication;
+import org.openur.module.persistence.rdbms.entity.PApplication;
+import org.openur.module.persistence.rdbms.entity.PPerson;
 
 public class PersonMapper
 {

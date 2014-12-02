@@ -1,4 +1,4 @@
-package org.openur.module.persistence.rdbms.entity.userstructure;
+package org.openur.module.persistence.rdbms.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Transient;

@@ -1,4 +1,4 @@
-package org.openur.module.persistence.rdbms.entity.userstructure;
+package org.openur.module.persistence.rdbms.entity;
 
 import java.util.UUID;
 
@@ -9,6 +9,8 @@ import org.openur.module.domain.userstructure.orgunit.OrgUnitMember.OrgUnitMembe
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnit;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnitBuilder;
 import org.openur.module.domain.userstructure.person.Person;
+import org.openur.module.persistence.rdbms.entity.POrgUnitMember;
+import org.openur.module.persistence.rdbms.entity.POrganizationalUnit;
 
 public class OrganizationalUnitMapper
 {

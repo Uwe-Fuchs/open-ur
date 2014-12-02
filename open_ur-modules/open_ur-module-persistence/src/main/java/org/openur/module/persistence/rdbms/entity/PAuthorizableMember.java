@@ -1,4 +1,4 @@
-package org.openur.module.persistence.rdbms.entity.security;
+package org.openur.module.persistence.rdbms.entity;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,10 +9,6 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-
-import org.openur.module.persistence.rdbms.entity.userstructure.POrgUnitMember;
-import org.openur.module.persistence.rdbms.entity.userstructure.POrganizationalUnit;
-import org.openur.module.persistence.rdbms.entity.userstructure.PPerson;
 
 @Entity(name="AUTHORIZABLE_MEMBER")
 public class PAuthorizableMember

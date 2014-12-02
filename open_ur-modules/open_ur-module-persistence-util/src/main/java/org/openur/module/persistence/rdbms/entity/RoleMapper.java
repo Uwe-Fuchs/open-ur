@@ -1,4 +1,4 @@
-package org.openur.module.persistence.rdbms.entity.security;
+package org.openur.module.persistence.rdbms.entity;
 
 import java.util.stream.Collectors;
 
@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.security.authorization.OpenURRole;
 import org.openur.module.domain.security.authorization.OpenURRoleBuilder;
+import org.openur.module.persistence.rdbms.entity.PRole;
 
 public class RoleMapper
 {

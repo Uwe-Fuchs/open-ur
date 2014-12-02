@@ -1,8 +1,9 @@
-package org.openur.module.persistence.rdbms.entity.application;
+package org.openur.module.persistence.rdbms.entity;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
+import org.openur.module.persistence.rdbms.entity.PApplication;
 
 /**
  * @author uwe

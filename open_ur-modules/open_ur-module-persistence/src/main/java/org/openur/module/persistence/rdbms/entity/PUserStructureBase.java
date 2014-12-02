@@ -1,4 +1,4 @@
-package org.openur.module.persistence.rdbms.entity.userstructure;
+package org.openur.module.persistence.rdbms.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,7 +7,6 @@ import javax.persistence.InheritanceType;
 
 import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.util.DefaultsUtil;
-import org.openur.module.persistence.rdbms.entity.AbstractOpenUrPersistable;
 
 @Entity(name="USER_STRUCTURE_BASE")
 @Inheritance(strategy=InheritanceType.JOINED)

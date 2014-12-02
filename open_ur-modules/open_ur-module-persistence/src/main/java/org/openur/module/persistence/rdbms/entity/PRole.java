@@ -1,4 +1,4 @@
-package org.openur.module.persistence.rdbms.entity.security;
+package org.openur.module.persistence.rdbms.entity;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,8 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
-
-import org.openur.module.persistence.rdbms.entity.AbstractOpenUrPersistable;;
 
 @Entity(name="ROLE")
 public class PRole

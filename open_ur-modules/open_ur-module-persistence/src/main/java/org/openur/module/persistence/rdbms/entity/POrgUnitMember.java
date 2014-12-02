@@ -1,4 +1,4 @@
-package org.openur.module.persistence.rdbms.entity.userstructure;
+package org.openur.module.persistence.rdbms.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,7 +8,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import org.apache.commons.lang3.Validate;
-import org.openur.module.persistence.rdbms.entity.AbstractOpenUrPersistable;
 
 @Entity(name="ORG_UNIT_MEMBER")
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)

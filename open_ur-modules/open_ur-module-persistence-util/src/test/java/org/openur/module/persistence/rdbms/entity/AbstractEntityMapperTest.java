@@ -3,7 +3,6 @@ package org.openur.module.persistence.rdbms.entity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.openur.module.domain.IdentifiableEntityImpl;
 import org.openur.module.domain.userstructure.UserStructureBase;
-import org.openur.module.persistence.rdbms.entity.userstructure.PUserStructureBase;
 import org.openur.module.util.exception.OpenURRuntimeException;
 
 public class AbstractEntityMapperTest

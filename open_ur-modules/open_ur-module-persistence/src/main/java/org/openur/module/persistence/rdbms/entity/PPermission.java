@@ -1,4 +1,4 @@
-package org.openur.module.persistence.rdbms.entity.security;
+package org.openur.module.persistence.rdbms.entity;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,8 +16,6 @@ import javax.persistence.ManyToOne;
 
 import org.openur.module.domain.security.authorization.PermissionScope;
 import org.openur.module.domain.util.DefaultsUtil;
-import org.openur.module.persistence.rdbms.entity.AbstractOpenUrPersistable;
-import org.openur.module.persistence.rdbms.entity.application.PApplication;
 
 @Entity(name="PERMISSION")
 public class PPermission

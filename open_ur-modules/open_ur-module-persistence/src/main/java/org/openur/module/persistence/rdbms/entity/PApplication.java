@@ -1,4 +1,4 @@
-package org.openur.module.persistence.rdbms.entity.application;
+package org.openur.module.persistence.rdbms.entity;
 
 import java.util.List;
 
@@ -9,9 +9,6 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-
-import org.openur.module.persistence.rdbms.entity.AbstractOpenUrPersistable;
-import org.openur.module.persistence.rdbms.entity.userstructure.PPerson;
 
 @Entity(name="APPLICATION")
 public class PApplication

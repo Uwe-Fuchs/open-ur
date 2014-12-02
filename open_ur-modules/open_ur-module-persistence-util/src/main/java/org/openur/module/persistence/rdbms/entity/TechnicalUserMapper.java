@@ -1,8 +1,9 @@
-package org.openur.module.persistence.rdbms.entity.userstructure;
+package org.openur.module.persistence.rdbms.entity;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUser.TechnicalUserBuilder;
+import org.openur.module.persistence.rdbms.entity.PTechnicalUser;
 
 public class TechnicalUserMapper
 {

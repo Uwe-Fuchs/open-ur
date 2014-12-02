@@ -1,9 +1,10 @@
-package org.openur.module.persistence.rdbms.entity.userstructure;
+package org.openur.module.persistence.rdbms.entity;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.Address.AddressBuilder;
 import org.openur.module.domain.userstructure.Country;
+import org.openur.module.persistence.rdbms.entity.PAddress;
 
 public class AddressMapper
 {	

@@ -1,10 +1,9 @@
-package org.openur.module.persistence.rdbms.entity.userstructure;
+package org.openur.module.persistence.rdbms.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import org.openur.module.domain.util.DefaultsUtil;
-import org.openur.module.persistence.rdbms.entity.AbstractOpenUrPersistable;
 
 @Entity(name="ADDRESS")
 public class PAddress
