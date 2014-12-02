@@ -20,7 +20,7 @@ public interface IAuthorizableMember
 	{
 		for (IRole role : getRoles())
 		{
-			if (role.getPermissions(app) != null && role.getPermissions(app).contains(permission))
+			if (role.containsPermission(app, permission))
 			{
 				return true;
 			}

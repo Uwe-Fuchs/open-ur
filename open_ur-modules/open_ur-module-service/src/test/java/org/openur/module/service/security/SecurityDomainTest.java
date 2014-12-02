@@ -52,7 +52,7 @@ public class SecurityDomainTest
 		for (IRole r : resultSet)
 		{
 			assertTrue(ROLE_1_ID.equals(r.getIdentifier()) || ROLE_2_ID.equals(r.getIdentifier()));
-			assertTrue(ROLE_1_NAME.equals(r.getRole()) || ROLE_2_NAME.equals(r.getRole()));
+			assertTrue(ROLE_1_NAME.equals(r.getRoleName()) || ROLE_2_NAME.equals(r.getRoleName()));
 		}
 		
 		final String OTHER_ID = UUID.randomUUID().toString();
@@ -74,7 +74,7 @@ public class SecurityDomainTest
 		
 		IRole resultRole = securityDomainServices.findRoleById(ROLE_1_ID);
 		assertEquals(ROLE_1_ID, resultRole.getIdentifier());
-		assertEquals(ROLE_1_NAME, resultRole.getRole());
+		assertEquals(ROLE_1_NAME, resultRole.getRoleName());
 
 		final String ROLE_2_ID = UUID.randomUUID().toString();
 		final String ROLE_2_NAME = "role2Name";
@@ -84,7 +84,7 @@ public class SecurityDomainTest
 		
 		resultRole = securityDomainServices.findRoleById(ROLE_2_ID);
 		assertEquals(ROLE_2_ID, resultRole.getIdentifier());
-		assertEquals(ROLE_2_NAME, resultRole.getRole());
+		assertEquals(ROLE_2_NAME, resultRole.getRoleName());
 		
 		final String OTHER_ID = UUID.randomUUID().toString();
 		resultRole = securityDomainServices.findRoleById(OTHER_ID);
@@ -101,7 +101,7 @@ public class SecurityDomainTest
 		Mockito.when(securityDao.findRoleByName(ROLE_1_ID)).thenReturn(role1);
 		
 		IRole resultRole = securityDomainServices.findRoleByName(ROLE_1_ID);
-		assertEquals(ROLE_1_NAME, resultRole.getRole());
+		assertEquals(ROLE_1_NAME, resultRole.getRoleName());
 		assertEquals(ROLE_1_ID, resultRole.getIdentifier());
 
 		final String ROLE_2_ID = UUID.randomUUID().toString();
@@ -111,12 +111,12 @@ public class SecurityDomainTest
 		Mockito.when(securityDao.findRoleByName(ROLE_2_ID)).thenReturn(role2);
 		
 		resultRole = securityDomainServices.findRoleByName(ROLE_2_ID);
-		assertEquals(ROLE_2_NAME, resultRole.getRole());
+		assertEquals(ROLE_2_NAME, resultRole.getRoleName());
 		assertEquals(ROLE_2_ID, resultRole.getIdentifier());
 		
 		final String OTHER_NAME = "otherName";
 		resultRole = securityDomainServices.findRoleByName(OTHER_NAME);
-		assertTrue(resultRole == null || !OTHER_NAME.equals(resultRole.getRole()) || !OTHER_NAME.equals(resultRole.getRole()));
+		assertTrue(resultRole == null || !OTHER_NAME.equals(resultRole.getRoleName()) || !OTHER_NAME.equals(resultRole.getRoleName()));
 	}
 
 	@Test

@@ -32,20 +32,15 @@ public class OpenURRole
 
 	// accessors:
 	@Override
-	public String getRole()
+	public String getRoleName()
 	{
-		return getRoleName();
+		return roleName;
 	}
 
 	@Override
 	public Set<OpenURPermission> getPermissions(IApplication app)
 	{
 		return permissions.get(app);
-	}
-
-	public String getRoleName()
-	{
-		return roleName;
 	}
 
 	public String getDescription()

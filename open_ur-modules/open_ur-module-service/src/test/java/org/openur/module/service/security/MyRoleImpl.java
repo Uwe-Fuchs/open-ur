@@ -31,7 +31,7 @@ public class MyRoleImpl
 	}
 
 	@Override
-	public String getRole()
+	public String getRoleName()
 	{
 		return this.role;
 	}

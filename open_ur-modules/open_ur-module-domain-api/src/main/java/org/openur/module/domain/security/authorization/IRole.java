@@ -11,11 +11,11 @@ public interface IRole
 	extends IIdentifiableEntity, Comparable<IRole>
 {
 	/**
-	 * the role-literal.
+	 * the role as a string-literal.
 	 * 
 	 * @return String.
 	 */
-	String getRole();
+	String getRoleName();
 
 	/**
 	 * the permissions assigned to this role, for all applications.
@@ -27,18 +27,32 @@ public interface IRole
 	/**
 	 * the permissions assigned to this role for one special application.
 	 * 
-	 * @param application the application whose permissions are queried.
+	 * @param application : the application whose permissions are queried.
 	 * 
 	 * @return Set<IPermission>
 	 */
 	Set<? extends IPermission> getPermissions(IApplication application);
 	
 	// operations:
+	/**
+	 * has this role a certain permission?
+	 * 
+	 * @param application : the application whose permissions are queried.
+	 * @param permission : the permission in question.
+	 * 
+	 * @return this role has the permission.
+	 */
+	default boolean containsPermission(IApplication application, IPermission permission)
+	{
+		return (this.getPermissions(application) != null 
+			&& this.getPermissions(application).contains(permission));
+	}
+	
 	@Override
 	default int compareTo(IRole other)
 	{
 		int comparison = new CompareToBuilder()
-												.append(this.getRole(), other.getRole())
+												.append(this.getRoleName(), other.getRoleName())
 												.toComparison();
 		
 		if (comparison != 0)
