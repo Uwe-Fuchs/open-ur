@@ -1,19 +1,18 @@
 package org.openur.module.persistence.rdbms.entity;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.UUID;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.junit.Test;
 import org.openur.module.domain.userstructure.Address;
+import org.openur.module.domain.userstructure.Address.AddressBuilder;
 import org.openur.module.domain.userstructure.Country;
 import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.Status;
-import org.openur.module.domain.userstructure.Address.AddressBuilder;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitMember.OrgUnitMemberBuilder;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnit;
@@ -23,11 +22,6 @@ import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.person.PersonBuilder;
 import org.openur.module.domain.userstructure.person.Title;
-import org.openur.module.persistence.rdbms.entity.OrganizationalUnitMapper;
-import org.openur.module.persistence.rdbms.entity.PAddress;
-import org.openur.module.persistence.rdbms.entity.POrgUnitMember;
-import org.openur.module.persistence.rdbms.entity.POrganizationalUnit;
-import org.openur.module.persistence.rdbms.entity.PPerson;
 
 public class OrgUnitMapperTest
 {
@@ -168,7 +162,7 @@ public class OrgUnitMapperTest
 	
 		for (POrgUnitMember pMember : persistable.getMembers())
 		{
-			OrgUnitMember member = findMemberInImmutable(pMember,	immutable.getMembers());
+			OrgUnitMember member = findMemberInImmutable(pMember,	immutable);
 	
 			if (member == null
 				|| member.getPerson() == null
@@ -182,9 +176,9 @@ public class OrgUnitMapperTest
 		return true;
 	}
 
-	private static OrgUnitMember findMemberInImmutable(POrgUnitMember pMember, Collection<OrgUnitMember> members)
+	private static OrgUnitMember findMemberInImmutable(POrgUnitMember pMember, OrganizationalUnit immutable)
 	{
-		for (OrgUnitMember member : members)
+		for (OrgUnitMember member : immutable.getMembers())
 		{
 			if (PersonMapperTest.immutableEqualsToEntity(member.getPerson(), pMember.getPerson()))
 			{

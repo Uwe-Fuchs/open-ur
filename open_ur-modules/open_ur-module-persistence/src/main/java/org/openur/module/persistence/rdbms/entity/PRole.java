@@ -39,7 +39,7 @@ public class PRole
 		joinColumns={@JoinColumn(name="ID_ROLE", referencedColumnName="ID")},
 		inverseJoinColumns={@JoinColumn(name="ID_MEMBER", referencedColumnName="ID")}
 	)
-	private Set<PAuthorizableMember> members = new HashSet<>();
+	private Set<POrgUnitMember> members = new HashSet<>();
 		
 	// accessors:
 	public String getRoleName()

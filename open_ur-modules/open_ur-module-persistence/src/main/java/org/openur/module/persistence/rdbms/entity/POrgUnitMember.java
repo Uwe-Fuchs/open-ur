@@ -1,16 +1,19 @@
 package org.openur.module.persistence.rdbms.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import org.apache.commons.lang3.Validate;
 
 @Entity(name="ORG_UNIT_MEMBER")
-@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public class POrgUnitMember
 	extends AbstractOpenUrPersistable
 {
@@ -23,7 +26,15 @@ public class POrgUnitMember
 	
 	@ManyToOne(fetch=FetchType.EAGER, optional=false)
 	@JoinColumn(name="PERSON_ID", referencedColumnName="ID")
-	private PPerson person;	
+	private PPerson person;
+	
+	@ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinTable(
+		name="ROLES_MEMBERS",
+		joinColumns={@JoinColumn(name="ID_MEMBER", referencedColumnName="ID")},
+		inverseJoinColumns={@JoinColumn(name="ID_ROLE", referencedColumnName="ID")}
+	)
+	private Set<PRole> roles= new HashSet<>();
 	
 	// accessors:
 	public POrganizationalUnit getOrgUnit()
@@ -35,19 +46,29 @@ public class POrgUnitMember
 	{
 		return person;
 	}
+	
+	public Set<PRole> getRoles()
+	{
+		return roles;
+	}
 
-	protected void setOrgUnit(POrganizationalUnit orgUnit)
+	void setOrgUnit(POrganizationalUnit orgUnit)
 	{
 		this.orgUnit = orgUnit;
 	}
 
-	protected void setPerson(PPerson person)
+	void setPerson(PPerson person)
 	{
 		this.person = person;
 	}
 
+	void setRoles(Set<PRole> roles)
+	{
+		this.roles = roles;
+	}
+
 	// protected:
-	protected POrgUnitMember(POrganizationalUnit orgUnit, PPerson person)
+	POrgUnitMember(POrganizationalUnit orgUnit, PPerson person)
 	{
 		super();
 		
