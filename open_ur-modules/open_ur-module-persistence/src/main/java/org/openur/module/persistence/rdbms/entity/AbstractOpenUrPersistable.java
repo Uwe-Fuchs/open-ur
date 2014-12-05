@@ -10,6 +10,8 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.data.domain.Persistable;
 
 @MappedSuperclass
@@ -99,5 +101,10 @@ public abstract class AbstractOpenUrPersistable
       hashCode += (this.getId() == null ? 0 : this.getId().hashCode() * 31);
 
       return hashCode;
+  }
+  
+	@Override
+  public String toString() {
+      return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
   }
 }
