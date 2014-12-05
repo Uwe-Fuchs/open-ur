@@ -4,21 +4,21 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
 
+@Converter(autoApply = true)
 public class LocalDateTimePersistenceConverter
 	implements AttributeConverter<LocalDateTime, Timestamp>
 {
 	@Override
-	public Timestamp convertToDatabaseColumn(LocalDateTime attribute)
+	public Timestamp convertToDatabaseColumn(LocalDateTime entityValue)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return Timestamp.valueOf(entityValue);
 	}
 
 	@Override
-	public LocalDateTime convertToEntityAttribute(Timestamp dbData)
+	public LocalDateTime convertToEntityAttribute(Timestamp databaseValue)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return databaseValue.toLocalDateTime();
 	}
 }
