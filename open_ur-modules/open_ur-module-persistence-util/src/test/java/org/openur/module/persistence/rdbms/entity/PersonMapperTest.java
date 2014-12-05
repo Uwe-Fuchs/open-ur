@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -23,12 +22,6 @@ import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.person.PersonBuilder;
 import org.openur.module.domain.userstructure.person.Title;
-import org.openur.module.persistence.rdbms.entity.AddressMapper;
-import org.openur.module.persistence.rdbms.entity.ApplicationMapper;
-import org.openur.module.persistence.rdbms.entity.PAddress;
-import org.openur.module.persistence.rdbms.entity.PApplication;
-import org.openur.module.persistence.rdbms.entity.PPerson;
-import org.openur.module.persistence.rdbms.entity.PersonMapper;
 
 public class PersonMapperTest
 {
@@ -36,7 +29,7 @@ public class PersonMapperTest
 	private Address address;
 	private PAddress pAddress;
 	private Set<OpenURApplication> applications;
-	private List<PApplication> pApplications;
+	private Set<PApplication> pApplications;
 	
 	@Before
 	public void setUp()
@@ -60,7 +53,7 @@ public class PersonMapperTest
 		
 		PApplication pApp1 = ApplicationMapper.mapFromImmutable(app1);
 		PApplication pApp2 = ApplicationMapper.mapFromImmutable(app2);
-		this.pApplications = Arrays.asList(pApp1, pApp2);
+		this.pApplications = new HashSet<>(Arrays.asList(pApp1, pApp2));
 	}
 
 	@Test

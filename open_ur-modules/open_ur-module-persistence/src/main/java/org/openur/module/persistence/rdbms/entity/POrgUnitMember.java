@@ -6,14 +6,19 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.Validate;
 
 @Entity(name="ORG_UNIT_MEMBER")
+@Table(indexes = {@Index(columnList="ORG_UNIT_ID", name="IDX_ORG_UNIT_MEMBER_ORG_UNIT"),
+		@Index(columnList="PERSON_ID", name="IDX_ORG_UNIT_MEMBER_PERSON")})
 public class POrgUnitMember
 	extends AbstractOpenUrPersistable
 {
@@ -28,7 +33,7 @@ public class POrgUnitMember
 	@JoinColumn(name="PERSON_ID", referencedColumnName="ID")
 	private PPerson person;
 	
-	@ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@ManyToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JoinTable(
 		name="ROLES_MEMBERS",
 		joinColumns={@JoinColumn(name="ID_MEMBER", referencedColumnName="ID")},
@@ -65,6 +70,13 @@ public class POrgUnitMember
 	void setRoles(Set<PRole> roles)
 	{
 		this.roles = roles;
+	}
+	
+	// operations:
+	@Transient
+	void addRole(PRole role)
+	{
+		this.getRoles().add(role);
 	}
 
 	// protected:

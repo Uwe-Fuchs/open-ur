@@ -7,12 +7,17 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity(name="ORGANIZATIONAL_UNIT")
+@Table(indexes = {@Index(columnList="SUPER_OU_ID", name="IDX_ORG_UNIT_SUPER_ORG_UNIT"),
+		@Index(columnList="ROOT_OU_ID", name="IDX_ORG_UNIT_ROOT_ORG_UNIT"),
+		@Index(columnList="ADDRESS_ID", name="IDX_ORG_UNIT_ADDRESS")})
 public class POrganizationalUnit
 	extends PUserStructureBase
 {
@@ -27,8 +32,7 @@ public class POrganizationalUnit
 	@JoinColumn(name="ROOT_OU_ID", referencedColumnName="ID")
 	private POrganizationalUnit rootOu;
 	
-	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	@JoinColumn(name="ORG_UNIT_MEMBER_ID", referencedColumnName="ID")
+	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL, mappedBy="id")
 	private Set<POrgUnitMember> members = new HashSet<>();
 	
 	@Column(name="NAME", length=50, nullable=false)
@@ -126,6 +130,13 @@ public class POrganizationalUnit
 	void setEmailAddress(String emailAddress)
 	{
 		this.emailAddress = emailAddress;
+	}
+	
+	// operations:
+	@Transient
+	void addMember(POrgUnitMember member)
+	{
+		this.getMembers().add(member);
 	}
 	
 	@Transient

@@ -1,7 +1,7 @@
 package org.openur.module.persistence.rdbms.entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,16 +9,19 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.openur.module.domain.userstructure.person.Gender;
 import org.openur.module.domain.userstructure.person.Title;
 
 @Entity(name="PERSON")
+@Table(indexes = {@Index(columnList="HOME_ADDRESS_ID", name="IDX_PERSON_ADDRESS")})
 public class PPerson
 	extends PUserStructureBase
 {
@@ -61,13 +64,13 @@ public class PPerson
 	@Column(name="HOME_EMAIL")
   private String homeEmailAddress;
 
-	@ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@ManyToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JoinTable(
 		name="PERSONS_APPS",
 		joinColumns={@JoinColumn(name="ID_PERSON", referencedColumnName="ID")},
 		inverseJoinColumns={@JoinColumn(name="ID_APPLICATION", referencedColumnName="ID")}
 	)
-  private List<PApplication> applications = new ArrayList<>();
+  private Set<PApplication> applications = new HashSet<>();
 
 	// accessors:
 	public Gender getGender()
@@ -125,7 +128,7 @@ public class PPerson
 		return title;
 	}
 
-	public List<PApplication> getApplications()
+	public Set<PApplication> getApplications()
 	{
 		return applications;
 	}
@@ -185,7 +188,7 @@ public class PPerson
 		this.homeEmailAddress = homeEmailAdress;
 	}
 
-	void setApplications(List<PApplication> applications)
+	void setApplications(Set<PApplication> applications)
 	{
 		this.applications = applications;
 	}
@@ -200,6 +203,13 @@ public class PPerson
 	public void setEmployeeNumber(String employeeNumber)
 	{
 		super.setNumber(employeeNumber);
+	}
+	
+	// operations:
+	@Transient
+	void addApplication(PApplication application)
+	{
+		this.getApplications().add(application);
 	}
 
 	// constructor:

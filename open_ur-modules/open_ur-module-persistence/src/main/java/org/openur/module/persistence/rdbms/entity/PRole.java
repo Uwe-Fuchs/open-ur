@@ -10,16 +10,19 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 
 @Entity(name="ROLE")
+@Table(uniqueConstraints={@UniqueConstraint(name="UNQ_ROLE_NAME", columnNames={"ROLE_NAME"})})
 public class PRole
 	extends AbstractOpenUrPersistable
 {
 	private static final long serialVersionUID = 4450642055287859526L;
 
 	// properties:
-	@Column(name="ROLE_NAME", length=50, nullable=false, unique=true)
+	@Column(name="ROLE_NAME", length=50, nullable=false)
   private String roleName;
 	
 	@Column(name="DESCRIPTION")

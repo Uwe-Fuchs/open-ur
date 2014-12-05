@@ -1,6 +1,7 @@
 package org.openur.module.persistence.rdbms.entity;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,15 +10,18 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity(name="APPLICATION")
+@Table(uniqueConstraints={@UniqueConstraint(name="UNQ_APPLICATION_NAME", columnNames={"APPLICATION_NAME"})})
 public class PApplication
 	extends AbstractOpenUrPersistable
 {
 	private static final long serialVersionUID = 4347267728528169905L;
 	
 	// properties:
-	@Column(name="APPLICATION_NAME", nullable=false, unique=true)
+	@Column(name="APPLICATION_NAME", nullable=false)
 	private String applicationName;
 
 	@ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
@@ -26,7 +30,7 @@ public class PApplication
 		joinColumns={@JoinColumn(name="ID_APPLICATION", referencedColumnName="ID")},
 		inverseJoinColumns={@JoinColumn(name="ID_PERSON", referencedColumnName="ID")}
 	)
-	private List<PPerson> persons;
+	private Set<PPerson> persons = new HashSet<>();
 
 	// accessors:
 	public String getApplicationName()
@@ -34,7 +38,7 @@ public class PApplication
 		return applicationName;
 	}
 
-	public List<PPerson> getPersons()
+	public Set<PPerson> getPersons()
 	{
 		return persons;
 	}
@@ -44,7 +48,7 @@ public class PApplication
 		this.applicationName = applicationName;
 	}
 
-	void setPersons(List<PPerson> persons)
+	void setPersons(Set<PPerson> persons)
 	{
 		this.persons = persons;
 	}
