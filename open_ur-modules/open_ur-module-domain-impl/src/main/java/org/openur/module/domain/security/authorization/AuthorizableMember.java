@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnitMember;
-import org.openur.module.domain.userstructure.person.abstr.AbstractPerson;
+import org.openur.module.domain.userstructure.person.Person;
 
 public class AuthorizableMember
 	extends AbstractOrgUnitMember
@@ -32,6 +32,12 @@ public class AuthorizableMember
 		return roles;
 	}
 	
+	@Override
+	public Person getPerson()
+	{
+		return (Person) super.getPerson();
+	}
+	
 	// builder-class:
 	public static class AuthorizableMemberBuilder
 		extends AbstractOrgUnitMemberBuilder<AuthorizableMemberBuilder>
@@ -40,7 +46,7 @@ public class AuthorizableMember
 		private Set<OpenURRole> roles = new HashSet<>();
 		
 		// constructor:
-		public AuthorizableMemberBuilder(AbstractPerson person, String orgUnitId)
+		public AuthorizableMemberBuilder(Person person, String orgUnitId)
 		{
 			super(person, orgUnitId);
 		}
