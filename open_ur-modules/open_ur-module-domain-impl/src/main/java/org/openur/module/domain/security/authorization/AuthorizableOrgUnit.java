@@ -135,9 +135,9 @@ public class AuthorizableOrgUnit
 			return this;
 		}
 
-		public AuthorizableOrgUnitBuilder emailAdress(EMailAddress emailAdress)
+		public AuthorizableOrgUnitBuilder emailAddress(EMailAddress emailAddress)
 		{
-			builderDelegate.emailAddress(emailAdress);
+			builderDelegate.emailAddress(emailAddress);
 			return this;
 		}
 
