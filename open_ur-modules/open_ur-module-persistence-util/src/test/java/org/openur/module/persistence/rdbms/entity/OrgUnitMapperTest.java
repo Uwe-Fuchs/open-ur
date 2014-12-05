@@ -8,15 +8,16 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.junit.Test;
+import org.openur.module.domain.security.authorization.AuthorizableMember;
+import org.openur.module.domain.security.authorization.AuthorizableMember.AuthorizableMemberBuilder;
+import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
+import org.openur.module.domain.security.authorization.AuthorizableOrgUnit.AuthorizableOrgUnitBuilder;
+import org.openur.module.domain.security.authorization.OpenURRole;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.Address.AddressBuilder;
 import org.openur.module.domain.userstructure.Country;
 import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.Status;
-import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
-import org.openur.module.domain.userstructure.orgunit.OrgUnitMember.OrgUnitMemberBuilder;
-import org.openur.module.domain.userstructure.orgunit.OrganizationalUnit;
-import org.openur.module.domain.userstructure.orgunit.OrganizationalUnitBuilder;
 import org.openur.module.domain.userstructure.person.Gender;
 import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.Person;
@@ -36,13 +37,13 @@ public class OrgUnitMapperTest
 		
 		final String OU_ID = UUID.randomUUID().toString();
 	
-		OrgUnitMember m2 = new OrgUnitMemberBuilder(pers2, OU_ID).build();
-		OrgUnitMember m1 = new OrgUnitMemberBuilder(pers1, OU_ID).build();		
+		AuthorizableMember m2 = new AuthorizableMemberBuilder(pers2, OU_ID).build();
+		AuthorizableMember m1 = new AuthorizableMemberBuilder(pers1, OU_ID).build();		
 		
-		OrganizationalUnit rootOu = new OrganizationalUnitBuilder("rootOuNo", "rootOu")
+		AuthorizableOrgUnit rootOu = new AuthorizableOrgUnitBuilder("rootOuNo", "rootOu")
 			.build();
 		
-		OrganizationalUnit superOu = new OrganizationalUnitBuilder("superOuNo", "superOu")
+		AuthorizableOrgUnit superOu = new AuthorizableOrgUnitBuilder("superOuNo", "superOu")
 			.rootOrgUnit(rootOu)
 		  .superOrgUnit(rootOu)
 			.build();
@@ -54,14 +55,14 @@ public class OrgUnitMapperTest
 			.poBox("poBox_1")
 			.build();
 		
-		OrganizationalUnit orgUnit = new OrganizationalUnitBuilder("orgUnitNo", "staff department")
+		AuthorizableOrgUnit orgUnit = new AuthorizableOrgUnitBuilder("orgUnitNo", "staff department")
 			.identifier(OU_ID)
 			.status(Status.ACTIVE)
 			.shortName("stf")
 			.description("managing staff")
 			.rootOrgUnit(rootOu)
 			.superOrgUnit(superOu)
-			.orgUnitMembers(Arrays.asList(m1, m2))
+			.authorizableMembers(Arrays.asList(m1, m2))
 			.address(address)
 			.emailAddress(EMailAddress.create("staff@company.com"))
 			.build();
@@ -119,21 +120,33 @@ public class OrgUnitMapperTest
 		pPerson2.setFirstName("Angela");
 		pPerson2.setLastName("Merkel1");
 		
+		PRole pRole1 = new PRole();
+		pRole1.setRoleName("role1");
+		pRole1.setDescription("description role1");
+		
+		PRole pRole2 = new PRole();
+		pRole2.setRoleName("role2");
+		pRole2.setDescription("description role2");
+		
 		POrgUnitMember pMember1 = new POrgUnitMember(pOrgUnit, pPerson1);
+		pMember1.addRole(pRole1);
+		
 		POrgUnitMember pMember2 = new POrgUnitMember(pOrgUnit, pPerson2);
+		pMember2.addRole(pRole2);
+		
 		pOrgUnit.setMembers(new HashSet<POrgUnitMember>(Arrays.asList(pMember1, pMember2)));
 		
-		OrganizationalUnit rootOu = OrganizationalUnitMapper.mapRootOuFromEntity(pRootOu);
+		AuthorizableOrgUnit rootOu = OrganizationalUnitMapper.mapRootOuFromEntity(pRootOu);
 		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity(rootOu, pRootOu));
 		
-		OrganizationalUnit superOu = OrganizationalUnitMapper.mapSuperOuFromEntity(pSuperOu, rootOu);
+		AuthorizableOrgUnit superOu = OrganizationalUnitMapper.mapSuperOuFromEntity(pSuperOu, rootOu);
 		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity(superOu, pSuperOu));
 		
-		OrganizationalUnit orgUnit = OrganizationalUnitMapper.mapFromEntity(pOrgUnit, rootOu, superOu);		
+		AuthorizableOrgUnit orgUnit = OrganizationalUnitMapper.mapFromEntity(pOrgUnit, rootOu, superOu);		
 		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity(orgUnit, pOrgUnit));
 	}
 
-	public static boolean immutableEqualsToEntity(OrganizationalUnit immutable, POrganizationalUnit persistable)
+	public static boolean immutableEqualsToEntity(AuthorizableOrgUnit immutable, POrganizationalUnit persistable)
 	{
 		if (!AbstractEntityMapperTest.immutableEqualsToEntityUserStructureBase(immutable, persistable))
 		{
@@ -146,7 +159,17 @@ public class OrgUnitMapperTest
 			return false;
 		}
 	
-		boolean isEqual = new EqualsBuilder()
+		for (POrgUnitMember pMember : persistable.getMembers())
+		{
+			AuthorizableMember member = findMemberInImmutable(pMember, immutable);
+	
+			if (member == null || !OrgUnitMapperTest.immutableMemberEqualsToEntityMember(member, pMember))
+			{
+				return false;
+			}
+		}
+		
+		return new EqualsBuilder()
 			.append(immutable.getOrgUnitNumber(), persistable.getOrgUnitNumber())
 			.append(immutable.getName(), persistable.getName())
 			.append(immutable.getShortName(), persistable.getShortName())
@@ -154,31 +177,31 @@ public class OrgUnitMapperTest
 			.append(immutable.getEmailAddress() != null ? immutable.getEmailAddress()
 					.getAsPlainEMailAddress() : null, persistable.getEmailAddress())
 			.isEquals();
+	}
 	
-		if (!isEqual)
+	private static boolean immutableMemberEqualsToEntityMember(AuthorizableMember immutable, POrgUnitMember persistable)
+	{
+		if (!PersonMapperTest.immutableEqualsToEntity(immutable.getPerson(), persistable.getPerson()))
 		{
 			return false;
 		}
-	
-		for (POrgUnitMember pMember : persistable.getMembers())
+		
+		for (PRole pRole : persistable.getRoles())
 		{
-			OrgUnitMember member = findMemberInImmutable(pMember,	immutable);
-	
-			if (member == null
-				|| member.getPerson() == null
-				|| pMember.getPerson() == null
-				|| !PersonMapperTest.immutableEqualsToEntity(member.getPerson(), pMember.getPerson()))
+			OpenURRole role = findRoleInImmutableMember(pRole, immutable);
+			
+			if (role == null || !RoleMapperTest.immutableEqualsToEntity(role, pRole))
 			{
 				return false;
 			}
 		}
-	
+		
 		return true;
 	}
 
-	private static OrgUnitMember findMemberInImmutable(POrgUnitMember pMember, OrganizationalUnit immutable)
+	private static AuthorizableMember findMemberInImmutable(POrgUnitMember pMember, AuthorizableOrgUnit immutable)
 	{
-		for (OrgUnitMember member : immutable.getMembers())
+		for (AuthorizableMember member : immutable.getMembers())
 		{
 			if (PersonMapperTest.immutableEqualsToEntity(member.getPerson(), pMember.getPerson()))
 			{
@@ -186,6 +209,19 @@ public class OrgUnitMapperTest
 			}
 		}
 	
+		return null;
+	}
+	
+	private static OpenURRole findRoleInImmutableMember(PRole pRole, AuthorizableMember immutableMember)
+	{
+		for (OpenURRole role : immutableMember.getRoles())
+		{
+			if (RoleMapperTest.immutableEqualsToEntity(role, pRole))
+			{
+				return role;
+			}
+		}
+		
 		return null;
 	}
 }
