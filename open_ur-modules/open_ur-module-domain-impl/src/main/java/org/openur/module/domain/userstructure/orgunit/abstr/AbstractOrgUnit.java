@@ -43,6 +43,7 @@ public abstract class AbstractOrgUnit
 	}
 
 	// operations:
+	@Override
 	public AbstractOrgUnitMember findMember(String id)
 	{
 		return (AbstractOrgUnitMember) IOrganizationalUnit.super.findMember(id);

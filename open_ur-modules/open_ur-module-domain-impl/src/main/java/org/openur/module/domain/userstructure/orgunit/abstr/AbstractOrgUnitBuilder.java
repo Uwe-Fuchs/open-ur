@@ -94,7 +94,7 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 		return superOrgUnit;
 	}
 
-	Set<AbstractOrgUnitMember> getMembers()
+	Set<? extends AbstractOrgUnitMember> getMembers()
 	{
 		return members;
 	}

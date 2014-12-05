@@ -1,6 +1,8 @@
 package org.openur.module.domain.security.authorization;
 
 import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.EMailAddress;
@@ -8,6 +10,7 @@ import org.openur.module.domain.userstructure.orgunit.OrganizationalUnit;
 import org.openur.module.domain.userstructure.orgunit.OrganizationalUnitBuilder;
 import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnit;
 import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnitBuilder;
+import org.openur.module.domain.userstructure.person.IPerson;
 
 public class AuthorizableOrgUnit
 	extends AbstractOrgUnit
@@ -63,7 +66,28 @@ public class AuthorizableOrgUnit
 	{
 		return (AuthorizableOrgUnit) super.superOrgUnit;
 	}
-	
+
+	@Override
+	public Set<AuthorizableMember> getMembers()
+	{
+		return super.getMembers()
+			.stream()
+			.map(member -> (AuthorizableMember) member)
+			.collect(Collectors.toSet()); 
+	}
+
+	@Override
+	public AuthorizableMember findMember(String id)
+	{
+		return (AuthorizableMember) super.findMember(id);
+	}
+
+	@Override
+	public AuthorizableMember findMember(IPerson person)
+	{
+		return (AuthorizableMember) super.findMember(person);
+	}
+
 	// builder-class:
 	public static class AuthorizableOrgUnitBuilder
 		extends AbstractOrgUnitBuilder<AuthorizableOrgUnitBuilder>
