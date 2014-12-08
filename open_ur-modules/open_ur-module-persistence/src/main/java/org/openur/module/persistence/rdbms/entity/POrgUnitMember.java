@@ -57,30 +57,22 @@ public class POrgUnitMember
 		return roles;
 	}
 
-	void setOrgUnit(POrganizationalUnit orgUnit)
+	public void setRoles(Set<PRole> roles)
 	{
-		this.orgUnit = orgUnit;
-	}
-
-	void setPerson(PPerson person)
-	{
-		this.person = person;
-	}
-
-	void setRoles(Set<PRole> roles)
-	{
+		Validate.notNull(roles, "roles-collection must not be null!");
+		
 		this.roles = roles;
 	}
 	
 	// operations:
 	@Transient
-	void addRole(PRole role)
+	public void addRole(PRole role)
 	{
 		this.getRoles().add(role);
 	}
 
-	// protected:
-	POrgUnitMember(POrganizationalUnit orgUnit, PPerson person)
+	// constructors:
+	public POrgUnitMember(POrganizationalUnit orgUnit, PPerson person)
 	{
 		super();
 		

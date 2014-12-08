@@ -15,13 +15,11 @@ public class OrganizationalUnitMapper
 	public static POrganizationalUnit mapFromImmutable(
 		AuthorizableOrgUnit immutable, POrganizationalUnit rootOu,	POrganizationalUnit superOu)
 	{
-		POrganizationalUnit persistable = new POrganizationalUnit();
+		POrganizationalUnit persistable = new POrganizationalUnit(immutable.getOrgUnitNumber(), immutable.getName());
 
-		persistable.setOrgUnitNumber(immutable.getOrgUnitNumber());
 		persistable.setStatus(immutable.getStatus());
 		persistable.setRootOu(rootOu);
 		persistable.setSuperOu(superOu);
-		persistable.setName(immutable.getName());
 		persistable.setShortName(immutable.getShortName());
 		persistable.setDescription(immutable.getDescription());
 		persistable.setAddress(immutable.getAddress() != null ? AddressMapper

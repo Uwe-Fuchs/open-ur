@@ -9,9 +9,8 @@ public class TechnicalUserMapper
 {
 	public static PTechnicalUser mapFromImmutable(TechnicalUser immutable)
 	{
-		PTechnicalUser persistable = new PTechnicalUser();
-		
-		persistable.setTechUserNumber(immutable.getTechUserNumber());
+		PTechnicalUser persistable = new PTechnicalUser(immutable.getTechUserNumber());
+
 		persistable.setStatus(immutable.getStatus());
 		
 		return persistable;

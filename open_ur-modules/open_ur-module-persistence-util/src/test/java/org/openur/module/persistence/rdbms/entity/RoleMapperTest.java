@@ -67,8 +67,7 @@ public class RoleMapperTest
 			.build();
 		PPermission pPerm2 = PermissionMapper.mapFromImmutable(perm2);
 	
-		PRole persistable = new PRole();
-		persistable.setRoleName("role1");
+		PRole persistable = new PRole("role1");
 		persistable.setDescription("description role1");
 		persistable.setPermissions(new HashSet<PPermission>(Arrays.asList(pPerm1, pPerm2)));
 		

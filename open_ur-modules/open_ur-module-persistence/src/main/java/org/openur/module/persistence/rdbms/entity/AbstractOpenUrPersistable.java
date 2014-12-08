@@ -33,6 +33,7 @@ public abstract class AbstractOpenUrPersistable
 
 	protected AbstractOpenUrPersistable()
 	{
+		// jpa
 		super();
 	}
 

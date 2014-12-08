@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.userstructure.person.Gender;
 import org.openur.module.domain.userstructure.person.Title;
 
@@ -133,62 +134,57 @@ public class PPerson
 		return applications;
 	}
 
-	void setTitle(Title title)
+	public void setTitle(Title title)
 	{
 		this.title = title;
 	}
 
-	void setGender(Gender gender)
+	public void setGender(Gender gender)
 	{
 		this.gender = gender;
 	}
 
-	void setFirstName(String firstName)
+	public void setFirstName(String firstName)
 	{
 		this.firstName = firstName;
 	}
 
-	void setLastName(String lastName)
-	{
-		this.lastName = lastName;
-	}
-
-	void setPhoneNumber(String phoneNumber)
+	public void setPhoneNumber(String phoneNumber)
 	{
 		this.phoneNumber = phoneNumber;
 	}
 
-	void setFaxNumber(String faxNumber)
+	public void setFaxNumber(String faxNumber)
 	{
 		this.faxNumber = faxNumber;
 	}
 
-	void setEmailAdress(String emailAdress)
+	public void setEmailAdress(String emailAdress)
 	{
 		this.emailAddress = emailAdress;
 	}
 
-	void setMobileNumber(String mobileNumber)
+	public void setMobileNumber(String mobileNumber)
 	{
 		this.mobileNumber = mobileNumber;
 	}
 
-	void setHomeAddress(PAddress homeAddress)
+	public void setHomeAddress(PAddress homeAddress)
 	{
 		this.homeAddress = homeAddress;
 	}
 
-	void setHomePhoneNumber(String homePhoneNumber)
+	public void setHomePhoneNumber(String homePhoneNumber)
 	{
 		this.homePhoneNumber = homePhoneNumber;
 	}
 
-	void setHomeEmailAdress(String homeEmailAdress)
+	public void setHomeEmailAdress(String homeEmailAdress)
 	{
 		this.homeEmailAddress = homeEmailAdress;
 	}
 
-	void setApplications(Set<PApplication> applications)
+	public void setApplications(Set<PApplication> applications)
 	{
 		this.applications = applications;
 	}
@@ -199,12 +195,6 @@ public class PPerson
 		return super.getNumber();
 	}
 	
-	@Transient
-	public void setEmployeeNumber(String employeeNumber)
-	{
-		super.setNumber(employeeNumber);
-	}
-	
 	// operations:
 	@Transient
 	void addApplication(PApplication application)
@@ -213,8 +203,11 @@ public class PPerson
 	}
 
 	// constructor:
-	PPerson()
+	public PPerson(String employeeNumber, String lastName)
 	{
-		super();
+		super(employeeNumber);
+		
+		Validate.notNull(lastName, "last name must not be null");
+		this.lastName = lastName;
 	}
 }

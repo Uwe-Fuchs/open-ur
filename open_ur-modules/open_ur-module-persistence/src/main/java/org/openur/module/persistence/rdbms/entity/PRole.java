@@ -14,6 +14,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
+import org.apache.commons.lang3.Validate;
+
 @Entity(name="ROLE")
 @Table(uniqueConstraints={@UniqueConstraint(name="UNQ_ROLE_NAME", columnNames={"ROLE_NAME"})})
 public class PRole
@@ -60,31 +62,30 @@ public class PRole
 		return permissions;
 	}
 
-	void setRoleName(String roleName)
-	{
-		this.roleName = roleName;
-	}
-
-	void setDescription(String description)
+	public void setDescription(String description)
 	{
 		this.description = description;
 	}
 
-	void setPermissions(Set<PPermission> permissions)
+	public void setPermissions(Set<PPermission> permissions)
 	{
+		Validate.notNull(permissions, "permissions must not be null!");
 		this.permissions = permissions;
 	}
 	
 	// operations:
 	@Transient
-	void addPermssion(PPermission permission)
+	public void addPermssion(PPermission permission)
 	{
 		this.getPermissions().add(permission);
 	}
 	
 	// constructor:
-	PRole()
+	public PRole(String roleName)
 	{
 		super();
-	}	
+
+		Validate.notEmpty(roleName, "role-name must not be empty!");
+		this.roleName = roleName;
+	}
 }

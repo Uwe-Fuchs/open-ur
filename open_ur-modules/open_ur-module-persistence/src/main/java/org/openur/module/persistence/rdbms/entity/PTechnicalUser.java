@@ -14,16 +14,10 @@ public class PTechnicalUser
 	{
 		return super.getNumber();
 	}
-	
-	@Transient
-	public void setTechUserNumber(String techUserNumber)
-	{
-		super.setNumber(techUserNumber);
-	}
 
-	// constructor:
-	PTechnicalUser()
+	// constructors:
+	public PTechnicalUser(String techUserNumber)
 	{
-		super();
+		super(techUserNumber);
 	}
 }

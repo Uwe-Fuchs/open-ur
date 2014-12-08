@@ -7,6 +7,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.util.DefaultsUtil;
 
@@ -24,12 +25,6 @@ public abstract class PUserStructureBase
 	@Column(name="STATUS", nullable=false)
 	private Status status = DefaultsUtil.getDefaultStatus();
 
-	// constructor:
-	protected PUserStructureBase()
-	{
-		super();
-	}
-
 	// accessors:
 	protected String getNumber()
 	{
@@ -41,13 +36,17 @@ public abstract class PUserStructureBase
 		return status;
 	}
 
-	protected void setNumber(String number)
-	{
-		this.number = number;
-	}
-
 	protected void setStatus(Status status)
 	{
 		this.status = status;
+	}
+
+	// constructors:
+	protected PUserStructureBase(String number)
+	{
+		super();
+		
+		Validate.notEmpty(number, "number must not be empty!");
+		this.number = number;
 	}
 }

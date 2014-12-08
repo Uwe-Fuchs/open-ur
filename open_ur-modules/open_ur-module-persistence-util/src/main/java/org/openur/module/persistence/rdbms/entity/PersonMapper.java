@@ -13,13 +13,11 @@ public class PersonMapper
 {
 	public static PPerson mapFromImmutable(Person immutable)
 	{
-		PPerson persistable = new PPerson();
+		PPerson persistable = new PPerson(immutable.getEmployeeNumber(), immutable.getName().getLastName());
 
-		persistable.setEmployeeNumber(immutable.getEmployeeNumber());
 		persistable.setEmailAdress(immutable.getEmailAddress() != null ? immutable.getEmailAddress().getAsPlainEMailAddress() : null);
 		persistable.setFaxNumber(immutable.getFaxNumber());
 		persistable.setFirstName(immutable.getName().getFirstName());
-		persistable.setLastName(immutable.getName().getLastName());
 		persistable.setGender(immutable.getName().getGender());
 		persistable.setTitle(immutable.getName().getTitle());
 		persistable.setHomeEmailAdress(immutable.getHomeEmailAddress() != null ? immutable.getHomeEmailAddress().getAsPlainEMailAddress() : null);

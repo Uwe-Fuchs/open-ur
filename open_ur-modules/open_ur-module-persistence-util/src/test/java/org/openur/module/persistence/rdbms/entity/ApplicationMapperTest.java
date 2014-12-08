@@ -27,8 +27,7 @@ public class ApplicationMapperTest
 	@Test
 	public void testMapToImmutable()
 	{
-		PApplication persistable = new PApplication();
-		persistable.setApplicationName(APP_NAME);
+		PApplication persistable = new PApplication(APP_NAME);
 		OpenURApplication immutable = ApplicationMapper.mapFromEntity(persistable);
 		
 		assertNotNull(immutable);

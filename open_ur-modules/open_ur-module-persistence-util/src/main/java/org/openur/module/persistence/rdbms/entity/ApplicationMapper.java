@@ -14,10 +14,7 @@ public class ApplicationMapper
 {
 	public static PApplication mapFromImmutable(OpenURApplication immutable)
 	{
-		PApplication persistable = new PApplication();
-		persistable.setApplicationName(immutable.getApplicationName());
-
-		return persistable;
+		return new PApplication(immutable.getApplicationName());
 	}
 
 	public static OpenURApplication mapFromEntity(PApplication persistable)

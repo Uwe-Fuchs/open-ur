@@ -13,6 +13,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.apache.commons.lang3.Validate;
+
 @Entity(name="APPLICATION")
 @Table(uniqueConstraints={@UniqueConstraint(name="UNQ_APPLICATION_NAME", columnNames={"APPLICATION_NAME"})})
 public class PApplication
@@ -43,19 +45,24 @@ public class PApplication
 		return persons;
 	}
 
-	void setApplicationName(String applicationName)
-	{
-		this.applicationName = applicationName;
-	}
-
-	void setPersons(Set<PPerson> persons)
+	public void setPersons(Set<PPerson> persons)
 	{
 		this.persons = persons;
 	}
 
-	// constructor:
-	PApplication()
+	// constructors:
+	public PApplication(String applicationName)
 	{
+		super();
+		
+		Validate.notEmpty(applicationName, "application-name must not be empty!");
+		this.applicationName = applicationName;
+	}
+	
+	@SuppressWarnings("unused")
+	private PApplication()
+	{
+		// jpa
 		super();
 	}
 }

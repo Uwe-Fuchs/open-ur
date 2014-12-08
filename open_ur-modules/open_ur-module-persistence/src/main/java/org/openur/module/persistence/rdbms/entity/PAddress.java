@@ -3,6 +3,7 @@ package org.openur.module.persistence.rdbms.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
+import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.util.DefaultsUtil;
 
 @Entity(name="ADDRESS")
@@ -69,44 +70,49 @@ public class PAddress
 		return countryCode;
 	}
 
-	void setCareOf(String careOf)
+	public void setCareOf(String careOf)
 	{
 		this.careOf = careOf;
 	}
 
-	void setPoBox(String poBox)
+	public void setPoBox(String poBox)
 	{
 		this.poBox = poBox;
 	}
 
-	void setStreet(String street)
+	public void setStreet(String street)
 	{
 		this.street = street;
 	}
 
-	void setStreetNo(String streetNo)
+	public void setStreetNo(String streetNo)
 	{
 		this.streetNo = streetNo;
 	}
 
-	void setPostcode(String postcode)
-	{
-		this.postcode = postcode;
-	}
-
-	void setCity(String city)
+	public void setCity(String city)
 	{
 		this.city = city;
 	}
 
-	void setCountryCode(String countryCode)
+	public void setCountryCode(String countryCode)
 	{
 		this.countryCode = countryCode;
 	}
 
-	// constructor:
-	PAddress()
+	// constructors:
+	public PAddress(String postcode)
 	{
+		super();
+		
+		Validate.notEmpty(postcode, "post-code must not be empty!");	
+		this.postcode = postcode;
+	}
+	
+	@SuppressWarnings("unused")
+	private PAddress()
+	{
+		// jpa
 		super();
 	}
 }

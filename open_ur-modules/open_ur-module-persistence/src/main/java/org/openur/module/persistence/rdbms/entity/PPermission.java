@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.security.authorization.PermissionScope;
 import org.openur.module.domain.util.DefaultsUtil;
 
@@ -72,29 +73,27 @@ public class PPermission
 		return application;
 	}
 
-	void setPermissionName(String permissionName)
-	{
-		this.permissionName = permissionName;
-	}
-
-	void setDescription(String description)
+	public void setDescription(String description)
 	{
 		this.description = description;
 	}
 
-	void setPermissionScope(PermissionScope permissionScope)
+	public void setPermissionScope(PermissionScope permissionScope)
 	{
+		Validate.notNull(permissionScope, "permission-scope must not be null!");
+		
 		this.permissionScope = permissionScope;
 	}
 
-	void setApplication(PApplication application)
-	{
-		this.application = application;
-	}
-
 	// constructor:
-	PPermission()
+	public PPermission(String permissionName, PApplication application)
 	{
 		super();
+
+		Validate.notEmpty(permissionName, "permission-name must not be empty!");
+		Validate.notNull(application, "application must not be null!");		
+		
+		this.permissionName = permissionName;
+		this.application = application;
 	}
 }

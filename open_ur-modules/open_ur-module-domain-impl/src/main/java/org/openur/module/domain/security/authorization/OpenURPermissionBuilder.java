@@ -34,7 +34,9 @@ public class OpenURPermissionBuilder
 	
 	public OpenURPermissionBuilder permissionScope(PermissionScope permissionScope)
 	{
+		Validate.notNull(permissionScope, "permission-scope must not be null!");
 		this.permissionScope = permissionScope;
+		
 		return this;
 	}
 	

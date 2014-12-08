@@ -33,12 +33,11 @@ public class AddressMapperTest
 	@Test
 	public void testMapFromEntity()
 	{
-		PAddress persistable = new PAddress();
+		PAddress persistable = new PAddress("11");
 		
 		persistable.setCareOf("Schmidt");
 		persistable.setCity("city_1");
 		persistable.setPoBox("poBox_1");
-		persistable.setPostcode("11");
 		persistable.setStreet("street_1");
 		persistable.setStreetNo("11");
 		persistable.setCountryCode("DE");

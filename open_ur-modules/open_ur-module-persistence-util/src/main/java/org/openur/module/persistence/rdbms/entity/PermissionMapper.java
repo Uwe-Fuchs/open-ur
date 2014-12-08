@@ -10,12 +10,11 @@ public class PermissionMapper
 {
 	public static PPermission mapFromImmutable(OpenURPermission immutable)
 	{
-		PPermission persistable = new PPermission();
-		
-		persistable.setPermissionName(immutable.getPermissionName());
+		PApplication pApp = ApplicationMapper.mapFromImmutable(immutable.getApplication());
+		PPermission persistable = new PPermission(immutable.getPermissionName(), pApp);
+
 		persistable.setPermissionScope(immutable.getPermissionScope());
 		persistable.setDescription(immutable.getDescription());
-		persistable.setApplication(ApplicationMapper.mapFromImmutable(immutable.getApplication()));
 		
 		return persistable;
 	}
@@ -31,10 +30,10 @@ public class PermissionMapper
 		}
 		
 		return immutableBuilder
-			.permissionScope(persistable.getPermissionScope())
-			.description(persistable.getDescription())
-			.creationDate(persistable.getCreationDate())
-			.lastModifiedDate(persistable.getLastModifiedDate())
-			.build();
+				.permissionScope(persistable.getPermissionScope())
+				.description(persistable.getDescription())
+				.creationDate(persistable.getCreationDate())
+				.lastModifiedDate(persistable.getLastModifiedDate())
+				.build();
 	}
 }

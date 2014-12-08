@@ -37,10 +37,7 @@ public class PermissionMapperTest
 		OpenURApplication app = new OpenURApplicationBuilder("appName").build();
 		PApplication pApp = ApplicationMapper.mapFromImmutable(app);
 		
-		PPermission persistable = new PPermission();
-		persistable.setApplication(pApp);
-		persistable.setPermissionName("permName");
-		persistable.setDescription("permDescription");
+		PPermission persistable = new PPermission("permName", pApp);
 		persistable.setPermissionScope(PermissionScope.SELECTED_SUB);
 		
 		OpenURPermission immutable = PermissionMapper.mapFromEntity(persistable);

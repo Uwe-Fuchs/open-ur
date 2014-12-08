@@ -12,8 +12,7 @@ public class RoleMapper
 {
 	public static PRole mapFromImmutable(OpenURRole immutable)
 	{
-		PRole persistable = new PRole();
-		persistable.setRoleName(immutable.getRoleName());
+		PRole persistable = new PRole(immutable.getRoleName());
 		persistable.setDescription(immutable.getDescription());
 		
 //		immutable.getAllPermissions().keySet()

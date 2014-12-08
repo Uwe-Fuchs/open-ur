@@ -10,12 +10,11 @@ public class AddressMapper
 {	
 	public static PAddress mapFromImmutable(Address immutable)
 	{
-		PAddress persistable = new PAddress();
+		PAddress persistable = new PAddress(immutable.getPostcode());
 		
 		persistable.setCareOf(immutable.getCareOf());
 		persistable.setCity(immutable.getCity());
 		persistable.setPoBox(immutable.getPoBox());
-		persistable.setPostcode(immutable.getPostcode());
 		persistable.setStreet(immutable.getStreet());
 		persistable.setStreetNo(immutable.getStreetNo());
 		persistable.setCountryCode(immutable.getCountry() != null ? immutable.getCountry().getCountryCode() : null);

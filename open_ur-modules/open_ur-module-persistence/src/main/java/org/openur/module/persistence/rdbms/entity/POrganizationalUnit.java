@@ -14,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang3.Validate;
+
 @Entity(name="ORGANIZATIONAL_UNIT")
 @Table(indexes = {@Index(columnList="SUPER_OU_ID", name="IDX_ORG_UNIT_SUPER_ORG_UNIT"),
 		@Index(columnList="ROOT_OU_ID", name="IDX_ORG_UNIT_ROOT_ORG_UNIT"),
@@ -57,7 +59,7 @@ public class POrganizationalUnit
 		return superOu;
 	}
 
-	void setSuperOu(POrganizationalUnit superOu)
+	public void setSuperOu(POrganizationalUnit superOu)
 	{
 		this.superOu = superOu;
 	}
@@ -67,7 +69,7 @@ public class POrganizationalUnit
 		return rootOu;
 	}
 
-	void setRootOu(POrganizationalUnit rootOu)
+	public void setRootOu(POrganizationalUnit rootOu)
 	{
 		this.rootOu = rootOu;
 	}
@@ -77,7 +79,7 @@ public class POrganizationalUnit
 		return members;
 	}
 
-	void setMembers(Set<POrgUnitMember> members)
+	public void setMembers(Set<POrgUnitMember> members)
 	{
 		this.members = members;
 	}
@@ -87,17 +89,12 @@ public class POrganizationalUnit
 		return name;
 	}
 
-	void setName(String name)
-	{
-		this.name = name;
-	}
-
 	public String getShortName()
 	{
 		return shortName;
 	}
 
-	void setShortName(String shortName)
+	public void setShortName(String shortName)
 	{
 		this.shortName = shortName;
 	}
@@ -107,7 +104,7 @@ public class POrganizationalUnit
 		return description;
 	}
 
-	void setDescription(String description)
+	public void setDescription(String description)
 	{
 		this.description = description;
 	}
@@ -117,7 +114,7 @@ public class POrganizationalUnit
 		return address;
 	}
 
-	void setAddress(PAddress address)
+	public void setAddress(PAddress address)
 	{
 		this.address = address;
 	}
@@ -127,14 +124,14 @@ public class POrganizationalUnit
 		return emailAddress;
 	}
 
-	void setEmailAddress(String emailAddress)
+	public void setEmailAddress(String emailAddress)
 	{
 		this.emailAddress = emailAddress;
 	}
 	
 	// operations:
 	@Transient
-	void addMember(POrgUnitMember member)
+	public void addMember(POrgUnitMember member)
 	{
 		this.getMembers().add(member);
 	}
@@ -144,16 +141,13 @@ public class POrganizationalUnit
 	{
 		return super.getNumber();
 	}
-	
-	@Transient
-	public void setOrgUnitNumber(String employeeNumber)
-	{
-		super.setNumber(employeeNumber);
-	}
 
 	// constructor:
-	POrganizationalUnit()
+	public POrganizationalUnit(String orgUnitNumber, String name)
 	{
-		super();
+		super(orgUnitNumber);
+		
+		Validate.notEmpty(name, "name must not be empty!");
+		this.name = name;
 	}
 }

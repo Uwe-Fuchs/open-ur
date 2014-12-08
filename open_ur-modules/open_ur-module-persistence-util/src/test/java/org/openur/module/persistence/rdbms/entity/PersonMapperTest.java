@@ -80,13 +80,11 @@ public class PersonMapperTest
 	@Test
 	public void testMapFromEntity()
 	{
-		PPerson persistable = new PPerson();
+		PPerson persistable = new PPerson("123abc", "Fuchs");
 
-		persistable.setEmployeeNumber("123abc");
 		persistable.setGender(Gender.MALE);
 		persistable.setTitle(Title.NONE);
 		persistable.setFirstName("Uwe");
-		persistable.setLastName("Fuchs");
 		persistable.setStatus(Status.ACTIVE);
 		persistable.setEmailAdress("office@uwefuchs.com");
 		persistable.setPhoneNumber("0049123456789");

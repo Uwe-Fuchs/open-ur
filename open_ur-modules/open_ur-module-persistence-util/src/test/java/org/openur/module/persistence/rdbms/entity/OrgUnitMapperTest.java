@@ -105,58 +105,45 @@ public class OrgUnitMapperTest
 	@Test
 	public void testMapFromEntity()
 	{
-		POrganizationalUnit pRootOu = new POrganizationalUnit();
-		pRootOu.setOrgUnitNumber("rootOuNo");
-		pRootOu.setName("rootOu");
+		POrganizationalUnit pRootOu = new POrganizationalUnit("rootOuNo", "rootOu");
 		
 		AuthorizableOrgUnit rootOu = OrganizationalUnitMapper.mapRootOuFromEntity(pRootOu);
 		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity(rootOu, pRootOu));
 		
-		POrganizationalUnit pSuperOu = new POrganizationalUnit();
+		POrganizationalUnit pSuperOu = new POrganizationalUnit("superOuNo", "superOu");
 		pSuperOu.setSuperOu(pRootOu);
 		pSuperOu.setRootOu(pRootOu);	
-		pSuperOu.setOrgUnitNumber("superOuNo");
-		pSuperOu.setName("superOu");
 		
 		AuthorizableOrgUnit superOu = OrganizationalUnitMapper.mapSuperOuFromEntity(pSuperOu, rootOu);
 		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity(superOu, pSuperOu));
 		
-		POrganizationalUnit pOrgUnit = new POrganizationalUnit();
+		POrganizationalUnit pOrgUnit = new POrganizationalUnit("orgUnitNo", "staff department");
 		pOrgUnit.setSuperOu(pSuperOu);
 		pOrgUnit.setRootOu(pRootOu);
-		pOrgUnit.setOrgUnitNumber("orgUnitNo");
-		pOrgUnit.setName("staff department");
 		pOrgUnit.setShortName("stf");
 		pOrgUnit.setDescription("managing staff");
 		pOrgUnit.setEmailAddress("staff@company.com");
 
-		PAddress pAddress = new PAddress();
+		PAddress pAddress = new PAddress("11");
 		pAddress.setCountryCode("DE");
 		pAddress.setCity("city_1");
-		pAddress.setPostcode("11");
 		pAddress.setStreet("street_1");
 		pAddress.setPoBox("poBox_1");
 		pOrgUnit.setAddress(pAddress);
 		
-		PPerson pPerson1 = new PPerson();
-		pPerson1.setEmployeeNumber("persNo1");
+		PPerson pPerson1 = new PPerson("persNo1", "Obama");
 		pPerson1.setGender(Gender.MALE);
 		pPerson1.setFirstName("Barack");
-		pPerson1.setLastName("Obama");
 		
-		PPerson pPerson2 = new PPerson();
-		pPerson2.setEmployeeNumber("persNo2");
+		PPerson pPerson2 = new PPerson("persNo2", "Merkel");
 		pPerson2.setGender(Gender.FEMALE);
 		pPerson2.setTitle(Title.DR);
 		pPerson2.setFirstName("Angela");
-		pPerson2.setLastName("Merkel1");
 		
-		PRole pRole1 = new PRole();
-		pRole1.setRoleName("role1");
+		PRole pRole1 = new PRole("role1");
 		pRole1.setDescription("description role1");
 		
-		PRole pRole2 = new PRole();
-		pRole2.setRoleName("role2");
+		PRole pRole2 = new PRole("role2");
 		pRole2.setDescription("description role2");
 		
 		POrgUnitMember pMember1 = new POrgUnitMember(pOrgUnit, pPerson1);
@@ -204,16 +191,16 @@ public class OrgUnitMapperTest
 			.isEquals();
 	}
 	
-	private static boolean immutableMemberEqualsToEntityMember(AuthorizableMember immutable, POrgUnitMember persistable)
+	private static boolean immutableMemberEqualsToEntityMember(AuthorizableMember immutableMember, POrgUnitMember persistableMember)
 	{
-		if (!PersonMapperTest.immutableEqualsToEntity(immutable.getPerson(), persistable.getPerson()))
+		if (!PersonMapperTest.immutableEqualsToEntity(immutableMember.getPerson(), persistableMember.getPerson()))
 		{
 			return false;
 		}
 		
-		for (PRole pRole : persistable.getRoles())
+		for (PRole pRole : persistableMember.getRoles())
 		{
-			OpenURRole role = findRoleInImmutableMember(pRole, immutable);
+			OpenURRole role = findRoleInImmutableMember(pRole, immutableMember);
 			
 			if (role == null || !RoleMapperTest.immutableEqualsToEntity(role, pRole))
 			{

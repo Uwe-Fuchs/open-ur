@@ -22,8 +22,7 @@ public class OpenURRoleBuilder
 	{
 		super();
 
-		Validate.notEmpty(roleName, "role-name must not be empty!");
-		
+		Validate.notEmpty(roleName, "role-name must not be empty!");		
 		this.roleName = roleName;
 	}
 	
@@ -42,6 +41,8 @@ public class OpenURRoleBuilder
 	
 	public OpenURRoleBuilder permissions(Set<OpenURPermission> perms)
 	{		
+		Validate.notNull(perms, "permissions must not be null!");
+		
 		Map<OpenURApplication, Set<OpenURPermission>> permsLocal = perms
 			.stream()
 			.collect(Collectors.groupingBy(OpenURPermission::getApplication, Collectors.toSet()));
