@@ -36,7 +36,7 @@ public abstract class PUserStructureBase
 		return status;
 	}
 
-	protected void setStatus(Status status)
+	public void setStatus(Status status)
 	{
 		Validate.notNull(status, "status must not be null!");
 		this.status = status;
