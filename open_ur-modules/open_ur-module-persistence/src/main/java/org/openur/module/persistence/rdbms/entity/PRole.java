@@ -57,6 +57,17 @@ public class PRole
 		return description;
 	}
 
+	public Set<POrgUnitMember> getMembers()
+	{
+		return members;
+	}
+
+	void setMembers(Set<POrgUnitMember> members)
+	{
+		Validate.notNull(members, "members-set must not be null!");
+		this.members = members;
+	}
+
 	public Set<PPermission> getPermissions()
 	{
 		return permissions;
@@ -69,7 +80,7 @@ public class PRole
 
 	public void setPermissions(Set<PPermission> permissions)
 	{
-		Validate.notNull(permissions, "permissions must not be null!");
+		Validate.notNull(permissions, "permissions-set must not be null!");
 		this.permissions = permissions;
 	}
 	
@@ -77,6 +88,7 @@ public class PRole
 	@Transient
 	public void addPermssion(PPermission permission)
 	{
+		Validate.notNull(permission, "permission must not be null!");
 		this.getPermissions().add(permission);
 	}
 	

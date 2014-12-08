@@ -79,11 +79,6 @@ public class POrganizationalUnit
 		return members;
 	}
 
-	public void setMembers(Set<POrgUnitMember> members)
-	{
-		this.members = members;
-	}
-
 	public String getName()
 	{
 		return name;
@@ -128,11 +123,18 @@ public class POrganizationalUnit
 	{
 		this.emailAddress = emailAddress;
 	}
+
+	public void setMembers(Set<POrgUnitMember> members)
+	{
+		Validate.notNull(members, "members-set must not be null!");	
+		this.members = members;
+	}
 	
 	// operations:
 	@Transient
 	public void addMember(POrgUnitMember member)
 	{
+		Validate.notNull(member, "member must not be null!");	
 		this.getMembers().add(member);
 	}
 	

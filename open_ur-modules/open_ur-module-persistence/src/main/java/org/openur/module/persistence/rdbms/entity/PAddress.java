@@ -97,6 +97,7 @@ public class PAddress
 
 	public void setCountryCode(String countryCode)
 	{
+		Validate.notEmpty(countryCode, "country-code must not be empty!");		
 		this.countryCode = countryCode;
 	}
 

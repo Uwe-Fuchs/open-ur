@@ -186,6 +186,7 @@ public class PPerson
 
 	public void setApplications(Set<PApplication> applications)
 	{
+		Validate.notNull(applications, "applications-set must not be null");
 		this.applications = applications;
 	}
 	
@@ -199,6 +200,7 @@ public class PPerson
 	@Transient
 	void addApplication(PApplication application)
 	{
+		Validate.notNull(application, "application must not be null");
 		this.getApplications().add(application);
 	}
 

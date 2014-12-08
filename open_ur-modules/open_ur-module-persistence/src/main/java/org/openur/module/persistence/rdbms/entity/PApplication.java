@@ -47,6 +47,8 @@ public class PApplication
 
 	public void setPersons(Set<PPerson> persons)
 	{
+		Validate.notNull(persons, "persons-collection must not be null!");
+		
 		this.persons = persons;
 	}
 
@@ -57,12 +59,5 @@ public class PApplication
 		
 		Validate.notEmpty(applicationName, "application-name must not be empty!");
 		this.applicationName = applicationName;
-	}
-	
-	@SuppressWarnings("unused")
-	private PApplication()
-	{
-		// jpa
-		super();
 	}
 }

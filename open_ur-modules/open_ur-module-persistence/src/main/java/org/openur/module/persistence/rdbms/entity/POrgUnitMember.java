@@ -59,8 +59,7 @@ public class POrgUnitMember
 
 	public void setRoles(Set<PRole> roles)
 	{
-		Validate.notNull(roles, "roles-collection must not be null!");
-		
+		Validate.notNull(roles, "roles-collection must not be null!");		
 		this.roles = roles;
 	}
 	
@@ -68,6 +67,7 @@ public class POrgUnitMember
 	@Transient
 	public void addRole(PRole role)
 	{
+		Validate.notNull(role, "role must not be null!");		
 		this.getRoles().add(role);
 	}
 

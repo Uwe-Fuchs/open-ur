@@ -134,6 +134,7 @@ public class Address
 		{
 			Validate.notNull(country, "country must not be null!");
 			this.country = country;
+			
 			return this;
 		}
 
