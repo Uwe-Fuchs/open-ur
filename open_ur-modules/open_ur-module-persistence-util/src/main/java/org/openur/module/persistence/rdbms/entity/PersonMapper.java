@@ -1,13 +1,10 @@
 package org.openur.module.persistence.rdbms.entity;
 
 import org.apache.commons.lang3.StringUtils;
-import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.person.PersonBuilder;
-import org.openur.module.persistence.rdbms.entity.PApplication;
-import org.openur.module.persistence.rdbms.entity.PPerson;
 
 public class PersonMapper
 {
@@ -27,11 +24,10 @@ public class PersonMapper
 		persistable.setStatus(immutable.getStatus());
 		persistable.setHomeAddress(immutable.getHomeAddress() != null ? AddressMapper.mapFromImmutable(immutable.getHomeAddress()) : null);
 		
-		for (OpenURApplication app : immutable.getApplications())
-		{
-			PApplication pApp = ApplicationMapper.mapFromImmutable(app);
-			persistable.getApplications().add(pApp);
-		}
+		immutable.getApplications()
+				.stream()
+				.map(ApplicationMapper::mapFromImmutable)
+				.forEach(persistable::addApplication);
 		
 		return persistable;
 	}
@@ -76,11 +72,10 @@ public class PersonMapper
 				.creationDate(persistable.getCreationDate())
 				.lastModifiedDate(persistable.getLastModifiedDate());
 		
-		for (PApplication pApp : persistable.getApplications())
-		{
-			OpenURApplication app = ApplicationMapper.mapFromEntity(pApp);
-			immutableBuilder.addApp(app);
-		}
+		persistable.getApplications()
+				.stream()
+				.map(ApplicationMapper::mapFromEntity)
+				.forEach(immutableBuilder::addApplication);
 		
 		return immutableBuilder.build();
 	}

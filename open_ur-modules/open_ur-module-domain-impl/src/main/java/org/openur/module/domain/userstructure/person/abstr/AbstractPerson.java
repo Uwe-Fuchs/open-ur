@@ -28,7 +28,7 @@ public abstract class AbstractPerson
 	{
 		super(b);
 		
-		this.applications = Collections.unmodifiableSet(b.getApps());
+		this.applications = Collections.unmodifiableSet(b.getApplications());
 	}
 
 	// accessors:

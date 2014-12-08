@@ -64,7 +64,7 @@ public class PersonTest
 	public void testCreateWithEmptyAppsList()
 	{
 		new PersonBuilder("123abc", this.NAME_1)
-			.apps(new ArrayList<OpenURApplication>(0))
+			.applications(new ArrayList<OpenURApplication>(0))
 			.build();
 	}
 	
@@ -72,7 +72,7 @@ public class PersonTest
 	public void testCreateWithNullMembers()
 	{
 		new PersonBuilder("123abc", this.NAME_1)
-		.addApp(null)
+		.addApplication(null)
 		.build();
 	}
 }

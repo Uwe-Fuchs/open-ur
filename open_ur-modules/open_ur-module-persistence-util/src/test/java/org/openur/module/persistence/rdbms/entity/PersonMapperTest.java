@@ -68,7 +68,7 @@ public class PersonMapperTest
 			.homeAddress(this.address)
 			.homePhoneNumber("0049444555666")
 			.homeEmailAddress(EMailAddress.create("home@uwefuchs.com"))
-			.apps(this.applications);
+			.applications(this.applications);
 
 		Person immutable = pb.build();
 		PPerson persistable = PersonMapper.mapFromImmutable(immutable);

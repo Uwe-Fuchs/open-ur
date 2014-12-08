@@ -12,7 +12,7 @@ public abstract class AbstractPersonBuilder<T extends AbstractPersonBuilder<T>>
 	extends UserStructureBaseBuilder<T>
 {
 	// properties:
-	private Set<OpenURApplication> apps = new HashSet<OpenURApplication>();
+	private Set<OpenURApplication> applications = new HashSet<OpenURApplication>();
 	
   protected AbstractPersonBuilder(String employeeNumber)
 	{
@@ -21,26 +21,26 @@ public abstract class AbstractPersonBuilder<T extends AbstractPersonBuilder<T>>
 
 	// builder-methods:
 	@SuppressWarnings("unchecked")
-	public T apps(Collection<OpenURApplication> apps)
+	public T applications(Collection<OpenURApplication> applications)
 	{
-		Validate.notEmpty(apps, "apps-list must not be empty!");		
-		this.apps.addAll(apps);
+		Validate.notEmpty(applications, "applications-list must not be empty!");		
+		this.applications.addAll(applications);
 		
 		return (T) this;
 	}
 
 	@SuppressWarnings("unchecked")
-	public T addApp(OpenURApplication app)
+	public T addApplication(OpenURApplication application)
 	{
-		Validate.notNull(app, "app must not be null!");
-		this.getApps().add(app);
+		Validate.notNull(application, "application must not be null!");
+		this.getApplications().add(application);
 		
 		return (T) this;
 	}
 
 	// accessors:
-	Set<OpenURApplication> getApps()
+	Set<OpenURApplication> getApplications()
 	{
-		return apps;
+		return applications;
 	}
 }

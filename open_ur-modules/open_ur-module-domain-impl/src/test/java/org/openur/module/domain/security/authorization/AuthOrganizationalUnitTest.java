@@ -78,7 +78,7 @@ public class AuthOrganizationalUnitTest
 			.build();
 		
 		Person person = new PersonBuilder("numberPers1", Name.create(Gender.MALE, "Barack", "Obama"))
-			.apps(new HashSet<OpenURApplication>(Arrays.asList(app1)))
+			.applications(new HashSet<OpenURApplication>(Arrays.asList(app1)))
 			.build();
 		
 		final String OU_ID = UUID.randomUUID().toString();		
