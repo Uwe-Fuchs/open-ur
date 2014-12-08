@@ -29,7 +29,7 @@ public class OrganizationalUnitMapper
 		
 		immutable.getMembers()
 			.stream()
-			.map(pMember -> OrgUnitMemberMapper.mapFromImmutable(pMember, persistable))
+			.map(immutableMember -> OrgUnitMemberMapper.mapFromImmutable(immutableMember, persistable))
 			.forEach(persistable::addMember);
 
 		return persistable;

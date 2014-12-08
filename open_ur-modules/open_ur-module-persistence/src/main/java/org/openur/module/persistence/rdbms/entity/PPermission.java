@@ -85,6 +85,11 @@ public class PPermission
 		this.permissionScope = permissionScope;
 	}
 
+	public Set<PRole> getRoles()
+	{
+		return roles;
+	}
+
 	// constructor:
 	public PPermission(String permissionName, PApplication application)
 	{

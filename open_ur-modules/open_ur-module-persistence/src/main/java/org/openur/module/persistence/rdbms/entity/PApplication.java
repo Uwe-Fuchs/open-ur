@@ -45,13 +45,6 @@ public class PApplication
 		return persons;
 	}
 
-	public void setPersons(Set<PPerson> persons)
-	{
-		Validate.notNull(persons, "persons-collection must not be null!");
-		
-		this.persons = persons;
-	}
-
 	// constructors:
 	public PApplication(String applicationName)
 	{

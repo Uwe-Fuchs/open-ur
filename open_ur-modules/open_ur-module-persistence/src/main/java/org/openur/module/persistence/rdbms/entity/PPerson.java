@@ -190,18 +190,18 @@ public class PPerson
 		this.applications = applications;
 	}
 	
+	// operations:
+	@Transient
+	public void addApplication(PApplication application)
+	{
+		Validate.notNull(application, "application must not be null");
+		this.getApplications().add(application);
+	}
+	
 	@Transient
 	public String getEmployeeNumber()
 	{
 		return super.getNumber();
-	}
-	
-	// operations:
-	@Transient
-	void addApplication(PApplication application)
-	{
-		Validate.notNull(application, "application must not be null");
-		this.getApplications().add(application);
 	}
 
 	// constructor:

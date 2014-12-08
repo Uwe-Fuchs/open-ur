@@ -62,12 +62,6 @@ public class PRole
 		return members;
 	}
 
-	void setMembers(Set<POrgUnitMember> members)
-	{
-		Validate.notNull(members, "members-set must not be null!");
-		this.members = members;
-	}
-
 	public Set<PPermission> getPermissions()
 	{
 		return permissions;
