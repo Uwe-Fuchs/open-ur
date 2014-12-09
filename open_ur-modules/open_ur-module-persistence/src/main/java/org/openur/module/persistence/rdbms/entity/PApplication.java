@@ -47,9 +47,15 @@ public class PApplication
 	// constructors:
 	public PApplication(String applicationName)
 	{
-		super();
+		this();
 		
 		Validate.notEmpty(applicationName, "application-name must not be empty!");
 		this.applicationName = applicationName;
+	}
+
+	private PApplication()
+	{
+		// JPA
+		super();
 	}
 }

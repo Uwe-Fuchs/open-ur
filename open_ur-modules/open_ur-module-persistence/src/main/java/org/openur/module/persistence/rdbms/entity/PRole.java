@@ -86,12 +86,18 @@ public class PRole
 		this.getPermissions().add(permission);
 	}
 	
-	// constructor:
+	// constructors:
 	public PRole(String roleName)
 	{
-		super();
+		this();
 
 		Validate.notEmpty(roleName, "role-name must not be empty!");
 		this.roleName = roleName;
+	}
+
+	private PRole()
+	{
+		// JPA
+		super();
 	}
 }

@@ -204,12 +204,19 @@ public class PPerson
 		return super.getNumber();
 	}
 
-	// constructor:
+	// constructors:
 	public PPerson(String employeeNumber, String lastName)
 	{
 		super(employeeNumber);
 		
 		Validate.notNull(lastName, "last name must not be null");
 		this.lastName = lastName;
+	}
+
+	@SuppressWarnings("unused")
+	private PPerson()
+	{
+		// JPA
+		super();
 	}
 }

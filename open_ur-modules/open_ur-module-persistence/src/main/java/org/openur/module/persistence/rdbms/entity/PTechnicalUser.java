@@ -20,4 +20,11 @@ public class PTechnicalUser
 	{
 		super(techUserNumber);
 	}
+
+	@SuppressWarnings("unused")
+	private PTechnicalUser()
+	{
+		// JPA
+		super();
+	}
 }

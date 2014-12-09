@@ -144,12 +144,19 @@ public class POrganizationalUnit
 		return super.getNumber();
 	}
 
-	// constructor:
+	// constructors:
 	public POrganizationalUnit(String orgUnitNumber, String name)
 	{
 		super(orgUnitNumber);
 		
 		Validate.notEmpty(name, "name must not be empty!");
 		this.name = name;
+	}
+
+	@SuppressWarnings("unused")
+	private POrganizationalUnit()
+	{
+		// JPA
+		super();
 	}
 }

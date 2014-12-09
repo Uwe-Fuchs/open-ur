@@ -50,4 +50,10 @@ public abstract class PUserStructureBase
 		Validate.notEmpty(number, "number must not be empty!");
 		this.number = number;
 	}
+
+	protected PUserStructureBase()
+	{
+		// JPA
+		super();
+	}
 }

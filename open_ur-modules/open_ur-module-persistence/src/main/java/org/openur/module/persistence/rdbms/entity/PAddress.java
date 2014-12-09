@@ -104,16 +104,15 @@ public class PAddress
 	// constructors:
 	public PAddress(String postcode)
 	{
-		super();
+		this();
 		
 		Validate.notEmpty(postcode, "post-code must not be empty!");	
 		this.postcode = postcode;
 	}
-	
-	@SuppressWarnings("unused")
+
 	private PAddress()
 	{
-		// jpa
+		// JPA
 		super();
 	}
 }

@@ -90,15 +90,21 @@ public class PPermission
 		return roles;
 	}
 
-	// constructor:
+	// constructors:
 	public PPermission(String permissionName, PApplication application)
 	{
-		super();
+		this();
 
 		Validate.notEmpty(permissionName, "permission-name must not be empty!");
 		Validate.notNull(application, "application must not be null!");		
 		
 		this.permissionName = permissionName;
 		this.application = application;
+	}
+
+	private PPermission()
+	{
+		// JPA
+		super();
 	}
 }

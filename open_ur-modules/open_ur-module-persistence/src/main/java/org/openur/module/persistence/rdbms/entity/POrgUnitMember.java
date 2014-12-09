@@ -74,12 +74,18 @@ public class POrgUnitMember
 	// constructors:
 	public POrgUnitMember(POrganizationalUnit orgUnit, PPerson person)
 	{
-		super();
+		this();
 		
 		Validate.notNull(orgUnit, "org-unit must not be null!");
 		Validate.notNull(person, "person must not be null!");
 		
 		this.orgUnit = orgUnit;
 		this.person = person;
+	}
+
+	private POrgUnitMember()
+	{
+		// JPA
+		super();
 	}
 }
