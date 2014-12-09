@@ -120,7 +120,7 @@ public class PersonRepositoryTest
 	
 	@After
 	@Transactional(readOnly = false)
-	public void deleteAllEntries()
+	public void cleanUpDatabase()
 	{
 		personRepository.deleteAll();
 	}
