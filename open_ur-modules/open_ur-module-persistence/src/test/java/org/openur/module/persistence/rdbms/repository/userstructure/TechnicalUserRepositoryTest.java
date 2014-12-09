@@ -1,91 +1,70 @@
 package org.openur.module.persistence.rdbms.repository.userstructure;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openur.module.domain.userstructure.Status;
-import org.openur.module.domain.userstructure.person.Gender;
-import org.openur.module.domain.userstructure.person.Title;
 import org.openur.module.persistence.rdbms.config.RepositoryConfig;
-import org.openur.module.persistence.rdbms.entity.PAddress;
-import org.openur.module.persistence.rdbms.entity.PApplication;
-import org.openur.module.persistence.rdbms.entity.PPerson;
-import org.openur.module.persistence.rdbms.repository.PersonRepository;
+import org.openur.module.persistence.rdbms.entity.PTechnicalUser;
+import org.openur.module.persistence.rdbms.repository.TechnicalUserRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 @ContextConfiguration(classes = { RepositoryConfig.class })
-@Transactional
 @ActiveProfiles("test")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TechnicalUserRepositoryTest
 {
+	private final String TECH_USER_NUMBER = "123abc";
+	
 	@Inject
-	private PersonRepository personRepository;
-
-	@Test
-	public void testFindPersonByNumber()
-	{
-		final String EMPLOYEE_NUMBER = "123abc";
-		
-		PPerson persistable = new PPerson(EMPLOYEE_NUMBER, "Fuchs");
-		
-		personRepository.save(persistable);
-		
-		PPerson p = personRepository.findPersonByNumber(EMPLOYEE_NUMBER);
-		
-		assertNotNull(p);
-		assertEquals(p, persistable);
-	}
+	private TechnicalUserRepository technicalUserRepository;
 	
 	@Test
 	public void testCreate()
 	{	
-		PPerson persistable = new PPerson("123abc", "Fuchs");
+		PTechnicalUser persistable = new PTechnicalUser(TECH_USER_NUMBER);		
+		persistable = saveTechnicalUser(persistable);
+		
+		List<PTechnicalUser> allTechUsers = findAllTechUsers();		
+		assertNotNull(allTechUsers);
+		assertEquals(allTechUsers.size(), 1);
+		assertEquals(allTechUsers.get(0), persistable);
+		
+		PTechnicalUser tu = findTechnicalUserByNumber(TECH_USER_NUMBER);
+		assertNotNull(tu);
+		assertEquals(tu, persistable);
+	}
+	
+	@After
+	@Transactional(readOnly = false)
+	public void cleanUpDatabase()
+	{
+		technicalUserRepository.deleteAll();
+	}
 
-		persistable.setGender(Gender.MALE);
-		persistable.setTitle(Title.NONE);
-		persistable.setFirstName("Uwe");
-		persistable.setStatus(Status.ACTIVE);
-		persistable.setEmailAdress("office@uwefuchs.com");
-		persistable.setPhoneNumber("0049123456789");
-		persistable.setFaxNumber("0049987654321");
-		persistable.setMobileNumber("0049111222333");
-		persistable.setHomePhoneNumber("0049444555666");
-		persistable.setHomeEmailAdress("home@uwefuchs.com");
-		
-		PAddress pAddress = new PAddress("11");		
-		pAddress.setCareOf("Schmidt");
-		pAddress.setCity("city_1");
-		pAddress.setPoBox("poBox_1");
-		pAddress.setStreet("street_1");
-		pAddress.setStreetNo("11");		
-		persistable.setHomeAddress(pAddress);
-		
-		PApplication pApp = new PApplication("applicationName");
-		persistable.addApplication(pApp);
-		
-		personRepository.save(persistable);
-		
-		List<PPerson> allPersons = personRepository.findAll();
-		
-		assertNotNull(allPersons);
-		assertEquals(allPersons.size(), 1);
-		assertEquals(allPersons.get(0), persistable);
-		
-		assertNotNull(allPersons.get(0).getApplications());
-		PApplication pa = allPersons.get(0).getApplications().iterator().next();
-		assertEquals(pa, pApp);
-		
-		assertNotNull(allPersons.get(0).getHomeAddress());
-		assertEquals(allPersons.get(0).getHomeAddress(), pAddress);
+	@Transactional(readOnly = true)
+	private PTechnicalUser findTechnicalUserByNumber(String techUserNumber)
+	{
+		return technicalUserRepository.findTechnicalUserByNumber(techUserNumber);
+	}
+
+	@Transactional(readOnly = true)
+	private List<PTechnicalUser> findAllTechUsers()
+	{
+		return technicalUserRepository.findAll();
+	}
+	
+	@Transactional(readOnly = false)
+	private PTechnicalUser saveTechnicalUser(PTechnicalUser persistable)
+	{
+		return technicalUserRepository.save(persistable);
 	}
 }
