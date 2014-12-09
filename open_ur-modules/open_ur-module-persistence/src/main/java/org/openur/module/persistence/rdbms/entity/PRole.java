@@ -38,7 +38,7 @@ public class PRole
 	)
 	private Set<PPermission> permissions = new HashSet<>();
 	
-	@ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(
 		name="ROLES_MEMBERS",
 		joinColumns={@JoinColumn(name="ID_ROLE", referencedColumnName="ID")},

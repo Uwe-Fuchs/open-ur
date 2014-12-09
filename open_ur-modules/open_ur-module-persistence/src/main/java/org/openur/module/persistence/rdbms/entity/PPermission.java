@@ -40,11 +40,11 @@ public class PPermission
 	@Enumerated(EnumType.STRING)
 	private PermissionScope permissionScope = DefaultsUtil.getDefaultPermissionScope();
 
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JoinColumn(name="APPLICATION_ID", referencedColumnName="ID", nullable=false)
   private PApplication application;
 
-	@ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(
 		name="ROLES_PERMISSIONS",
 		joinColumns={@JoinColumn(name="ID_PERMISSION", referencedColumnName="ID")},

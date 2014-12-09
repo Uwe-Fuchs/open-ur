@@ -3,7 +3,6 @@ package org.openur.module.persistence.rdbms.entity;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,7 +25,7 @@ public class PApplication
 	@Column(name="APPLICATION_NAME", nullable=false)
 	private String applicationName;
 
-	@ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(
 		name="PERSONS_APPS",
 		joinColumns={@JoinColumn(name="ID_APPLICATION", referencedColumnName="ID")},
