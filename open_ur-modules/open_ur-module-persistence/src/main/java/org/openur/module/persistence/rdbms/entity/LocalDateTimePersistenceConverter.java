@@ -13,12 +13,12 @@ public class LocalDateTimePersistenceConverter
 	@Override
 	public Timestamp convertToDatabaseColumn(LocalDateTime entityValue)
 	{
-		return Timestamp.valueOf(entityValue);
+		return entityValue != null ? Timestamp.valueOf(entityValue) : null;
 	}
 
 	@Override
 	public LocalDateTime convertToEntityAttribute(Timestamp databaseValue)
 	{
-		return databaseValue.toLocalDateTime();
+		return databaseValue != null ? databaseValue.toLocalDateTime() : null;
 	}
 }
