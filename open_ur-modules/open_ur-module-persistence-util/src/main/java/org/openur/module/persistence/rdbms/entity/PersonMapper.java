@@ -10,7 +10,7 @@ public class PersonMapper
 {
 	public static PPerson mapFromImmutable(Person immutable)
 	{
-		PPerson persistable = new PPerson(immutable.getEmployeeNumber(), immutable.getName().getLastName());
+		PPerson persistable = new PPerson(immutable.getPersonalNumber(), immutable.getName().getLastName());
 
 		persistable.setEmailAdress(immutable.getEmailAddress() != null ? immutable.getEmailAddress().getAsPlainEMailAddress() : null);
 		persistable.setFaxNumber(immutable.getFaxNumber());
@@ -53,7 +53,7 @@ public class PersonMapper
 				);
 		}
 		
-		PersonBuilder immutableBuilder = new PersonBuilder(persistable.getEmployeeNumber(), name);
+		PersonBuilder immutableBuilder = new PersonBuilder(persistable.getPersonalNumber(), name);
 		
 		if (StringUtils.isNotEmpty(persistable.getIdentifier()))
 		{

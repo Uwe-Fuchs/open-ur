@@ -123,7 +123,7 @@ public class PersonMapperTest
 		}
 		
 		return new EqualsBuilder()
-				.append(immutable.getEmployeeNumber(), persistable.getEmployeeNumber())
+				.append(immutable.getPersonalNumber(), persistable.getPersonalNumber())
 				.append(immutable.getName().getTitle(), persistable.getTitle())
 				.append(immutable.getName().getFirstName(), persistable.getFirstName())
 				.append(immutable.getName().getLastName(), persistable.getLastName())

@@ -199,7 +199,7 @@ public class PPerson
 	}
 	
 	@Transient
-	public String getEmployeeNumber()
+	public String getPersonalNumber()
 	{
 		return super.getNumber();
 	}

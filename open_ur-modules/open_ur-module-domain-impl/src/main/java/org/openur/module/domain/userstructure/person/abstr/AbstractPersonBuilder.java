@@ -14,9 +14,9 @@ public abstract class AbstractPersonBuilder<T extends AbstractPersonBuilder<T>>
 	// properties:
 	private Set<OpenURApplication> applications = new HashSet<OpenURApplication>();
 	
-  protected AbstractPersonBuilder(String employeeNumber)
+  protected AbstractPersonBuilder(String personalNumber)
 	{
-		super(employeeNumber);
+		super(personalNumber);
 	}
 
 	// builder-methods:

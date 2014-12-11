@@ -21,7 +21,7 @@ public interface IPerson
 	/**
 	 * returns the (domain-specific) number of the person.
 	 */
-	default String getEmployeeNumber()
+	default String getPersonalNumber()
 	{
 		return getNumber();
 	}
@@ -47,7 +47,7 @@ public interface IPerson
 	default int compareTo(IPerson other)
 	{
 		int comparison = new CompareToBuilder()
-				.append(this.getEmployeeNumber(), other.getEmployeeNumber())
+				.append(this.getPersonalNumber(), other.getPersonalNumber())
 				.append(this.getStatus(), other.getStatus())
 				.toComparison();
 

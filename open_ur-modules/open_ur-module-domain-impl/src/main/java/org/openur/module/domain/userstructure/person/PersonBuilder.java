@@ -19,9 +19,9 @@ public class PersonBuilder
   private EMailAddress homeEmailAddress = null;
 	
   // constructor:
-  public PersonBuilder(String employeeNumber, Name name)
+  public PersonBuilder(String personalNumber, Name name)
 	{
-		super(employeeNumber);
+		super(personalNumber);
 		
 		Validate.notNull(name, "name must not be null");
 		this.name = name;
