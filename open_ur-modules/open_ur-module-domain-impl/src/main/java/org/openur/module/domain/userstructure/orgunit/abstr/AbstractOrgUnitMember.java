@@ -65,6 +65,17 @@ public abstract class AbstractOrgUnitMember
 			this.orgUnitId = orgUnitId;		
 		}
 		
+		// accessors:
+		protected AbstractPerson getPerson()
+		{
+			return person;
+		}
+
+		protected String getOrgUnitId()
+		{
+			return orgUnitId;
+		}
+
 		// builder:
 		protected abstract AbstractOrgUnitMember build();
 	}

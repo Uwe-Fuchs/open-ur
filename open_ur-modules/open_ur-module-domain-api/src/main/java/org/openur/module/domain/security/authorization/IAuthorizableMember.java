@@ -18,6 +18,11 @@ public interface IAuthorizableMember
 	 */
 	default boolean hasPermission(IApplication app, IPermission permission)
 	{
+		if (getPerson() == null || !getPerson().getApplications().contains(app))
+		{
+			return false;
+		}
+		
 		for (IRole role : getRoles())
 		{
 			if (role.containsPermission(app, permission))
