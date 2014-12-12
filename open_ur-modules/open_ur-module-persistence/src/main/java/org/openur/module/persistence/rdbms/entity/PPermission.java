@@ -1,8 +1,5 @@
 package org.openur.module.persistence.rdbms.entity;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,8 +8,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -43,14 +38,6 @@ public class PPermission
 	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JoinColumn(name="APPLICATION_ID", referencedColumnName="ID", nullable=false)
   private PApplication application;
-
-	@ManyToMany(fetch=FetchType.LAZY)
-	@JoinTable(
-		name="ROLES_PERMISSIONS",
-		joinColumns={@JoinColumn(name="ID_PERMISSION", referencedColumnName="ID")},
-		inverseJoinColumns={@JoinColumn(name="ID_ROLE", referencedColumnName="ID")}
-	)
-	private Set<PRole> roles = new HashSet<>();
 
 	// accessors:
 	public String getPermissionName()
@@ -83,11 +70,6 @@ public class PPermission
 		Validate.notNull(permissionScope, "permission-scope must not be null!");
 		
 		this.permissionScope = permissionScope;
-	}
-
-	public Set<PRole> getRoles()
-	{
-		return roles;
 	}
 
 	// constructors:

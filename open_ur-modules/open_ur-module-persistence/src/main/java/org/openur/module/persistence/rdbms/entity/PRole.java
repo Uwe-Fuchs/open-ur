@@ -38,14 +38,6 @@ public class PRole
 	)
 	private Set<PPermission> permissions = new HashSet<>();
 	
-	@ManyToMany(fetch=FetchType.LAZY)
-	@JoinTable(
-		name="ROLES_MEMBERS",
-		joinColumns={@JoinColumn(name="ID_ROLE", referencedColumnName="ID")},
-		inverseJoinColumns={@JoinColumn(name="ID_MEMBER", referencedColumnName="ID")}
-	)
-	private Set<POrgUnitMember> members = new HashSet<>();
-		
 	// accessors:
 	public String getRoleName()
 	{
@@ -55,11 +47,6 @@ public class PRole
 	public String getDescription()
 	{
 		return description;
-	}
-
-	public Set<POrgUnitMember> getMembers()
-	{
-		return members;
 	}
 
 	public Set<PPermission> getPermissions()
