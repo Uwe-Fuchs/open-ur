@@ -27,7 +27,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 @ContextConfiguration(classes = { RepositoryConfig.class })
-@ActiveProfiles("test")
+@ActiveProfiles("testRepository")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class PersonRepositoryTest
 {
@@ -38,19 +38,6 @@ public class PersonRepositoryTest
 	
 	@Inject
 	private ApplicationRepository applicationRepository;
-
-	@Test
-	public void testFindPersonByNumber()
-	{		
-		PPerson persistable = new PPerson(EMPLOYEE_NUMBER, "Name of Employee");
-		
-		persistable = savePerson(persistable);
-		
-		PPerson p = findPersonByNumber(EMPLOYEE_NUMBER);
-		
-		assertNotNull(p);
-		assertEquals(p, persistable);
-	}
 	
 	@Test
 	public void testCreateWithAddressAndApplication()
@@ -143,14 +130,7 @@ public class PersonRepositoryTest
 	@Transactional(readOnly = false)
 	private PPerson savePerson(PPerson persistable)
 	{
-		PPerson person =  personRepository.save(persistable);
-		
-//		if (person != null)
-//		{
-//			person.getApplications().size();	// Lazy Fetch
-//		}
-		
-		return person;
+		return personRepository.save(persistable);
 	}
 
 	@Transactional(readOnly = true)
@@ -162,13 +142,6 @@ public class PersonRepositoryTest
 	@Transactional(readOnly = true)
 	private PPerson findPersonByNumber(String employeeNumber)
 	{
-		PPerson person = personRepository.findPersonByNumber(employeeNumber);
-		
-//		if (person != null)
-//		{
-//			person.getApplications().size();	// Lazy Fetch
-//		}
-		
-		return person;
+		return personRepository.findPersonByNumber(employeeNumber);
 	}
 }
