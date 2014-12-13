@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -115,11 +116,18 @@ public class UserStructureDaoImplRdbmsTest
 		PPerson persistable2 = new PPerson("456xyz", "employeeNo2");		
 		persistable2 = savePerson(persistable2);
 		
-		List<PPerson> allPersons = personRepository.findAll();		
+		List<IPerson> allPersons = userStructureDao.obtainAllPersons();
 		assertNotNull(allPersons);
 		assertEquals(allPersons.size(), 2);
-		assertTrue(allPersons.contains(persistable1));
-		assertTrue(allPersons.contains(persistable2));
+		
+		Iterator<IPerson> iter = allPersons.iterator();
+		IPerson _p1 = iter.next();
+		IPerson _p2 = iter.next();		
+		Person p = (Person) (_p1.getIdentifier().equals(persistable1.getIdentifier()) ? _p1 : _p2);
+		Person p2 = (Person) (_p1.getIdentifier().equals(persistable1.getIdentifier()) ? _p2 : _p1);
+		
+		assertTrue(PersonMapperTest.immutableEqualsToEntity(p, persistable1));
+		assertTrue(PersonMapperTest.immutableEqualsToEntity(p2, persistable2));
 	}
 
 //	@Test

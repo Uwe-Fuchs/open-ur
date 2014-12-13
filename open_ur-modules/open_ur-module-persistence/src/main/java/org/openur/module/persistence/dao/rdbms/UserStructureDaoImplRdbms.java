@@ -1,6 +1,7 @@
 package org.openur.module.persistence.dao.rdbms;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -61,8 +62,12 @@ public class UserStructureDaoImplRdbms
 	@Override
 	public List<IPerson> obtainAllPersons()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		List<PPerson> persons = personRepository.findAll();
+		
+		return persons
+			.stream()
+			.map(PersonMapper::mapFromEntity)
+			.collect(Collectors.toList());
 	}
 
 	@Override
