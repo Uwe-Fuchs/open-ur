@@ -1,4 +1,4 @@
-package org.openur.module.persistence.rdbms.entity;
+package org.openur.module.persistence.mapper.rdbms;
 
 import java.util.stream.Collectors;
 

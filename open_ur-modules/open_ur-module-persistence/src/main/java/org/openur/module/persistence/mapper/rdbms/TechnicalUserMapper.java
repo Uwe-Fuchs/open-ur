@@ -1,4 +1,4 @@
-package org.openur.module.persistence.rdbms.entity;
+package org.openur.module.persistence.mapper.rdbms;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;

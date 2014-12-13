@@ -1,4 +1,4 @@
-package org.openur.module.persistence.rdbms.entity;
+package org.openur.module.persistence.mapper.rdbms;
 
 import static org.junit.Assert.assertTrue;
 
@@ -28,6 +28,12 @@ import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.person.PersonBuilder;
 import org.openur.module.domain.userstructure.person.Title;
+import org.openur.module.persistence.mapper.rdbms.OrganizationalUnitMapper;
+import org.openur.module.persistence.rdbms.entity.PAddress;
+import org.openur.module.persistence.rdbms.entity.POrgUnitMember;
+import org.openur.module.persistence.rdbms.entity.POrganizationalUnit;
+import org.openur.module.persistence.rdbms.entity.PPerson;
+import org.openur.module.persistence.rdbms.entity.PRole;
 
 public class OrgUnitMapperTest
 {

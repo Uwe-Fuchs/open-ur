@@ -1,9 +1,10 @@
-package org.openur.module.persistence.rdbms.entity;
+package org.openur.module.persistence.mapper.rdbms;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.domain.security.authorization.OpenURPermissionBuilder;
+import org.openur.module.persistence.rdbms.entity.PApplication;
 import org.openur.module.persistence.rdbms.entity.PPermission;
 
 public class PermissionMapper

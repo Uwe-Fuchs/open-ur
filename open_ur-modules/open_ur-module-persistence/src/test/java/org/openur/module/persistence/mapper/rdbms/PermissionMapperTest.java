@@ -1,4 +1,4 @@
-package org.openur.module.persistence.rdbms.entity;
+package org.openur.module.persistence.mapper.rdbms;
 
 import static org.junit.Assert.*;
 
@@ -9,10 +9,10 @@ import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.domain.security.authorization.OpenURPermissionBuilder;
 import org.openur.module.domain.security.authorization.PermissionScope;
-import org.openur.module.persistence.rdbms.entity.ApplicationMapper;
+import org.openur.module.persistence.mapper.rdbms.ApplicationMapper;
+import org.openur.module.persistence.mapper.rdbms.PermissionMapper;
 import org.openur.module.persistence.rdbms.entity.PApplication;
 import org.openur.module.persistence.rdbms.entity.PPermission;
-import org.openur.module.persistence.rdbms.entity.PermissionMapper;
 
 public class PermissionMapperTest
 {

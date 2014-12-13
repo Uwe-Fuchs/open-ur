@@ -1,4 +1,4 @@
-package org.openur.module.persistence.rdbms.entity;
+package org.openur.module.persistence.mapper.rdbms;
 
 import static org.junit.Assert.*;
 
@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.Address.AddressBuilder;
 import org.openur.module.domain.userstructure.Country;
-import org.openur.module.persistence.rdbms.entity.AddressMapper;
+import org.openur.module.persistence.mapper.rdbms.AddressMapper;
 import org.openur.module.persistence.rdbms.entity.PAddress;
 
 public class AddressMapperTest
