@@ -1,6 +1,9 @@
 package org.openur.module.persistence.rdbms.repository.userstructure;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -16,6 +19,7 @@ import org.openur.module.persistence.rdbms.config.RepositoryConfig;
 import org.openur.module.persistence.rdbms.entity.PAddress;
 import org.openur.module.persistence.rdbms.entity.PApplication;
 import org.openur.module.persistence.rdbms.entity.PPerson;
+import org.openur.module.persistence.rdbms.repository.ApplicationRepository;
 import org.openur.module.persistence.rdbms.repository.PersonRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -31,6 +35,9 @@ public class PersonRepositoryTest
 	
 	@Inject
 	private PersonRepository personRepository;
+	
+	@Inject
+	private ApplicationRepository applicationRepository;
 
 	@Test
 	public void testFindPersonByNumber()
@@ -50,7 +57,7 @@ public class PersonRepositoryTest
 	{	
 		PPerson persistable = new PPerson(EMPLOYEE_NUMBER, "Name of Employee");
 		
-		PAddress pAddress = new PAddress("11");		
+		PAddress pAddress = new PAddress("11");	
 		persistable.setHomeAddress(pAddress);
 		
 		PApplication pApp = new PApplication("applicationName");
@@ -76,6 +83,7 @@ public class PersonRepositoryTest
 	}
 	
 	@Test
+	@Transactional(readOnly=false)
 	public void testAddApplicationsToPerson()
 	{	
 		PPerson persistable = new PPerson(EMPLOYEE_NUMBER, "Name of Employee");		
@@ -84,16 +92,23 @@ public class PersonRepositoryTest
 		assertEquals(p.getApplications().size(), 0);
 		
 		PApplication pApp = new PApplication("applicationName");
-		persistable.addApplication(pApp);		
+		pApp = applicationRepository.save(pApp);		
+		persistable.addApplication(pApp);
 		persistable = savePerson(persistable);
+		
 		p = findPersonByNumber(EMPLOYEE_NUMBER);
 		assertEquals(p.getApplications().size(), 1);
+		assertEquals(p.getApplications().iterator().next(), pApp);
 		
 		PApplication pApp2 = new PApplication("applicationName2");
+		pApp2 = applicationRepository.save(pApp2);		
 		persistable.addApplication(pApp2);		
-		persistable = savePerson(persistable);		
+		persistable = savePerson(persistable);
+		
 		p = findPersonByNumber(EMPLOYEE_NUMBER);
 		assertEquals(p.getApplications().size(), 2);
+		assertTrue(p.getApplications().contains(pApp));
+		assertTrue(p.getApplications().contains(pApp2));
 	}
 	
 	@Test(expected = PersistenceException.class)
@@ -128,7 +143,14 @@ public class PersonRepositoryTest
 	@Transactional(readOnly = false)
 	private PPerson savePerson(PPerson persistable)
 	{
-		return personRepository.save(persistable);
+		PPerson person =  personRepository.save(persistable);
+		
+//		if (person != null)
+//		{
+//			person.getApplications().size();	// Lazy Fetch
+//		}
+		
+		return person;
 	}
 
 	@Transactional(readOnly = true)
@@ -140,6 +162,13 @@ public class PersonRepositoryTest
 	@Transactional(readOnly = true)
 	private PPerson findPersonByNumber(String employeeNumber)
 	{
-		return personRepository.findPersonByNumber(employeeNumber);
+		PPerson person = personRepository.findPersonByNumber(employeeNumber);
+		
+//		if (person != null)
+//		{
+//			person.getApplications().size();	// Lazy Fetch
+//		}
+		
+		return person;
 	}
 }
