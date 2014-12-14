@@ -10,7 +10,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openur.module.domain.userstructure.Status;
@@ -18,13 +17,18 @@ import org.openur.module.domain.userstructure.person.Gender;
 import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.person.Title;
+import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
+import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
 import org.openur.module.persistence.dao.IUserStructureDao;
 import org.openur.module.persistence.mapper.rdbms.PersonMapperTest;
+import org.openur.module.persistence.mapper.rdbms.TechnicalUserMapperTest;
 import org.openur.module.persistence.rdbms.config.RepositoryConfig;
 import org.openur.module.persistence.rdbms.entity.PAddress;
 import org.openur.module.persistence.rdbms.entity.PApplication;
 import org.openur.module.persistence.rdbms.entity.PPerson;
+import org.openur.module.persistence.rdbms.entity.PTechnicalUser;
 import org.openur.module.persistence.rdbms.repository.PersonRepository;
+import org.openur.module.persistence.rdbms.repository.TechnicalUserRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -41,19 +45,17 @@ public class UserStructureDaoImplRdbmsTest
 	private PersonRepository personRepository;
 	
 	@Inject
-	private IUserStructureDao userStructureDao;
+	private TechnicalUserRepository technicalUserRepository;
 	
-	@Before
-	public void setUp()
-		throws Exception
-	{
-	}
+	@Inject
+	private IUserStructureDao userStructureDao;
 
 	@After
 	public void tearDown()
 		throws Exception
 	{
 		personRepository.deleteAll();
+		technicalUserRepository.deleteAll();
 	}
 
 	@Test
@@ -130,6 +132,37 @@ public class UserStructureDaoImplRdbmsTest
 		assertTrue(PersonMapperTest.immutableEqualsToEntity(p2, persistable2));
 	}
 
+	@Test
+	public void testFindTechnicalUserById()
+	{
+		PTechnicalUser persistable = new PTechnicalUser(EMPLOYEE_NUMBER);
+		persistable = saveTechnicalUser(persistable);
+		
+		ITechnicalUser tu = userStructureDao.findTechnicalUserById(persistable.getIdentifier());
+		
+		assertNotNull(tu);
+		assertTrue(TechnicalUserMapperTest.immutableEqualsToEntity((TechnicalUser) tu, persistable));		
+	}
+	
+	@Test
+	public void testFindTechnicalUserByNumber()
+	{
+		PTechnicalUser persistable = new PTechnicalUser(EMPLOYEE_NUMBER);
+		persistable.setStatus(Status.INACTIVE);
+		persistable = saveTechnicalUser(persistable);
+		
+		ITechnicalUser tu = userStructureDao.findTechnicalUserByNumber(EMPLOYEE_NUMBER);
+		
+		assertNotNull(tu);
+		assertTrue(TechnicalUserMapperTest.immutableEqualsToEntity((TechnicalUser) tu, persistable));		
+	}
+	
+	@Test
+	public void testObtainAllTechnicalUsers()
+	{
+		fail("Not yet implemented");
+	}
+
 //	@Test
 //	public void testFindOrgUnitById()
 //	{
@@ -159,100 +192,16 @@ public class UserStructureDaoImplRdbmsTest
 //	{
 //		fail("Not yet implemented");
 //	}
-//
-//	@Test
-//	public void testFindTechnicalUserById()
-//	{
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testFindTechnicalUserByNumber()
-//	{
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testObtainAllTechnicalUsers()
-//	{
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testObject()
-//	{
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testGetClass()
-//	{
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testHashCode()
-//	{
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testEquals()
-//	{
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testClone()
-//	{
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testToString()
-//	{
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testNotify()
-//	{
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testNotifyAll()
-//	{
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testWaitLong()
-//	{
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testWaitLongInt()
-//	{
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testWait()
-//	{
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testFinalize()
-//	{
-//		fail("Not yet implemented");
-//	}
 	
 	@Transactional(readOnly = false)
 	private PPerson savePerson(PPerson persistable)
 	{
 		return personRepository.save(persistable);
+	}
+	
+	@Transactional(readOnly = false)
+	private PTechnicalUser saveTechnicalUser(PTechnicalUser persistable)
+	{
+		return technicalUserRepository.save(persistable);
 	}
 }

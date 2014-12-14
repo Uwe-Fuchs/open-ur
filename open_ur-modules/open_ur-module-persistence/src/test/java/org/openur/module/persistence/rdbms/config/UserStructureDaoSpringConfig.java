@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import org.openur.module.persistence.dao.IUserStructureDao;
 import org.openur.module.persistence.dao.rdbms.UserStructureDaoImplRdbms;
 import org.openur.module.persistence.rdbms.repository.PersonRepository;
+import org.openur.module.persistence.rdbms.repository.TechnicalUserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -16,6 +17,9 @@ public class UserStructureDaoSpringConfig
 	@Inject
 	private PersonRepository personRepository;
 	
+	@Inject
+	private TechnicalUserRepository technicalUserRepository;
+	
 	public UserStructureDaoSpringConfig()
 	{
 		super();
@@ -26,6 +30,7 @@ public class UserStructureDaoSpringConfig
 	{		
 		UserStructureDaoImplRdbms _useStructureDao = new UserStructureDaoImplRdbms();
 		_useStructureDao.setPersonRepository(personRepository);
+		_useStructureDao.setTechnicalUserRepository(technicalUserRepository);
 		
 		return _useStructureDao;
 	}

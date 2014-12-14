@@ -3,15 +3,16 @@ package org.openur.module.persistence.dao.rdbms;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.inject.Inject;
-
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 import org.openur.module.persistence.dao.IUserStructureDao;
 import org.openur.module.persistence.mapper.rdbms.PersonMapper;
+import org.openur.module.persistence.mapper.rdbms.TechnicalUserMapper;
 import org.openur.module.persistence.rdbms.entity.PPerson;
+import org.openur.module.persistence.rdbms.entity.PTechnicalUser;
 import org.openur.module.persistence.rdbms.repository.PersonRepository;
+import org.openur.module.persistence.rdbms.repository.TechnicalUserRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,8 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserStructureDaoImplRdbms
 	implements IUserStructureDao
 {
-	@Inject
 	private PersonRepository personRepository;
+	private TechnicalUserRepository technicalUserRepository;
 	
 	public UserStructureDaoImplRdbms()
 	{
@@ -31,6 +32,11 @@ public class UserStructureDaoImplRdbms
 	public void setPersonRepository(PersonRepository personRepository)
 	{
 		this.personRepository = personRepository;
+	}
+
+	public void setTechnicalUserRepository(TechnicalUserRepository technicalUserRepository)
+	{
+		this.technicalUserRepository = technicalUserRepository;
 	}
 
 	@Override
@@ -71,6 +77,39 @@ public class UserStructureDaoImplRdbms
 	}
 
 	@Override
+	public ITechnicalUser findTechnicalUserById(String techUserId)
+	{
+		PTechnicalUser persistable = technicalUserRepository.findOne(Long.parseLong(techUserId));
+		
+		if (persistable == null)
+		{
+			return null;
+		}
+		
+		return TechnicalUserMapper.mapFromEntity(persistable);
+	}
+
+	@Override
+	public ITechnicalUser findTechnicalUserByNumber(String techUserNumber)
+	{
+		PTechnicalUser persistable = technicalUserRepository.findTechnicalUserByNumber(techUserNumber);
+		
+		if (persistable == null)
+		{
+			return null;
+		}
+		
+		return TechnicalUserMapper.mapFromEntity(persistable);
+	}
+
+	@Override
+	public List<ITechnicalUser> obtainAllTechnicalUsers()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
 	public IOrganizationalUnit findOrgUnitById(String orgUnitId)
 	{
 		// TODO Auto-generated method stub
@@ -101,27 +140,6 @@ public class UserStructureDaoImplRdbms
 
 	@Override
 	public List<IOrganizationalUnit> obtainRootOrgUnits()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ITechnicalUser findTechnicalUserById(String techUserId)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ITechnicalUser findTechnicalUserByNumber(String techUserNumber)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<ITechnicalUser> obtainAllTechnicalUsers()
 	{
 		// TODO Auto-generated method stub
 		return null;
