@@ -22,7 +22,7 @@ public class TechnicalUserMapper
 		
 		if (StringUtils.isNotEmpty(persistable.getIdentifier()))
 		{
-			immutableBuilder = new TechnicalUserBuilder(persistable.getIdentifier());
+			immutableBuilder.identifier(persistable.getIdentifier());
 		}
 		
 		immutableBuilder
