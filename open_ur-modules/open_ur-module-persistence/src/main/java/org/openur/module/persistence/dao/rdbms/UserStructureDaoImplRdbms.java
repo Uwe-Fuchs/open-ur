@@ -105,8 +105,12 @@ public class UserStructureDaoImplRdbms
 	@Override
 	public List<ITechnicalUser> obtainAllTechnicalUsers()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		List<PTechnicalUser> techUsers = technicalUserRepository.findAll();
+		
+		return techUsers
+			.stream()
+			.map(TechnicalUserMapper::mapFromEntity)
+			.collect(Collectors.toList());
 	}
 
 	@Override

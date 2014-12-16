@@ -112,13 +112,17 @@ public class UserStructureDaoImplRdbmsTest
 	@Test
 	public void testObtainAllPersons()
 	{
+		List<IPerson> allPersons = userStructureDao.obtainAllPersons();
+		assertNotNull(allPersons);
+		assertEquals(allPersons.size(), 0);
+		
 		PPerson persistable1 = new PPerson(EMPLOYEE_NUMBER, "Name of Employee");		
 		persistable1 = savePerson(persistable1);
 		
 		PPerson persistable2 = new PPerson("456xyz", "employeeNo2");		
 		persistable2 = savePerson(persistable2);
 		
-		List<IPerson> allPersons = userStructureDao.obtainAllPersons();
+		allPersons = userStructureDao.obtainAllPersons();
 		assertNotNull(allPersons);
 		assertEquals(allPersons.size(), 2);
 		
@@ -160,7 +164,29 @@ public class UserStructureDaoImplRdbmsTest
 	@Test
 	public void testObtainAllTechnicalUsers()
 	{
-		fail("Not yet implemented");
+		List<ITechnicalUser> allTechUsers = userStructureDao.obtainAllTechnicalUsers();
+		assertNotNull(allTechUsers);
+		assertEquals(allTechUsers.size(), 0);
+		
+		PTechnicalUser persistable1 = new PTechnicalUser(EMPLOYEE_NUMBER);
+		persistable1 = saveTechnicalUser(persistable1);
+		
+		PTechnicalUser persistable2 = new PTechnicalUser("456xyz");
+		persistable2.setStatus(Status.INACTIVE);
+		persistable2 = saveTechnicalUser(persistable2);
+		
+		allTechUsers = userStructureDao.obtainAllTechnicalUsers();
+		assertNotNull(allTechUsers);
+		assertEquals(allTechUsers.size(), 2);
+		
+		Iterator<ITechnicalUser> iter = allTechUsers.iterator();
+		ITechnicalUser _tu1 = iter.next();
+		ITechnicalUser _tu2 = iter.next();		
+		TechnicalUser tu1 = (TechnicalUser) (_tu1.getIdentifier().equals(persistable1.getIdentifier()) ? _tu1 : _tu2);
+		TechnicalUser tu2 = (TechnicalUser) (_tu1.getIdentifier().equals(persistable1.getIdentifier()) ? _tu2 : _tu1);
+		
+		assertTrue(TechnicalUserMapperTest.immutableEqualsToEntity(tu1, persistable1));
+		assertTrue(TechnicalUserMapperTest.immutableEqualsToEntity(tu2, persistable2));
 	}
 
 //	@Test
