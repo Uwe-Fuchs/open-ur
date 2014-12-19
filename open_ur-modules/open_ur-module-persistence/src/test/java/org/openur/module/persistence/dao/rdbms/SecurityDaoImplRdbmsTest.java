@@ -7,9 +7,12 @@ import javax.inject.Inject;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openur.module.domain.application.OpenURApplication;
+import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.persistence.dao.ISecurityDao;
+import org.openur.module.persistence.mapper.rdbms.ApplicationMapper;
 import org.openur.module.persistence.mapper.rdbms.PermissionMapperTest;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
 import org.openur.module.persistence.rdbms.config.RepositorySpringConfig;
@@ -52,14 +55,15 @@ public class SecurityDaoImplRdbmsTest
 	@Test
 	public void testFindPermissionByName()
 	{
-		PApplication pApp = new PApplication("applicationName");
+		OpenURApplication app = new OpenURApplicationBuilder("appName").build();
+		PApplication pApp = ApplicationMapper.mapFromImmutable(app);
 		PPermission persistable = new PPermission(PERMISSION_NAME, pApp);
 		persistable.setDescription("permDescription");
 		
 		persistable = savePermission(persistable);
 		pApp = persistable.getApplication();
 		
-		IPermission p = securityDao.findPermissionByName(PERMISSION_NAME, pApp.getApplicationName());
+		IPermission p = securityDao.findPermissionByName(PERMISSION_NAME, app);
 		
 		assertNotNull(p);	
 		assertTrue(PermissionMapperTest.immutableEqualsToEntity((OpenURPermission) p, persistable));
