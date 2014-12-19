@@ -49,7 +49,7 @@ public class SecurityDaoImplRdbms
 	@Override
 	public IPermission findPermissionByName(String permissionName, IApplication application)
 	{
-		PPermission persistable = permissionRepository.findPermissionByPermissionNameAndApp(permissionName, application.getApplicationName());
+		PPermission persistable = permissionRepository.findPermissionByPermissionNameAndAppName(permissionName, application.getApplicationName());
 		
 		if (persistable == null)
 		{

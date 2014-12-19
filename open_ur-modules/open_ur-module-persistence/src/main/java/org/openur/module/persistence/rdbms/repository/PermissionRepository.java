@@ -11,5 +11,5 @@ public interface PermissionRepository
 	@Query("select perm from PERMISSION perm " +
 		"where perm.permissionName = :permName " +
 		"and perm.application.applicationName = :appName")
-	PPermission findPermissionByPermissionNameAndApp(@Param("permName") String permissionName, @Param("appName") String applicationName);
+	PPermission findPermissionByPermissionNameAndAppName(@Param("permName") String permissionName, @Param("appName") String applicationName);
 }
