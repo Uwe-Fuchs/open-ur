@@ -165,8 +165,8 @@ public class SecurityDomainTest
 		final String PERM_2_NAME = "perm2Name";
 		IPermission perm2 = new MyPermissionImpl(PERM_ID_2, PERM_2_NAME, app);
 		
-		Mockito.when(securityDao.findPermissionByName(PERM_1_NAME, app)).thenReturn(perm1);
-		Mockito.when(securityDao.findPermissionByName(PERM_2_NAME, app)).thenReturn(perm2);
+		Mockito.when(securityDao.findPermissionByName(PERM_1_NAME, app.getApplicationName())).thenReturn(perm1);
+		Mockito.when(securityDao.findPermissionByName(PERM_2_NAME, app.getApplicationName())).thenReturn(perm2);
 		
 		IPermission resultPermission = securityDomainServices.findPermissionByName(PERM_1_NAME, app);
 		assertEquals(resultPermission.getPermissionName(), perm1.getPermissionName());

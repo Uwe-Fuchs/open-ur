@@ -48,11 +48,11 @@ public interface ISecurityDao
 	 * searches a permission-object with the given name and the given application.
 	 * 
 	 * @param permissionName : name of the permission.
-	 * @param application : application
+	 * @param applicationName : name of application (is unique!)
 	 * 
 	 * @return the permission with the given name or null, if no permission is found.
 	 */
-	IPermission findPermissionByName(String permissionName, IApplication application);
+	IPermission findPermissionByName(String permissionName, String applicationName);
 
 	/**
 	 * obtains all defined user-permissions for a given application.
