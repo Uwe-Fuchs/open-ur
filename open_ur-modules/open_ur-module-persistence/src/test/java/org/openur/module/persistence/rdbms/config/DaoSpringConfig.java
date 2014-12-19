@@ -11,8 +11,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile(value="testUserStructureDao")
-public class UserStructureDaoSpringConfig
+@Profile(value="testDao")
+public class DaoSpringConfig
 {
 	@Inject
 	private PersonRepository personRepository;
@@ -20,7 +20,7 @@ public class UserStructureDaoSpringConfig
 	@Inject
 	private TechnicalUserRepository technicalUserRepository;
 	
-	public UserStructureDaoSpringConfig()
+	public DaoSpringConfig()
 	{
 		super();
 	}

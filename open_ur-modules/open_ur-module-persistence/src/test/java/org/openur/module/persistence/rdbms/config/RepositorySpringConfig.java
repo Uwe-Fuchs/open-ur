@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ImportResource("classpath:/springDataAppContext.xml")
 @EnableJpaRepositories(basePackages = {"org.openur.module.persistence.rdbms.repository"})
 @ComponentScan(basePackages = {"org.openur.module.persistence.rdbms"})
-public class RepositoryConfig
+public class RepositorySpringConfig
 {
 	@Inject
 	protected Environment env;

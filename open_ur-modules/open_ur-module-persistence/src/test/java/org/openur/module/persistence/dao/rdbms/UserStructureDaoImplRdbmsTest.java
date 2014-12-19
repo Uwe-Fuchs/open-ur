@@ -22,7 +22,7 @@ import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
 import org.openur.module.persistence.dao.IUserStructureDao;
 import org.openur.module.persistence.mapper.rdbms.PersonMapperTest;
 import org.openur.module.persistence.mapper.rdbms.TechnicalUserMapperTest;
-import org.openur.module.persistence.rdbms.config.RepositoryConfig;
+import org.openur.module.persistence.rdbms.config.RepositorySpringConfig;
 import org.openur.module.persistence.rdbms.entity.PAddress;
 import org.openur.module.persistence.rdbms.entity.PApplication;
 import org.openur.module.persistence.rdbms.entity.PPerson;
@@ -34,8 +34,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-@ContextConfiguration(classes = { RepositoryConfig.class })
-@ActiveProfiles(profiles={"testRepository", "testUserStructureDao"})
+@ContextConfiguration(classes = { RepositorySpringConfig.class })
+@ActiveProfiles(profiles={"testRepository", "testDao"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UserStructureDaoImplRdbmsTest
 {
