@@ -40,7 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UserStructureDaoImplRdbmsTest
 {
-	private final String EMPLOYEE_NUMBER = "123abc";
+	private final String USER_NUMBER = "123abc";
 	
 	@Inject
 	private PersonRepository personRepository;
@@ -62,7 +62,7 @@ public class UserStructureDaoImplRdbmsTest
 		pAddress.setPoBox("poBox_1");		
 		PApplication pApp = new PApplication("applicationName");
 		
-		PPerson persistable = new PPerson(EMPLOYEE_NUMBER, "Name of Employee");		
+		PPerson persistable = new PPerson(USER_NUMBER, "Name of Employee");		
 
 		persistable.setGender(Gender.MALE);
 		persistable.setTitle(Title.NONE);
@@ -78,7 +78,7 @@ public class UserStructureDaoImplRdbmsTest
 		persistable.setApplications(new HashSet<PApplication>(Arrays.asList(pApp)));
 		persistable = savePerson(persistable);
 		
-		IPerson p = userStructureDao.findPersonByNumber(EMPLOYEE_NUMBER);
+		IPerson p = userStructureDao.findPersonByNumber(USER_NUMBER);
 		
 		assertNotNull(p);
 		assertTrue(PersonMapperTest.immutableEqualsToEntity((Person) p, persistable));
@@ -87,7 +87,7 @@ public class UserStructureDaoImplRdbmsTest
 	@Test
 	public void testFindPersonById()
 	{
-		PPerson persistable = new PPerson(EMPLOYEE_NUMBER, "Name of Employee");		
+		PPerson persistable = new PPerson(USER_NUMBER, "Name of Employee");		
 		persistable = savePerson(persistable);
 		
 		IPerson p = userStructureDao.findPersonById(persistable.getIdentifier());
@@ -109,7 +109,7 @@ public class UserStructureDaoImplRdbmsTest
 		assertNotNull(allPersons);
 		assertEquals(allPersons.size(), 0);
 		
-		PPerson persistable1 = new PPerson(EMPLOYEE_NUMBER, "Name of Employee");		
+		PPerson persistable1 = new PPerson(USER_NUMBER, "Name of Employee");		
 		persistable1 = savePerson(persistable1);
 		
 		PPerson persistable2 = new PPerson("456xyz", "employeeNo2");		
@@ -132,7 +132,7 @@ public class UserStructureDaoImplRdbmsTest
 	@Test
 	public void testFindTechnicalUserById()
 	{
-		PTechnicalUser persistable = new PTechnicalUser(EMPLOYEE_NUMBER);
+		PTechnicalUser persistable = new PTechnicalUser(USER_NUMBER);
 		persistable = saveTechnicalUser(persistable);
 		
 		ITechnicalUser tu = userStructureDao.findTechnicalUserById(persistable.getIdentifier());
@@ -144,11 +144,11 @@ public class UserStructureDaoImplRdbmsTest
 	@Test
 	public void testFindTechnicalUserByNumber()
 	{
-		PTechnicalUser persistable = new PTechnicalUser(EMPLOYEE_NUMBER);
+		PTechnicalUser persistable = new PTechnicalUser(USER_NUMBER);
 		persistable.setStatus(Status.INACTIVE);
 		persistable = saveTechnicalUser(persistable);
 		
-		ITechnicalUser tu = userStructureDao.findTechnicalUserByNumber(EMPLOYEE_NUMBER);
+		ITechnicalUser tu = userStructureDao.findTechnicalUserByNumber(USER_NUMBER);
 		
 		assertNotNull(tu);
 		assertTrue(TechnicalUserMapperTest.immutableEqualsToEntity((TechnicalUser) tu, persistable));		
@@ -161,7 +161,7 @@ public class UserStructureDaoImplRdbmsTest
 		assertNotNull(allTechUsers);
 		assertEquals(allTechUsers.size(), 0);
 		
-		PTechnicalUser persistable1 = new PTechnicalUser(EMPLOYEE_NUMBER);
+		PTechnicalUser persistable1 = new PTechnicalUser(USER_NUMBER);
 		persistable1 = saveTechnicalUser(persistable1);
 		
 		PTechnicalUser persistable2 = new PTechnicalUser("456xyz");
