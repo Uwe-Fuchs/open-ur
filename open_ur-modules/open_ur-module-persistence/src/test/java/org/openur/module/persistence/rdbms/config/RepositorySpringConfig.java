@@ -2,7 +2,6 @@ package org.openur.module.persistence.rdbms.config;
 
 //import java.sql.Driver;
 //import org.springframework.jdbc.datasource.SimpleDriverDataSource;
-//import org.springframework.context.annotation.ComponentScan;
 import javax.inject.Inject;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
