@@ -2,12 +2,12 @@ package org.openur.module.persistence.rdbms.config;
 
 //import java.sql.Driver;
 //import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+//import org.springframework.context.annotation.ComponentScan;
 import javax.inject.Inject;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Profile;
@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @PropertySource("classpath:/spring_test.properties")
 @ImportResource("classpath:/springDataAppContext.xml")
 @EnableJpaRepositories(basePackages = {"org.openur.module.persistence.rdbms.repository"})
-@ComponentScan(basePackages = {"org.openur.module.persistence.rdbms"})
+//@ComponentScan(basePackages = {"org.openur.module.persistence.rdbms"})
 public class RepositorySpringConfig
 {
 	@Inject
@@ -42,6 +42,18 @@ public class RepositorySpringConfig
 		
 		return f.getDatabase();
 	}
+	
+//	@Override
+//	public DataSource dataSource()
+//	{
+//		SimpleDriverDataSource ds = new SimpleDriverDataSource();
+//	  ds.setDriverClass(env.getPropertyAsClass("database.driver", Driver.class));
+//	  ds.setUrl(env.getProperty("database.url"));
+//	  ds.setUsername(env.getProperty("database.username"));
+//	  ds.setPassword(env.getProperty("database.password"));
+//	  
+//	  return ds;
+//	}
 
 	@Bean
 	public EntityManagerFactory entityManagerFactory()
@@ -77,16 +89,4 @@ public class RepositorySpringConfig
 	{
 		return new JpaTransactionManager(entityManagerFactory());
 	}
-	
-//	@Override
-//	public DataSource dataSource()
-//	{
-//		SimpleDriverDataSource ds = new SimpleDriverDataSource();
-//    ds.setDriverClass(env.getPropertyAsClass("database.driver", Driver.class));
-//    ds.setUrl(env.getProperty("database.url"));
-//    ds.setUsername(env.getProperty("database.username"));
-//    ds.setPassword(env.getProperty("database.password"));
-//    
-//    return ds;
-//	}
 }

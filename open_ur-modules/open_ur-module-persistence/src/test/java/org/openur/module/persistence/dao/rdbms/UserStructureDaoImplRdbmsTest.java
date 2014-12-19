@@ -22,6 +22,7 @@ import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
 import org.openur.module.persistence.dao.IUserStructureDao;
 import org.openur.module.persistence.mapper.rdbms.PersonMapperTest;
 import org.openur.module.persistence.mapper.rdbms.TechnicalUserMapperTest;
+import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
 import org.openur.module.persistence.rdbms.config.RepositorySpringConfig;
 import org.openur.module.persistence.rdbms.entity.PAddress;
 import org.openur.module.persistence.rdbms.entity.PApplication;
@@ -34,7 +35,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-@ContextConfiguration(classes = { RepositorySpringConfig.class })
+@ContextConfiguration(classes = { RepositorySpringConfig.class, DaoSpringConfig.class })
 @ActiveProfiles(profiles={"testRepository", "testDao"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UserStructureDaoImplRdbmsTest
@@ -49,14 +50,6 @@ public class UserStructureDaoImplRdbmsTest
 	
 	@Inject
 	private IUserStructureDao userStructureDao;
-
-	@After
-	public void tearDown()
-		throws Exception
-	{
-		personRepository.deleteAll();
-		technicalUserRepository.deleteAll();
-	}
 
 	@Test
 	public void testFindPersonByNumber()
@@ -218,6 +211,14 @@ public class UserStructureDaoImplRdbmsTest
 //	{
 //		fail("Not yet implemented");
 //	}
+
+	@After
+	public void tearDown()
+		throws Exception
+	{
+		personRepository.deleteAll();
+		technicalUserRepository.deleteAll();
+	}
 	
 	@Transactional(readOnly = false)
 	private PPerson savePerson(PPerson persistable)

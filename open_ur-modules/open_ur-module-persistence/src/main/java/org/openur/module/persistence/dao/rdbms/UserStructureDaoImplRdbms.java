@@ -3,6 +3,8 @@ package org.openur.module.persistence.dao.rdbms;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
+
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
@@ -29,11 +31,13 @@ public class UserStructureDaoImplRdbms
 		super();
 	}
 
+	@Inject
 	public void setPersonRepository(PersonRepository personRepository)
 	{
 		this.personRepository = personRepository;
 	}
 
+	@Inject
 	public void setTechnicalUserRepository(TechnicalUserRepository technicalUserRepository)
 	{
 		this.technicalUserRepository = technicalUserRepository;
