@@ -21,7 +21,7 @@ import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.person.PersonBuilder;
 import org.openur.module.domain.userstructure.person.Title;
 
-public class AuthOrganizationalUnitTest
+public class AuthorizableOrgUnitTest
 {
 	@Test
 	public void testFindAuthorizableMember()
