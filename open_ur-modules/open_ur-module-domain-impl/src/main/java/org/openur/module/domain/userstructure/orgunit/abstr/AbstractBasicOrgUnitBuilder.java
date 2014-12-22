@@ -9,23 +9,23 @@ import org.openur.module.domain.userstructure.InconsistentHierarchyException;
 import org.openur.module.domain.userstructure.UserStructureBaseBuilder;
 import org.openur.module.util.exception.OpenURRuntimeException;
 
-public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>>
+public abstract class AbstractBasicOrgUnitBuilder<T extends AbstractBasicOrgUnitBuilder<T>>
 	extends UserStructureBaseBuilder<T>
 {
 	// properties:
-	private AbstractOrgUnit superOrgUnit = null;
-	private AbstractOrgUnit rootOrgUnit = null;
+	private AbstractBasicOrgUnit superOrgUnit = null;
+	private AbstractBasicOrgUnit rootOrgUnit = null;
 	protected Set<AbstractOrgUnitMember> members = new HashSet<>();
 
 	// constructor:
-	protected AbstractOrgUnitBuilder(String orgUnitNumber)
+	protected AbstractBasicOrgUnitBuilder(String orgUnitNumber)
 	{
 		super(orgUnitNumber);
 	}
 	
 	// builder-methods:
 	@SuppressWarnings("unchecked")
-	public <OU extends AbstractOrgUnit> T superOrgUnit(OU superOrgUnit)
+	public <OU extends AbstractBasicOrgUnit> T superOrgUnit(OU superOrgUnit)
 	{
 		Validate.notNull(superOrgUnit, "super-org-unit must not be null!");
 		
@@ -41,7 +41,7 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <OU extends AbstractOrgUnit> T rootOrgUnit(OU rootOrgUnit)
+	public <OU extends AbstractBasicOrgUnit> T rootOrgUnit(OU rootOrgUnit)
 	{
 		Validate.notNull(rootOrgUnit, "root-orgunit must not be null!");
 		
@@ -84,12 +84,12 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 	}
 
 	// accessors:
-	protected AbstractOrgUnit getRootOrgUnit()
+	protected AbstractBasicOrgUnit getRootOrgUnit()
 	{
 		return rootOrgUnit;
 	}
 
-	protected AbstractOrgUnit getSuperOrgUnit()
+	protected AbstractBasicOrgUnit getSuperOrgUnit()
 	{
 		return superOrgUnit;
 	}
@@ -100,7 +100,7 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 	}
 	
 	// builder:
-	protected AbstractOrgUnit build()
+	protected AbstractBasicOrgUnit build()
 	{
 		if (getRootOrgUnit() != null && getSuperOrgUnit() == null)
 		{

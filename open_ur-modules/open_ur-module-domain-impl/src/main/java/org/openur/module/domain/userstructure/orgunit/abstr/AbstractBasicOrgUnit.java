@@ -12,7 +12,7 @@ import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
  * 
  * @author fuchs
  */
-public abstract class AbstractOrgUnit
+public abstract class AbstractBasicOrgUnit
 	extends UserStructureBase
 	implements IOrganizationalUnit
 {
@@ -20,11 +20,11 @@ public abstract class AbstractOrgUnit
 	
 	// properties:
   private final Set<? extends AbstractOrgUnitMember> members;
-  protected final AbstractOrgUnit rootOrgUnit;
-	protected final AbstractOrgUnit superOrgUnit;
+  protected final AbstractBasicOrgUnit rootOrgUnit;
+	protected final AbstractBasicOrgUnit superOrgUnit;
   
 	// constructor:
-	protected AbstractOrgUnit(AbstractOrgUnitBuilder<? extends AbstractOrgUnitBuilder<?>> b)
+	protected AbstractBasicOrgUnit(AbstractBasicOrgUnitBuilder<? extends AbstractBasicOrgUnitBuilder<?>> b)
 	{
 		super(b);
 		

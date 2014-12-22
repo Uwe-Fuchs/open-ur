@@ -3,10 +3,10 @@ package org.openur.module.domain.userstructure.orgunit;
 import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.EMailAddress;
-import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnitBuilder;
+import org.openur.module.domain.userstructure.orgunit.abstr.AbstractBasicOrgUnitBuilder;
 
 public abstract class AbstractExtendedOrgUnitBuilder<T extends AbstractExtendedOrgUnitBuilder<T>>
-	extends AbstractOrgUnitBuilder<T>
+	extends AbstractBasicOrgUnitBuilder<T>
 {
 	// properties:
 	private String name = null;

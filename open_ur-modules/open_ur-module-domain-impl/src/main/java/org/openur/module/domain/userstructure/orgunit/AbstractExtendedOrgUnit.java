@@ -3,10 +3,10 @@ package org.openur.module.domain.userstructure.orgunit;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.EMailAddress;
-import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnit;
+import org.openur.module.domain.userstructure.orgunit.abstr.AbstractBasicOrgUnit;
 
 public abstract class AbstractExtendedOrgUnit
-	extends AbstractOrgUnit
+	extends AbstractBasicOrgUnit
 {
 	private static final long serialVersionUID = 2892816957009550354L;
 	
