@@ -15,14 +15,14 @@ public interface IOrganizationalUnit
 	 * @return the superior ou or null if this ou is the highest ou (thus the "root"
 	 * of the hierarchy).
 	 */
-	IOrganizationalUnit getSuperOrgUnit();
+	<OU extends IOrganizationalUnit> OU getSuperOrgUnit();
 	
 	/**
 	 * returns the root-org-unit of the hierarchy this org-unit is a part of. 
 	 * 
 	 * @return root-org-unit of this hierarchy.
 	 */
-	IOrganizationalUnit getRootOrgUnit();
+	<OU extends IOrganizationalUnit> OU getRootOrgUnit();
 	
 	/**
 	 * returns the members of this organizational-unit in a set.
@@ -47,7 +47,8 @@ public interface IOrganizationalUnit
    *
    * @return IOrgUnitMember if found in this org-unit, else null.
    */
-	default IOrgUnitMember findMember(String id)
+	@SuppressWarnings("unchecked")
+	default <M extends IOrgUnitMember> M findMember(String id)
 	{
     if (id == null)
     {
@@ -58,7 +59,7 @@ public interface IOrganizationalUnit
     {
       if (id.equals(m.getPerson().getIdentifier()))
       {
-        return m;
+        return (M) m;
       }
     }
 
@@ -72,7 +73,7 @@ public interface IOrganizationalUnit
    *
    * @return IOrgUnitMember if found in this org-unit, else null.
    */
-	default IOrgUnitMember findMember(IPerson person)
+	default <M extends IOrgUnitMember, P extends IPerson> M findMember(P person)
 	{
 		if (person == null)
     {
@@ -117,7 +118,7 @@ public interface IOrganizationalUnit
    * 
    * @return the given person is a member in this org-unit.
    */
-	default boolean isMember(IPerson person)
+	default <P extends IPerson> boolean isMember(P person)
 	{
 		if (person == null)
     {

@@ -4,13 +4,11 @@ import java.util.Collections;
 import java.util.Set;
 
 import org.openur.module.domain.userstructure.UserStructureBase;
+import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
-import org.openur.module.domain.userstructure.orgunit.OrganizationalUnit;
-import org.openur.module.domain.userstructure.person.IPerson;
 
 /**
- * A basic implementation of {@link IOrganizationalUnit}. Extend this to create a suitable domain-object,
- * in case {@link OrganizationalUnit} does't meet your needs.
+ * A basic implementation of {@link IOrganizationalUnit}. Extend this to create your own domain-object.
  * 
  * @author fuchs
  */
@@ -37,21 +35,25 @@ public abstract class AbstractOrgUnit
 
 	// accessors:
 	@Override
-	public Set<? extends AbstractOrgUnitMember> getMembers()
+	@SuppressWarnings("unchecked")
+	public <OU extends IOrganizationalUnit> OU getSuperOrgUnit()
 	{
-		return members;
+		return (OU) this.superOrgUnit;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <OU extends IOrganizationalUnit> OU getRootOrgUnit()
+	{
+		return (OU) this.rootOrgUnit;
+	}
+
+	@Override
+	public Set<? extends IOrgUnitMember> getMembers()
+	{
+		return this.members;
 	}
 
 	// operations:
-	@Override
-	public AbstractOrgUnitMember findMember(String id)
-	{
-		return (AbstractOrgUnitMember) IOrganizationalUnit.super.findMember(id);
-	}
 
-	@Override
-	public AbstractOrgUnitMember findMember(IPerson person)
-	{
-		return (AbstractOrgUnitMember) IOrganizationalUnit.super.findMember(person);
-	}	
 }

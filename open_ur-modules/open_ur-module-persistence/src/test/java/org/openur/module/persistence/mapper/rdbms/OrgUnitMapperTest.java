@@ -99,7 +99,7 @@ public class OrgUnitMapperTest
 			.description("managing staff")
 			.rootOrgUnit(rootOu)
 			.superOrgUnit(superOu)
-			.authorizableMembers(Arrays.asList(m1, m2))
+			.members(Arrays.asList(m1, m2))
 			.address(address)
 			.emailAddress(EMailAddress.create("staff@company.com"))
 			.build();

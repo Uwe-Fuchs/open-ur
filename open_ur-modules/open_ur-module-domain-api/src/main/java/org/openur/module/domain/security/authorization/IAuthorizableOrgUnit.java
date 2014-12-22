@@ -18,7 +18,7 @@ public interface IAuthorizableOrgUnit
 	 */
 	default boolean hasPermission(IPerson person, IApplication app, IPermission permission)
 	{
-		IAuthorizableMember member = findAuthorizableMember(person.getIdentifier());
+		IAuthorizableMember member = findMember(person.getIdentifier());
 		
 		if (member == null)
 		{
@@ -27,31 +27,4 @@ public interface IAuthorizableOrgUnit
 		
 		return member.hasPermission(app, permission);
 	}
-	
-  /**
-   * searches the member with the given userId in this org-unit.
-   *
-   * @param id : the id of the member that is searched.
-   *
-   * @return IAuthorizableMember if found in this org-unit, else null.
-   */
-	default IAuthorizableMember findAuthorizableMember(String id)
-	{
-		return (IAuthorizableMember) findMember(id);
-	}
-	
-	/**
-	 * returns the authorizable org-unit this ou is subordinated to.
-	 * 
-	 * @return the superior ou or null if this ou is the highest ou (thus the "root"
-	 * of the hierarchy).
-	 */
-	IAuthorizableOrgUnit getSuperOrgUnit();
-	
-	/**
-	 * returns the root-org-unit of the hierarchy this org-unit is a part of. 
-	 * 
-	 * @return root-org-unit of this hierarchy.
-	 */
-	IAuthorizableOrgUnit getRootOrgUnit();
 }

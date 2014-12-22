@@ -25,7 +25,7 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 	
 	// builder-methods:
 	@SuppressWarnings("unchecked")
-	protected <OU extends AbstractOrgUnit> T superOrgUnit(OU superOrgUnit)
+	public <OU extends AbstractOrgUnit> T superOrgUnit(OU superOrgUnit)
 	{
 		Validate.notNull(superOrgUnit, "super-org-unit must not be null!");
 		
@@ -41,7 +41,7 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected <OU extends AbstractOrgUnit> T rootOrgUnit(OU rootOrgUnit)
+	public <OU extends AbstractOrgUnit> T rootOrgUnit(OU rootOrgUnit)
 	{
 		Validate.notNull(rootOrgUnit, "root-orgunit must not be null!");
 		
@@ -51,7 +51,7 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 	}
 
 	@SuppressWarnings("unchecked")
-	protected T members(Collection<? extends AbstractOrgUnitMember> members)
+	public T members(Collection<? extends AbstractOrgUnitMember> members)
 	{
 		Validate.notEmpty(members, "members-list must not be empty!");
 		
@@ -69,7 +69,7 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected <M extends AbstractOrgUnitMember> T addMember(M member)	
+	public <M extends AbstractOrgUnitMember> T addMember(M member)	
 	{
 		Validate.notNull(member, "member must not be null!");
 		
@@ -84,17 +84,17 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 	}
 
 	// accessors:
-	AbstractOrgUnit getRootOrgUnit()
+	protected AbstractOrgUnit getRootOrgUnit()
 	{
 		return rootOrgUnit;
 	}
 
-	AbstractOrgUnit getSuperOrgUnit()
+	protected AbstractOrgUnit getSuperOrgUnit()
 	{
 		return superOrgUnit;
 	}
 
-	Set<? extends AbstractOrgUnitMember> getMembers()
+	protected Set<? extends AbstractOrgUnitMember> getMembers()
 	{
 		return members;
 	}

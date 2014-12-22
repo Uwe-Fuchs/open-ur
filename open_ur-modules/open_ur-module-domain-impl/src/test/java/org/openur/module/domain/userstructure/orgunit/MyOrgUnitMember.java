@@ -3,14 +3,14 @@ package org.openur.module.domain.userstructure.orgunit;
 import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnitMember;
 import org.openur.module.domain.userstructure.person.Person;
 
-public class OrgUnitMember
+public class MyOrgUnitMember
 	extends AbstractOrgUnitMember
 	implements IOrgUnitMember
 {
 	private static final long serialVersionUID = -3347655382807063939L;
 
 	// constructor:
-	public OrgUnitMember(OrgUnitMemberBuilder b)
+	public MyOrgUnitMember(MyOrgUnitMemberBuilder b)
 	{
 		super(b);
 	}
@@ -23,18 +23,18 @@ public class OrgUnitMember
 	}
 	
 	// builder-class:
-	public static class OrgUnitMemberBuilder
-		extends AbstractOrgUnitMemberBuilder<OrgUnitMemberBuilder>
+	public static class MyOrgUnitMemberBuilder
+		extends AbstractOrgUnitMemberBuilder<MyOrgUnitMemberBuilder>
 	{
-		public OrgUnitMemberBuilder(Person person, String orgUnitId)
+		public MyOrgUnitMemberBuilder(Person person, String orgUnitId)
 		{
 			super(person, orgUnitId);
 		}
 
 		@Override
-		public OrgUnitMember build()
+		public MyOrgUnitMember build()
 		{
-			return new OrgUnitMember(this);
+			return new MyOrgUnitMember(this);
 		}
 	}
 }

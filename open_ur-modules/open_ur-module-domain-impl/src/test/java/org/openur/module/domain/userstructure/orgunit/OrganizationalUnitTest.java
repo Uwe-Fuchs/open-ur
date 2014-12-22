@@ -1,17 +1,16 @@
 package org.openur.module.domain.userstructure.orgunit;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Set;
 import java.util.UUID;
 
 import org.junit.Test;
 import org.openur.module.domain.userstructure.InconsistentHierarchyException;
 import org.openur.module.domain.userstructure.Status;
+import org.openur.module.domain.userstructure.orgunit.MyOrgUnitMember.MyOrgUnitMemberBuilder;
 import org.openur.module.domain.userstructure.person.Gender;
 import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.Person;
@@ -19,42 +18,40 @@ import org.openur.module.domain.userstructure.person.PersonBuilder;
 import org.openur.module.domain.userstructure.person.Title;
 import org.openur.module.util.exception.OpenURRuntimeException;
 
-import static org.openur.module.domain.userstructure.orgunit.OrgUnitMember.OrgUnitMemberBuilder;
-
 public class OrganizationalUnitTest
 {
 	@Test
 	public void testCompareTo()
 	{
-		OrganizationalUnit ou1 = new OrganizationalUnitBuilder("numberOu1", "ou")
+		MyOrgUnit ou1 = new MyOrgUnitBuilder("numberOu1", "ou")
 			.build();		
 		
-		OrganizationalUnit ou2 = new OrganizationalUnitBuilder("numberOu2", "ou")
+		MyOrgUnit ou2 = new MyOrgUnitBuilder("numberOu2", "ou")
 			.build();
 		
 		assertTrue("ou1 should be before ou2 because of ou-numbers", ou1.compareTo(ou2) < 0);
 		
 		
-		ou2 = new OrganizationalUnitBuilder("numberOu1",  "ou")
+		ou2 = new MyOrgUnitBuilder("numberOu1",  "ou")
 			.status(Status.INACTIVE)
 			.build();
 	
 		assertTrue("ou1 should be before ou2 because of status", ou1.compareTo(ou2) < 0);
 		
 	
-		ou1 = new OrganizationalUnitBuilder("numberOu1", "staff department")
+		ou1 = new MyOrgUnitBuilder("numberOu1", "staff department")
 			.build();
 		
-		ou2 = new OrganizationalUnitBuilder("numberOu2", "accounts department")
+		ou2 = new MyOrgUnitBuilder("numberOu2", "accounts department")
 			.build();
 		
 		assertTrue("ou1 should be after ou2 because of name", ou1.compareTo(ou2) > 0);
 		
 		
-		ou1 = new OrganizationalUnitBuilder("123abc", "staff department")
+		ou1 = new MyOrgUnitBuilder("123abc", "staff department")
 			.shortName("stf1")
 			.build();
-		ou2 = new OrganizationalUnitBuilder("123abc", "staff department")
+		ou2 = new MyOrgUnitBuilder("123abc", "staff department")
 			.shortName("stf2")
 			.build();
 		
@@ -64,15 +61,21 @@ public class OrganizationalUnitTest
 	@Test
 	public void testIsRootOrgUnit()
 	{
-		OrganizationalUnit rootOu = new OrganizationalUnitBuilder("rootOuNumber", "rootOu")
+		MyOrgUnit rootOu = new MyOrgUnitBuilder("rootOuNumber", "rootOu")
 			.build();
 		assertTrue(rootOu.isRootOrgUnit());
 		
-		OrganizationalUnit ou = new OrganizationalUnitBuilder("ouNumber", "ou")
+		MyOrgUnit ou = new MyOrgUnitBuilder("ouNumber", "ou")
 			.rootOrgUnit(rootOu)
 		  .superOrgUnit(rootOu)
 			.build();
 		assertFalse(ou.isRootOrgUnit());
+		
+		MyOrgUnit _ou = ou.getRootOrgUnit();
+		assertTrue(_ou.isRootOrgUnit());
+		
+		_ou = ou.getSuperOrgUnit();
+		assertTrue(_ou.isRootOrgUnit());
 	}
 	
 	@Test
@@ -86,23 +89,25 @@ public class OrganizationalUnitTest
 		
 		final String OU_ID = UUID.randomUUID().toString();
 		
-		OrgUnitMember m2 = new OrgUnitMemberBuilder(pers2, OU_ID).build();
-		OrgUnitMember m1 = new OrgUnitMemberBuilder(pers1, OU_ID).build();		
+		MyOrgUnitMember m2 = new MyOrgUnitMemberBuilder(pers2, OU_ID).build();
+		MyOrgUnitMember m1 = new MyOrgUnitMemberBuilder(pers1, OU_ID).build();		
 		
-		OrganizationalUnitBuilder ouBuilder = new OrganizationalUnitBuilder("ouNumber", "ou")
+		MyOrgUnitBuilder ouBuilder = new MyOrgUnitBuilder("ouNumber", "ou")
 			.identifier(OU_ID)
-			.orgUnitMembers(Arrays.asList(m1, m2));
+			.members(Arrays.asList(m1, m2));
 
-		OrganizationalUnit ou = ouBuilder.build();
+		MyOrgUnit ou = ouBuilder.build();
 		
-		assertEquals(m1, ou.findMember(m1.getPerson()));
+		MyOrgUnitMember _m1 = ou.findMember(m1.getPerson());
+		
+		assertEquals(m1, _m1);
 		assertEquals(m1, ou.findMember(m1.getPerson().getIdentifier()));
 		assertEquals(m2, ou.findMember(m2.getPerson()));
 		assertEquals(m2, ou.findMember(m2.getPerson().getIdentifier()));
 		
 		Person pers3 = new PersonBuilder("numberPers3", Name.create(Gender.MALE, "Francois", "Hollande"))
 			.build();
-		OrgUnitMember m3 = new OrgUnitMemberBuilder(pers3, OU_ID).build();
+		MyOrgUnitMember m3 = new MyOrgUnitMemberBuilder(pers3, OU_ID).build();
 		
 		assertNull(ou.findMember(m3.getPerson()));
 		assertNull(ou.findMember(m3.getPerson().getIdentifier()));
@@ -124,13 +129,17 @@ public class OrganizationalUnitTest
 		
 		final String OU_ID = UUID.randomUUID().toString();
 		
-		OrgUnitMember m2 = new OrgUnitMemberBuilder(pers2, OU_ID).build();
-		OrgUnitMember m1 = new OrgUnitMemberBuilder(pers1, OU_ID).build();	
+		MyOrgUnitMember m2 = new MyOrgUnitMemberBuilder(pers2, OU_ID).build();
+		MyOrgUnitMember m1 = new MyOrgUnitMemberBuilder(pers1, OU_ID).build();	
 		
-		OrganizationalUnit ou = new OrganizationalUnitBuilder("ouNumber", "ou")
+		MyOrgUnit ou = new MyOrgUnitBuilder("ouNumber", "ou")
 			.identifier(OU_ID)
-			.orgUnitMembers(Arrays.asList(m1, m2))
+			.members(Arrays.asList(m1, m2))
 			.build();
+		
+		Set<MyOrgUnitMember> _members = ou.getMembers();
+		assertNotNull(_members);
+		assertEquals(_members.size(), 2);
 		
 		assertTrue(ou.isMember(m1.getPerson()));
 		assertTrue(ou.isMember(m1.getPerson().getIdentifier()));
@@ -139,14 +148,14 @@ public class OrganizationalUnitTest
 		
 		Person pers3 = new PersonBuilder("numberPers3", Name.create(Gender.MALE, "Francois", "Hollande"))
 			.build();
-		OrgUnitMember m3 = new OrgUnitMemberBuilder(pers3, OU_ID).build();
+		MyOrgUnitMember m3 = new MyOrgUnitMemberBuilder(pers3, OU_ID).build();
 		
 		assertFalse(ou.isMember(m3.getPerson()));
 		assertFalse(ou.isMember(m3.getPerson().getIdentifier()));
 		
-		ou = new OrganizationalUnitBuilder("ouNumber", "ou")
+		ou = new MyOrgUnitBuilder("ouNumber", "ou")
 			.identifier(OU_ID)
-			.orgUnitMembers(Arrays.asList(m1, m2, m3))
+			.members(Arrays.asList(m1, m2, m3))
 			.build();
 		
 		assertTrue(ou.isMember(m3.getPerson()));
@@ -159,17 +168,17 @@ public class OrganizationalUnitTest
 		Person pers = new PersonBuilder("numberPers1", Name.create(Gender.MALE, "Barack", "Obama"))
 			.build();
 		final String OU_ID_1 = UUID.randomUUID().toString();
-		OrgUnitMember member = new OrgUnitMemberBuilder(pers, OU_ID_1).build();
+		MyOrgUnitMember member = new MyOrgUnitMemberBuilder(pers, OU_ID_1).build();
 		
 		final String OU_ID_2 = UUID.randomUUID().toString();
-		OrganizationalUnitBuilder oub = new OrganizationalUnitBuilder("ouNumber", "ou").identifier(OU_ID_2);
-		oub.orgUnitMembers(Arrays.asList(member));
+		MyOrgUnitBuilder oub = new MyOrgUnitBuilder("ouNumber", "ou").identifier(OU_ID_2);
+		oub.members(Arrays.asList(member));
 	}
 	
 	@Test
 	public void testCreateWithNullMembers()
 	{
-		OrganizationalUnit ou = new OrganizationalUnitBuilder("ouNumber", "ou")
+		MyOrgUnit ou = new MyOrgUnitBuilder("ouNumber", "ou")
 			.build();
 		
 		assertTrue(ou.getMembers().isEmpty());
@@ -178,18 +187,18 @@ public class OrganizationalUnitTest
 	@Test(expected=IllegalArgumentException.class)
 	public void testCreateWithEmptyMembersList()
 	{
-		new OrganizationalUnitBuilder("ouNumber", "ou")
-			.orgUnitMembers(new ArrayList<OrgUnitMember>(0))
+		new MyOrgUnitBuilder("ouNumber", "ou")
+			.members(new ArrayList<MyOrgUnitMember>(0))
 			.build();
 	}
 	
 	@Test(expected=InconsistentHierarchyException.class)
 	public void testCreateAsRootWithSuperOuId()
 	{
-		OrganizationalUnit ou = new OrganizationalUnitBuilder("ouNumber", "ou")
+		MyOrgUnit ou = new MyOrgUnitBuilder("ouNumber", "ou")
 			.build();
 		
-		new OrganizationalUnitBuilder("superOuNumber", "superOu")
+		new MyOrgUnitBuilder("superOuNumber", "superOu")
 			.superOrgUnit(ou)
 			.build();
 	}
@@ -197,10 +206,10 @@ public class OrganizationalUnitTest
 	@Test(expected=InconsistentHierarchyException.class)
 	public void testCreateAsNonRootWithoutSuperOuId()
 	{
-		OrganizationalUnit rootOu = new OrganizationalUnitBuilder("rootOuNumber", "rootOu")
+		MyOrgUnit rootOu = new MyOrgUnitBuilder("rootOuNumber", "rootOu")
 			.build();
 		
-		new OrganizationalUnitBuilder("ouNumber", "ou")
+		new MyOrgUnitBuilder("ouNumber", "ou")
 			.rootOrgUnit(rootOu)
 			.build();
 	}
@@ -208,10 +217,10 @@ public class OrganizationalUnitTest
 	@Test(expected=NullPointerException.class)
 	public void testCreateWithEmptySuperOu()
 	{
-		OrganizationalUnit rootOu = new OrganizationalUnitBuilder("rootOuNumber", "rootOu")
+		MyOrgUnit rootOu = new MyOrgUnitBuilder("rootOuNumber", "rootOu")
 			.build();
 		
-		new OrganizationalUnitBuilder("ouNumber", "ou")
+		new MyOrgUnitBuilder("ouNumber", "ou")
 			.rootOrgUnit(rootOu)
 			.superOrgUnit(null);
 	}
@@ -219,6 +228,6 @@ public class OrganizationalUnitTest
 	@Test(expected=NullPointerException.class)
 	public void testCreateAsNonRootWithEmptyRoot()
 	{
-		new OrganizationalUnitBuilder("ouNumber", "ou").rootOrgUnit(null);
+		new MyOrgUnitBuilder("ouNumber", "ou").rootOrgUnit(null);
 	}
 }

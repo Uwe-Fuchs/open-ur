@@ -42,28 +42,30 @@ public class AuthorizableOrgUnitTest
 			.identifier(OU_ID)
 			.status(Status.ACTIVE)
 			.shortName("stf")
-			.authorizableMembers(Arrays.asList(m1, m2));
+			.description("description_123abc")
+			.members(Arrays.asList(m1, m2));
 		
 		AuthorizableOrgUnit ou = oub.build();
 		
 		assertEquals(NAME_STAFF_DEPARTMENT, ou.getName());
-		assertEquals(m1, ou.findMember(m1.getPerson()));
-		assertEquals(m1, ou.findAuthorizableMember(m1.getPerson().getIdentifier()));
+		AuthorizableMember _m1 = ou.findMember(m1.getPerson());
+		assertEquals(m1, _m1);
+		assertEquals(m1, ou.findMember(m1.getPerson().getIdentifier()));
 		assertEquals(m2, ou.findMember(m2.getPerson()));
-		assertEquals(m2, ou.findAuthorizableMember(m2.getPerson().getIdentifier()));
+		assertEquals(m2, ou.findMember(m2.getPerson().getIdentifier()));
 		
 		Person pers3 = new PersonBuilder("numberPers3", Name.create(Gender.MALE, "Francois", "Hollande"))
 			.build();
 		AuthorizableMember m3 = new AuthorizableMemberBuilder(pers3, OU_ID).build();
 		
 		assertNull(ou.findMember(m3.getPerson()));
-		assertNull(ou.findAuthorizableMember(m3.getPerson().getIdentifier()));
+		assertNull(ou.findMember(m3.getPerson().getIdentifier()));
 		
 		oub.addMember(m3);		
 		ou = oub.build();
 
 		assertEquals(m3, ou.findMember(m3.getPerson()));
-		assertEquals(m3, ou.findAuthorizableMember(m3.getPerson().getIdentifier()));
+		assertEquals(m3, ou.findMember(m3.getPerson().getIdentifier()));
 	}
 
 	@Test
@@ -88,7 +90,7 @@ public class AuthorizableOrgUnitTest
 		
 		AuthorizableOrgUnit ou = new AuthorizableOrgUnitBuilder("ouNumber", "ou")
 			.identifier(OU_ID)
-			.authorizableMembers(Arrays.asList(member))
+			.members(Arrays.asList(member))
 			.build();
 
 		// has permission:		
