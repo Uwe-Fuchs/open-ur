@@ -9,6 +9,7 @@ public class InconsistentHierarchyException
 
 	public InconsistentHierarchyException()
 	{
+		super();
 	}
 
 	public InconsistentHierarchyException(String message)
