@@ -1,4 +1,4 @@
-package org.openur.module.domain.userstructure.orgunit.abstr;
+package org.openur.module.domain.userstructure.orgunit;
 
 import java.util.Collections;
 import java.util.Set;

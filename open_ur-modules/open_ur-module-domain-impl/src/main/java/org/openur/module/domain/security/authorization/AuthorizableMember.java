@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
-import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnitMember;
+import org.openur.module.domain.userstructure.orgunit.AbstractOrgUnitMember;
 import org.openur.module.domain.userstructure.person.Person;
 
 public class AuthorizableMember

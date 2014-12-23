@@ -3,7 +3,6 @@ package org.openur.module.domain.userstructure.person;
 import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.EMailAddress;
-import org.openur.module.domain.userstructure.person.abstr.AbstractPersonBuilder;
 
 public class PersonBuilder
 	extends AbstractPersonBuilder<PersonBuilder>

@@ -1,6 +1,5 @@
 package org.openur.module.domain.userstructure.orgunit;
 
-import org.openur.module.domain.userstructure.orgunit.abstr.AbstractOrgUnitMember;
 import org.openur.module.domain.userstructure.person.Person;
 
 public class MyOrgUnitMember

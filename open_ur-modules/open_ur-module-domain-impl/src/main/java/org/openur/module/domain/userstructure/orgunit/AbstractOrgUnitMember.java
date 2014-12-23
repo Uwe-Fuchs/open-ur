@@ -1,10 +1,10 @@
-package org.openur.module.domain.userstructure.orgunit.abstr;
+package org.openur.module.domain.userstructure.orgunit;
 
 import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.IdentifiableEntityBuilder;
 import org.openur.module.domain.IdentifiableEntityImpl;
 import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
-import org.openur.module.domain.userstructure.person.abstr.AbstractPerson;
+import org.openur.module.domain.userstructure.person.AbstractPerson;
 
 public abstract class AbstractOrgUnitMember
 	extends IdentifiableEntityImpl

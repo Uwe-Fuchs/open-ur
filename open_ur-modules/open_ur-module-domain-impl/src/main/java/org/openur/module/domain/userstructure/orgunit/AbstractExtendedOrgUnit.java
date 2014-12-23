@@ -3,7 +3,6 @@ package org.openur.module.domain.userstructure.orgunit;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.EMailAddress;
-import org.openur.module.domain.userstructure.orgunit.abstr.AbstractBasicOrgUnit;
 
 public abstract class AbstractExtendedOrgUnit
 	extends AbstractBasicOrgUnit
