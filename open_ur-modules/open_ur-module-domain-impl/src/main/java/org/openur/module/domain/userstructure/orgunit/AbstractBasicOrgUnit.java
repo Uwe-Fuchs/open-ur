@@ -4,8 +4,6 @@ import java.util.Collections;
 import java.util.Set;
 
 import org.openur.module.domain.userstructure.UserStructureBase;
-import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
-import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 
 /**
  * A basic implementation of {@link IOrganizationalUnit}. Extend this to create your own domain-object.
@@ -35,21 +33,19 @@ public abstract class AbstractBasicOrgUnit
 
 	// accessors:
 	@Override
-	@SuppressWarnings("unchecked")
-	public <OU extends IOrganizationalUnit> OU getSuperOrgUnit()
+	public AbstractBasicOrgUnit getSuperOrgUnit()
 	{
-		return (OU) this.superOrgUnit;
+		return (AbstractBasicOrgUnit) this.superOrgUnit;
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public <OU extends IOrganizationalUnit> OU getRootOrgUnit()
+	public AbstractBasicOrgUnit getRootOrgUnit()
 	{
-		return (OU) this.rootOrgUnit;
+		return (AbstractBasicOrgUnit) this.rootOrgUnit;
 	}
 
 	@Override
-	public Set<? extends IOrgUnitMember> getMembers()
+	public Set<? extends AbstractOrgUnitMember> getMembers()
 	{
 		return this.members;
 	}

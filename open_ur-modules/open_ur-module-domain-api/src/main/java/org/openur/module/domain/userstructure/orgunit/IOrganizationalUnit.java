@@ -15,14 +15,14 @@ public interface IOrganizationalUnit
 	 * @return the superior ou or null if this ou is the highest ou (thus the "root"
 	 * of the hierarchy).
 	 */
-	<OU extends IOrganizationalUnit> OU getSuperOrgUnit();
+	IOrganizationalUnit getSuperOrgUnit();
 	
 	/**
 	 * returns the root-org-unit of the hierarchy this org-unit is a part of. 
 	 * 
 	 * @return root-org-unit of this hierarchy.
 	 */
-	<OU extends IOrganizationalUnit> OU getRootOrgUnit();
+	IOrganizationalUnit getRootOrgUnit();
 	
 	/**
 	 * returns the members of this organizational-unit in a set.
