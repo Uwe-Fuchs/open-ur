@@ -25,7 +25,7 @@ public abstract class AbstractBasicOrgUnitBuilder<T extends AbstractBasicOrgUnit
 	
 	// builder-methods:
 	@SuppressWarnings("unchecked")
-	public <OU extends AbstractBasicOrgUnit> T superOrgUnit(OU superOrgUnit)
+	protected T superOrgUnit(AbstractBasicOrgUnit superOrgUnit)
 	{
 		Validate.notNull(superOrgUnit, "super-org-unit must not be null!");
 		
@@ -41,7 +41,7 @@ public abstract class AbstractBasicOrgUnitBuilder<T extends AbstractBasicOrgUnit
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <OU extends AbstractBasicOrgUnit> T rootOrgUnit(OU rootOrgUnit)
+	protected T rootOrgUnit(AbstractBasicOrgUnit rootOrgUnit)
 	{
 		Validate.notNull(rootOrgUnit, "root-orgunit must not be null!");
 		
@@ -51,9 +51,9 @@ public abstract class AbstractBasicOrgUnitBuilder<T extends AbstractBasicOrgUnit
 	}
 
 	@SuppressWarnings("unchecked")
-	public T members(Collection<? extends AbstractOrgUnitMember> members)
+	protected T members(Collection<? extends AbstractOrgUnitMember> members)
 	{
-		Validate.notEmpty(members, "members-list must not be empty!");
+		Validate.notNull(members, "members-list must not be null!");
 		
 		for (AbstractOrgUnitMember m : members)
 		{
@@ -69,7 +69,7 @@ public abstract class AbstractBasicOrgUnitBuilder<T extends AbstractBasicOrgUnit
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <M extends AbstractOrgUnitMember> T addMember(M member)	
+	public T addMember(AbstractOrgUnitMember member)	
 	{
 		Validate.notNull(member, "member must not be null!");
 		

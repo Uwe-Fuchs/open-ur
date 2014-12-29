@@ -5,9 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.openur.module.domain.userstructure.Status;
-import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
-import org.openur.module.domain.userstructure.person.IPerson;
 
 public class MyOrgUnit
 	implements IOrganizationalUnit
@@ -39,26 +37,14 @@ public class MyOrgUnit
 	}
 
 	@Override
-	public String getOrgUnitNumber()
-	{
-		return getNumber();
-	}
-
-	@Override
 	public MyOrgUnit getSuperOrgUnit()
 	{
 		return this.superOrgUnit;
 	}
 
-	protected void setSuperOrgUnit(MyOrgUnit superOrgUnit)
+	public void setSuperOrgUnit(MyOrgUnit superOrgUnit)
 	{
 		this.superOrgUnit = superOrgUnit;
-	}
-
-	@Override
-	public boolean isRootOrgUnit()
-	{
-		return (this.rootOrgUnit == null);
 	}
 
 	@Override
@@ -73,54 +59,14 @@ public class MyOrgUnit
 	}
 
 	@Override
-	public Set<MyMember> getMembers()
+	public Set<? extends MyMember> getMembers()
 	{
 		return this.members;
 	}
 
 	public void addMember(MyMember member)
 	{
-		this.getMembers().add(member);
-	}
-
-	@Override
-	public IOrgUnitMember findMember(String id)
-	{
-    if (id == null)
-    {
-      return null;
-    }
-
-    for (MyMember m : this.getMembers())
-    {
-      if (id.equals(m.getPerson().getIdentifier()))
-      {
-        return m;
-      }
-    }
-
-    return null;
-	}
-
-	@Override
-	public boolean isMember(String id)
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isMember(IPerson person)
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public IOrgUnitMember findMember(IPerson person)
-	{
-		// TODO Auto-generated method stub
-		return null;
+		this.members.add(member);
 	}
 
 	@Override

@@ -27,4 +27,16 @@ public class MyOrgUnit
 			.map(member -> (MyOrgUnitMember) member)
 			.collect(Collectors.toSet()); 
 	}
+
+	@Override
+	public MyOrgUnit getSuperOrgUnit()
+	{
+		return (MyOrgUnit) super.getSuperOrgUnit();
+	}
+
+	@Override
+	public MyOrgUnit getRootOrgUnit()
+	{
+		return (MyOrgUnit) super.getRootOrgUnit();
+	}
 }

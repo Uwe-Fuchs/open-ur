@@ -43,7 +43,7 @@ public class AuthorizableOrgUnitTest
 			.status(Status.ACTIVE)
 			.shortName("stf")
 			.description("description_123abc")
-			.members(Arrays.asList(m1, m2));
+			.authorizableMembers(Arrays.asList(m1, m2));
 		
 		AuthorizableOrgUnit ou = oub.build();
 		
@@ -90,7 +90,7 @@ public class AuthorizableOrgUnitTest
 		
 		AuthorizableOrgUnit ou = new AuthorizableOrgUnitBuilder("ouNumber", "ou")
 			.identifier(OU_ID)
-			.members(Arrays.asList(member))
+			.authorizableMembers(Arrays.asList(member))
 			.build();
 
 		// has permission:		

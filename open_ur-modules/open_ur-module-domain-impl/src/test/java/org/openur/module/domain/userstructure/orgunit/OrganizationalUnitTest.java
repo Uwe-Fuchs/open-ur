@@ -2,7 +2,6 @@ package org.openur.module.domain.userstructure.orgunit;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.UUID;
@@ -94,7 +93,7 @@ public class OrganizationalUnitTest
 		
 		MyOrgUnitBuilder ouBuilder = new MyOrgUnitBuilder("ouNumber", "ou")
 			.identifier(OU_ID)
-			.members(Arrays.asList(m1, m2));
+			.myOrgUnitMembers(Arrays.asList(m1, m2));
 
 		MyOrgUnit ou = ouBuilder.build();
 		
@@ -134,7 +133,7 @@ public class OrganizationalUnitTest
 		
 		MyOrgUnit ou = new MyOrgUnitBuilder("ouNumber", "ou")
 			.identifier(OU_ID)
-			.members(Arrays.asList(m1, m2))
+			.myOrgUnitMembers(Arrays.asList(m1, m2))
 			.build();
 		
 		Set<MyOrgUnitMember> _members = ou.getMembers();
@@ -155,7 +154,7 @@ public class OrganizationalUnitTest
 		
 		ou = new MyOrgUnitBuilder("ouNumber", "ou")
 			.identifier(OU_ID)
-			.members(Arrays.asList(m1, m2, m3))
+			.myOrgUnitMembers(Arrays.asList(m1, m2, m3))
 			.build();
 		
 		assertTrue(ou.isMember(m3.getPerson()));
@@ -172,11 +171,11 @@ public class OrganizationalUnitTest
 		
 		final String OU_ID_2 = UUID.randomUUID().toString();
 		MyOrgUnitBuilder oub = new MyOrgUnitBuilder("ouNumber", "ou").identifier(OU_ID_2);
-		oub.members(Arrays.asList(member));
+		oub.myOrgUnitMembers(Arrays.asList(member));
 	}
 	
 	@Test
-	public void testCreateWithNullMembers()
+	public void testCreateWithoutMembers()
 	{
 		MyOrgUnit ou = new MyOrgUnitBuilder("ouNumber", "ou")
 			.build();
@@ -184,12 +183,11 @@ public class OrganizationalUnitTest
 		assertTrue(ou.getMembers().isEmpty());
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
-	public void testCreateWithEmptyMembersList()
+	@Test(expected=NullPointerException.class)
+	public void testCreateWithNullMembersList()
 	{
 		new MyOrgUnitBuilder("ouNumber", "ou")
-			.members(new ArrayList<MyOrgUnitMember>(0))
-			.build();
+			.myOrgUnitMembers(null);
 	}
 	
 	@Test(expected=InconsistentHierarchyException.class)

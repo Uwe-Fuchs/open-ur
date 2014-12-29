@@ -8,6 +8,21 @@ public interface IAuthorizableOrgUnit
 	extends IOrganizationalUnit
 {
 	/**
+	 * returns the (authorizable) ou this ou is subordinated to.
+	 * 
+	 * @return the superior (authorizable) ou or null if this ou is the highest ou (thus the "root"
+	 * of the hierarchy).
+	 */
+	IAuthorizableOrgUnit getSuperOrgUnit();
+	
+	/**
+	 * returns the (authorizable) root-ou of the hierarchy this ou is a part of. 
+	 * 
+	 * @return (authorizable) root-ou of this hierarchy.
+	 */
+	IAuthorizableOrgUnit getRootOrgUnit();
+	
+	/**
 	 * indicates if a person has a certain permission in an app.
 	 * 
 	 * @param person : the person for whom the permission is used.
