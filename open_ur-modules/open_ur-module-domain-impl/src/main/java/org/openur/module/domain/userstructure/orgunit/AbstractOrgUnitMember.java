@@ -3,9 +3,16 @@ package org.openur.module.domain.userstructure.orgunit;
 import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.IdentifiableEntityBuilder;
 import org.openur.module.domain.IdentifiableEntityImpl;
-import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
-import org.openur.module.domain.userstructure.person.AbstractPerson;
+import org.openur.module.domain.security.authorization.AuthorizableMember;
+import org.openur.module.domain.userstructure.person.Person;
 
+/**
+ * Implementation of {@link IOrgUnitMember}. All userstructure-related concerns are implemented. Anyway the
+ * security-related concerns are still missing, so the final (and concrete) implementation is found under 
+ * {@link AuthorizableMember}.
+ * 
+ * @author info@uwefuchs.com
+ */
 public abstract class AbstractOrgUnitMember
 	extends IdentifiableEntityImpl
 	implements IOrgUnitMember
@@ -13,7 +20,7 @@ public abstract class AbstractOrgUnitMember
 	private static final long serialVersionUID = -8299862057665830750L;
 
 	// properties:
-	private final AbstractPerson person;
+	private final Person person;
 	private final String orgUnitId;
 
 	// constructors:
@@ -27,7 +34,7 @@ public abstract class AbstractOrgUnitMember
 
 	// accessors:
 	@Override
-	public AbstractPerson getPerson()
+	public Person getPerson()
 	{
 		return person;
 	}
@@ -50,11 +57,11 @@ public abstract class AbstractOrgUnitMember
 		extends IdentifiableEntityBuilder<T>
 	{
 		// properties:
-		private AbstractPerson person = null;
+		private Person person = null;
 		private String orgUnitId = null;
 		
 		// constructor:
-		protected AbstractOrgUnitMemberBuilder(AbstractPerson person, String orgUnitId)
+		protected AbstractOrgUnitMemberBuilder(Person person, String orgUnitId)
 		{
 			super();
 			
@@ -66,7 +73,7 @@ public abstract class AbstractOrgUnitMember
 		}
 		
 		// accessors:
-		protected AbstractPerson getPerson()
+		protected Person getPerson()
 		{
 			return person;
 		}

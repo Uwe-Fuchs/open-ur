@@ -1,15 +1,22 @@
 package org.openur.module.domain.userstructure.person;
 
+import java.util.Collections;
+import java.util.Set;
+
 import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.EMailAddress;
+import org.openur.module.domain.userstructure.UserStructureBase;
 
 public class Person
-	extends AbstractPerson
+	extends UserStructureBase
+	implements IPerson
 {
 	private static final long serialVersionUID = 357339688664869125L;
 	
 	// properties:
+	private final Set<OpenURApplication> applications;
 	private final Name name;
   private final String phoneNumber;
 	private final String faxNumber;
@@ -31,9 +38,16 @@ public class Person
 		this.homeAddress = b.getHomeAddress();
 		this.homePhoneNumber = b.getHomePhoneNumber();
 		this.homeEmailAddress = b.getHomeEmailAddress();
+		this.applications = Collections.unmodifiableSet(b.getApplications());
 	}
 
 	// accessors:
+	@Override
+	public Set<OpenURApplication> getApplications()
+	{
+		return applications;
+	}
+
 	public String getPhoneNumber()
 	{
 		return phoneNumber;
@@ -80,7 +94,7 @@ public class Person
 	{
 		if (!(other instanceof Person))
 		{
-			return super.compareTo(other);
+			return IPerson.super.compareTo(other);
 		}
 		
 		Person pers = (Person) other;
@@ -95,6 +109,6 @@ public class Person
 			return comparison;
 		}
 
-		return super.compareTo(pers);
+		return IPerson.super.compareTo(pers);
 	}
 }

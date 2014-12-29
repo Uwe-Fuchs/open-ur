@@ -4,14 +4,15 @@ import java.util.Collections;
 import java.util.Set;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.UserStructureBase;
 
 /**
  * Implementation of {@link IOrganizationalUnit}. All userstructure-related concerns are implemented. Anyway the
- * security-related concerns are still missing, so the final (and concrete) implementation is found under the 
- * {@link org.openur.module.domain.security.authorization}-package.
+ * security-related concerns are still missing, so the final (and concrete) implementation is found under 
+ * {@link AuthorizableOrgUnit}.
  * 
  * @author info@uwefuchs.com
  */

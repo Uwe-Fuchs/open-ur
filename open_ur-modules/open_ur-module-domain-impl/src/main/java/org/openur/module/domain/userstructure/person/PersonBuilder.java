@@ -1,13 +1,20 @@
 package org.openur.module.domain.userstructure.person;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.commons.lang3.Validate;
+import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.EMailAddress;
+import org.openur.module.domain.userstructure.UserStructureBaseBuilder;
 
 public class PersonBuilder
-	extends AbstractPersonBuilder<PersonBuilder>
+	extends UserStructureBaseBuilder<PersonBuilder>
 {
 	// properties:
+	private Set<OpenURApplication> applications = new HashSet<OpenURApplication>();
 	private Name name = null;
   private String phoneNumber = null;
 	private String faxNumber = null;
@@ -27,6 +34,22 @@ public class PersonBuilder
 	}
 
 	// builder-methods:	
+	public PersonBuilder applications(Collection<OpenURApplication> applications)
+	{
+		Validate.notEmpty(applications, "applications-list must not be empty!");		
+		this.applications.addAll(applications);
+		
+		return this;
+	}
+
+	public PersonBuilder addApplication(OpenURApplication application)
+	{
+		Validate.notNull(application, "application must not be null!");
+		this.getApplications().add(application);
+		
+		return this;
+	}
+
 	public PersonBuilder phoneNumber(String phoneNumber)
 	{
 		this.phoneNumber = phoneNumber;			
@@ -70,6 +93,11 @@ public class PersonBuilder
 	}
 
 	// accessors:
+	Set<OpenURApplication> getApplications()
+	{
+		return applications;
+	}
+	
 	Name getName()
 	{
 		return name;
