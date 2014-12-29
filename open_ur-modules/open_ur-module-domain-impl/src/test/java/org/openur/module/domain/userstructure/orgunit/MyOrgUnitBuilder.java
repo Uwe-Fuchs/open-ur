@@ -4,7 +4,7 @@ import java.util.Collection;
 
 
 public class MyOrgUnitBuilder
-	extends AbstractExtendedOrgUnitBuilder<MyOrgUnitBuilder>
+	extends AbstractOrgUnitBuilder<MyOrgUnitBuilder>
 {
 	// constructor:
 	public MyOrgUnitBuilder(String orgUnitNumber, String name)

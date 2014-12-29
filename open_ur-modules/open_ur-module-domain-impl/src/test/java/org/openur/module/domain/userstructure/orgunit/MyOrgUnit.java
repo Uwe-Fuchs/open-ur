@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 
 public class MyOrgUnit
-	extends AbstractExtendedOrgUnit
+	extends AbstractOrgUnit
 {
 	private static final long serialVersionUID = -1856092517371886423L;
 

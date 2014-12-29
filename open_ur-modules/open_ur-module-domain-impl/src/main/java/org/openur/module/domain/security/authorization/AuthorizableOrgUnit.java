@@ -4,11 +4,11 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.openur.module.domain.userstructure.orgunit.AbstractExtendedOrgUnit;
-import org.openur.module.domain.userstructure.orgunit.AbstractExtendedOrgUnitBuilder;
+import org.openur.module.domain.userstructure.orgunit.AbstractOrgUnit;
+import org.openur.module.domain.userstructure.orgunit.AbstractOrgUnitBuilder;
 
 public class AuthorizableOrgUnit
-	extends AbstractExtendedOrgUnit
+	extends AbstractOrgUnit
 	implements IAuthorizableOrgUnit
 {
 	private static final long serialVersionUID = 4157616065471955134L;
@@ -43,7 +43,7 @@ public class AuthorizableOrgUnit
 
 	// builder-class:
 	public static class AuthorizableOrgUnitBuilder
-		extends AbstractExtendedOrgUnitBuilder<AuthorizableOrgUnitBuilder>
+		extends AbstractOrgUnitBuilder<AuthorizableOrgUnitBuilder>
 	{
 		// constructor:
 		public AuthorizableOrgUnitBuilder(String orgUnitNumber, String name)
@@ -72,7 +72,14 @@ public class AuthorizableOrgUnit
 			
 			return this;
 		}		
-		
+
+		public AuthorizableOrgUnitBuilder addMember(AuthorizableMember member)
+		{
+			super.addMember(member);
+			
+			return this;
+		}
+
 		// builder:
 		@Override
 		public AuthorizableOrgUnit build()

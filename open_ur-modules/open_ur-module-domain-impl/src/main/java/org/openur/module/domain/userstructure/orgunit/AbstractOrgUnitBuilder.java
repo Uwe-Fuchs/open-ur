@@ -5,27 +5,36 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
+import org.openur.module.domain.userstructure.Address;
+import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.InconsistentHierarchyException;
 import org.openur.module.domain.userstructure.UserStructureBaseBuilder;
 import org.openur.module.util.exception.OpenURRuntimeException;
 
-public abstract class AbstractBasicOrgUnitBuilder<T extends AbstractBasicOrgUnitBuilder<T>>
+public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>>
 	extends UserStructureBaseBuilder<T>
 {
 	// properties:
-	private AbstractBasicOrgUnit superOrgUnit = null;
-	private AbstractBasicOrgUnit rootOrgUnit = null;
+	private AbstractOrgUnit superOrgUnit = null;
+	private AbstractOrgUnit rootOrgUnit = null;
 	protected Set<AbstractOrgUnitMember> members = new HashSet<>();
+	private String name = null;
+	private String shortName = null;
+	private String description = null;
+	private Address address = null;
+	private EMailAddress emailAddress = null;
 
-	// constructor:
-	protected AbstractBasicOrgUnitBuilder(String orgUnitNumber)
+	protected AbstractOrgUnitBuilder(String orgUnitNumber, String name)
 	{
 		super(orgUnitNumber);
+		
+		Validate.notEmpty(name, "name must not be empty!");
+		this.name = name;
 	}
-	
+
 	// builder-methods:
 	@SuppressWarnings("unchecked")
-	protected T superOrgUnit(AbstractBasicOrgUnit superOrgUnit)
+	protected T superOrgUnit(AbstractOrgUnit superOrgUnit)
 	{
 		Validate.notNull(superOrgUnit, "super-org-unit must not be null!");
 		
@@ -41,7 +50,7 @@ public abstract class AbstractBasicOrgUnitBuilder<T extends AbstractBasicOrgUnit
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected T rootOrgUnit(AbstractBasicOrgUnit rootOrgUnit)
+	protected T rootOrgUnit(AbstractOrgUnit rootOrgUnit)
 	{
 		Validate.notNull(rootOrgUnit, "root-orgunit must not be null!");
 		
@@ -69,7 +78,7 @@ public abstract class AbstractBasicOrgUnitBuilder<T extends AbstractBasicOrgUnit
 	}
 	
 	@SuppressWarnings("unchecked")
-	public T addMember(AbstractOrgUnitMember member)	
+	protected T addMember(AbstractOrgUnitMember member)	
 	{
 		Validate.notNull(member, "member must not be null!");
 		
@@ -82,25 +91,78 @@ public abstract class AbstractBasicOrgUnitBuilder<T extends AbstractBasicOrgUnit
 		
 		return (T) this;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public T shortName(String shortName)
+	{
+		this.shortName = shortName;		
+		return (T) this;
+	}
+
+	@SuppressWarnings("unchecked")
+	public T description(String description)
+	{
+		this.description = description;
+		return (T) this;
+	}
+
+	@SuppressWarnings("unchecked")
+	public T address(Address address)
+	{
+		this.address = address;
+		return (T) this;
+	}
+
+	@SuppressWarnings("unchecked")
+	public T emailAddress(EMailAddress emailAddress)
+	{
+		this.emailAddress = emailAddress;
+		return (T) this;
+	}
 
 	// accessors:
-	protected AbstractBasicOrgUnit getRootOrgUnit()
+	AbstractOrgUnit getRootOrgUnit()
 	{
 		return rootOrgUnit;
 	}
 
-	protected AbstractBasicOrgUnit getSuperOrgUnit()
+	AbstractOrgUnit getSuperOrgUnit()
 	{
 		return superOrgUnit;
 	}
 
-	protected Set<? extends AbstractOrgUnitMember> getMembers()
+	Set<? extends AbstractOrgUnitMember> getMembers()
 	{
 		return members;
 	}
 	
+	String getName()
+	{
+		return name;
+	}
+
+	String getShortName()
+	{
+		return shortName;
+	}
+
+	String getDescription()
+	{
+		return description;
+	}
+
+	Address getAddress()
+	{
+		return address;
+	}
+
+	EMailAddress getEmailAddress()
+	{
+		return emailAddress;
+	}
+	
 	// builder:
-	protected AbstractBasicOrgUnit build()
+	protected AbstractOrgUnit build()
 	{
 		if (getRootOrgUnit() != null && getSuperOrgUnit() == null)
 		{
