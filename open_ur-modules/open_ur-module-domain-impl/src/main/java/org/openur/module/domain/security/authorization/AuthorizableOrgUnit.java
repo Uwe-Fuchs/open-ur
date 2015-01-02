@@ -21,7 +21,7 @@ public class AuthorizableOrgUnit
 
 	// accessors:
 	@Override
-	public Set<AuthorizableMember> getMembers()
+	public Set<AuthorizableMember> getAuthorizableMembers()
 	{
 		return super.getMembers()
 			.stream()

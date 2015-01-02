@@ -67,13 +67,13 @@ public interface IOrganizationalUnit
 	}
 	
   /**
-   * searches the given person in this org-unit.
+   * searches the given person as a member in this org-unit.
    *
-   * @param id : the person that is searched.
+   * @param person : the person that is searched.
    *
    * @return IOrgUnitMember if found in this org-unit, else null.
    */
-	default <M extends IOrgUnitMember, P extends IPerson> M findMember(P person)
+	default <M extends IOrgUnitMember> M findMember(IPerson person)
 	{
 		if (person == null)
     {
@@ -118,7 +118,7 @@ public interface IOrganizationalUnit
    * 
    * @return the given person is a member in this org-unit.
    */
-	default <P extends IPerson> boolean isMember(P person)
+	default boolean isMember(IPerson person)
 	{
 		if (person == null)
     {

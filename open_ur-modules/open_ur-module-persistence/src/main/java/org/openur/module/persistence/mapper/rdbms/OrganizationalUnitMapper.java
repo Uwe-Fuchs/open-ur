@@ -30,7 +30,7 @@ public class OrganizationalUnitMapper
 		persistable.setEmailAddress(immutable.getEmailAddress() != null ? immutable
 			.getEmailAddress().getAsPlainEMailAddress() : null);
 		
-		immutable.getMembers()
+		immutable.getAuthorizableMembers()
 			.stream()
 			.map(immutableMember -> OrgUnitMemberMapper.mapFromImmutable(immutableMember, persistable))
 			.forEach(persistable::addMember);

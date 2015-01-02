@@ -48,24 +48,24 @@ public class AuthorizableOrgUnitTest
 		AuthorizableOrgUnit ou = oub.build();
 		
 		assertEquals(NAME_STAFF_DEPARTMENT, ou.getName());
-		AuthorizableMember _m1 = ou.findMember(m1.getPerson());
+		AuthorizableMember _m1 = ou.findAuthorizableMember(m1.getPerson());
 		assertEquals(m1, _m1);
-		assertEquals(m1, ou.findMember(m1.getPerson().getIdentifier()));
-		assertEquals(m2, ou.findMember(m2.getPerson()));
-		assertEquals(m2, ou.findMember(m2.getPerson().getIdentifier()));
+		assertEquals(m1, ou.findAuthorizableMember(m1.getPerson().getIdentifier()));
+		assertEquals(m2, ou.findAuthorizableMember(m2.getPerson()));
+		assertEquals(m2, ou.findAuthorizableMember(m2.getPerson().getIdentifier()));
 		
 		Person pers3 = new PersonBuilder("numberPers3", Name.create(Gender.MALE, "Francois", "Hollande"))
 			.build();
 		AuthorizableMember m3 = new AuthorizableMemberBuilder(pers3, OU_ID).build();
 		
-		assertNull(ou.findMember(m3.getPerson()));
-		assertNull(ou.findMember(m3.getPerson().getIdentifier()));
+		assertNull(ou.findAuthorizableMember(m3.getPerson()));
+		assertNull(ou.findAuthorizableMember(m3.getPerson().getIdentifier()));
 		
 		oub.addMember(m3);		
 		ou = oub.build();
 
-		assertEquals(m3, ou.findMember(m3.getPerson()));
-		assertEquals(m3, ou.findMember(m3.getPerson().getIdentifier()));
+		assertEquals(m3, ou.findAuthorizableMember(m3.getPerson()));
+		assertEquals(m3, ou.findAuthorizableMember(m3.getPerson().getIdentifier()));
 	}
 
 	@Test
