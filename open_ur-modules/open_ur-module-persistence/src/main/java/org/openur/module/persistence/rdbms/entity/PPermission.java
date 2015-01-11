@@ -35,7 +35,7 @@ public class PPermission
 	@Enumerated(EnumType.STRING)
 	private PermissionScope permissionScope = DefaultsUtil.getDefaultPermissionScope();
 
-	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
 	@JoinColumn(name="APPLICATION_ID", referencedColumnName="ID", nullable=false)
   private PApplication application;
 

@@ -25,12 +25,12 @@ public class POrgUnitMember
 	private static final long serialVersionUID = -7790268803941598263L;
 
 	// properties:
-	@ManyToOne(fetch=FetchType.EAGER, optional=false)
-	@JoinColumn(name="ORG_UNIT_ID", referencedColumnName="ID")
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="ORG_UNIT_ID", referencedColumnName="ID", nullable=false)
 	private POrganizationalUnit orgUnit;
 	
-	@ManyToOne(fetch=FetchType.EAGER, optional=false)
-	@JoinColumn(name="PERSON_ID", referencedColumnName="ID")
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="PERSON_ID", referencedColumnName="ID", nullable=false)
 	private PPerson person;
 	
 	@ManyToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)

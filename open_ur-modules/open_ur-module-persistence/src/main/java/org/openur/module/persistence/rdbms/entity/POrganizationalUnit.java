@@ -46,7 +46,7 @@ public class POrganizationalUnit
 	@Column(name="DESCRIPTION")
 	private String description;
 
-	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
 	@JoinColumn(name="ADDRESS_ID", referencedColumnName="ID")
   private PAddress address;
   

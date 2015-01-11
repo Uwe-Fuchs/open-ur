@@ -55,7 +55,7 @@ public class PPerson
 	@Column(name="MOBILE_NO", length=20)
   private String mobileNumber;
 
-	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
 	@JoinColumn(name="HOME_ADDRESS_ID", referencedColumnName="ID")
   private PAddress homeAddress;
   
