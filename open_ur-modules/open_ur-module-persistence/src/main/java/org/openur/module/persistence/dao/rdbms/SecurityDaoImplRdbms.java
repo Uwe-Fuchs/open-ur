@@ -1,6 +1,7 @@
 package org.openur.module.persistence.dao.rdbms;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -47,9 +48,9 @@ public class SecurityDaoImplRdbms
 	}
 
 	@Override
-	public IPermission findPermissionByName(String permissionName, IApplication application)
+	public IPermission findPermissionByName(String permissionName)
 	{
-		PPermission persistable = permissionRepository.findPermissionByPermissionNameAndAppName(permissionName, application.getApplicationName());
+		PPermission persistable = permissionRepository.findPermissionByPermissionName(permissionName);
 		
 		if (persistable == null)
 		{
@@ -60,14 +61,18 @@ public class SecurityDaoImplRdbms
 	}
 
 	@Override
-	public List<IPermission> obtainPermissionsForApp(IApplication application)
+	public List<IPermission> obtainAllPermissions()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		List<PPermission> permissions = permissionRepository.findAll();
+		
+		return permissions
+			.stream()
+			.map(PermissionMapper::mapFromEntity)
+			.collect(Collectors.toList());
 	}
 
 	@Override
-	public List<IPermission> obtainAllPermissions()
+	public List<IPermission> obtainPermissionsForApp(IApplication application)
 	{
 		// TODO Auto-generated method stub
 		return null;

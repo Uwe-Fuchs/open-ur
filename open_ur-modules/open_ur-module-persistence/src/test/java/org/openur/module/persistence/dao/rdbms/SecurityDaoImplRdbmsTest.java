@@ -2,6 +2,8 @@ package org.openur.module.persistence.dao.rdbms;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.junit.After;
@@ -13,11 +15,13 @@ import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.persistence.dao.ISecurityDao;
 import org.openur.module.persistence.mapper.rdbms.ApplicationMapper;
+import org.openur.module.persistence.mapper.rdbms.PermissionMapper;
 import org.openur.module.persistence.mapper.rdbms.PermissionMapperTest;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
 import org.openur.module.persistence.rdbms.config.RepositorySpringConfig;
 import org.openur.module.persistence.rdbms.entity.PApplication;
 import org.openur.module.persistence.rdbms.entity.PPermission;
+import org.openur.module.persistence.rdbms.repository.ApplicationRepository;
 import org.openur.module.persistence.rdbms.repository.PermissionRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -29,10 +33,11 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class SecurityDaoImplRdbmsTest
 {
-	private final String PERMISSION_NAME = "permName";
-	
 	@Inject
 	private PermissionRepository permissionRepository;
+	
+	@Inject
+	private ApplicationRepository applicationRepository;
 	
 	@Inject
 	private ISecurityDao securityDao;
@@ -41,9 +46,9 @@ public class SecurityDaoImplRdbmsTest
 	public void testFindPermissionById()
 	{
 		PApplication pApp = new PApplication("applicationName");
-		PPermission persistable = new PPermission(PERMISSION_NAME, pApp);
-		persistable.setDescription("permDescription");
 		
+		PPermission persistable = new PPermission("permName", pApp);
+		persistable.setDescription("permDescription");		
 		persistable = savePermission(persistable);
 		
 		IPermission p = securityDao.findPermissionById(persistable.getIdentifier());
@@ -55,28 +60,46 @@ public class SecurityDaoImplRdbmsTest
 	@Test
 	public void testFindPermissionByName()
 	{
+		final String PERMISSION_NAME = "permName";
+		
 		OpenURApplication app = new OpenURApplicationBuilder("appName").build();
 		PApplication pApp = ApplicationMapper.mapFromImmutable(app);
+		
 		PPermission persistable = new PPermission(PERMISSION_NAME, pApp);
-		persistable.setDescription("permDescription");
-		
+		persistable.setDescription("permDescription");		
 		persistable = savePermission(persistable);
-		pApp = persistable.getApplication();
 		
-		IPermission p = securityDao.findPermissionByName(PERMISSION_NAME, app);
+		IPermission p = securityDao.findPermissionByName(PERMISSION_NAME);
 		
 		assertNotNull(p);	
 		assertTrue(PermissionMapperTest.immutableEqualsToEntity((OpenURPermission) p, persistable));
 	}
+	
+	@Test
+	@Transactional(readOnly=false)
+	//@Rollback(value=false)
+	public void testObtainAllPermissions()
+	{
+		List<IPermission> allPermissions = securityDao.obtainAllPermissions();
+		assertNotNull(allPermissions);
+		assertEquals(allPermissions.size(), 0);
+		
+		PApplication pApp = new PApplication("applicationName");
+		
+		PPermission perm1 = new PPermission("permName1", pApp);
+		perm1 = savePermission(perm1);
+		PPermission perm2 = new PPermission("permName2", pApp);
+		perm2 = savePermission(perm2);
+		
+		allPermissions = securityDao.obtainAllPermissions();
+		assertNotNull(allPermissions);
+		assertEquals(allPermissions.size(), 2);
+		assertTrue(allPermissions.contains(PermissionMapper.mapFromEntity(perm1)));
+		assertTrue(allPermissions.contains(PermissionMapper.mapFromEntity(perm2)));
+	}
 
 //	@Test
 //	public void testObtainPermissionsForApp()
-//	{
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testObtainAllPermissions()
 //	{
 //		fail("Not yet implemented");
 //	}
@@ -112,15 +135,17 @@ public class SecurityDaoImplRdbmsTest
 //	}
 
 	@After
+	@Transactional(readOnly = false)
 	public void tearDown()
 		throws Exception
 	{
 		permissionRepository.deleteAll();
+		applicationRepository.deleteAll();
 	}
 	
 	@Transactional(readOnly = false)
 	private PPermission savePermission(PPermission permission)
 	{
-		return permissionRepository.save(permission);
+		return permissionRepository.saveAndFlush(permission);
 	}
 }

@@ -52,7 +52,7 @@ public class SecurityDomainServicesImpl
 	@Override
 	public IPermission findPermissionByName(String permissionName, IApplication application)
 	{
-		return securityDao.findPermissionByName(permissionName, application);
+		return securityDao.findPermissionByName(permissionName);
 	}
 
 	@Override
