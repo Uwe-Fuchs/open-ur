@@ -2,7 +2,6 @@ package org.openur.module.persistence.dao;
 
 import java.util.List;
 
-import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
@@ -56,11 +55,11 @@ public interface ISecurityDao
 	/**
 	 * obtains all defined user-permissions for a given application.
 	 * 
-	 * @param application : application
+	 * @param applicationName : application-name (should be unique).
 	 * 
 	 * @return List with user-permissions (empty if no permissions are defined for the given app).
 	 */
-	List<IPermission> obtainPermissionsForApp(IApplication application);
+	List<IPermission> obtainPermissionsForApp(String applicationName);
 	
 	/**
 	 * obtains all defined user-permissions.

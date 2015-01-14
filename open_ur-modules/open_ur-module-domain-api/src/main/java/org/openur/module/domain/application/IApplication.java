@@ -7,12 +7,13 @@ public interface IApplication
 	extends IIdentifiableEntity, Comparable<IApplication>
 {
 	/**
-	 * the application-literal.
+	 * the application-literal (should be unique).
 	 * 
 	 * @return String
 	 */
 	String getApplicationName();
 	
+	// operations:
 	@Override
 	default int compareTo(IApplication o)
 	{

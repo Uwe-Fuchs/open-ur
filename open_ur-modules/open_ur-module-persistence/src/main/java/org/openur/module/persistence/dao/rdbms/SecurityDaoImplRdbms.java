@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
-import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
@@ -72,9 +71,10 @@ public class SecurityDaoImplRdbms
 	}
 
 	@Override
-	public List<IPermission> obtainPermissionsForApp(IApplication application)
+	public List<IPermission> obtainPermissionsForApp(String applicationName)
 	{
-		// TODO Auto-generated method stub
+		
+		
 		return null;
 	}
 

@@ -15,7 +15,7 @@ public interface IPermission
 	IApplication getApplication();
 	
 	/**
-	 * the permission as a string-literal.
+	 * the permission as a string-literal (should be unique).
 	 * 
 	 * @return String.
 	 */
