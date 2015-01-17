@@ -12,15 +12,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.openur.module.domain.security.authorization.IPermission;
+import org.openur.module.service.MyApplicationImpl;
+import org.openur.module.service.MyAuthorizableMember;
+import org.openur.module.service.MyAuthorizableOrgUnit;
+import org.openur.module.service.MyPermissionImpl;
+import org.openur.module.service.MyPerson;
+import org.openur.module.service.MyRoleImpl;
 import org.openur.module.service.security.ISecurityDomainServices;
-import org.openur.module.service.security.MyApplicationImpl;
-import org.openur.module.service.security.MyAuthorizableMember;
-import org.openur.module.service.security.MyAuthorizableOrgUnit;
-import org.openur.module.service.security.MyPermissionImpl;
-import org.openur.module.service.security.MyRoleImpl;
 import org.openur.module.service.security.SecurityTestSpringConfig;
+import org.openur.module.service.userstructure.orgunit.IOrgUnitServices;
 import org.openur.module.service.userstructure.user.IUserServices;
-import org.openur.module.service.userstructure.user.MyPerson;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -38,6 +39,9 @@ public class AuthorizationServicesTest
 	
 	@Inject
 	private IUserServices userServices;
+	
+	@Inject
+	private IOrgUnitServices orgUnitServices;
 
 	@Test
 	public void testAuthenticate()
@@ -92,7 +96,7 @@ public class AuthorizationServicesTest
 		MyAuthorizableOrgUnit subOu = new MyAuthorizableOrgUnit(SUB_OU_ID, SUB_OU_NAME);
 		subOu.setSuperOrgUnit(ou);
 		
-		Mockito.when(securityDomainServices.findAuthOrgUnitById(OU_ID)).thenReturn(ou);
+		Mockito.when(orgUnitServices.findOrgUnitById(OU_ID)).thenReturn(ou);
 		
 		assertTrue(authorizationServices.hasPermission(person, subOu, perm1, app));
 	}
@@ -127,7 +131,7 @@ public class AuthorizationServicesTest
 		ou.addMember(member);
 		
 		Mockito.when(securityDomainServices.findPermissionByName(PERM_1_NAME, app)).thenReturn(perm1);
-		Mockito.when(securityDomainServices.findAuthOrgUnitById(OU_ID)).thenReturn(ou);
+		Mockito.when(orgUnitServices.findOrgUnitById(OU_ID)).thenReturn(ou);
 		Mockito.when(userServices.findPersonById(PERSON_ID)).thenReturn(person);
 		
 		// has permission in org-unit:
@@ -147,7 +151,7 @@ public class AuthorizationServicesTest
 		MyAuthorizableOrgUnit subOu = new MyAuthorizableOrgUnit(SUB_OU_ID, SUB_OU_NAME);
 		subOu.setSuperOrgUnit(ou);
 		
-		Mockito.when(securityDomainServices.findAuthOrgUnitById(SUB_OU_ID)).thenReturn(subOu);
+		Mockito.when(orgUnitServices.findOrgUnitById(SUB_OU_ID)).thenReturn(subOu);
 		
 		assertTrue(authorizationServices.hasPermission(PERSON_ID, SUB_OU_ID, PERM_1_NAME, app));
 	}

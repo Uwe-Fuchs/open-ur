@@ -6,36 +6,31 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
-import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
+import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.persistence.dao.IUserStructureDao;
 
 public class OrgUnitServicesImpl
 	implements IOrgUnitServices
 {
-	private IUserStructureDao userStructureDao;
-
 	@Inject
-	public void setUserStructureDao(IUserStructureDao userStructureDao)
-	{
-		this.userStructureDao = userStructureDao;
-	}
+	private IUserStructureDao userStructureDao;
 	
 	@Override
-	public IOrganizationalUnit findOrgUnitById(String orgUnitId)
+	public IAuthorizableOrgUnit findOrgUnitById(String orgUnitId)
 	{
 		return userStructureDao.findOrgUnitById(orgUnitId);
 	}
 
 	@Override
-	public IOrganizationalUnit findOrgUnitByNumber(String orgUnitNumber)
+	public IAuthorizableOrgUnit findOrgUnitByNumber(String orgUnitNumber)
 	{
 		return userStructureDao.findOrgUnitByNumber(orgUnitNumber);
 	}
 
 	@Override
-	public Set<IOrganizationalUnit> obtainAllOrgUnits()
+	public Set<IAuthorizableOrgUnit> obtainAllOrgUnits()
 	{
-		List<IOrganizationalUnit> orgUnitList = userStructureDao.obtainAllOrgUnits();
+		List<IAuthorizableOrgUnit> orgUnitList = userStructureDao.obtainAllOrgUnits();
 		
 		if (orgUnitList == null)
 		{
@@ -47,10 +42,10 @@ public class OrgUnitServicesImpl
 	}
 
 	@Override
-	public Set<IOrganizationalUnit> obtainSubOrgUnitsForOrgUnit(String orgUnitId,
+	public Set<IAuthorizableOrgUnit> obtainSubOrgUnitsForOrgUnit(String orgUnitId,
 		boolean inclMembers)
 	{
-		List<IOrganizationalUnit> orgUnitList = userStructureDao.obtainSubOrgUnitsForOrgUnit(
+		List<IAuthorizableOrgUnit> orgUnitList = userStructureDao.obtainSubOrgUnitsForOrgUnit(
 			orgUnitId, inclMembers);
 		
 		if (orgUnitList == null)
@@ -63,9 +58,9 @@ public class OrgUnitServicesImpl
 	}
 
 	@Override
-	public Set<IOrganizationalUnit> obtainRootOrgUnits()
+	public Set<IAuthorizableOrgUnit> obtainRootOrgUnits()
 	{
-		List<IOrganizationalUnit> orgUnitList = userStructureDao.obtainRootOrgUnits();
+		List<IAuthorizableOrgUnit> orgUnitList = userStructureDao.obtainRootOrgUnits();
 		
 		if (orgUnitList == null)
 		{

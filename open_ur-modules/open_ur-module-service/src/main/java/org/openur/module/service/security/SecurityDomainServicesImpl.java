@@ -7,7 +7,6 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import org.openur.module.domain.application.IApplication;
-import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
 import org.openur.module.persistence.dao.ISecurityDao;
@@ -15,13 +14,8 @@ import org.openur.module.persistence.dao.ISecurityDao;
 public class SecurityDomainServicesImpl
 	implements ISecurityDomainServices
 {
+	@Inject
 	private ISecurityDao securityDao;
-	
-	@Inject	
-	public void setSecurityDao(ISecurityDao securityDao)
-	{
-		this.securityDao = securityDao;
-	}
 
 	@Override
 	public IRole findRoleById(String roleId)
@@ -58,7 +52,7 @@ public class SecurityDomainServicesImpl
 	@Override
 	public Set<IPermission> obtainPermissionsForApp(IApplication application)
 	{
-		List<IPermission> permissionList = securityDao.obtainPermissionsForApp(application);
+		List<IPermission> permissionList = securityDao.obtainPermissionsForApp(application.getApplicationName());
 		
 		return new HashSet<>(permissionList);
 	}
@@ -70,22 +64,4 @@ public class SecurityDomainServicesImpl
 		
 		return new HashSet<>(permissionList);
 	}
-
-	@Override
-	public IAuthorizableOrgUnit findAuthOrgUnitById(String orgUnitId)
-	{
-		return securityDao.findAuthOrgUnitById(orgUnitId); 
-	}
-	
-//	private static <T> Set<T> buildSetFromList(List<T> resultList)
-//	{
-//		Set<T> resultSet = new HashSet<>(resultList);
-//		
-//		if (CollectionUtils.isNotEmpty(resultList))
-//		{
-//			resultSet.addAll(resultList);
-//		}
-//		
-//		return new HashSet<>(resultList);
-//	}
 }

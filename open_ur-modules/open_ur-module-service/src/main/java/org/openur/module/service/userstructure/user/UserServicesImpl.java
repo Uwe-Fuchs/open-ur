@@ -14,13 +14,8 @@ import org.openur.module.persistence.dao.IUserStructureDao;
 public class UserServicesImpl
 	implements IUserServices
 {
-	private IUserStructureDao userStructureDao;
-
 	@Inject
-	public void setUserStructureDao(IUserStructureDao userStructureDao)
-	{
-		this.userStructureDao = userStructureDao;
-	}
+	private IUserStructureDao userStructureDao;
 
 	@Override
 	public IPerson findPersonById(String personId)

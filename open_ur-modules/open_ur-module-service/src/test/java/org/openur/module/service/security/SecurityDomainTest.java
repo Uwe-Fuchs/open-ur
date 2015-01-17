@@ -1,6 +1,9 @@
 package org.openur.module.service.security;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -12,10 +15,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.openur.module.domain.application.IApplication;
-import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
 import org.openur.module.persistence.dao.ISecurityDao;
+import org.openur.module.service.MyApplicationImpl;
+import org.openur.module.service.MyPermissionImpl;
+import org.openur.module.service.MyRoleImpl;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -235,7 +240,7 @@ public class SecurityDomainTest
 		final String PERM_12_NAME = "perm12Name";
 		IPermission perm12 = new MyPermissionImpl(PERM_12_ID, PERM_12_NAME, app1);
 
-		Mockito.when(securityDao.obtainPermissionsForApp(app1)).thenReturn(Arrays.asList(perm11, perm12));
+		Mockito.when(securityDao.obtainPermissionsForApp(app1.getApplicationName())).thenReturn(Arrays.asList(perm11, perm12));
 
 		final String APP_2_ID = UUID.randomUUID().toString();
 		final String APP_2_NAME = "app2Name";
@@ -249,7 +254,7 @@ public class SecurityDomainTest
 		final String PERM_22_NAME = "perm22Name";
 		IPermission perm22 = new MyPermissionImpl(PERM_22_ID, PERM_22_NAME, app2);
 
-		Mockito.when(securityDao.obtainPermissionsForApp(app2)).thenReturn(Arrays.asList(perm21, perm22));
+		Mockito.when(securityDao.obtainPermissionsForApp(app2.getApplicationName())).thenReturn(Arrays.asList(perm21, perm22));
 		
 		Set<IPermission> resultSet = securityDomainServices.obtainPermissionsForApp(app1);
 		assertNotNull(resultSet);
@@ -270,35 +275,5 @@ public class SecurityDomainTest
 			assertTrue(PERM_21_ID.equals(p.getIdentifier()) || PERM_22_ID.equals(p.getIdentifier()));
 			assertFalse(PERM_11_ID.equals(p.getIdentifier()) || PERM_12_ID.equals(p.getIdentifier()));
 		}
-	}
-
-	@Test
-	public void testFindAuthOrgUnitById()
-	{		
-		final String UUID_1 = UUID.randomUUID().toString();
-		final String NAME_1 = "name1";
-		IAuthorizableOrgUnit orgUnit1 = new MyAuthorizableOrgUnit(UUID_1, NAME_1);
-		
-		Mockito.when(securityDao.findAuthOrgUnitById(UUID_1)).thenReturn(orgUnit1);
-		
-		IAuthorizableOrgUnit o = securityDomainServices.findAuthOrgUnitById(UUID_1);		
-		assertNotNull(o);
-		assertEquals("identifier", o.getIdentifier(), UUID_1);
-		assertEquals("orgunit-number", o.getNumber(), NAME_1);
-		
-		final String UUID_2 = UUID.randomUUID().toString();
-		final String NAME_2 = "name2";
-		IAuthorizableOrgUnit orgUnit2 = new MyAuthorizableOrgUnit(UUID_2, NAME_2);
-		
-		Mockito.when(securityDao.findAuthOrgUnitById(UUID_2)).thenReturn(orgUnit2);
-		
-		o = securityDomainServices.findAuthOrgUnitById(UUID_1);		
-		assertNotNull(o);
-		assertEquals("identifier", o.getIdentifier(), UUID_1);
-		assertEquals("orgunit-number", o.getNumber(), NAME_1);
-		
-		final String OTHER_UUID = UUID.randomUUID().toString();
-		o = securityDomainServices.findAuthOrgUnitById(OTHER_UUID);
-		assertTrue(o == null || !o.getIdentifier().equals(UUID_1) || !o.getIdentifier().equals(UUID_2));
 	}
 }

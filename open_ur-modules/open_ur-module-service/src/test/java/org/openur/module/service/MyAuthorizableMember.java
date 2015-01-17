@@ -1,21 +1,37 @@
-package org.openur.module.service.security;
+package org.openur.module.service;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.openur.module.domain.security.authorization.IAuthorizableMember;
 import org.openur.module.domain.userstructure.person.IPerson;
-import org.openur.module.service.userstructure.orgunit.MyMember;
 
 public class MyAuthorizableMember
-	extends MyMember
 	implements IAuthorizableMember
 {
+	private IPerson person;
+	private String orgUnitId;
 	private Set<MyRoleImpl> roles = new HashSet<>();
 	
 	public MyAuthorizableMember(IPerson person, String orgUnitId)
 	{
-		super(person, orgUnitId);
+		super();
+		
+		this.person = person;
+		this.orgUnitId = orgUnitId;
+	}
+
+	@Override
+	public IPerson getPerson()
+	{
+		return this.person;
+	}
+
+	@Override
+	public String getOrgUnitId()
+	{
+		return this.orgUnitId;
 	}
 
 	@Override
@@ -27,5 +43,23 @@ public class MyAuthorizableMember
 	public void addRole(MyRoleImpl role)
 	{
 		getRoles().add(role);
+	}
+
+	@Override
+	public String getIdentifier()
+	{
+		return null;
+	}
+
+	@Override
+	public LocalDateTime getLastModifiedDate()
+	{
+		return null;
+	}
+
+	@Override
+	public LocalDateTime getCreationDate()
+	{
+		return null;
 	}
 }

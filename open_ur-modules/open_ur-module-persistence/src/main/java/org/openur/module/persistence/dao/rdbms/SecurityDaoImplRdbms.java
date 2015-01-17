@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
-import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
 import org.openur.module.persistence.dao.ISecurityDao;
@@ -20,17 +19,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class SecurityDaoImplRdbms
 	implements ISecurityDao
 {
+	@Inject
 	private PermissionRepository permissionRepository;
 
 	public SecurityDaoImplRdbms()
 	{
 		super();
-	}
-
-	@Inject
-	public void setPermissionRepository(PermissionRepository permissionRepository)
-	{
-		this.permissionRepository = permissionRepository;
 	}
 
 	@Override
@@ -73,9 +67,12 @@ public class SecurityDaoImplRdbms
 	@Override
 	public List<IPermission> obtainPermissionsForApp(String applicationName)
 	{
+		List<PPermission> permissions = permissionRepository.findPermissionsByApplicationApplicationName(applicationName);
 		
-		
-		return null;
+		return permissions
+			.stream()
+			.map(PermissionMapper::mapFromEntity)
+			.collect(Collectors.toList());
 	}
 
 	@Override
@@ -94,13 +91,6 @@ public class SecurityDaoImplRdbms
 
 	@Override
 	public IRole findRoleByName(String roleName)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IAuthorizableOrgUnit findAuthOrgUnitById(String orgUnitId)
 	{
 		// TODO Auto-generated method stub
 		return null;

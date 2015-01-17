@@ -17,6 +17,8 @@ import org.mockito.Mockito;
 import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 import org.openur.module.persistence.dao.IUserStructureDao;
+import org.openur.module.service.MyPerson;
+import org.openur.module.service.MyTechnicalUser;
 import org.openur.module.service.userstructure.UserStructureTestSpringConfig;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;

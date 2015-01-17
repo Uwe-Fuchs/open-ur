@@ -7,6 +7,7 @@ import org.openur.module.service.security.ISecurityDomainServices;
 import org.openur.module.service.security.SecurityDomainServicesImpl;
 import org.openur.module.service.security.authorization.IAuthorizationServices;
 import org.openur.module.service.security.authorization.AuthorizationServicesImpl;
+import org.openur.module.service.userstructure.orgunit.IOrgUnitServices;
 import org.openur.module.service.userstructure.user.IUserServices;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,9 @@ public class SecurityTestSpringConfig
 {
 	@Mock
 	private ISecurityDao securityDao;
+	
+	@Mock
+	private IOrgUnitServices orgUnitServices;
 	
 	@Mock
 	private IUserServices userServices;
@@ -33,7 +37,7 @@ public class SecurityTestSpringConfig
 	public ISecurityDomainServices securityDomainServices()
 	{
 		SecurityDomainServicesImpl _securityDomainServices = new SecurityDomainServicesImpl();
-		_securityDomainServices.setSecurityDao(securityDao());
+		//_securityDomainServices.setSecurityDao(securityDao());
 		return _securityDomainServices;
 	}
 
@@ -53,5 +57,11 @@ public class SecurityTestSpringConfig
 	public IUserServices userServices()
 	{		
 		return this.userServices;
+	}
+
+	@Bean(name = "orgUnitServices")
+	public IOrgUnitServices orgUnitServices()
+	{		
+		return this.orgUnitServices;
 	}
 }

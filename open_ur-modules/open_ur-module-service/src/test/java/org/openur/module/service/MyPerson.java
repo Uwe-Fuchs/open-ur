@@ -1,4 +1,4 @@
-package org.openur.module.service.userstructure.user;
+package org.openur.module.service;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -6,7 +6,6 @@ import java.util.Set;
 
 import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.userstructure.person.IPerson;
-import org.openur.module.service.security.MyApplicationImpl;
 
 /**
  * Simple implementation of {@link IPerson} for test-purposes.

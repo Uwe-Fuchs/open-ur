@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
-import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
+import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 import org.openur.module.persistence.dao.IUserStructureDao;
@@ -23,24 +23,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserStructureDaoImplRdbms
 	implements IUserStructureDao
 {
+	@Inject
 	private PersonRepository personRepository;
+
+	@Inject
 	private TechnicalUserRepository technicalUserRepository;
 	
 	public UserStructureDaoImplRdbms()
 	{
 		super();
-	}
-
-	@Inject
-	public void setPersonRepository(PersonRepository personRepository)
-	{
-		this.personRepository = personRepository;
-	}
-
-	@Inject
-	public void setTechnicalUserRepository(TechnicalUserRepository technicalUserRepository)
-	{
-		this.technicalUserRepository = technicalUserRepository;
 	}
 
 	@Override
@@ -118,36 +109,35 @@ public class UserStructureDaoImplRdbms
 	}
 
 	@Override
-	public IOrganizationalUnit findOrgUnitById(String orgUnitId)
+	public IAuthorizableOrgUnit findOrgUnitById(String orgUnitId)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public IOrganizationalUnit findOrgUnitByNumber(String orgUnitNumber)
+	public IAuthorizableOrgUnit findOrgUnitByNumber(String orgUnitNumber)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<IOrganizationalUnit> obtainAllOrgUnits()
+	public List<IAuthorizableOrgUnit> obtainAllOrgUnits()
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<IOrganizationalUnit> obtainSubOrgUnitsForOrgUnit(
-		String orgUnitId, boolean inclMembers)
+	public List<IAuthorizableOrgUnit> obtainSubOrgUnitsForOrgUnit(String orgUnitId, boolean inclMembers)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<IOrganizationalUnit> obtainRootOrgUnits()
+	public List<IAuthorizableOrgUnit> obtainRootOrgUnits()
 	{
 		// TODO Auto-generated method stub
 		return null;

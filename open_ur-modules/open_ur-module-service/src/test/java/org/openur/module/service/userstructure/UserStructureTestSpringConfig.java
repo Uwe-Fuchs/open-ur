@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-//@ComponentScan(basePackages = {"org.openur.module.persistence", "org.openur.module.service"})
 @Profile(value = "test")
 public class UserStructureTestSpringConfig
 {
@@ -29,17 +28,13 @@ public class UserStructureTestSpringConfig
 	@Bean(name = "userServices")
 	public IUserServices userServices()
 	{
-		UserServicesImpl _userServices = new UserServicesImpl();
-		_userServices.setUserStructureDao(userStructureDao());
-		return _userServices;
+		return new UserServicesImpl();
 	}
 
 	@Bean(name = "orgUnitServices")
 	public IOrgUnitServices orgUnitServices()
 	{
-		OrgUnitServicesImpl _orgUnitServices = new OrgUnitServicesImpl();
-		_orgUnitServices.setUserStructureDao(userStructureDao());
-		return _orgUnitServices;
+		return new OrgUnitServicesImpl();
 	}
 
 	@Bean(name = "userStructureDao")

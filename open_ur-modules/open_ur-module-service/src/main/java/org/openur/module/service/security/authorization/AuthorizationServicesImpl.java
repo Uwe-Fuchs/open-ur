@@ -8,25 +8,20 @@ import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.service.security.ISecurityDomainServices;
+import org.openur.module.service.userstructure.orgunit.IOrgUnitServices;
 import org.openur.module.service.userstructure.user.IUserServices;
 
 public class AuthorizationServicesImpl
 	implements IAuthorizationServices
 {
+	@Inject
 	private IUserServices userServices;
+	
+	@Inject
+	private IOrgUnitServices orgUnitServices;
+
+	@Inject
 	private ISecurityDomainServices securityDomainServices;
-
-	@Inject
-	public void setUserServices(IUserServices userServices)
-	{
-		this.userServices = userServices;
-	}
-
-	@Inject
-	public void setSecurityDomainServices(ISecurityDomainServices securityDomainServices)
-	{
-		this.securityDomainServices = securityDomainServices;
-	}
 
 	@Override
 	public Boolean hasPermission(IPerson user, IAuthorizableOrgUnit orgUnit,
@@ -48,7 +43,7 @@ public class AuthorizationServicesImpl
 	public Boolean hasPermission(String userId, String orgUnitId, String perm, IApplication app)
 	{
 		IPerson person = userServices.findPersonById(userId);
-		IAuthorizableOrgUnit orgUnit = securityDomainServices.findAuthOrgUnitById(orgUnitId);
+		IAuthorizableOrgUnit orgUnit = orgUnitServices.findOrgUnitById(orgUnitId);
 		IPermission permission = securityDomainServices.findPermissionByName(perm, app);
 		
 		return hasPermission(person, orgUnit, permission, app);

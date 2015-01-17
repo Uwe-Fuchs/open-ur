@@ -1,4 +1,4 @@
-package org.openur.module.service.security;
+package org.openur.module.service;
 
 import java.time.LocalDateTime;
 

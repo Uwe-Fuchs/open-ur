@@ -1,52 +1,94 @@
-package org.openur.module.service.security;
+package org.openur.module.service;
 
+import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
-import org.openur.module.service.userstructure.orgunit.MyOrgUnit;
+import org.openur.module.domain.userstructure.Status;
 
 public class MyAuthorizableOrgUnit
-	extends MyOrgUnit
 	implements IAuthorizableOrgUnit
 {
-	public MyAuthorizableOrgUnit(String identifier, String number)
+	private String identifier;
+	private String number;
+	private MyAuthorizableOrgUnit superOrgUnit;
+	private MyAuthorizableOrgUnit rootOrgUnit;
+	private Set<MyAuthorizableMember> members = new HashSet<>();
+	
+	public MyAuthorizableOrgUnit(String identifier, String orgUnitNumber)
 	{
-		super(identifier, number);
+		super();
+		
+		this.identifier = identifier;
+		this.number = orgUnitNumber;
+	}
+
+	@Override
+	public String getIdentifier()
+	{
+		return this.identifier;
+	}
+
+	@Override
+	public String getNumber()
+	{
+		return this.number;
+	}
+
+	@Override
+	public Set<MyAuthorizableMember> getMembers()
+	{
+		return this.members;
 	}
 
 	public void addMember(MyAuthorizableMember member)
 	{
-		super.addMember(member);
+		this.members.add(member);
+	}
+
+	@Override
+	public Status getStatus()
+	{
+		return null;
+	}
+
+	@Override
+	public LocalDateTime getLastModifiedDate()
+	{
+		return null;
+	}
+
+	@Override
+	public LocalDateTime getCreationDate()
+	{
+		return null;
 	}
 	
 	public Set<MyAuthorizableMember> getAuthorizableMembers()
 	{
-		return super.getMembers()
-			.stream()
-			.map(member -> (MyAuthorizableMember) member)
-			.collect(Collectors.toSet()); 
+		return getMembers(); 
 	}
 
 	@Override
 	public MyAuthorizableOrgUnit getSuperOrgUnit()
 	{
-		return (MyAuthorizableOrgUnit) super.getSuperOrgUnit();
+		return this.superOrgUnit;
 	}
 
 	public void setSuperOrgUnit(MyAuthorizableOrgUnit superOrgUnit)
 	{
-		super.setSuperOrgUnit(superOrgUnit);
+		this.superOrgUnit = superOrgUnit;
 	}
 
 	@Override
 	public MyAuthorizableOrgUnit getRootOrgUnit()
 	{
-		return (MyAuthorizableOrgUnit) super.getRootOrgUnit();
+		return this.rootOrgUnit;
 	}
 
 	public void setRootOrgUnit(MyAuthorizableOrgUnit rootOrgUnit)
 	{
-		super.setRootOrgUnit(rootOrgUnit);
+		this.rootOrgUnit = rootOrgUnit;
 	}
 }

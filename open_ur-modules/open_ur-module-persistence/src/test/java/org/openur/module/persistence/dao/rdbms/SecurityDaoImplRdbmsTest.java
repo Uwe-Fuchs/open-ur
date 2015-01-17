@@ -98,12 +98,33 @@ public class SecurityDaoImplRdbmsTest
 		assertTrue(allPermissions.contains(PermissionMapper.mapFromEntity(perm2)));
 	}
 
-//	@Test
-//	public void testObtainPermissionsForApp()
-//	{
-//		fail("Not yet implemented");
-//	}
-//
+	@Test
+	@Transactional(readOnly=false)
+	public void testObtainPermissionsForApp()
+	{
+		final String appName1 = "appName1";
+		final String appName2 = "appName2";
+		
+		PApplication pApp1 = new PApplication(appName1);		
+		PPermission perm11 = new PPermission("permName11", pApp1);
+		perm11 = savePermission(perm11);
+		PPermission perm12 = new PPermission("permName12", pApp1);
+		perm12 = savePermission(perm12);
+		
+		PApplication pApp2 = new PApplication(appName2);		
+		PPermission perm21 = new PPermission("permName21", pApp2);
+		perm21 = savePermission(perm21);
+		PPermission perm22 = new PPermission("permName22", pApp2);
+		perm22 = savePermission(perm22);
+		
+		List<IPermission> permList = securityDao.obtainPermissionsForApp(appName1);
+		assertNotNull(permList);
+		assertEquals(permList.size(), 2);
+		assertTrue(permList.contains(PermissionMapper.mapFromEntity(perm11)));
+		assertTrue(permList.contains(PermissionMapper.mapFromEntity(perm12)));
+		
+	}
+
 //	@Test
 //	public void testSecurityDaoImplRdbms()
 //	{
