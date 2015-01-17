@@ -1,4 +1,4 @@
-package org.openur.module.service.userstructure.orgunit;
+package org.openur.module.service.userstructure;
 
 import static org.junit.Assert.*;
 
@@ -19,7 +19,8 @@ import org.openur.module.persistence.dao.IUserStructureDao;
 import org.openur.module.service.MyAuthorizableMember;
 import org.openur.module.service.MyAuthorizableOrgUnit;
 import org.openur.module.service.MyPerson;
-import org.openur.module.service.userstructure.UserStructureTestSpringConfig;
+import org.openur.module.service.config.UserStructureTestSpringConfig;
+import org.openur.module.service.userstructure.IOrgUnitServices;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;

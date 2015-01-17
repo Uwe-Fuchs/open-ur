@@ -1,4 +1,4 @@
-package org.openur.module.service.security.authorization;
+package org.openur.module.service.security;
 
 import static org.junit.Assert.*;
 
@@ -18,10 +18,11 @@ import org.openur.module.service.MyAuthorizableOrgUnit;
 import org.openur.module.service.MyPermissionImpl;
 import org.openur.module.service.MyPerson;
 import org.openur.module.service.MyRoleImpl;
+import org.openur.module.service.config.SecurityTestSpringConfig;
+import org.openur.module.service.security.IAuthorizationServices;
 import org.openur.module.service.security.ISecurityDomainServices;
-import org.openur.module.service.security.SecurityTestSpringConfig;
-import org.openur.module.service.userstructure.orgunit.IOrgUnitServices;
-import org.openur.module.service.userstructure.user.IUserServices;
+import org.openur.module.service.userstructure.IOrgUnitServices;
+import org.openur.module.service.userstructure.IUserServices;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;

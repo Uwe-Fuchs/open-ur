@@ -1,4 +1,4 @@
-package org.openur.module.service.userstructure.orgunit;
+package org.openur.module.service.userstructure;
 
 import java.util.Set;
 

@@ -1,4 +1,4 @@
-package org.openur.module.service.security.authorization;
+package org.openur.module.service.security;
 
 
 import org.openur.module.domain.application.IApplication;

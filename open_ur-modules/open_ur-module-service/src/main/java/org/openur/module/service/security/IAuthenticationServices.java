@@ -1,4 +1,4 @@
-package org.openur.module.service.security.authentication;
+package org.openur.module.service.security;
 
 import org.openur.module.domain.security.authentication.IAuthenticationToken;
 import org.openur.module.domain.security.authentication.IPrincipalUser;

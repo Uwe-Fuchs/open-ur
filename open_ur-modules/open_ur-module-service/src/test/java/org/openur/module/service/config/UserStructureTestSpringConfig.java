@@ -1,12 +1,12 @@
-package org.openur.module.service.userstructure;
+package org.openur.module.service.config;
 
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.openur.module.persistence.dao.IUserStructureDao;
-import org.openur.module.service.userstructure.orgunit.IOrgUnitServices;
-import org.openur.module.service.userstructure.orgunit.OrgUnitServicesImpl;
-import org.openur.module.service.userstructure.user.IUserServices;
-import org.openur.module.service.userstructure.user.UserServicesImpl;
+import org.openur.module.service.userstructure.IOrgUnitServices;
+import org.openur.module.service.userstructure.IUserServices;
+import org.openur.module.service.userstructure.OrgUnitServicesImpl;
+import org.openur.module.service.userstructure.UserServicesImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;

@@ -1,4 +1,4 @@
-package org.openur.module.service.security.authorization;
+package org.openur.module.service.security;
 
 
 import javax.inject.Inject;
@@ -7,9 +7,8 @@ import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.userstructure.person.IPerson;
-import org.openur.module.service.security.ISecurityDomainServices;
-import org.openur.module.service.userstructure.orgunit.IOrgUnitServices;
-import org.openur.module.service.userstructure.user.IUserServices;
+import org.openur.module.service.userstructure.IOrgUnitServices;
+import org.openur.module.service.userstructure.IUserServices;
 
 public class AuthorizationServicesImpl
 	implements IAuthorizationServices

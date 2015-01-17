@@ -1,4 +1,4 @@
-package org.openur.module.service.security.authentication;
+package org.openur.module.service.security;
 
 import org.junit.Test;
 

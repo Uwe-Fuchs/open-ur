@@ -1,4 +1,4 @@
-package org.openur.module.service.userstructure.user;
+package org.openur.module.service.userstructure;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -19,7 +19,8 @@ import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 import org.openur.module.persistence.dao.IUserStructureDao;
 import org.openur.module.service.MyPerson;
 import org.openur.module.service.MyTechnicalUser;
-import org.openur.module.service.userstructure.UserStructureTestSpringConfig;
+import org.openur.module.service.config.UserStructureTestSpringConfig;
+import org.openur.module.service.userstructure.IUserServices;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;

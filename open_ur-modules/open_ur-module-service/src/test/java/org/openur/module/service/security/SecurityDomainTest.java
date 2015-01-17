@@ -21,6 +21,7 @@ import org.openur.module.persistence.dao.ISecurityDao;
 import org.openur.module.service.MyApplicationImpl;
 import org.openur.module.service.MyPermissionImpl;
 import org.openur.module.service.MyRoleImpl;
+import org.openur.module.service.config.SecurityTestSpringConfig;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
