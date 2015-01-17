@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.openur.module.domain.userstructure.orgunit.AbstractOrgUnit;
 import org.openur.module.domain.userstructure.orgunit.AbstractOrgUnitBuilder;
+import org.openur.module.domain.userstructure.person.IPerson;
 
 public class AuthorizableOrgUnit
 	extends AbstractOrgUnit
@@ -21,12 +22,24 @@ public class AuthorizableOrgUnit
 
 	// accessors:
 	@Override
-	public Set<AuthorizableMember> getAuthorizableMembers()
+	public Set<AuthorizableMember> getMembers()
 	{
 		return super.getMembers()
 			.stream()
 			.map(member -> (AuthorizableMember) member)
 			.collect(Collectors.toSet()); 
+	}
+
+	@Override
+	public AuthorizableMember findMember(String id)
+	{
+		return (AuthorizableMember) IAuthorizableOrgUnit.super.findMember(id);
+	}
+
+	@Override
+	public AuthorizableMember findMember(IPerson person)
+	{
+		return (AuthorizableMember) IAuthorizableOrgUnit.super.findMember(person);
 	}
 
 	@Override

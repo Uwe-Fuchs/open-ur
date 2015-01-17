@@ -64,11 +64,6 @@ public class MyAuthorizableOrgUnit
 	{
 		return null;
 	}
-	
-	public Set<MyAuthorizableMember> getAuthorizableMembers()
-	{
-		return getMembers(); 
-	}
 
 	@Override
 	public MyAuthorizableOrgUnit getSuperOrgUnit()

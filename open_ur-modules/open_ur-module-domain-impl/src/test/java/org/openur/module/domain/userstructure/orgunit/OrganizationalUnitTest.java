@@ -76,46 +76,6 @@ public class OrganizationalUnitTest
 		_ou = ou.getSuperOrgUnit();
 		assertTrue(_ou.isRootOrgUnit());
 	}
-	
-	@Test
-	public void testFindMember()
-	{
-		Person pers1 = new PersonBuilder("numberPers1", Name.create(Gender.MALE, "Barack", "Obama"))
-			.build();
-		
-		Person pers2 = new PersonBuilder("numberPers2", Name.create(Gender.FEMALE, Title.DR, "Angela", "Merkel"))
-			.build();
-		
-		final String OU_ID = UUID.randomUUID().toString();
-		
-		MyOrgUnitMember m2 = new MyOrgUnitMemberBuilder(pers2, OU_ID).build();
-		MyOrgUnitMember m1 = new MyOrgUnitMemberBuilder(pers1, OU_ID).build();		
-		
-		MyOrgUnitBuilder ouBuilder = new MyOrgUnitBuilder("ouNumber", "ou")
-			.identifier(OU_ID)
-			.myOrgUnitMembers(Arrays.asList(m1, m2));
-
-		MyOrgUnit ou = ouBuilder.build();
-		
-		MyOrgUnitMember _m1 = ou.findMember(m1.getPerson());
-		
-		assertEquals(m1, _m1);
-		assertEquals(m1, ou.findMember(m1.getPerson().getIdentifier()));
-		assertEquals(m2, ou.findMember(m2.getPerson()));
-		assertEquals(m2, ou.findMember(m2.getPerson().getIdentifier()));
-		
-		Person pers3 = new PersonBuilder("numberPers3", Name.create(Gender.MALE, "Francois", "Hollande"))
-			.build();
-		MyOrgUnitMember m3 = new MyOrgUnitMemberBuilder(pers3, OU_ID).build();
-		
-		assertNull(ou.findMember(m3.getPerson()));
-		assertNull(ou.findMember(m3.getPerson().getIdentifier()));
-		
-		ouBuilder.addMember(m3);		
-		ou = ouBuilder.build();
-		assertEquals(m3, ou.findMember(m3.getPerson()));
-		assertEquals(m3, ou.findMember(m3.getPerson().getIdentifier()));
-	}
 
 	@Test
 	public void testIsMember()

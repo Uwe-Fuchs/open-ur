@@ -3,6 +3,8 @@ package org.openur.module.domain.userstructure.orgunit;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.openur.module.domain.userstructure.person.IPerson;
+
 
 public class MyOrgUnit
 	extends AbstractOrgUnit
@@ -16,9 +18,12 @@ public class MyOrgUnit
 	}
 	
 	// accessors:
-	/**
-	 * convenience:
-	 */
+	@Override
+	public MyOrgUnit getSuperOrgUnit()
+	{
+		return (MyOrgUnit) super.getSuperOrgUnit();
+	}
+	
 	@Override
 	public Set<MyOrgUnitMember> getMembers()
 	{
@@ -29,14 +34,38 @@ public class MyOrgUnit
 	}
 
 	@Override
-	public MyOrgUnit getSuperOrgUnit()
-	{
-		return (MyOrgUnit) super.getSuperOrgUnit();
-	}
-
-	@Override
 	public MyOrgUnit getRootOrgUnit()
 	{
 		return (MyOrgUnit) super.getRootOrgUnit();
+	}
+	
+	@Override
+	public MyOrgUnitMember findMember(String id)
+	{
+		if (id == null)
+    {
+      return null;
+    }
+
+    for (MyOrgUnitMember m : this.getMembers())
+    {
+      if (id.equals(m.getPerson().getIdentifier()))
+      {
+        return m;
+      }
+    }
+
+    return null;
+	}
+
+	@Override
+	public MyOrgUnitMember findMember(IPerson person)
+	{
+		if (person == null)
+    {
+      return null;
+    }
+
+    return findMember(person.getIdentifier());
 	}
 }

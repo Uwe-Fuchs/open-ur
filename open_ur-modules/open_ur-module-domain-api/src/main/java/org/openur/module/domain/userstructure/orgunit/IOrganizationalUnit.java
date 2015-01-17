@@ -47,24 +47,7 @@ public interface IOrganizationalUnit
    *
    * @return IOrgUnitMember if found in this org-unit, else null.
    */
-	@SuppressWarnings("unchecked")
-	default <M extends IOrgUnitMember> M findMember(String id)
-	{
-    if (id == null)
-    {
-      return null;
-    }
-
-    for (IOrgUnitMember m : this.getMembers())
-    {
-      if (id.equals(m.getPerson().getIdentifier()))
-      {
-        return (M) m;
-      }
-    }
-
-    return null;
-	}
+	IOrgUnitMember findMember(String id);
 	
   /**
    * searches the given person as a member in this org-unit.
@@ -73,15 +56,7 @@ public interface IOrganizationalUnit
    *
    * @return IOrgUnitMember if found in this org-unit, else null.
    */
-	default <M extends IOrgUnitMember> M findMember(IPerson person)
-	{
-		if (person == null)
-    {
-      return null;
-    }
-
-    return findMember(person.getIdentifier());
-	}
+	IOrgUnitMember findMember(IPerson person);
 	
 	/**
 	 * indicates wether this org-unit is the hierachical root of the organization,

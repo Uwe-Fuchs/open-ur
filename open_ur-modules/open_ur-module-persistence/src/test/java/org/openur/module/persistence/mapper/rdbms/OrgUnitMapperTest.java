@@ -219,7 +219,7 @@ public class OrgUnitMapperTest
 
 	private static AuthorizableMember findMemberInImmutable(POrgUnitMember pMember, AuthorizableOrgUnit immutable)
 	{
-		for (AuthorizableMember member : immutable.getAuthorizableMembers())
+		for (AuthorizableMember member : immutable.getMembers())
 		{
 			if (PersonMapperTest.immutableEqualsToEntity(member.getPerson(), pMember.getPerson()))
 			{
