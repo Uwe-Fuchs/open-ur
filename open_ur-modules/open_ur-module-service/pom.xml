@@ -28,17 +28,14 @@
     <dependency>
       <groupId>org.open-ur.module</groupId>
       <artifactId>open_ur-module-util</artifactId>
-      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>org.open-ur.module</groupId>
       <artifactId>open_ur-module-domain-api</artifactId>
-      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>org.open-ur.module</groupId>
       <artifactId>open_ur-module-persistence</artifactId>
-      <type>jar</type>
     </dependency>
     <dependency>
 	<groupId>javax.inject</groupId>

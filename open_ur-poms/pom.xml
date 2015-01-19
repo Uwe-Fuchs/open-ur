@@ -3,12 +3,7 @@
   
   <properties>
     <jdk.version>1.8</jdk.version>
-    <org.junit.version>4.11</org.junit.version>
-    <slf4j.version>1.7.7</slf4j.version>
-    <hibernate.core.version>4.3.5.Final</hibernate.core.version>
-    <jersey-version>1.9-ea04</jersey-version>
-    <springframework.version>4.0.6.RELEASE</springframework.version>
-    <springframework.data.version>1.6.2.RELEASE</springframework.data.version>
+    <cdi-api.version>1.0-SP2</cdi-api.version>
     <compilerId>javac</compilerId>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>    
     <build.dir>target</build.dir>
@@ -170,6 +165,11 @@
         <artifactId>mail</artifactId>
         <version>1.4</version>
       </dependency>
+    <dependency>
+       <groupId>javax.enterprise</groupId>
+       <artifactId>cdi-api</artifactId>
+       <version>${cdi-api.version}</version>
+     </dependency>
 
       <!--dependency>
          <groupId>javax.validation</groupId>
