@@ -1,7 +1,7 @@
 package org.openur.module.service.config;
 
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import static org.mockito.Mockito.mock;
+
 import org.openur.module.persistence.dao.ISecurityDao;
 import org.openur.module.service.security.AuthorizationServicesImpl;
 import org.openur.module.service.security.IAuthorizationServices;
@@ -17,28 +17,10 @@ import org.springframework.context.annotation.Profile;
 @Profile(value = "test")
 public class SecurityTestSpringConfig
 {
-	@Mock
-	private ISecurityDao securityDao;
-	
-	@Mock
-	private IOrgUnitServices orgUnitServices;
-	
-	@Mock
-	private IUserServices userServices;
-	
-	public SecurityTestSpringConfig()
-	{
-		super();
-		
-		MockitoAnnotations.initMocks(this);
-	}
-
 	@Bean(name = "securityDomainServices")
 	public ISecurityDomainServices securityDomainServices()
 	{
-		SecurityDomainServicesImpl _securityDomainServices = new SecurityDomainServicesImpl();
-		//_securityDomainServices.setSecurityDao(securityDao());
-		return _securityDomainServices;
+		return new SecurityDomainServicesImpl();
 	}
 
 	@Bean(name = "authorizationServices")
@@ -50,18 +32,18 @@ public class SecurityTestSpringConfig
 	@Bean(name = "securityDao")
 	public ISecurityDao securityDao()
 	{		
-		return this.securityDao;
+		return mock(ISecurityDao.class);
 	}
 
 	@Bean(name = "userServices")
 	public IUserServices userServices()
 	{		
-		return this.userServices;
+		return mock(IUserServices.class);
 	}
 
 	@Bean(name = "orgUnitServices")
 	public IOrgUnitServices orgUnitServices()
 	{		
-		return this.orgUnitServices;
+		return mock(IOrgUnitServices.class);
 	}
 }
