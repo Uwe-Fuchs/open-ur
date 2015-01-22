@@ -1,7 +1,10 @@
 package org.openur.module.persistence.dao.rdbms;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -21,8 +24,10 @@ import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
 import org.openur.module.persistence.rdbms.config.RepositorySpringConfig;
 import org.openur.module.persistence.rdbms.entity.PApplication;
 import org.openur.module.persistence.rdbms.entity.PPermission;
+import org.openur.module.persistence.rdbms.entity.PRole;
 import org.openur.module.persistence.rdbms.repository.ApplicationRepository;
 import org.openur.module.persistence.rdbms.repository.PermissionRepository;
+import org.openur.module.persistence.rdbms.repository.RoleRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -32,7 +37,10 @@ import org.springframework.transaction.annotation.Transactional;
 @ActiveProfiles(profiles={"testRepository", "testDao"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class SecurityDaoImplRdbmsTest
-{
+{	
+	@Inject
+	private RoleRepository roleRepository;
+	
 	@Inject
 	private PermissionRepository permissionRepository;
 	
@@ -121,28 +129,34 @@ public class SecurityDaoImplRdbmsTest
 		assertNotNull(permList);
 		assertEquals(permList.size(), 2);
 		assertTrue(permList.contains(PermissionMapper.mapFromEntity(perm11)));
-		assertTrue(permList.contains(PermissionMapper.mapFromEntity(perm12)));
-		
+		assertTrue(permList.contains(PermissionMapper.mapFromEntity(perm12)));		
 	}
 
-//	@Test
-//	public void testSecurityDaoImplRdbms()
-//	{
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testObtainAllRoles()
-//	{
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testFindRoleById()
-//	{
-//		fail("Not yet implemented");
-//	}
-//
+	@Test
+	@Transactional(readOnly=false)
+	public void testFindRoleById()
+	{
+		PApplication pApp = new PApplication("applicationName");		
+		PPermission perm1 = new PPermission("permName1", pApp);
+		PPermission perm2 = new PPermission("permName2", pApp);		
+		PRole pRole = new PRole("roleName");
+		pRole.addPermssion(perm1);
+		pRole.addPermssion(perm2);		
+		saveRole(pRole);
+		
+		PRole resultRole = roleRepository.findOne(pRole.getId());	
+		assertNotNull(resultRole);
+		assertEquals(resultRole, pRole);
+		assertNotNull(resultRole.getPermissions());
+		assertEquals(resultRole.getPermissions().size(), 2);
+		// put permissions into standard List-Object, for Hibernate's PersistentBag seems not to call equals() in its contains-method (???)
+		List<PPermission> permList = new ArrayList<PPermission>(resultRole.getPermissions());
+		assertNotNull(permList);
+		assertEquals(permList.size(), 2);
+		assertTrue(permList.contains(perm1));
+		assertTrue(permList.contains(perm2));
+	}
+
 //	@Test
 //	public void testFindRoleByName()
 //	{
@@ -154,7 +168,14 @@ public class SecurityDaoImplRdbmsTest
 //	{
 //		fail("Not yet implemented");
 //	}
-
+//
+//
+//	@Test
+//	public void testObtainAllRoles()
+//	{
+//		fail("Not yet implemented");
+//	}
+//
 	@After
 	@Transactional(readOnly = false)
 	public void tearDown()
@@ -168,5 +189,11 @@ public class SecurityDaoImplRdbmsTest
 	private PPermission savePermission(PPermission permission)
 	{
 		return permissionRepository.saveAndFlush(permission);
+	}
+	
+	@Transactional(readOnly = false)
+	private PRole saveRole(PRole role)
+	{
+		return roleRepository.saveAndFlush(role);
 	}
 }
