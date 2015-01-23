@@ -33,10 +33,22 @@ public class SecurityDaoImplRdbms
 		super();
 	}
 
+	/**
+	 * searches a permission-object with the given id.
+	 * 
+	 * @param permissionId : id of the permission.
+	 * 
+	 * @return the permission with the given id or null, if no permission is found.
+   * 
+   * @throws NumberFormatException, if permissionId cannot be casted into a long-value.
+	 */
 	@Override
 	public IPermission findPermissionById(String permissionId)
+		throws NumberFormatException
 	{
-		PPermission persistable = permissionRepository.findOne(Long.valueOf(permissionId));
+		long permissionIdL = Long.parseLong(permissionId);
+		
+		PPermission persistable = permissionRepository.findOne(permissionIdL);
 		
 		if (persistable == null)
 		{
@@ -81,10 +93,22 @@ public class SecurityDaoImplRdbms
 			.collect(Collectors.toList());
 	}
 
+	/**
+	 * searches a role-object with the given id.
+	 * 
+	 * @param roleId : id of the role.
+	 * 
+	 * @return the role with the given id or null, if no role is found.
+   * 
+   * @throws NumberFormatException, if roleId cannot be casted into a long-value.
+	 */
 	@Override
 	public IRole findRoleById(String roleId)
+		throws NumberFormatException
 	{
-		PRole role = roleRepository.findOne(Long.valueOf(roleId));
+		long roleIdL = Long.parseLong(roleId);
+		
+		PRole role = roleRepository.findOne(roleIdL);
 		
 		if (role == null)
 		{

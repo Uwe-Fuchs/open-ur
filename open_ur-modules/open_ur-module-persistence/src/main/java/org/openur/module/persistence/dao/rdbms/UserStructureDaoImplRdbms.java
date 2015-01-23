@@ -28,22 +28,34 @@ public class UserStructureDaoImplRdbms
 
 	@Inject
 	private TechnicalUserRepository technicalUserRepository;
-	
+
 	public UserStructureDaoImplRdbms()
 	{
 		super();
 	}
 
+  /**
+   * searches a person via it's unique identifier.
+   * 
+   * @param personId : the unique identifier of the person.
+   * 
+   * @return the person or null, if no person is found.
+   * 
+   * @throws NumberFormatException, if personId cannot be casted into a long-value.
+   */
 	@Override
 	public IPerson findPersonById(String personId)
-	{		
-		PPerson persistable = personRepository.findOne(Long.parseLong(personId));
+		throws NumberFormatException
+	{
+		long personIdL = Long.parseLong(personId);
 		
+		PPerson persistable = personRepository.findOne(personIdL);
+
 		if (persistable == null)
 		{
 			return null;
 		}
-		
+
 		return PersonMapper.mapFromEntity(persistable);
 	}
 
@@ -51,12 +63,12 @@ public class UserStructureDaoImplRdbms
 	public IPerson findPersonByNumber(String personalNumber)
 	{
 		PPerson persistable = personRepository.findPersonByNumber(personalNumber);
-		
+
 		if (persistable == null)
 		{
 			return null;
 		}
-		
+
 		return PersonMapper.mapFromEntity(persistable);
 	}
 
@@ -64,36 +76,47 @@ public class UserStructureDaoImplRdbms
 	public List<IPerson> obtainAllPersons()
 	{
 		List<PPerson> persons = personRepository.findAll();
-		
-		return persons
-			.stream()
-			.map(PersonMapper::mapFromEntity)
+
+		return persons.stream().map(PersonMapper::mapFromEntity)
 			.collect(Collectors.toList());
 	}
 
+  /**
+   * searches a technical user via it's unique identifier.
+   * 
+   * @param techUserId : the unique identifier of the technical user.
+   * 
+   * @return the technical user or null, if no user is found.
+   * 
+   * @throws NumberFormatException, if techUserId cannot be casted into a long-value.
+   */
 	@Override
 	public ITechnicalUser findTechnicalUserById(String techUserId)
+		throws NumberFormatException
 	{
-		PTechnicalUser persistable = technicalUserRepository.findOne(Long.parseLong(techUserId));
+		long techUserIdL = Long.parseLong(techUserId);
 		
+		PTechnicalUser persistable = technicalUserRepository.findOne(techUserIdL);
+
 		if (persistable == null)
 		{
 			return null;
 		}
-		
+
 		return TechnicalUserMapper.mapFromEntity(persistable);
 	}
 
 	@Override
 	public ITechnicalUser findTechnicalUserByNumber(String techUserNumber)
 	{
-		PTechnicalUser persistable = technicalUserRepository.findTechnicalUserByNumber(techUserNumber);
-		
+		PTechnicalUser persistable = technicalUserRepository
+			.findTechnicalUserByNumber(techUserNumber);
+
 		if (persistable == null)
 		{
 			return null;
 		}
-		
+
 		return TechnicalUserMapper.mapFromEntity(persistable);
 	}
 
@@ -101,16 +124,26 @@ public class UserStructureDaoImplRdbms
 	public List<ITechnicalUser> obtainAllTechnicalUsers()
 	{
 		List<PTechnicalUser> techUsers = technicalUserRepository.findAll();
-		
-		return techUsers
-			.stream()
-			.map(TechnicalUserMapper::mapFromEntity)
+
+		return techUsers.stream().map(TechnicalUserMapper::mapFromEntity)
 			.collect(Collectors.toList());
 	}
 
+  /**
+   * searches an organizational-unit via it's unique identifier.
+   * 
+   * @param orgUnitId : the unique identifier of the organizational-unit.
+   * 
+   * @return the (authorizable) organizational-unit or null, if no organizational-unit is found.
+   * 
+   * @throws NumberFormatException, if orgUnitId cannot be casted into a long-value.
+   */
 	@Override
 	public IAuthorizableOrgUnit findOrgUnitById(String orgUnitId)
+		throws NumberFormatException
 	{
+		//long orgUnitIdL = Long.parseLong(orgUnitId);
+		
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -130,7 +163,8 @@ public class UserStructureDaoImplRdbms
 	}
 
 	@Override
-	public List<IAuthorizableOrgUnit> obtainSubOrgUnitsForOrgUnit(String orgUnitId, boolean inclMembers)
+	public List<IAuthorizableOrgUnit> obtainSubOrgUnitsForOrgUnit(
+		String orgUnitId, boolean inclMembers)
 	{
 		// TODO Auto-generated method stub
 		return null;
