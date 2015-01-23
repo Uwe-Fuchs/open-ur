@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile(value = "test")
+@Profile(value = "testSecurityServices")
 public class SecurityTestSpringConfig
 {
 	@Bean(name = "securityDomainServices")
@@ -29,19 +29,19 @@ public class SecurityTestSpringConfig
 		return new AuthorizationServicesImpl();
 	}
 
-	@Bean(name = "securityDao")
+	@Bean(name = "securityDaoMock")
 	public ISecurityDao securityDao()
 	{		
 		return mock(ISecurityDao.class);
 	}
 
-	@Bean(name = "userServices")
+	@Bean(name = "userServicesMock")
 	public IUserServices userServices()
 	{		
 		return mock(IUserServices.class);
 	}
 
-	@Bean(name = "orgUnitServices")
+	@Bean(name = "orgUnitServicesMock")
 	public IOrgUnitServices orgUnitServices()
 	{		
 		return mock(IOrgUnitServices.class);

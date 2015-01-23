@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile(value = "test")
+@Profile(value = "testUserServices")
 public class UserStructureTestSpringConfig
 {
 	@Bean(name = "userServices")
@@ -27,7 +27,7 @@ public class UserStructureTestSpringConfig
 		return new OrgUnitServicesImpl();
 	}
 
-	@Bean(name = "userStructureDao")
+	@Bean(name = "userStructureDaoMock")
 	public IUserStructureDao userStructureDao()
 	{		
 		return mock(IUserStructureDao.class);

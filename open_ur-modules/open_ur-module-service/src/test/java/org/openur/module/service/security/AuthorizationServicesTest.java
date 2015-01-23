@@ -1,6 +1,7 @@
 package org.openur.module.service.security;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -12,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.openur.module.domain.security.authorization.IPermission;
+import org.openur.module.persistence.dao.ISecurityDao;
 import org.openur.module.service.MyApplicationImpl;
 import org.openur.module.service.MyAuthorizableMember;
 import org.openur.module.service.MyAuthorizableOrgUnit;
@@ -19,15 +21,13 @@ import org.openur.module.service.MyPermissionImpl;
 import org.openur.module.service.MyPerson;
 import org.openur.module.service.MyRoleImpl;
 import org.openur.module.service.config.SecurityTestSpringConfig;
-import org.openur.module.service.security.IAuthorizationServices;
-import org.openur.module.service.security.ISecurityDomainServices;
 import org.openur.module.service.userstructure.IOrgUnitServices;
 import org.openur.module.service.userstructure.IUserServices;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ActiveProfiles("test")
+@ActiveProfiles("testSecurityServices")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {SecurityTestSpringConfig.class})
 public class AuthorizationServicesTest
@@ -36,13 +36,13 @@ public class AuthorizationServicesTest
 	private IAuthorizationServices authorizationServices;
 	
 	@Inject
-	private ISecurityDomainServices securityDomainServices;
+	private IUserServices userServicesMock;
 	
 	@Inject
-	private IUserServices userServices;
+	private IOrgUnitServices orgUnitServicesMock;
 	
 	@Inject
-	private IOrgUnitServices orgUnitServices;
+	private ISecurityDao securityDaoMock;
 
 	@Test
 	public void testAuthenticate()
@@ -97,7 +97,7 @@ public class AuthorizationServicesTest
 		MyAuthorizableOrgUnit subOu = new MyAuthorizableOrgUnit(SUB_OU_ID, SUB_OU_NAME);
 		subOu.setSuperOrgUnit(ou);
 		
-		Mockito.when(orgUnitServices.findOrgUnitById(OU_ID)).thenReturn(ou);
+		Mockito.when(orgUnitServicesMock.findOrgUnitById(OU_ID)).thenReturn(ou);
 		
 		assertTrue(authorizationServices.hasPermission(person, subOu, perm1, app));
 	}
@@ -131,9 +131,9 @@ public class AuthorizationServicesTest
 		MyAuthorizableOrgUnit ou = new MyAuthorizableOrgUnit(OU_ID, OU_NAME);
 		ou.addMember(member);
 		
-		Mockito.when(securityDomainServices.findPermissionByName(PERM_1_NAME, app)).thenReturn(perm1);
-		Mockito.when(orgUnitServices.findOrgUnitById(OU_ID)).thenReturn(ou);
-		Mockito.when(userServices.findPersonById(PERSON_ID)).thenReturn(person);
+		Mockito.when(securityDaoMock.findPermissionByName(PERM_1_NAME)).thenReturn(perm1);
+		Mockito.when(orgUnitServicesMock.findOrgUnitById(OU_ID)).thenReturn(ou);
+		Mockito.when(userServicesMock.findPersonById(PERSON_ID)).thenReturn(person);
 		
 		// has permission in org-unit:
 		assertTrue(authorizationServices.hasPermission(PERSON_ID, OU_ID, PERM_1_NAME, app));
@@ -143,7 +143,7 @@ public class AuthorizationServicesTest
 		final String PERM_2_NAME = "perm2Name";
 		IPermission perm2 = new MyPermissionImpl(PERM_2_ID, PERM_2_NAME, app);
 		
-		Mockito.when(securityDomainServices.findPermissionByName(PERM_2_NAME, app)).thenReturn(perm2);
+		Mockito.when(securityDaoMock.findPermissionByName(PERM_2_NAME)).thenReturn(perm2);
 		assertFalse(authorizationServices.hasPermission(PERSON_ID, OU_ID, PERM_2_NAME, app));
 		
 		// has permission in super-org-unit:	
@@ -152,7 +152,7 @@ public class AuthorizationServicesTest
 		MyAuthorizableOrgUnit subOu = new MyAuthorizableOrgUnit(SUB_OU_ID, SUB_OU_NAME);
 		subOu.setSuperOrgUnit(ou);
 		
-		Mockito.when(orgUnitServices.findOrgUnitById(SUB_OU_ID)).thenReturn(subOu);
+		Mockito.when(orgUnitServicesMock.findOrgUnitById(SUB_OU_ID)).thenReturn(subOu);
 		
 		assertTrue(authorizationServices.hasPermission(PERSON_ID, SUB_OU_ID, PERM_1_NAME, app));
 	}

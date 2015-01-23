@@ -25,7 +25,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ActiveProfiles("test")
+@ActiveProfiles("testUserServices")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {UserStructureTestSpringConfig.class})
 public class UserServicesTest
@@ -43,7 +43,7 @@ public class UserServicesTest
 	private final ITechnicalUser TECH_USER_2;
 	
 	@Inject
-	private IUserStructureDao dao;
+	private IUserStructureDao userStructureDaoMock;
 	
 	@Inject
 	private IUserServices userServices;	
@@ -85,14 +85,14 @@ public class UserServicesTest
 	@Test
 	public void testFindPersonById()
 	{		
-		Mockito.when(dao.findPersonById(UUID_1)).thenReturn(PERSON_1);
+		Mockito.when(userStructureDaoMock.findPersonById(UUID_1)).thenReturn(PERSON_1);
 		
 		IPerson p = userServices.findPersonById(UUID_1);		
 		assertNotNull(p);
 		assertEquals("identifier", p.getIdentifier(), UUID_1);
 		assertEquals("personal number", NO_123, p.getNumber());
 		
-		Mockito.when(dao.findPersonById(UUID_2)).thenReturn(PERSON_2);
+		Mockito.when(userStructureDaoMock.findPersonById(UUID_2)).thenReturn(PERSON_2);
 		
 		p = userServices.findPersonById(UUID_2);		
 		assertNotNull(p);
@@ -106,14 +106,14 @@ public class UserServicesTest
 	@Test
 	public void testFindPersonByNumber()
 	{
-		Mockito.when(dao.findPersonByNumber(NO_123)).thenReturn(PERSON_1);
+		Mockito.when(userStructureDaoMock.findPersonByNumber(NO_123)).thenReturn(PERSON_1);
 		
 		IPerson p = userServices.findPersonByNumber(NO_123);		
 		assertNotNull(p);
 		assertEquals("personal number", NO_123, p.getNumber());	
 		assertEquals("identifier", p.getIdentifier(), UUID_1);
 
-		Mockito.when(dao.findPersonByNumber(NO_456)).thenReturn(PERSON_2);
+		Mockito.when(userStructureDaoMock.findPersonByNumber(NO_456)).thenReturn(PERSON_2);
 		
 		p = userServices.findPersonByNumber(NO_456);		
 		assertNotNull(p);
@@ -127,7 +127,7 @@ public class UserServicesTest
 	@Test
 	public void testObtainAllPersons()
 	{
-		Mockito.when(dao.obtainAllPersons()).thenReturn(Arrays.asList(PERSON_1, PERSON_2));
+		Mockito.when(userStructureDaoMock.obtainAllPersons()).thenReturn(Arrays.asList(PERSON_1, PERSON_2));
 		
 		Set<IPerson> personSet = userServices.obtainAllPersons();
 		
@@ -150,14 +150,14 @@ public class UserServicesTest
 	@Test
 	public void testFindTechnicalUserById()
 	{
-		Mockito.when(dao.findTechnicalUserById(UUID_1)).thenReturn(TECH_USER_1);
+		Mockito.when(userStructureDaoMock.findTechnicalUserById(UUID_1)).thenReturn(TECH_USER_1);
 		
 		ITechnicalUser tu = userServices.findTechnicalUserById(UUID_1);		
 		assertNotNull(tu);
 		assertEquals(tu.getIdentifier(), TECH_USER_1.getIdentifier());
 		assertEquals(tu.getNumber(), TECH_USER_1.getNumber());
 		
-		Mockito.when(dao.findTechnicalUserById(UUID_2)).thenReturn(TECH_USER_2);
+		Mockito.when(userStructureDaoMock.findTechnicalUserById(UUID_2)).thenReturn(TECH_USER_2);
 		
 		tu = userServices.findTechnicalUserById(UUID_2);		
 		assertNotNull(tu);
@@ -171,14 +171,14 @@ public class UserServicesTest
 	@Test
 	public void testFindTechnicalUserByNumber()
 	{
-		Mockito.when(dao.findTechnicalUserByNumber(NO_123)).thenReturn(TECH_USER_1);
+		Mockito.when(userStructureDaoMock.findTechnicalUserByNumber(NO_123)).thenReturn(TECH_USER_1);
 		
 		ITechnicalUser tu = userServices.findTechnicalUserByNumber(NO_123);		
 		assertNotNull(tu);
 		assertEquals(tu.getNumber(), TECH_USER_1.getNumber());
 		assertEquals(tu.getIdentifier(), TECH_USER_1.getIdentifier());
 		
-		Mockito.when(dao.findTechnicalUserByNumber(NO_456)).thenReturn(TECH_USER_2);
+		Mockito.when(userStructureDaoMock.findTechnicalUserByNumber(NO_456)).thenReturn(TECH_USER_2);
 		
 		tu = userServices.findTechnicalUserByNumber(NO_456);		
 		assertNotNull(tu);
@@ -192,7 +192,7 @@ public class UserServicesTest
 	@Test
 	public void testObtainAllTechnicalUsers()
 	{
-		Mockito.when(dao.obtainAllTechnicalUsers()).thenReturn(Arrays.asList(TECH_USER_1, TECH_USER_2));
+		Mockito.when(userStructureDaoMock.obtainAllTechnicalUsers()).thenReturn(Arrays.asList(TECH_USER_1, TECH_USER_2));
 		
 		Set<ITechnicalUser> techUsersSet = userServices.obtainAllTechnicalUsers();
 		
