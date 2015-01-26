@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.junit.Test;
+import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.InconsistentHierarchyException;
 import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.userstructure.orgunit.MyOrgUnitMember.MyOrgUnitMemberBuilder;
@@ -55,6 +56,37 @@ public class OrganizationalUnitTest
 			.build();
 		
 		assertTrue("ou1 should be before ou2 because of short-name", ou1.compareTo(ou2) < 0);
+	}
+	
+	@Test
+	public void testEquals()
+	{
+		final String IDENTIFIER_1 = "id1";
+		final String IDENTIFIER_2 = "id2";
+		
+		MyOrgUnit orgUnit = new MyOrgUnitBuilder("numberOu1", "ou")
+				.identifier(IDENTIFIER_1)
+				.build();		
+		
+		Address address = new Address.AddressBuilder("111")
+				.identifier(IDENTIFIER_1)
+				.build();
+		
+		assertEquals(orgUnit, address);
+		
+		Person person = new PersonBuilder("number1", Name.create(null, null, "lastName1"))
+				.identifier(IDENTIFIER_1)
+				.build();
+		
+		assertEquals(person, address);
+		assertEquals(person, orgUnit);
+		
+		person = new PersonBuilder("number2", Name.create(null, null, "lastName2"))
+			.identifier(IDENTIFIER_2)
+			.build();
+		
+		assertFalse(person.equals(address));
+		assertFalse(person.equals(orgUnit));
 	}
 
 	@Test

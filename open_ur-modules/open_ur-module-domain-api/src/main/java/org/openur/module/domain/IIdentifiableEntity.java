@@ -2,6 +2,11 @@ package org.openur.module.domain;
 
 import java.time.LocalDateTime;
 
+/**
+ * root for all domain-objects having a unique identifier within the system.
+ * 
+ * @author info@uwefuchs.com
+ */
 public interface IIdentifiableEntity
 {
 	/**
@@ -36,7 +41,7 @@ public interface IIdentifiableEntity
 	 */
 	default boolean isEqual(Object obj)
 	{
-		if (obj == null || !this.getClass().equals(obj.getClass()))
+		if (obj == null || !(obj instanceof IIdentifiableEntity))
 		{
 			return false;
 		}

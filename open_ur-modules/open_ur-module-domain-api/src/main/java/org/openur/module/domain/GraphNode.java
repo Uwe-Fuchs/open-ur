@@ -6,6 +6,11 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+/**
+ * Implementors of domain-interfaces should use this as root-object for their own domain-classes.
+ * 
+ * @author info@uwefuchs.com
+ */
 public abstract class GraphNode
 	implements Serializable
 {
@@ -21,6 +26,10 @@ public abstract class GraphNode
 		return HashCodeBuilder.reflectionHashCode(this);
 	}
 	
+	/**
+	 * equals-method must be overwritten in implementaion-classes. {@link IIdentifiableEntity} delivers an Implementation
+	 * that could act as a role-model for a meaningful implemenation.
+	 */
 	@Override
 	public abstract boolean equals(Object obj);
 }
