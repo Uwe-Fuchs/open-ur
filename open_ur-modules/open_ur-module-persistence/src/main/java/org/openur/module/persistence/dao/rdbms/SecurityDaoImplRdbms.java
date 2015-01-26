@@ -121,14 +121,24 @@ public class SecurityDaoImplRdbms
 	@Override
 	public IRole findRoleByName(String roleName)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		PRole role = roleRepository.findRoleByRoleName(roleName);
+		
+		if (role == null)
+		{
+			return null;
+		}
+		
+		return RoleMapper.mapFromEntity(role);
 	}
 
 	@Override
 	public List<IRole> obtainAllRoles()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		List<PRole> allRoles = roleRepository.findAll();
+		
+		return allRoles
+				.stream()
+				.map(RoleMapper::mapFromEntity)
+				.collect(Collectors.toList());
 	}
 }
