@@ -25,11 +25,11 @@ public class POrgUnitMember
 	private static final long serialVersionUID = -7790268803941598263L;
 
 	// properties:
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name="ORG_UNIT_ID", referencedColumnName="ID", nullable=false)
 	private POrganizationalUnit orgUnit;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name="PERSON_ID", referencedColumnName="ID", nullable=false)
 	private PPerson person;
 	
