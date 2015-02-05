@@ -25,7 +25,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ActiveProfiles("test")
+@ActiveProfiles("testUserServices")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {UserStructureTestSpringConfig.class})
 public class OrgUnitServicesTest
@@ -41,7 +41,7 @@ public class OrgUnitServicesTest
 	private final IAuthorizableOrgUnit ORG_UNIT_2;
 	
 	@Inject
-	private IUserStructureDao dao;
+	private IUserStructureDao userStructureDaoMock;
 	
 	@Inject
 	private IOrgUnitServices orgUnitServices;
@@ -65,8 +65,8 @@ public class OrgUnitServicesTest
 	@Test
 	public void testFindOrgUnitById()
 	{		
-		Mockito.when(dao.findOrgUnitById(UUID_1)).thenReturn(ORG_UNIT_1);
-		Mockito.when(dao.findOrgUnitById(UUID_2)).thenReturn(ORG_UNIT_2);	
+		Mockito.when(userStructureDaoMock.findOrgUnitById(UUID_1)).thenReturn(ORG_UNIT_1);
+		Mockito.when(userStructureDaoMock.findOrgUnitById(UUID_2)).thenReturn(ORG_UNIT_2);	
 		
 		IOrganizationalUnit o = orgUnitServices.findOrgUnitById(UUID_1);		
 		assertNotNull(o);
@@ -85,8 +85,8 @@ public class OrgUnitServicesTest
 	@Test
 	public void testFindOrgUnitByNumber()
 	{
-		Mockito.when(dao.findOrgUnitByNumber(NO_123)).thenReturn(ORG_UNIT_1);
-		Mockito.when(dao.findOrgUnitByNumber(NO_456)).thenReturn(ORG_UNIT_2);
+		Mockito.when(userStructureDaoMock.findOrgUnitByNumber(NO_123)).thenReturn(ORG_UNIT_1);
+		Mockito.when(userStructureDaoMock.findOrgUnitByNumber(NO_456)).thenReturn(ORG_UNIT_2);
 		
 		IOrganizationalUnit o = orgUnitServices.findOrgUnitByNumber(NO_123);		
 		assertNotNull(o);
@@ -105,7 +105,7 @@ public class OrgUnitServicesTest
 	@Test
 	public void testObtainAllOrgUnits()
 	{
-		Mockito.when(dao.obtainAllOrgUnits()).thenReturn(Arrays.asList(ORG_UNIT_1, ORG_UNIT_2));
+		Mockito.when(userStructureDaoMock.obtainAllOrgUnits()).thenReturn(Arrays.asList(ORG_UNIT_1, ORG_UNIT_2));
 		
 		Set<IAuthorizableOrgUnit> orgUnitSet = orgUnitServices.obtainAllOrgUnits();
 		
@@ -140,7 +140,7 @@ public class OrgUnitServicesTest
 		orgUnit2.setSuperOrgUnit(SUPER_OU);
 		orgUnit2.setRootOrgUnit(ROOT_OU);
 		
-		Mockito.when(dao.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID, false)).thenReturn(Arrays.asList(orgUnit1, orgUnit2));
+		Mockito.when(userStructureDaoMock.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID, false)).thenReturn(Arrays.asList(orgUnit1, orgUnit2));
 		
 		Set<IAuthorizableOrgUnit> orgUnitSet = orgUnitServices.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID, false);
 		
@@ -176,7 +176,7 @@ public class OrgUnitServicesTest
 		orgUnit2_m.addMember(mA);
 		orgUnit2_m.addMember(mB);
 		
-		Mockito.when(dao.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID, true)).thenReturn(Arrays.asList(orgUnit1, orgUnit2_m));
+		Mockito.when(userStructureDaoMock.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID, true)).thenReturn(Arrays.asList(orgUnit1, orgUnit2_m));
 		
 		orgUnitSet = orgUnitServices.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID, true);
 		
@@ -211,7 +211,7 @@ public class OrgUnitServicesTest
 		MyAuthorizableOrgUnit orgUnit1 = new MyAuthorizableOrgUnit(UUID_1, NO_123);
 		orgUnit1.setRootOrgUnit(rootOu);
 		
-		Mockito.when(dao.obtainRootOrgUnits()).thenReturn(Arrays.asList(rootOu));
+		Mockito.when(userStructureDaoMock.obtainRootOrgUnits()).thenReturn(Arrays.asList(rootOu));
 		
 		Set<IAuthorizableOrgUnit> orgUnitSet = orgUnitServices.obtainRootOrgUnits();
 		
