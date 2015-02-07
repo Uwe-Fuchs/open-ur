@@ -1,5 +1,7 @@
 package org.openur.module.persistence.mapper.rdbms;
 
+import java.time.LocalDateTime;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.openur.module.domain.IdentifiableEntityImpl;
 import org.openur.module.domain.userstructure.UserStructureBase;
@@ -9,35 +11,54 @@ import org.openur.module.util.exception.OpenURRuntimeException;
 
 public class AbstractEntityMapperTest
 {
-	public static <I extends IdentifiableEntityImpl, P extends AbstractOpenUrPersistable> 
-		boolean immutableEqualsToEntityIdentifiable(I immutable, P persistable)
+	public static <I extends IdentifiableEntityImpl, P extends AbstractOpenUrPersistable> boolean immutableEqualsToEntityIdentifiable(
+		I immutable, P persistable)
 	{
 		if (immutable == null && persistable == null)
 		{
-			throw new OpenURRuntimeException("Both objects, immutable and entity, are null!");
+			throw new OpenURRuntimeException(
+				"Both objects, immutable and entity, are null!");
 		}
-		
+
 		if (immutable == null || persistable == null)
 		{
 			return false;
 		}
 		
-		return new EqualsBuilder()
-				.append(immutable.getCreationDate(), persistable.getCreationDate())
-				.append(immutable.getLastModifiedDate(), persistable.getLastModifiedDate())
-				.isEquals();
+		return compareLocalDateTimes(immutable.getCreationDate(), persistable.getCreationDate());
 	}
 
-	public static <I extends UserStructureBase, P extends PUserStructureBase> 
-		boolean immutableEqualsToEntityUserStructureBase(I immutable, P persistable)
+	public static <I extends UserStructureBase, P extends PUserStructureBase> boolean immutableEqualsToEntityUserStructureBase(
+		I immutable, P persistable)
 	{
 		if (!immutableEqualsToEntityIdentifiable(immutable, persistable))
 		{
 			return false;
 		}
-		
+
+		return new EqualsBuilder().append(immutable.getStatus(),
+			persistable.getStatus()).isEquals();
+	}
+
+	private static boolean compareLocalDateTimes(LocalDateTime first, LocalDateTime second)
+	{
+		if (first == null && second == null)
+		{
+			return true;
+		}
+
+		if (first == null || second == null)
+		{
+			return false;
+		}
+
 		return new EqualsBuilder()
-				.append(immutable.getStatus(), persistable.getStatus())
-				.isEquals();
+		 		.append(first.getYear(), second.getYear())
+		 		.append(first.getMonth(), second.getMonth())
+		 		.append(first.getDayOfMonth(), second.getDayOfMonth())
+		 		.append(first.getHour(), second.getHour())
+		 		.append(first.getMinute(), second.getMinute())
+		 		.append(first.getSecond(), second.getSecond())
+		 		.isEquals();
 	}
 }
