@@ -21,8 +21,8 @@ public abstract class AbstractOpenUrPersistable
 	private static final long serialVersionUID = -8187381143373256632L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="ID", nullable=false)
+	@GeneratedValue(strategy = GenerationType.TABLE)
+	@Column(name="ID")
 	private Long id;
 
 	@Column(name="CREATED", nullable=false)
