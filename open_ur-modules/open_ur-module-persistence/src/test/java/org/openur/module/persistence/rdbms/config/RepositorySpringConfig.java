@@ -1,7 +1,7 @@
 package org.openur.module.persistence.rdbms.config;
 
-//import java.sql.Driver;
-//import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import java.sql.Driver;
+
 import javax.inject.Inject;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -14,7 +14,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.support.PersistenceExceptionTranslator;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseFactory;
+import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.hibernate4.HibernateExceptionTranslator;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -32,26 +34,27 @@ public class RepositorySpringConfig
 {
 	@Inject
 	protected Environment env;
-	
+
 	public DataSource dataSource()
 	{
-		EmbeddedDatabaseFactory f = new EmbeddedDatabaseFactory();
-		f.setDatabaseType(EmbeddedDatabaseType.H2);
+//		EmbeddedDatabaseFactory f = new EmbeddedDatabaseFactory();
+//		f.setDatabaseType(EmbeddedDatabaseType.H2);
 		
-		return f.getDatabase();
+		EmbeddedDatabase edb = new EmbeddedDatabaseBuilder()
+			.setType(EmbeddedDatabaseType.H2)
+			.addScript("classpath:/db/ddl_open_ur.sql")
+			.build();
+		
+		SimpleDriverDataSource simpleDs = new SimpleDriverDataSource();
+	  simpleDs.setDriverClass(env.getPropertyAsClass("database.driver", Driver.class));
+	  simpleDs.setUrl(env.getProperty("database.url"));
+	  simpleDs.setUsername(env.getProperty("database.username"));
+	  simpleDs.setPassword(env.getProperty("database.password"));
+	  
+	  DataSource ds = (env.getProperty("database.databasePlatform").endsWith("H2Dialect") ? edb : simpleDs);
+	  
+	  return ds;
 	}
-	
-//	@Override
-//	public DataSource dataSource()
-//	{
-//		SimpleDriverDataSource ds = new SimpleDriverDataSource();
-//	  ds.setDriverClass(env.getPropertyAsClass("database.driver", Driver.class));
-//	  ds.setUrl(env.getProperty("database.url"));
-//	  ds.setUsername(env.getProperty("database.username"));
-//	  ds.setPassword(env.getProperty("database.password"));
-//	  
-//	  return ds;
-//	}
 
 	@Bean
 	public EntityManagerFactory entityManagerFactory()
