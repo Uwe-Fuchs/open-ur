@@ -21,6 +21,7 @@ import org.openur.module.persistence.rdbms.entity.PApplication;
 import org.openur.module.persistence.rdbms.entity.PPerson;
 import org.openur.module.persistence.rdbms.repository.ApplicationRepository;
 import org.openur.module.persistence.rdbms.repository.PersonRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -98,7 +99,7 @@ public class PersonRepositoryTest
 		assertTrue(p.getApplications().contains(pApp2));
 	}
 	
-	@Test(expected = PersistenceException.class)
+	@Test(expected = DataIntegrityViolationException.class)
 	public void testAddPersonWithSameEmployeeNumber()
 	{	
 		PPerson persistable = new PPerson(EMPLOYEE_NUMBER, "Name of Employee");		
