@@ -17,6 +17,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseFactory;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.hibernate4.HibernateExceptionTranslator;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -25,11 +26,11 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@Profile(value="testRepository")
+@Profile(value = "testRepository")
 @EnableTransactionManagement
 @PropertySource("classpath:/spring_test.properties")
 @ImportResource("classpath:/springDataAppContext.xml")
-@EnableJpaRepositories(basePackages = {"org.openur.module.persistence.rdbms.repository"})
+@EnableJpaRepositories(basePackages = { "org.openur.module.persistence.rdbms.repository" })
 public class RepositorySpringConfig
 {
 	@Inject
@@ -37,23 +38,39 @@ public class RepositorySpringConfig
 
 	public DataSource dataSource()
 	{
-//		EmbeddedDatabaseFactory f = new EmbeddedDatabaseFactory();
-//		f.setDatabaseType(EmbeddedDatabaseType.H2);
-		
+		DataSource ds = null;
+
+		EmbeddedDatabaseFactory f = new EmbeddedDatabaseFactory();
+		f.setDatabaseType(EmbeddedDatabaseType.H2);
+		DataSource aDs = f.getDatabase();
+
 		EmbeddedDatabase edb = new EmbeddedDatabaseBuilder()
 			.setType(EmbeddedDatabaseType.H2)
-			.addScript("classpath:/db/ddl_open_ur.sql")
-			.build();
-		
+			.addScript("classpath:/db/ddl_open_ur.sql").build();
+
 		SimpleDriverDataSource simpleDs = new SimpleDriverDataSource();
-	  simpleDs.setDriverClass(env.getPropertyAsClass("database.driver", Driver.class));
-	  simpleDs.setUrl(env.getProperty("database.url"));
-	  simpleDs.setUsername(env.getProperty("database.username"));
-	  simpleDs.setPassword(env.getProperty("database.password"));
-	  
-	  DataSource ds = (env.getProperty("database.databasePlatform").endsWith("H2Dialect") ? edb : simpleDs);
-	  
-	  return ds;
+		simpleDs.setDriverClass(env.getPropertyAsClass("database.driver",
+			Driver.class));
+		simpleDs.setUrl(env.getProperty("database.url"));
+		simpleDs.setUsername(env.getProperty("database.username"));
+		simpleDs.setPassword(env.getProperty("database.password"));
+
+		switch (env.getProperty("database.databasePlatform"))
+		{
+			case "org.hibernate.dialect.MySQL5InnoDBDialect":
+				ds = simpleDs;
+				break;
+
+			case "org.hibernate.dialect.H2Dialect":
+				ds = aDs;
+				break;
+
+			default:
+				ds = edb;
+				break;
+		}
+
+		return ds;
 	}
 
 	@Bean
@@ -64,7 +81,7 @@ public class RepositorySpringConfig
 		em.setJpaVendorAdapter(jpaVendorAdapter());
 		em.setPackagesToScan("org.openur.module.persistence");
 		em.afterPropertiesSet();
-		
+
 		return em.getObject();
 	}
 
@@ -78,14 +95,15 @@ public class RepositorySpringConfig
 	public HibernateJpaVendorAdapter jpaVendorAdapter()
 	{
 		HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
-		adapter.setShowSql(env.getProperty("database.showSql",	Boolean.class));
-		adapter.setGenerateDdl(env.getProperty("database.generateDdl", Boolean.class));
+		adapter.setShowSql(env.getProperty("database.showSql", Boolean.class));
+		adapter.setGenerateDdl(env.getProperty("database.generateDdl",
+			Boolean.class));
 		adapter.setDatabasePlatform(env.getProperty("database.databasePlatform"));
-		
+
 		return adapter;
 	}
 
-	@Bean(name="transactionManager")
+	@Bean(name = "transactionManager")
 	public JpaTransactionManager transactionManager()
 	{
 		return new JpaTransactionManager(entityManagerFactory());
