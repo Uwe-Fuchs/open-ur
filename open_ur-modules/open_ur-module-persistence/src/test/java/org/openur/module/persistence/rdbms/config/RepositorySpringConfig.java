@@ -17,7 +17,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseFactory;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.hibernate4.HibernateExceptionTranslator;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -40,10 +39,6 @@ public class RepositorySpringConfig
 	{
 		DataSource ds = null;
 
-		EmbeddedDatabaseFactory f = new EmbeddedDatabaseFactory();
-		f.setDatabaseType(EmbeddedDatabaseType.H2);
-		DataSource aDs = f.getDatabase();
-
 		EmbeddedDatabase edb = new EmbeddedDatabaseBuilder()
 			.setType(EmbeddedDatabaseType.H2)
 			.addScript("classpath:/db/ddl_open_ur.sql").build();
@@ -62,11 +57,10 @@ public class RepositorySpringConfig
 				break;
 
 			case "org.hibernate.dialect.H2Dialect":
-				ds = aDs;
+				ds = edb;
 				break;
 
 			default:
-				ds = edb;
 				break;
 		}
 
