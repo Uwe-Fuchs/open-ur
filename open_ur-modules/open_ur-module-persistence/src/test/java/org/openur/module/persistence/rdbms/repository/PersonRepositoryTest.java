@@ -40,6 +40,9 @@ public class PersonRepositoryTest
 	@Inject
 	private ApplicationRepository applicationRepository;
 	
+	@Inject
+	private AddressRepository addressRepository;
+	
 	@Test
 	public void testCreateWithAddressAndApplication()
 	{	
@@ -126,6 +129,7 @@ public class PersonRepositoryTest
 	public void cleanUpDatabase()
 	{
 		personRepository.deleteAll();
+		addressRepository.deleteAll();
 	}
 	
 	@Transactional(readOnly = false)
