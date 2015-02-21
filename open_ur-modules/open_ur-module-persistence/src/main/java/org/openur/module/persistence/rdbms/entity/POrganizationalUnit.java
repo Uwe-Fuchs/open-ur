@@ -34,7 +34,7 @@ public class POrganizationalUnit
 	@JoinColumn(name="ROOT_OU_ID", referencedColumnName="ID")
 	private POrganizationalUnit rootOu;
 	
-	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL, mappedBy="id")
+	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL/*, mappedBy="id"*/)
 	private Set<POrgUnitMember> members = new HashSet<>();
 	
 	@Column(name="NAME", length=50, nullable=false)

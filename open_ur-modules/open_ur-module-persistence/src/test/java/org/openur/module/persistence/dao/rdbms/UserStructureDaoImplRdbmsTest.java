@@ -13,6 +13,7 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openur.module.domain.userstructure.Status;
+import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 import org.openur.module.domain.userstructure.person.Gender;
 import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.domain.userstructure.person.Person;
@@ -218,42 +219,125 @@ public class UserStructureDaoImplRdbmsTest
 		pAddress.setPoBox("poBox_1");
 		pOrgUnit.setAddress(pAddress);
 		
-		//pOrgUnit = saveOrgUnit(pOrgUnit);
+		pOrgUnit = saveOrgUnit(pOrgUnit);
 		
-		PPerson pPerson1 = new PPerson("persNo1", "Obama");
-		pPerson1.setGender(Gender.MALE);
-		pPerson1.setFirstName("Barack");
-		savePerson(pPerson1);
-		
-		PPerson pPerson2 = new PPerson("persNo2", "Merkel");
-		pPerson2.setGender(Gender.FEMALE);
-		pPerson2.setTitle(Title.DR);
-		pPerson2.setFirstName("Angela");
-		savePerson(pPerson2);
-		
-		PRole pRole1 = new PRole("role1");
-		pRole1.setDescription("description role1");
-		//saveRole(pRole1);
-		
-		PRole pRole2 = new PRole("role2");
-		pRole2.setDescription("description role2");
-		//saveRole(pRole2);
-		
-		POrgUnitMember pMember1 = new POrgUnitMember(pOrgUnit, pPerson1);
-		pMember1.addRole(pRole1);
-		//saveMember(pMember1);
-		
-		POrgUnitMember pMember2 = new POrgUnitMember(pOrgUnit, pPerson2);
-		pMember2.addRole(pRole2);
-		//saveMember(pMember2);
-		
-		pOrgUnit.setMembers(new HashSet<POrgUnitMember>(Arrays.asList(pMember1, pMember2)));
-		
-		saveOrgUnit(pOrgUnit);
-		
-		//IOrganizationalUnit immutable = userStructureDao.findOrgUnitById(pOrgUnit.getIdentifier());
-		//assertNotNull(immutable);
+		IOrganizationalUnit immutable = userStructureDao.findOrgUnitById(pOrgUnit.getIdentifier());
+		assertNotNull(immutable);
 	}
+
+//	@Test
+//	public void testFindOrgUnitWithMembers()
+//	{
+//		POrganizationalUnit pRootOu = new POrganizationalUnit("rootOuNo", "rootOu");
+//		saveOrgUnit(pRootOu);
+//		
+//		POrganizationalUnit pSuperOu = new POrganizationalUnit("superOuNo", "superOu");
+//		pSuperOu.setSuperOu(pRootOu);
+//		pSuperOu.setRootOu(pRootOu);	
+//		saveOrgUnit(pSuperOu);
+//		
+//		POrganizationalUnit pOrgUnit = new POrganizationalUnit("orgUnitNo", "staff department");
+//		pOrgUnit.setSuperOu(pSuperOu);
+//		pOrgUnit.setRootOu(pRootOu);
+//		pOrgUnit.setShortName("stf");
+//		pOrgUnit.setDescription("managing staff");
+//		pOrgUnit.setEmailAddress("staff@company.com");
+//
+//		PAddress pAddress = new PAddress("11");
+//		pAddress.setCountryCode("DE");
+//		pAddress.setCity("city_1");
+//		pAddress.setStreet("street_1");
+//		pAddress.setPoBox("poBox_1");
+//		pOrgUnit.setAddress(pAddress);
+//		
+//		pOrgUnit = saveOrgUnit(pOrgUnit);
+//		
+//		PPerson pPerson1 = new PPerson("persNo1", "Obama");
+//		pPerson1.setGender(Gender.MALE);
+//		pPerson1.setFirstName("Barack");
+//		savePerson(pPerson1);
+//		
+//		PPerson pPerson2 = new PPerson("persNo2", "Merkel");
+//		pPerson2.setGender(Gender.FEMALE);
+//		pPerson2.setTitle(Title.DR);
+//		pPerson2.setFirstName("Angela");
+//		savePerson(pPerson2);
+//		
+//		POrgUnitMember pMember1 = new POrgUnitMember(pOrgUnit, pPerson1);
+//		saveMember(pMember1);
+//		
+//		POrgUnitMember pMember2 = new POrgUnitMember(pOrgUnit, pPerson2);
+//		saveMember(pMember2);
+//		
+//		pOrgUnit.setMembers(new HashSet<POrgUnitMember>(Arrays.asList(pMember1, pMember2)));
+//		
+//		saveOrgUnit(pOrgUnit);
+//		
+//		IOrganizationalUnit immutable = userStructureDao.findOrgUnitById(pOrgUnit.getIdentifier());
+//		assertNotNull(immutable);
+//	}
+//
+//	@Test
+//	public void testFindOrgUnitWithMembersAndRoles()
+//	{
+//		POrganizationalUnit pRootOu = new POrganizationalUnit("rootOuNo", "rootOu");
+//		saveOrgUnit(pRootOu);
+//		
+//		POrganizationalUnit pSuperOu = new POrganizationalUnit("superOuNo", "superOu");
+//		pSuperOu.setSuperOu(pRootOu);
+//		pSuperOu.setRootOu(pRootOu);	
+//		saveOrgUnit(pSuperOu);
+//		
+//		POrganizationalUnit pOrgUnit = new POrganizationalUnit("orgUnitNo", "staff department");
+//		pOrgUnit.setSuperOu(pSuperOu);
+//		pOrgUnit.setRootOu(pRootOu);
+//		pOrgUnit.setShortName("stf");
+//		pOrgUnit.setDescription("managing staff");
+//		pOrgUnit.setEmailAddress("staff@company.com");
+//
+//		PAddress pAddress = new PAddress("11");
+//		pAddress.setCountryCode("DE");
+//		pAddress.setCity("city_1");
+//		pAddress.setStreet("street_1");
+//		pAddress.setPoBox("poBox_1");
+//		pOrgUnit.setAddress(pAddress);
+//		
+//		pOrgUnit = saveOrgUnit(pOrgUnit);
+//		
+//		PPerson pPerson1 = new PPerson("persNo1", "Obama");
+//		pPerson1.setGender(Gender.MALE);
+//		pPerson1.setFirstName("Barack");
+//		savePerson(pPerson1);
+//		
+//		PPerson pPerson2 = new PPerson("persNo2", "Merkel");
+//		pPerson2.setGender(Gender.FEMALE);
+//		pPerson2.setTitle(Title.DR);
+//		pPerson2.setFirstName("Angela");
+//		savePerson(pPerson2);
+//		
+//		PRole pRole1 = new PRole("role1");
+//		pRole1.setDescription("description role1");
+//		//saveRole(pRole1);
+//		
+//		PRole pRole2 = new PRole("role2");
+//		pRole2.setDescription("description role2");
+//		//saveRole(pRole2);
+//		
+////		POrgUnitMember pMember1 = new POrgUnitMember(pOrgUnit, pPerson1);
+////		pMember1.addRole(pRole1);
+////		//saveMember(pMember1);
+////		
+////		POrgUnitMember pMember2 = new POrgUnitMember(pOrgUnit, pPerson2);
+////		pMember2.addRole(pRole2);
+////		//saveMember(pMember2);
+////		
+////		pOrgUnit.setMembers(new HashSet<POrgUnitMember>(Arrays.asList(pMember1, pMember2)));
+//		
+//		saveOrgUnit(pOrgUnit);
+//		
+//		IOrganizationalUnit immutable = userStructureDao.findOrgUnitById(pOrgUnit.getIdentifier());
+//		assertNotNull(immutable);
+//	}
 //
 //	@Test
 //	public void testFindOrgUnitByNumber()
@@ -305,5 +389,11 @@ public class UserStructureDaoImplRdbmsTest
 	private POrganizationalUnit saveOrgUnit(POrganizationalUnit persistable)
 	{
 		return orgUnitRepository.save(persistable);
+	}
+	
+	@Transactional(readOnly = false)
+	private POrgUnitMember saveMember(POrgUnitMember persistable)
+	{
+		return orgUnitMemberRepository.save(persistable);
 	}
 }
