@@ -32,6 +32,7 @@ import org.openur.module.persistence.rdbms.entity.POrganizationalUnit;
 import org.openur.module.persistence.rdbms.entity.PPerson;
 import org.openur.module.persistence.rdbms.entity.PRole;
 import org.openur.module.persistence.rdbms.entity.PTechnicalUser;
+import org.openur.module.persistence.rdbms.repository.AddressRepository;
 import org.openur.module.persistence.rdbms.repository.OrgUnitMemberRepository;
 import org.openur.module.persistence.rdbms.repository.OrgUnitRepository;
 import org.openur.module.persistence.rdbms.repository.PersonRepository;
@@ -50,6 +51,9 @@ public class UserStructureDaoImplRdbmsTest
 	
 	@Inject
 	private PersonRepository personRepository;
+	
+	@Inject
+	private AddressRepository addressRepository;
 	
 	@Inject
 	private TechnicalUserRepository technicalUserRepository;
@@ -227,7 +231,18 @@ public class UserStructureDaoImplRdbmsTest
 
 //	@Test
 //	public void testFindOrgUnitWithMembers()
-//	{
+//	{		
+//		PPerson pPersonA = new PPerson("persNoA", "Obama");
+//		pPersonA.setGender(Gender.MALE);
+//		pPersonA.setFirstName("Barack");
+//		savePerson(pPersonA);
+//		
+//		PPerson pPersonB = new PPerson("persNoB", "Merkel");
+//		pPersonB.setGender(Gender.FEMALE);
+//		pPersonB.setTitle(Title.DR);
+//		pPersonB.setFirstName("Angela");
+//		savePerson(pPersonB);
+//		
 //		POrganizationalUnit pRootOu = new POrganizationalUnit("rootOuNo", "rootOu");
 //		saveOrgUnit(pRootOu);
 //		
@@ -236,47 +251,52 @@ public class UserStructureDaoImplRdbmsTest
 //		pSuperOu.setRootOu(pRootOu);	
 //		saveOrgUnit(pSuperOu);
 //		
-//		POrganizationalUnit pOrgUnit = new POrganizationalUnit("orgUnitNo", "staff department");
-//		pOrgUnit.setSuperOu(pSuperOu);
-//		pOrgUnit.setRootOu(pRootOu);
-//		pOrgUnit.setShortName("stf");
-//		pOrgUnit.setDescription("managing staff");
-//		pOrgUnit.setEmailAddress("staff@company.com");
+//		POrganizationalUnit pOrgUnit1 = new POrganizationalUnit("orgUnitNo1", "staff department");
+//		pOrgUnit1.setSuperOu(pSuperOu);
+//		pOrgUnit1.setRootOu(pRootOu);
+//		pOrgUnit1.setShortName("stf");
+//		pOrgUnit1.setDescription("managing staff");
+//		pOrgUnit1.setEmailAddress("staff@company.com");
 //
 //		PAddress pAddress = new PAddress("11");
 //		pAddress.setCountryCode("DE");
 //		pAddress.setCity("city_1");
 //		pAddress.setStreet("street_1");
 //		pAddress.setPoBox("poBox_1");
-//		pOrgUnit.setAddress(pAddress);
+//		pOrgUnit1.setAddress(pAddress);
 //		
-//		pOrgUnit = saveOrgUnit(pOrgUnit);
+//		POrgUnitMember pMember11 = new POrgUnitMember(pOrgUnit1, pPersonA);
+//		POrgUnitMember pMember12 = new POrgUnitMember(pOrgUnit1, pPersonB);		
+//		pOrgUnit1.setMembers(new HashSet<POrgUnitMember>(Arrays.asList(pMember11, pMember12)));
 //		
-//		PPerson pPerson1 = new PPerson("persNo1", "Obama");
-//		pPerson1.setGender(Gender.MALE);
-//		pPerson1.setFirstName("Barack");
-//		savePerson(pPerson1);
+//		saveOrgUnit(pOrgUnit1);
 //		
-//		PPerson pPerson2 = new PPerson("persNo2", "Merkel");
-//		pPerson2.setGender(Gender.FEMALE);
-//		pPerson2.setTitle(Title.DR);
-//		pPerson2.setFirstName("Angela");
-//		savePerson(pPerson2);
+//		IOrganizationalUnit immutable = userStructureDao.findOrgUnitById(pOrgUnit1.getIdentifier());
+//		assertNotNull(immutable);
 //		
-//		POrgUnitMember pMember1 = new POrgUnitMember(pOrgUnit, pPerson1);
-//		saveMember(pMember1);
+//		POrganizationalUnit pSuperOu2 = new POrganizationalUnit("superOuNo2", "superOu");
+//		pSuperOu2.setSuperOu(pRootOu);
+//		pSuperOu2.setRootOu(pRootOu);	
+//		saveOrgUnit(pSuperOu2);
 //		
-//		POrgUnitMember pMember2 = new POrgUnitMember(pOrgUnit, pPerson2);
-//		saveMember(pMember2);
+//		POrganizationalUnit pOrgUnit2 = new POrganizationalUnit("orgUnitNo2", "hr department");
+//		pOrgUnit2.setSuperOu(pSuperOu2);
+//		pOrgUnit2.setRootOu(pRootOu);
+//		pOrgUnit2.setShortName("hr");
+//		pOrgUnit2.setDescription("human resources");
+//		pOrgUnit2.setEmailAddress("hr@company.com");
+//		pOrgUnit2.setAddress(pAddress);
 //		
-//		pOrgUnit.setMembers(new HashSet<POrgUnitMember>(Arrays.asList(pMember1, pMember2)));
+//		POrgUnitMember pMember21 = new POrgUnitMember(pOrgUnit2, pPersonA);
+//		POrgUnitMember pMember22 = new POrgUnitMember(pOrgUnit2, pPersonB);		
+//		pOrgUnit2.setMembers(new HashSet<POrgUnitMember>(Arrays.asList(pMember21, pMember22)));
 //		
-//		saveOrgUnit(pOrgUnit);
+//		saveOrgUnit(pOrgUnit2);
 //		
-//		IOrganizationalUnit immutable = userStructureDao.findOrgUnitById(pOrgUnit.getIdentifier());
+//		immutable = userStructureDao.findOrgUnitById(pOrgUnit2.getIdentifier());
 //		assertNotNull(immutable);
 //	}
-//
+
 //	@Test
 //	public void testFindOrgUnitWithMembersAndRoles()
 //	{
@@ -371,6 +391,7 @@ public class UserStructureDaoImplRdbmsTest
 		orgUnitRepository.deleteAll();
 		personRepository.deleteAll();
 		technicalUserRepository.deleteAll();
+		addressRepository.deleteAll();
 	}
 	
 	@Transactional(readOnly = false)
