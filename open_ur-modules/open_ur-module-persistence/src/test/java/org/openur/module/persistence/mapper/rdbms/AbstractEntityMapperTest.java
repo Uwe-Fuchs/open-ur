@@ -36,8 +36,7 @@ public class AbstractEntityMapperTest
 			return false;
 		}
 
-		return new EqualsBuilder().append(immutable.getStatus(),
-			persistable.getStatus()).isEquals();
+		return (immutable.getStatus() == persistable.getStatus());
 	}
 
 	private static boolean compareLocalDateTimes(LocalDateTime first, LocalDateTime second)

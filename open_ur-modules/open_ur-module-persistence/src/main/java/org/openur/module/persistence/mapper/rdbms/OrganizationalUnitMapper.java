@@ -25,10 +25,8 @@ public class OrganizationalUnitMapper
 		persistable.setSuperOu(superOu);
 		persistable.setShortName(immutable.getShortName());
 		persistable.setDescription(immutable.getDescription());
-		persistable.setAddress(immutable.getAddress() != null ? AddressMapper
-			.mapFromImmutable(immutable.getAddress()) : null);
-		persistable.setEmailAddress(immutable.getEmailAddress() != null ? immutable
-			.getEmailAddress().getAsPlainEMailAddress() : null);
+		persistable.setAddress(immutable.getAddress() != null ? AddressMapper.mapFromImmutable(immutable.getAddress()) : null);
+		persistable.setEmailAddress(immutable.getEmailAddress() != null ? immutable.getEmailAddress().getAsPlainEMailAddress() : null);
 		
 		immutable.getMembers()
 			.stream()
@@ -93,7 +91,7 @@ public class OrganizationalUnitMapper
 		return OrganizationalUnitMapper.mapFromEntity(pSuperOu, rootOu, rootOu);
 	}
 	
-	static class OrgUnitMemberMapper
+	public static class OrgUnitMemberMapper
 	{
 		public static POrgUnitMember mapFromImmutable(AuthorizableMember immutable, POrganizationalUnit pOrgUnit)
 		{
@@ -112,6 +110,11 @@ public class OrganizationalUnitMapper
 		{
 			Person person = PersonMapper.mapFromEntity(persistable.getPerson());
 			AuthorizableMemberBuilder immutableBuilder = new AuthorizableMemberBuilder(person, orgUnitId);
+			
+			if (StringUtils.isNotEmpty(persistable.getIdentifier())) 
+			{
+				immutableBuilder.identifier(persistable.getIdentifier());				
+			}
 			
 			persistable.getRoles()
 				.stream()
