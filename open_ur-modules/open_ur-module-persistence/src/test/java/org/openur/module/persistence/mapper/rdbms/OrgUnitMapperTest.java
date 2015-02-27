@@ -197,7 +197,7 @@ public class OrgUnitMapperTest
 			.isEquals();
 	}
 	
-	private static boolean immutableMemberEqualsToEntityMember(AuthorizableMember immutableMember, POrgUnitMember persistableMember)
+	public static boolean immutableMemberEqualsToEntityMember(AuthorizableMember immutableMember, POrgUnitMember persistableMember)
 	{
 		if (!PersonMapperTest.immutableEqualsToEntity(immutableMember.getPerson(), persistableMember.getPerson()))
 		{

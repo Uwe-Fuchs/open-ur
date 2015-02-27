@@ -14,8 +14,10 @@ import javax.inject.Inject;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openur.module.domain.security.authorization.AuthorizableMember;
 import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
 import org.openur.module.domain.userstructure.Status;
+import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 import org.openur.module.domain.userstructure.person.Gender;
 import org.openur.module.domain.userstructure.person.IPerson;
@@ -122,7 +124,7 @@ public class UserStructureDaoImplRdbmsTest
 	@Test(expected = NumberFormatException.class)
 	public void testFindPersonWithNonParseableId()
 	{
-		userStructureDao.findPersonById("dasdasdasdasd");
+		userStructureDao.findPersonById("idNonParseable");
 	}
 
 	@Test
@@ -292,6 +294,14 @@ public class UserStructureDaoImplRdbmsTest
 		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity((AuthorizableOrgUnit) immutable, pOrgUnit1));
 		assertTrue(immutable.getMembers().contains(OrgUnitMemberMapper.mapFromEntity(pMember11, pMember11.getOrgUnit().getIdentifier())));
 		assertTrue(immutable.getMembers().contains(OrgUnitMemberMapper.mapFromEntity(pMember12, pMember12.getOrgUnit().getIdentifier())));
+		
+		Iterator<? extends IOrgUnitMember> iter = immutable.getMembers().iterator();
+		IOrgUnitMember _member1 = iter.next();
+		IOrgUnitMember _member2 = iter.next();
+		AuthorizableMember member1 = (AuthorizableMember) (_member1.getIdentifier().equals(pMember11.getIdentifier()) ? _member1 : _member2);
+		AuthorizableMember member2 = (AuthorizableMember) (_member1.getIdentifier().equals(pMember12.getIdentifier()) ? _member1 : _member2);
+		assertTrue(OrgUnitMapperTest.immutableMemberEqualsToEntityMember(member1, pMember11));
+		assertTrue(OrgUnitMapperTest.immutableMemberEqualsToEntityMember(member2, pMember12));
 
 		POrganizationalUnit pSuperOu2 = new POrganizationalUnit("superOuNo2", "superOu");
 		pSuperOu2.setSuperOu(pRootOu);
@@ -317,6 +327,14 @@ public class UserStructureDaoImplRdbmsTest
 		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity((AuthorizableOrgUnit) immutable, pOrgUnit2));
 		assertTrue(immutable.getMembers().contains(OrgUnitMemberMapper.mapFromEntity(pMember21, pMember21.getOrgUnit().getIdentifier())));
 		assertTrue(immutable.getMembers().contains(OrgUnitMemberMapper.mapFromEntity(pMember22, pMember22.getOrgUnit().getIdentifier())));
+		
+		iter = immutable.getMembers().iterator();
+		_member1 = iter.next();
+		_member2 = iter.next();
+		member1 = (AuthorizableMember) (_member1.getIdentifier().equals(pMember21.getIdentifier()) ? _member1 : _member2);
+		member2 = (AuthorizableMember) (_member1.getIdentifier().equals(pMember22.getIdentifier()) ? _member1 : _member2);
+		assertTrue(OrgUnitMapperTest.immutableMemberEqualsToEntityMember(member1, pMember11));
+		assertTrue(OrgUnitMapperTest.immutableMemberEqualsToEntityMember(member2, pMember12));
 	}
 
 	// @Test
