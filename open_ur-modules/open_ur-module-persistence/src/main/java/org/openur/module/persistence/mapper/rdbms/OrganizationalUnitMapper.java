@@ -110,10 +110,12 @@ public class OrganizationalUnitMapper
 		{
 			Person person = PersonMapper.mapFromEntity(persistable.getPerson());
 			AuthorizableMemberBuilder immutableBuilder = new AuthorizableMemberBuilder(person, orgUnitId);
+			immutableBuilder.creationDate(persistable.getCreationDate());
+			immutableBuilder.lastModifiedDate(persistable.getLastModifiedDate());
 			
-			if (StringUtils.isNotEmpty(persistable.getIdentifier())) 
+			if (persistable.getIdentifier() != null)
 			{
-				immutableBuilder.identifier(persistable.getIdentifier());				
+				immutableBuilder.identifier(persistable.getIdentifier());
 			}
 			
 			persistable.getRoles()

@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.junit.Test;
 import org.openur.module.domain.application.OpenURApplication;
@@ -170,6 +171,16 @@ public class OrgUnitMapperTest
 		{
 			return false;
 		}
+		
+		if (immutable.getRootOrgUnit() != null || persistable.getRootOu() != null)
+		{
+			immutableEqualsToEntity(immutable.getRootOrgUnit(), persistable.getRootOu());
+		}
+		
+		if (immutable.getSuperOrgUnit() != null || persistable.getSuperOu() != null)
+		{
+			immutableEqualsToEntity(immutable.getSuperOrgUnit(), persistable.getSuperOu());
+		}
 	
 		if ((immutable.getAddress() != null || persistable.getAddress() != null)
 			&& !AddressMapperTest.immutableEqualsToEntity(immutable.getAddress(),	persistable.getAddress()))
@@ -192,13 +203,23 @@ public class OrgUnitMapperTest
 			.append(immutable.getName(), persistable.getName())
 			.append(immutable.getShortName(), persistable.getShortName())
 			.append(immutable.getDescription(), persistable.getDescription())
-			.append(immutable.getEmailAddress() != null ? immutable.getEmailAddress()
-					.getAsPlainEMailAddress() : null, persistable.getEmailAddress())
+			.append(immutable.getEmailAddress() != null ? immutable.getEmailAddress()	.getAsPlainEMailAddress() : null, persistable.getEmailAddress())
 			.isEquals();
 	}
 	
 	public static boolean immutableMemberEqualsToEntityMember(AuthorizableMember immutableMember, POrgUnitMember persistableMember)
 	{
+		if (!AbstractEntityMapperTest.immutableEqualsToEntityIdentifiable(immutableMember, persistableMember))
+		{
+			return false;
+		}
+		
+		if (StringUtils.isNotEmpty(persistableMember.getIdentifier()) 
+			&& !persistableMember.getIdentifier().equals(immutableMember.getIdentifier()))
+		{
+			return false;
+		}
+		
 		if (!PersonMapperTest.immutableEqualsToEntity(immutableMember.getPerson(), persistableMember.getPerson()))
 		{
 			return false;
