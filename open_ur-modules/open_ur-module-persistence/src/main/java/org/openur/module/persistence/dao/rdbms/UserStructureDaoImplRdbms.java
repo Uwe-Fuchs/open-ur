@@ -167,8 +167,14 @@ public class UserStructureDaoImplRdbms
 	@Override
 	public IAuthorizableOrgUnit findOrgUnitByNumber(String orgUnitNumber)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		POrganizationalUnit persistable = orgUnitRepository.findOrganizationalUnitByNumber(orgUnitNumber);
+
+		if (persistable == null)
+		{
+			return null;
+		}
+		
+		return OrganizationalUnitMapper.mapFromEntity(persistable);
 	}
 
 	@Override

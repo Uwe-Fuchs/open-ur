@@ -57,7 +57,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UserStructureDaoImplRdbmsTest
 {
-	private final String USER_NUMBER = "123abc";
+	private static final String USER_NUMBER = "123abc";
+	private static final String ROOT_OU_NO = "rootOuNo";
+	private static final String SUPER_OU_NO = "superOuNo";
+	private static final String ORG_UNIT_NO = "orgUnitNo";
 
 	@Inject
 	private PersonRepository personRepository;
@@ -212,15 +215,15 @@ public class UserStructureDaoImplRdbmsTest
 	@Test
 	public void testFindOrgUnitById()
 	{
-		POrganizationalUnit pRootOu = new POrganizationalUnit("rootOuNo", "rootOu");
+		POrganizationalUnit pRootOu = new POrganizationalUnit(ROOT_OU_NO, "rootOu");
 		saveOrgUnit(pRootOu);
 
-		POrganizationalUnit pSuperOu = new POrganizationalUnit("superOuNo", "superOu");
+		POrganizationalUnit pSuperOu = new POrganizationalUnit(SUPER_OU_NO, "superOu");
 		pSuperOu.setSuperOu(pRootOu);
 		pSuperOu.setRootOu(pRootOu);
 		saveOrgUnit(pSuperOu);
 
-		POrganizationalUnit pOrgUnit = new POrganizationalUnit("orgUnitNo", "staff department");
+		POrganizationalUnit pOrgUnit = new POrganizationalUnit(ORG_UNIT_NO, "staff department");
 		pOrgUnit.setSuperOu(pSuperOu);
 		pOrgUnit.setRootOu(pRootOu);
 		pOrgUnit.setShortName("stf");
@@ -256,10 +259,10 @@ public class UserStructureDaoImplRdbmsTest
 		pPersonB.setFirstName("Angela");
 		savePerson(pPersonB);
 
-		POrganizationalUnit pRootOu = new POrganizationalUnit("rootOuNo", "rootOu");
+		POrganizationalUnit pRootOu = new POrganizationalUnit(ROOT_OU_NO, "rootOu");
 		saveOrgUnit(pRootOu);
 
-		POrganizationalUnit pSuperOu = new POrganizationalUnit("superOuNo", "superOu");
+		POrganizationalUnit pSuperOu = new POrganizationalUnit(SUPER_OU_NO, "superOu");
 		pSuperOu.setSuperOu(pRootOu);
 		pSuperOu.setRootOu(pRootOu);
 		saveOrgUnit(pSuperOu);
@@ -309,15 +312,15 @@ public class UserStructureDaoImplRdbmsTest
 	@Test
 	public void testFindOrgUnitWithMembersAndRoles()
 	{
-		POrganizationalUnit pRootOu = new POrganizationalUnit("rootOuNo", "rootOu");
+		POrganizationalUnit pRootOu = new POrganizationalUnit(ROOT_OU_NO, "rootOu");
 		saveOrgUnit(pRootOu);
 
-		POrganizationalUnit pSuperOu = new POrganizationalUnit("superOuNo", "superOu");
+		POrganizationalUnit pSuperOu = new POrganizationalUnit(SUPER_OU_NO, "superOu");
 		pSuperOu.setSuperOu(pRootOu);
 		pSuperOu.setRootOu(pRootOu);
 		saveOrgUnit(pSuperOu);
 
-		POrganizationalUnit pOrgUnit = new POrganizationalUnit("orgUnitNo", "staff department");
+		POrganizationalUnit pOrgUnit = new POrganizationalUnit(ORG_UNIT_NO, "staff department");
 		pOrgUnit.setSuperOu(pSuperOu);
 		pOrgUnit.setRootOu(pRootOu);
 		pOrgUnit.setShortName("stf");
@@ -375,11 +378,35 @@ public class UserStructureDaoImplRdbmsTest
 		assertTrue(member2.getRoles().contains(RoleMapper.mapFromEntity(pRole2)));
 	}
 
-	 @Test
-	 public void testFindOrgUnitByNumber()
-	 {
-		 //fail("Not yet implemented");
-	 }
+	@Test
+	public void testFindOrgUnitByNumber()
+	{
+		POrganizationalUnit pRootOu = new POrganizationalUnit(ROOT_OU_NO, "rootOu");
+		saveOrgUnit(pRootOu);
+
+		POrganizationalUnit pSuperOu = new POrganizationalUnit(SUPER_OU_NO, "superOu");
+		pSuperOu.setSuperOu(pRootOu);
+		pSuperOu.setRootOu(pRootOu);
+		saveOrgUnit(pSuperOu);
+
+		POrganizationalUnit pOrgUnit = new POrganizationalUnit(ORG_UNIT_NO, "staff department");
+
+		pOrgUnit.setSuperOu(pSuperOu);
+		pOrgUnit.setRootOu(pRootOu);
+		saveOrgUnit(pOrgUnit);
+
+		IOrganizationalUnit immutable = userStructureDao.findOrgUnitByNumber(ORG_UNIT_NO);
+		assertNotNull(immutable);
+		assertEquals(OrganizationalUnitMapper.mapFromEntity(pOrgUnit), immutable);
+
+		immutable = userStructureDao.findOrgUnitByNumber(ROOT_OU_NO);
+		assertNotNull(immutable);
+		assertEquals(OrganizationalUnitMapper.mapFromEntity(pRootOu), immutable);
+
+		immutable = userStructureDao.findOrgUnitByNumber(SUPER_OU_NO);
+		assertNotNull(immutable);
+		assertEquals(OrganizationalUnitMapper.mapFromEntity(pSuperOu), immutable);
+	}
 	
 	// @Test
 	// public void testObtainAllOrgUnits()
