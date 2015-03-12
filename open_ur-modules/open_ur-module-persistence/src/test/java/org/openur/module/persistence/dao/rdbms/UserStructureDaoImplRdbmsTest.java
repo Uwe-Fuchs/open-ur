@@ -146,10 +146,10 @@ public class UserStructureDaoImplRdbmsTest
 		assertEquals(allPersons.size(), 2);
 
 		Iterator<IPerson> iter = allPersons.iterator();
-		IPerson _p1 = iter.next();
-		IPerson _p2 = iter.next();
-		Person p = (Person) (_p1.getIdentifier().equals(persistable1.getIdentifier()) ? _p1 : _p2);
-		Person p2 = (Person) (_p1.getIdentifier().equals(persistable1.getIdentifier()) ? _p2 : _p1);
+		Person _p1 = (Person) iter.next();
+		Person _p2 = (Person) iter.next();
+		Person p = _p1.getIdentifier().equals(persistable1.getIdentifier()) ? _p1 : _p2;
+		Person p2 = _p1.getIdentifier().equals(persistable1.getIdentifier()) ? _p2 : _p1;
 
 		assertTrue(PersonMapperTest.immutableEqualsToEntity(p, persistable1));
 		assertTrue(PersonMapperTest.immutableEqualsToEntity(p2, persistable2));
@@ -200,10 +200,10 @@ public class UserStructureDaoImplRdbmsTest
 		assertEquals(allTechUsers.size(), 2);
 
 		Iterator<ITechnicalUser> iter = allTechUsers.iterator();
-		ITechnicalUser _tu1 = iter.next();
-		ITechnicalUser _tu2 = iter.next();
-		TechnicalUser tu1 = (TechnicalUser) (_tu1.getIdentifier().equals(persistable1.getIdentifier()) ? _tu1 : _tu2);
-		TechnicalUser tu2 = (TechnicalUser) (_tu1.getIdentifier().equals(persistable1.getIdentifier()) ? _tu2 : _tu1);
+		TechnicalUser _tu1 = (TechnicalUser) iter.next();
+		TechnicalUser _tu2 = (TechnicalUser) iter.next();
+		TechnicalUser tu1 = _tu1.getIdentifier().equals(persistable1.getIdentifier()) ? _tu1 : _tu2;
+		TechnicalUser tu2 = _tu1.getIdentifier().equals(persistable1.getIdentifier()) ? _tu2 : _tu1;
 
 		assertTrue(TechnicalUserMapperTest.immutableEqualsToEntity(tu1, persistable1));
 		assertTrue(TechnicalUserMapperTest.immutableEqualsToEntity(tu2, persistable2));
@@ -360,9 +360,7 @@ public class UserStructureDaoImplRdbmsTest
 
 		IOrganizationalUnit immutable = userStructureDao.findOrgUnitById(pOrgUnit.getIdentifier());
 		assertNotNull(immutable);
-		AuthorizableOrgUnit rootOu = OrganizationalUnitMapper.mapRootOuFromEntity(pRootOu);
-		AuthorizableOrgUnit superOu = OrganizationalUnitMapper.mapSuperOuFromEntity(pSuperOu, rootOu);
-		assertEquals(OrganizationalUnitMapper.mapFromEntity(pOrgUnit, rootOu, superOu), immutable);
+		assertEquals(OrganizationalUnitMapper.mapFromEntity(pOrgUnit), immutable);
 
 		Iterator<? extends IOrgUnitMember> iter = immutable.getMembers().iterator();
 		IOrgUnitMember _member1 = iter.next();
@@ -377,12 +375,12 @@ public class UserStructureDaoImplRdbmsTest
 		assertTrue(member2.getRoles().contains(RoleMapper.mapFromEntity(pRole2)));
 	}
 
-	// @Test
-	// public void testFindOrgUnitByNumber()
-	// {
-	// fail("Not yet implemented");
-	// }
-	//
+	 @Test
+	 public void testFindOrgUnitByNumber()
+	 {
+		 //fail("Not yet implemented");
+	 }
+	
 	// @Test
 	// public void testObtainAllOrgUnits()
 	// {

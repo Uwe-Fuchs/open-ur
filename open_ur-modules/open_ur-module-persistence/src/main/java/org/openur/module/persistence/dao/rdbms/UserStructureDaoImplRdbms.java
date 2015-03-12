@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
-import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
@@ -162,10 +161,7 @@ public class UserStructureDaoImplRdbms
 			return null;
 		}
 		
-		AuthorizableOrgUnit rootOu = OrganizationalUnitMapper.mapRootOuFromEntity(persistable.getRootOu());
-		AuthorizableOrgUnit superOu = OrganizationalUnitMapper.mapSuperOuFromEntity(persistable.getSuperOu(), rootOu);
-		
-		return OrganizationalUnitMapper.mapFromEntity(persistable, rootOu, superOu);
+		return OrganizationalUnitMapper.mapFromEntity(persistable);
 	}
 
 	@Override

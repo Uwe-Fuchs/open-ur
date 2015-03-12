@@ -15,7 +15,21 @@ import org.openur.module.persistence.rdbms.entity.PPerson;
 
 public class OrganizationalUnitMapper
 {
-	public static POrganizationalUnit mapFromImmutable(
+	public static POrganizationalUnit mapFromImmutable(AuthorizableOrgUnit immutable)
+	{
+		POrganizationalUnit pRootOu = null;
+		POrganizationalUnit pSuperOu = null;
+		
+		if (immutable.getRootOrgUnit() != null)
+		{
+			pRootOu = mapRootOuFromImmutable(immutable);
+			pSuperOu = mapSuperOuFromImmutable(immutable.getSuperOrgUnit(), pRootOu);
+		}
+		
+		return mapFromImmutable(immutable, pRootOu, pSuperOu);
+	}
+	
+	static POrganizationalUnit mapFromImmutable(
 		AuthorizableOrgUnit immutable, POrganizationalUnit rootOu,	POrganizationalUnit superOu)
 	{
 		POrganizationalUnit persistable = new POrganizationalUnit(immutable.getOrgUnitNumber(), immutable.getName());
@@ -36,17 +50,31 @@ public class OrganizationalUnitMapper
 		return persistable;
 	}
 	
-	public static POrganizationalUnit mapRootOuFromImmutable(AuthorizableOrgUnit rootOu)
+	static POrganizationalUnit mapRootOuFromImmutable(AuthorizableOrgUnit rootOu)
 	{
 		return OrganizationalUnitMapper.mapFromImmutable(rootOu, null, null);
 	}
 	
-	public static POrganizationalUnit mapSuperOuFromImmutable(AuthorizableOrgUnit superOu, POrganizationalUnit pRootOu)
+	static POrganizationalUnit mapSuperOuFromImmutable(AuthorizableOrgUnit superOu, POrganizationalUnit pRootOu)
 	{
 		return OrganizationalUnitMapper.mapFromImmutable(superOu, pRootOu, pRootOu);
 	}
+	
+	public static AuthorizableOrgUnit mapFromEntity(POrganizationalUnit persistable)
+	{
+		AuthorizableOrgUnit rootOu = null;
+		AuthorizableOrgUnit superOu = null;
+		
+		if (persistable.getRootOu() != null)
+		{
+			rootOu = mapRootOuFromEntity(persistable.getRootOu());
+			superOu = mapSuperOuFromEntity(persistable.getSuperOu(), rootOu);
+		}
+		
+		return mapFromEntity(persistable, rootOu, superOu);
+	}
 
-	public static AuthorizableOrgUnit mapFromEntity(
+	static AuthorizableOrgUnit mapFromEntity(
 		POrganizationalUnit persistable, AuthorizableOrgUnit rootOu,	AuthorizableOrgUnit superOu)
 	{
 		final String IDENTIFIER = StringUtils.isNotEmpty(persistable.getIdentifier()) ? persistable.getIdentifier() : UUID.randomUUID().toString();
@@ -81,12 +109,12 @@ public class OrganizationalUnitMapper
 		return immutableBuilder.build();
 	}
 	
-	public static AuthorizableOrgUnit mapRootOuFromEntity(POrganizationalUnit pRootOu)
+	static AuthorizableOrgUnit mapRootOuFromEntity(POrganizationalUnit pRootOu)
 	{
 		return OrganizationalUnitMapper.mapFromEntity(pRootOu, null, null);
 	}
 	
-	public static AuthorizableOrgUnit mapSuperOuFromEntity(POrganizationalUnit pSuperOu, AuthorizableOrgUnit rootOu)
+	static AuthorizableOrgUnit mapSuperOuFromEntity(POrganizationalUnit pSuperOu, AuthorizableOrgUnit rootOu)
 	{
 		return OrganizationalUnitMapper.mapFromEntity(pSuperOu, rootOu, rootOu);
 	}
