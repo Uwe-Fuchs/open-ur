@@ -1,8 +1,6 @@
 package org.openur.module.persistence.dao.rdbms;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -16,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openur.module.domain.security.authorization.AuthorizableMember;
 import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
+import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
@@ -408,23 +407,86 @@ public class UserStructureDaoImplRdbmsTest
 		assertEquals(OrganizationalUnitMapper.mapFromEntity(pSuperOu), immutable);
 	}
 	
-	// @Test
-	// public void testObtainAllOrgUnits()
-	// {
-	// fail("Not yet implemented");
-	// }
-	//
-	// @Test
-	// public void testObtainSubOrgUnitsForOrgUnit()
-	// {
-	// fail("Not yet implemented");
-	// }
-	//
-	// @Test
-	// public void testObtainRootOrgUnits()
-	// {
-	// fail("Not yet implemented");
-	// }
+	@Test
+	public void testObtainAllOrgUnits()
+	{
+		POrganizationalUnit pOrgUnit1 = new POrganizationalUnit(ORG_UNIT_NO, "staff department");
+		saveOrgUnit(pOrgUnit1);
+		POrganizationalUnit pOrgUnit2 = new POrganizationalUnit("orgUnitNo2", "hr department");
+		saveOrgUnit(pOrgUnit2);
+		POrganizationalUnit pOrgUnit3 = new POrganizationalUnit("orgUnitNo3", "it department");
+		saveOrgUnit(pOrgUnit3);
+		
+		List<IAuthorizableOrgUnit> allOrgUnits = userStructureDao.obtainAllOrgUnits();
+		
+		assertEquals(3, allOrgUnits.size());
+		assertTrue(allOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit1)));
+		assertTrue(allOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit2)));
+		assertTrue(allOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit3)));
+		assertFalse(allOrgUnits.contains(new AuthorizableOrgUnit.AuthorizableOrgUnitBuilder("orgUnitNo4", "some department").build()));
+	}
+	
+	@Test
+	public void testObtainSubOrgUnitsForOrgUnit()
+	{
+		POrganizationalUnit pRootOu = new POrganizationalUnit(ROOT_OU_NO, "rootOu");
+		saveOrgUnit(pRootOu);
+
+		POrganizationalUnit pSuperOu = new POrganizationalUnit(SUPER_OU_NO, "superOu");
+		pSuperOu.setSuperOu(pRootOu);
+		pSuperOu.setRootOu(pRootOu);
+		saveOrgUnit(pSuperOu);
+
+		POrganizationalUnit pOrgUnit1 = new POrganizationalUnit(ORG_UNIT_NO, "staff department");
+		pOrgUnit1.setSuperOu(pSuperOu);
+		pOrgUnit1.setRootOu(pRootOu);
+		saveOrgUnit(pOrgUnit1);
+		
+		POrganizationalUnit pOrgUnit2 = new POrganizationalUnit("orgUnitNo2", "hr department");
+		pOrgUnit2.setSuperOu(pSuperOu);
+		pOrgUnit2.setRootOu(pRootOu);
+		saveOrgUnit(pOrgUnit2);
+		
+		POrganizationalUnit pOrgUnit3 = new POrganizationalUnit("orgUnitNo3", "it department");
+		pOrgUnit3.setSuperOu(pSuperOu);
+		pOrgUnit3.setRootOu(pRootOu);
+		saveOrgUnit(pOrgUnit3);
+		
+		POrganizationalUnit pOrgUnit4 = new POrganizationalUnit("orgUnitNo4", "some department");
+		pOrgUnit4.setSuperOu(pRootOu);
+		pOrgUnit4.setRootOu(pRootOu);
+		saveOrgUnit(pOrgUnit4);
+		
+		List<IAuthorizableOrgUnit> subOrgUnits = userStructureDao.obtainSubOrgUnitsForOrgUnit(pSuperOu.getIdentifier(), false);
+		
+		assertEquals(3, subOrgUnits.size());
+		assertTrue(subOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit1)));
+		assertTrue(subOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit2)));
+		assertTrue(subOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit3)));
+		assertFalse(subOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit4)));
+		
+		Iterator<? extends IOrganizationalUnit> iter = subOrgUnits.iterator();		
+		assertEquals(iter.next().getSuperOrgUnit(), OrganizationalUnitMapper.mapFromEntity(pSuperOu));
+		assertEquals(iter.next().getSuperOrgUnit(), OrganizationalUnitMapper.mapFromEntity(pSuperOu));
+		assertEquals(iter.next().getSuperOrgUnit(), OrganizationalUnitMapper.mapFromEntity(pSuperOu));
+	}
+	
+//	@Test
+//	public void testObtainSubOrgUnitsForOrgUnitInclMembers()
+//	{
+//		
+//	}
+//	
+//	@Test
+//	public void testObtainSubOrgUnitsForOrgUnitInclMembersAndRoles()
+//	{
+//		
+//	}
+//		
+//  @Test
+//  public void testObtainRootOrgUnits()
+//  { 
+//  }
 
 	@After
 	public void tearDown()

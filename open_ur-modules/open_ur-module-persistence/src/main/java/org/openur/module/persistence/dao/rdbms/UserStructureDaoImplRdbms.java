@@ -85,7 +85,10 @@ public class UserStructureDaoImplRdbms
 	{
 		List<PPerson> persons = personRepository.findAll();
 
-		return persons.stream().map(PersonMapper::mapFromEntity).collect(Collectors.toList());
+		return persons
+				.stream()
+				.map(PersonMapper::mapFromEntity)
+				.collect(Collectors.toList());
 	}
 
 	/**
@@ -133,7 +136,10 @@ public class UserStructureDaoImplRdbms
 	{
 		List<PTechnicalUser> techUsers = technicalUserRepository.findAll();
 
-		return techUsers.stream().map(TechnicalUserMapper::mapFromEntity).collect(Collectors.toList());
+		return techUsers
+				.stream()
+				.map(TechnicalUserMapper::mapFromEntity)
+				.collect(Collectors.toList());
 	}
 
 	/**
@@ -180,15 +186,25 @@ public class UserStructureDaoImplRdbms
 	@Override
 	public List<IAuthorizableOrgUnit> obtainAllOrgUnits()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		List<POrganizationalUnit> allOrgUnits = orgUnitRepository.findAll();
+		
+		return allOrgUnits
+					.stream()
+					.map(OrganizationalUnitMapper::mapFromEntity)
+					.collect(Collectors.toList());
 	}
 
 	@Override
 	public List<IAuthorizableOrgUnit> obtainSubOrgUnitsForOrgUnit(String orgUnitId, boolean inclMembers)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		long orgUnitIdL = Long.parseLong(orgUnitId);
+		
+		List<POrganizationalUnit> subOrgUnits = orgUnitRepository.findSubOrgUnitsForOrgUnit(orgUnitIdL);
+		
+		return subOrgUnits
+					.stream()
+					.map(OrganizationalUnitMapper::mapFromEntity)
+					.collect(Collectors.toList());
 	}
 
 	@Override

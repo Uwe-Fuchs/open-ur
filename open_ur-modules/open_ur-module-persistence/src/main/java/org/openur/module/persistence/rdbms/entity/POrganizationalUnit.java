@@ -26,7 +26,7 @@ public class POrganizationalUnit
 	private static final long serialVersionUID = -8093388723274386419L;
 
 	// properties:
-	@ManyToOne(fetch=FetchType.EAGER, optional=true)
+	@ManyToOne(fetch=FetchType.LAZY, optional=true)
 	@JoinColumn(name="SUPER_OU_ID", referencedColumnName="ID")
 	private POrganizationalUnit superOu;
 	
@@ -153,10 +153,9 @@ public class POrganizationalUnit
 		this.name = name;
 	}
 
-	@SuppressWarnings("unused")
-	private POrganizationalUnit()
+	// JPA
+	public POrganizationalUnit()
 	{
-		// JPA
 		super();
 	}
 }
