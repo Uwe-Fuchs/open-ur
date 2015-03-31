@@ -1,24 +1,24 @@
 package org.openur.module.persistence.mapper.rdbms;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.UUID;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.junit.Test;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.domain.security.authorization.AuthorizableMember;
-import org.openur.module.domain.security.authorization.OpenURPermission;
-import org.openur.module.domain.security.authorization.OpenURPermissionBuilder;
-import org.openur.module.domain.security.authorization.OpenURRoleBuilder;
 import org.openur.module.domain.security.authorization.AuthorizableMember.AuthorizableMemberBuilder;
 import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.AuthorizableOrgUnit.AuthorizableOrgUnitBuilder;
+import org.openur.module.domain.security.authorization.OpenURPermission;
+import org.openur.module.domain.security.authorization.OpenURPermissionBuilder;
 import org.openur.module.domain.security.authorization.OpenURRole;
+import org.openur.module.domain.security.authorization.OpenURRoleBuilder;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.Address.AddressBuilder;
 import org.openur.module.domain.userstructure.Country;
@@ -29,7 +29,6 @@ import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.person.PersonBuilder;
 import org.openur.module.domain.userstructure.person.Title;
-import org.openur.module.persistence.mapper.rdbms.OrganizationalUnitMapper;
 import org.openur.module.persistence.rdbms.entity.PAddress;
 import org.openur.module.persistence.rdbms.entity.POrgUnitMember;
 import org.openur.module.persistence.rdbms.entity.POrganizationalUnit;
@@ -56,8 +55,7 @@ public class OrgUnitMapperTest
 		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity(superOu, pSuperOu));
 		
 		Person pers1 = new PersonBuilder("persNo1", Name.create(Gender.MALE, "Barack", "Obama"))
-			.build();
-		
+			.build();		
 		Person pers2 = new PersonBuilder("persNo2", Name.create(Gender.FEMALE, Title.DR, "Angela", "Merkel"))
 			.build();
 		
@@ -161,8 +159,26 @@ public class OrgUnitMapperTest
 		
 		pOrgUnit.setMembers(new HashSet<POrgUnitMember>(Arrays.asList(pMember1, pMember2)));
 		
-		AuthorizableOrgUnit orgUnit = OrganizationalUnitMapper.mapFromEntity(pOrgUnit);		
+		AuthorizableOrgUnit orgUnit = OrganizationalUnitMapper.mapFromEntity(pOrgUnit, false, false);
+		assertTrue(orgUnit.getMembers().isEmpty());
+		
+		orgUnit = OrganizationalUnitMapper.mapFromEntity(pOrgUnit, true, false);
+		assertFalse(orgUnit.getMembers().isEmpty());
+		for (AuthorizableMember member : orgUnit.getMembers())
+		{
+			assertTrue(member.getRoles().isEmpty());
+		}
+		
+		orgUnit = OrganizationalUnitMapper.mapFromEntity(pOrgUnit, true, true);		
+		assertFalse(orgUnit.getMembers().isEmpty());
 		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity(orgUnit, pOrgUnit));
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testMapFromEntityWithoutMembersButWithRoles()
+	{
+		POrganizationalUnit pOrgUnit = new POrganizationalUnit("orgUnitNo", "staff department");
+		OrganizationalUnitMapper.mapFromEntity(pOrgUnit, false, true);		
 	}
 
 	public static boolean immutableEqualsToEntity(AuthorizableOrgUnit immutable, POrganizationalUnit persistable)
@@ -210,12 +226,6 @@ public class OrgUnitMapperTest
 	public static boolean immutableMemberEqualsToEntityMember(AuthorizableMember immutableMember, POrgUnitMember persistableMember)
 	{
 		if (!AbstractEntityMapperTest.immutableEqualsToEntityIdentifiable(immutableMember, persistableMember))
-		{
-			return false;
-		}
-		
-		if (StringUtils.isNotEmpty(persistableMember.getIdentifier()) 
-			&& !persistableMember.getIdentifier().equals(immutableMember.getIdentifier()))
 		{
 			return false;
 		}

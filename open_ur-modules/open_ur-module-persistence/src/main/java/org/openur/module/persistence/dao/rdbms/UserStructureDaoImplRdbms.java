@@ -143,7 +143,7 @@ public class UserStructureDaoImplRdbms
 	}
 
 	/**
-	 * searches an organizational-unit via it's unique identifier.
+	 * searches an organizational-unit via the unique identifier.
 	 * 
 	 * @param orgUnitId
 	 *          : the unique identifier of the organizational-unit.
@@ -158,6 +158,52 @@ public class UserStructureDaoImplRdbms
 	public IAuthorizableOrgUnit findOrgUnitById(String orgUnitId)
 		throws NumberFormatException
 	{
+		return findOrgUnitById_internal(orgUnitId, false, false);
+	}
+
+	/**
+	 * searches an organizational-unit including its members via the unique
+	 * identifier.
+	 * 
+	 * @param orgUnitId
+	 *          : the unique identifier of the organizational-unit.
+	 * 
+	 * @return the (authorizable) organizational-unit including its members or
+	 *         null, if no organizational-unit is found.
+	 * 
+	 * @throws NumberFormatException
+	 *           , if orgUnitId cannot be casted into a long-value.
+	 */
+	@Override
+	public IAuthorizableOrgUnit findOrgUnitAndMembersById(String orgUnitId)
+		throws NumberFormatException
+	{
+		return findOrgUnitById_internal(orgUnitId, true, false);
+	}
+
+	/**
+	 * searches an organizational-unit including its members and roles via the
+	 * unique identifier.
+	 * 
+	 * @param orgUnitId
+	 *          : the unique identifier of the organizational-unit.
+	 * 
+	 * @return the (authorizable) organizational-unit including its members and
+	 *         roles or null, if no organizational-unit is found.
+	 * 
+	 * @throws NumberFormatException
+	 *           , if orgUnitId cannot be casted into a long-value.
+	 */
+	@Override
+	public IAuthorizableOrgUnit findOrgUnitAndMembersRolesById(String orgUnitId)
+		throws NumberFormatException
+	{
+		return findOrgUnitById_internal(orgUnitId, true, true);
+	}
+	
+	private IAuthorizableOrgUnit findOrgUnitById_internal(String orgUnitId, boolean inclMembers, boolean inclRoles)
+		throws NumberFormatException
+	{
 		long orgUnitIdL = Long.parseLong(orgUnitId);
 
 		POrganizationalUnit persistable = orgUnitRepository.findOne(orgUnitIdL);
@@ -167,11 +213,28 @@ public class UserStructureDaoImplRdbms
 			return null;
 		}
 		
-		return OrganizationalUnitMapper.mapFromEntity(persistable);
+		return OrganizationalUnitMapper.mapFromEntity(persistable, inclMembers, inclRoles);
 	}
 
 	@Override
 	public IAuthorizableOrgUnit findOrgUnitByNumber(String orgUnitNumber)
+	{
+		return findOrgUnitByNumber_internal(orgUnitNumber, false, false);
+	}
+
+	@Override
+	public IAuthorizableOrgUnit findOrgUnitAndMembersByNumber(String orgUnitNumber)
+	{
+		return findOrgUnitByNumber_internal(orgUnitNumber, true, false);
+	}
+
+	@Override
+	public IAuthorizableOrgUnit findOrgUnitAndMembersRolesByNumber(String orgUnitNumber)
+	{
+		return findOrgUnitByNumber_internal(orgUnitNumber, true, true);
+	}
+	
+	private IAuthorizableOrgUnit findOrgUnitByNumber_internal(String orgUnitNumber, boolean inclMembers, boolean inclRoles)
 	{
 		POrganizationalUnit persistable = orgUnitRepository.findOrganizationalUnitByNumber(orgUnitNumber);
 
@@ -180,7 +243,7 @@ public class UserStructureDaoImplRdbms
 			return null;
 		}
 		
-		return OrganizationalUnitMapper.mapFromEntity(persistable);
+		return OrganizationalUnitMapper.mapFromEntity(persistable, inclMembers, inclRoles);
 	}
 
 	@Override
@@ -190,7 +253,7 @@ public class UserStructureDaoImplRdbms
 		
 		return allOrgUnits
 					.stream()
-					.map(OrganizationalUnitMapper::mapFromEntity)
+					.map(o -> OrganizationalUnitMapper.mapFromEntity(o, false, false))
 					.collect(Collectors.toList());
 	}
 
@@ -203,7 +266,7 @@ public class UserStructureDaoImplRdbms
 		
 		return subOrgUnits
 					.stream()
-					.map(OrganizationalUnitMapper::mapFromEntity)
+					.map(o -> OrganizationalUnitMapper.mapFromEntity(o, false, false))
 					.collect(Collectors.toList());
 	}
 

@@ -1,6 +1,9 @@
 package org.openur.module.persistence.dao.rdbms;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -12,11 +15,9 @@ import javax.inject.Inject;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openur.module.domain.security.authorization.AuthorizableMember;
 import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.domain.userstructure.Status;
-import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 import org.openur.module.domain.userstructure.person.Gender;
 import org.openur.module.domain.userstructure.person.IPerson;
@@ -29,7 +30,6 @@ import org.openur.module.persistence.mapper.rdbms.OrgUnitMapperTest;
 import org.openur.module.persistence.mapper.rdbms.OrganizationalUnitMapper;
 import org.openur.module.persistence.mapper.rdbms.PersonMapper;
 import org.openur.module.persistence.mapper.rdbms.PersonMapperTest;
-import org.openur.module.persistence.mapper.rdbms.RoleMapper;
 import org.openur.module.persistence.mapper.rdbms.TechnicalUserMapper;
 import org.openur.module.persistence.mapper.rdbms.TechnicalUserMapperTest;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
@@ -245,19 +245,8 @@ public class UserStructureDaoImplRdbmsTest
 
 	@Test
 	@Transactional(readOnly = false)
-	public void testFindOrgUnitWithMembers()
+	public void testFindOrgUnitAndMembersById()
 	{
-		PPerson pPersonA = new PPerson("persNoA", "Obama");
-		pPersonA.setGender(Gender.MALE);
-		pPersonA.setFirstName("Barack");
-		savePerson(pPersonA);
-
-		PPerson pPersonB = new PPerson("persNoB", "Merkel");
-		pPersonB.setGender(Gender.FEMALE);
-		pPersonB.setTitle(Title.DR);
-		pPersonB.setFirstName("Angela");
-		savePerson(pPersonB);
-
 		POrganizationalUnit pRootOu = new POrganizationalUnit(ROOT_OU_NO, "rootOu");
 		saveOrgUnit(pRootOu);
 
@@ -273,6 +262,17 @@ public class UserStructureDaoImplRdbmsTest
 		PAddress pAddress = new PAddress("11");
 		pAddress.setCity("city_1");
 		pOrgUnit1.setAddress(pAddress);
+		
+		PPerson pPersonA = new PPerson("persNoA", "Obama");
+		pPersonA.setGender(Gender.MALE);
+		pPersonA.setFirstName("Barack");
+		savePerson(pPersonA);
+
+		PPerson pPersonB = new PPerson("persNoB", "Merkel");
+		pPersonB.setGender(Gender.FEMALE);
+		pPersonB.setTitle(Title.DR);
+		pPersonB.setFirstName("Angela");
+		savePerson(pPersonB);
 
 		POrgUnitMember pMember11 = new POrgUnitMember(pOrgUnit1, pPersonA);
 		POrgUnitMember pMember12 = new POrgUnitMember(pOrgUnit1, pPersonB);
@@ -280,7 +280,7 @@ public class UserStructureDaoImplRdbmsTest
 
 		saveOrgUnit(pOrgUnit1);
 
-		IOrganizationalUnit immutable = userStructureDao.findOrgUnitById(pOrgUnit1.getIdentifier());
+		IOrganizationalUnit immutable = userStructureDao.findOrgUnitAndMembersById(pOrgUnit1.getIdentifier());
 		assertNotNull(immutable);
 		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity((AuthorizableOrgUnit) immutable, pOrgUnit1));
 
@@ -303,13 +303,13 @@ public class UserStructureDaoImplRdbmsTest
 
 		saveOrgUnit(pOrgUnit2);
 
-		immutable = userStructureDao.findOrgUnitById(pOrgUnit2.getIdentifier());
+		immutable = userStructureDao.findOrgUnitAndMembersById(pOrgUnit2.getIdentifier());
 		assertNotNull(immutable);
 		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity((AuthorizableOrgUnit) immutable, pOrgUnit2));
 	}
 
 	@Test
-	public void testFindOrgUnitWithMembersAndRoles()
+	public void testFindOrgUnitAndMembersRolesById()
 	{
 		POrganizationalUnit pRootOu = new POrganizationalUnit(ROOT_OU_NO, "rootOu");
 		saveOrgUnit(pRootOu);
@@ -360,21 +360,9 @@ public class UserStructureDaoImplRdbmsTest
 
 		saveOrgUnit(pOrgUnit);
 
-		IOrganizationalUnit immutable = userStructureDao.findOrgUnitById(pOrgUnit.getIdentifier());
+		IOrganizationalUnit immutable = userStructureDao.findOrgUnitAndMembersRolesById(pOrgUnit.getIdentifier());
 		assertNotNull(immutable);
-		assertEquals(OrganizationalUnitMapper.mapFromEntity(pOrgUnit), immutable);
-
-		Iterator<? extends IOrgUnitMember> iter = immutable.getMembers().iterator();
-		IOrgUnitMember _member1 = iter.next();
-		IOrgUnitMember _member2 = iter.next();
-		AuthorizableMember member1 = (AuthorizableMember) (_member1.getIdentifier().equals(pMember1.getIdentifier()) ? _member1 : _member2);
-		AuthorizableMember member2 = (AuthorizableMember) (_member2.getIdentifier().equals(pMember2.getIdentifier()) ? _member2 : _member1);
-		assertEquals(member1.getOrgUnitId(), pOrgUnit.getIdentifier());
-		assertEquals(member1.getPerson(), PersonMapper.mapFromEntity(pPerson1));
-		assertTrue(member1.getRoles().contains(RoleMapper.mapFromEntity(pRole1)));
-		assertEquals(member2.getOrgUnitId(), pOrgUnit.getIdentifier());
-		assertEquals(member2.getPerson(), PersonMapper.mapFromEntity(pPerson2));
-		assertTrue(member2.getRoles().contains(RoleMapper.mapFromEntity(pRole2)));
+		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity((AuthorizableOrgUnit) immutable, pOrgUnit));
 	}
 
 	@Test
@@ -396,15 +384,100 @@ public class UserStructureDaoImplRdbmsTest
 
 		IOrganizationalUnit immutable = userStructureDao.findOrgUnitByNumber(ORG_UNIT_NO);
 		assertNotNull(immutable);
-		assertEquals(OrganizationalUnitMapper.mapFromEntity(pOrgUnit), immutable);
+		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity((AuthorizableOrgUnit) immutable, pOrgUnit));
 
 		immutable = userStructureDao.findOrgUnitByNumber(ROOT_OU_NO);
 		assertNotNull(immutable);
-		assertEquals(OrganizationalUnitMapper.mapFromEntity(pRootOu), immutable);
+		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity((AuthorizableOrgUnit) immutable, pRootOu));
 
 		immutable = userStructureDao.findOrgUnitByNumber(SUPER_OU_NO);
 		assertNotNull(immutable);
-		assertEquals(OrganizationalUnitMapper.mapFromEntity(pSuperOu), immutable);
+		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity((AuthorizableOrgUnit) immutable, pSuperOu));
+	}
+
+	@Test
+	public void testFindOrgUnitAndMembersByNumber()
+	{
+		POrganizationalUnit pRootOu = new POrganizationalUnit(ROOT_OU_NO, "rootOu");
+		saveOrgUnit(pRootOu);
+
+		POrganizationalUnit pSuperOu = new POrganizationalUnit(SUPER_OU_NO, "superOu");
+		pSuperOu.setSuperOu(pRootOu);
+		pSuperOu.setRootOu(pRootOu);
+		saveOrgUnit(pSuperOu);
+
+		POrganizationalUnit pOrgUnit = new POrganizationalUnit(ORG_UNIT_NO, "staff department");
+		pOrgUnit.setSuperOu(pSuperOu);
+		pOrgUnit.setRootOu(pRootOu);
+		
+		PPerson pPersonA = new PPerson("persNoA", "Obama");
+		pPersonA.setGender(Gender.MALE);
+		pPersonA.setFirstName("Barack");
+		savePerson(pPersonA);
+
+		PPerson pPersonB = new PPerson("persNoB", "Merkel");
+		pPersonB.setGender(Gender.FEMALE);
+		pPersonB.setTitle(Title.DR);
+		pPersonB.setFirstName("Angela");
+		savePerson(pPersonB);
+
+		POrgUnitMember pMember11 = new POrgUnitMember(pOrgUnit, pPersonA);
+		POrgUnitMember pMember12 = new POrgUnitMember(pOrgUnit, pPersonB);
+		pOrgUnit.setMembers(new HashSet<POrgUnitMember>(Arrays.asList(pMember11, pMember12)));
+		
+		saveOrgUnit(pOrgUnit);
+
+		IOrganizationalUnit immutable = userStructureDao.findOrgUnitAndMembersByNumber(ORG_UNIT_NO);
+		assertNotNull(immutable);
+		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity((AuthorizableOrgUnit) immutable, pOrgUnit));
+	}
+
+	@Test
+	public void testFindOrgUnitAndMembersRolesByNumber()
+	{
+		POrganizationalUnit pRootOu = new POrganizationalUnit(ROOT_OU_NO, "rootOu");
+		saveOrgUnit(pRootOu);
+
+		POrganizationalUnit pSuperOu = new POrganizationalUnit(SUPER_OU_NO, "superOu");
+		pSuperOu.setSuperOu(pRootOu);
+		pSuperOu.setRootOu(pRootOu);
+		saveOrgUnit(pSuperOu);
+
+		POrganizationalUnit pOrgUnit = new POrganizationalUnit(ORG_UNIT_NO, "staff department");
+
+		pOrgUnit.setSuperOu(pSuperOu);
+		pOrgUnit.setRootOu(pRootOu);
+		
+		PPerson pPersonA = new PPerson("persNoA", "Obama");
+		pPersonA.setGender(Gender.MALE);
+		pPersonA.setFirstName("Barack");
+		savePerson(pPersonA);
+
+		PPerson pPersonB = new PPerson("persNoB", "Merkel");
+		pPersonB.setGender(Gender.FEMALE);
+		pPersonB.setTitle(Title.DR);
+		pPersonB.setFirstName("Angela");
+		savePerson(pPersonB);
+
+		PRole pRole1 = new PRole("role1");
+		pRole1.setDescription("description role1");
+
+		PRole pRole2 = new PRole("role2");
+		pRole2.setDescription("description role2");
+
+		POrgUnitMember pMember1 = new POrgUnitMember(pOrgUnit, pPersonA);
+		pMember1.addRole(pRole1);
+
+		POrgUnitMember pMember2 = new POrgUnitMember(pOrgUnit, pPersonB);
+		pMember2.addRole(pRole2);
+		
+		pOrgUnit.setMembers(new HashSet<POrgUnitMember>(Arrays.asList(pMember1, pMember1)));
+		
+		saveOrgUnit(pOrgUnit);
+
+		IOrganizationalUnit immutable = userStructureDao.findOrgUnitAndMembersRolesByNumber(ORG_UNIT_NO);
+		assertNotNull(immutable);
+		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity((AuthorizableOrgUnit) immutable, pOrgUnit));
 	}
 	
 	@Test
@@ -420,9 +493,9 @@ public class UserStructureDaoImplRdbmsTest
 		List<IAuthorizableOrgUnit> allOrgUnits = userStructureDao.obtainAllOrgUnits();
 		
 		assertEquals(3, allOrgUnits.size());
-		assertTrue(allOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit1)));
-		assertTrue(allOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit2)));
-		assertTrue(allOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit3)));
+		assertTrue(allOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit1, false, false)));
+		assertTrue(allOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit2, false, false)));
+		assertTrue(allOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit3, false, false)));
 		assertFalse(allOrgUnits.contains(new AuthorizableOrgUnit.AuthorizableOrgUnitBuilder("orgUnitNo4", "some department").build()));
 	}
 	
@@ -460,23 +533,23 @@ public class UserStructureDaoImplRdbmsTest
 		List<IAuthorizableOrgUnit> subOrgUnits = userStructureDao.obtainSubOrgUnitsForOrgUnit(pSuperOu.getIdentifier(), false);
 		
 		assertEquals(3, subOrgUnits.size());
-		assertTrue(subOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit1)));
-		assertTrue(subOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit2)));
-		assertTrue(subOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit3)));
-		assertFalse(subOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit4)));
+		assertTrue(subOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit1, false, false)));
+		assertTrue(subOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit2, false, false)));
+		assertTrue(subOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit3, false, false)));
+		assertFalse(subOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit4, false, false)));
 		
 		Iterator<? extends IOrganizationalUnit> iter = subOrgUnits.iterator();		
-		assertEquals(iter.next().getSuperOrgUnit(), OrganizationalUnitMapper.mapFromEntity(pSuperOu));
-		assertEquals(iter.next().getSuperOrgUnit(), OrganizationalUnitMapper.mapFromEntity(pSuperOu));
-		assertEquals(iter.next().getSuperOrgUnit(), OrganizationalUnitMapper.mapFromEntity(pSuperOu));
+		assertEquals(iter.next().getSuperOrgUnit(), OrganizationalUnitMapper.mapFromEntity(pSuperOu, false, false));
+		assertEquals(iter.next().getSuperOrgUnit(), OrganizationalUnitMapper.mapFromEntity(pSuperOu, false, false));
+		assertEquals(iter.next().getSuperOrgUnit(), OrganizationalUnitMapper.mapFromEntity(pSuperOu, false, false));
 	}
 	
-//	@Test
-//	public void testObtainSubOrgUnitsForOrgUnitInclMembers()
-//	{
-//		
-//	}
-//	
+	@Test
+	public void testObtainSubOrgUnitsForOrgUnitInclMembers()
+	{
+		
+	}
+	
 //	@Test
 //	public void testObtainSubOrgUnitsForOrgUnitInclMembersAndRoles()
 //	{

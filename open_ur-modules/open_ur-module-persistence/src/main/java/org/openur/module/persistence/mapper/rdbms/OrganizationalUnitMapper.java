@@ -3,6 +3,7 @@ package org.openur.module.persistence.mapper.rdbms;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.security.authorization.AuthorizableMember;
 import org.openur.module.domain.security.authorization.AuthorizableMember.AuthorizableMemberBuilder;
 import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
@@ -60,8 +61,10 @@ public class OrganizationalUnitMapper
 		return OrganizationalUnitMapper.mapFromImmutable(superOu, pRootOu, pRootOu);
 	}
 	
-	public static AuthorizableOrgUnit mapFromEntity(POrganizationalUnit persistable)
+	public static AuthorizableOrgUnit mapFromEntity(POrganizationalUnit persistable, boolean inclMembers, boolean inclRoles)
 	{
+		Validate.isTrue(!(!inclMembers && inclRoles), "You can't get the roles without the members!");
+		
 		AuthorizableOrgUnit rootOu = null;
 		AuthorizableOrgUnit superOu = null;
 		
@@ -71,12 +74,12 @@ public class OrganizationalUnitMapper
 			superOu = mapSuperOuFromEntity(persistable.getSuperOu(), rootOu);
 		}
 		
-		return mapFromEntity(persistable, rootOu, superOu);
+		return mapFromEntity(persistable, rootOu, superOu, inclMembers, inclRoles);
 	}
 
 	static AuthorizableOrgUnit mapFromEntity(
-		POrganizationalUnit persistable, AuthorizableOrgUnit rootOu,	AuthorizableOrgUnit superOu)
-	{
+		POrganizationalUnit persistable, AuthorizableOrgUnit rootOu, AuthorizableOrgUnit superOu, boolean inclMembers, boolean inclRoles)
+	{		
 		final String IDENTIFIER = StringUtils.isNotEmpty(persistable.getIdentifier()) ? persistable.getIdentifier() : UUID.randomUUID().toString();
 
 		AuthorizableOrgUnitBuilder immutableBuilder = new AuthorizableOrgUnitBuilder(persistable.getOrgUnitNumber(), persistable.getName());
@@ -101,22 +104,25 @@ public class OrganizationalUnitMapper
 			.creationDate(persistable.getCreationDate())
 			.lastModifiedDate(persistable.getLastModifiedDate());
 		
-		persistable.getMembers()
-			.stream()
-			.map(pMember -> OrgUnitMemberMapper.mapFromEntity(pMember, IDENTIFIER))
-			.forEach(immutableBuilder::addMember);
+		if (inclMembers)
+		{
+			persistable.getMembers()
+				.stream()
+				.map(pMember -> OrgUnitMemberMapper.mapFromEntity(pMember, IDENTIFIER, inclRoles))
+				.forEach(immutableBuilder::addMember);
+		}
 
 		return immutableBuilder.build();
 	}
 	
 	static AuthorizableOrgUnit mapRootOuFromEntity(POrganizationalUnit pRootOu)
 	{
-		return OrganizationalUnitMapper.mapFromEntity(pRootOu, null, null);
+		return OrganizationalUnitMapper.mapFromEntity(pRootOu, null, null, false, false);
 	}
 	
 	static AuthorizableOrgUnit mapSuperOuFromEntity(POrganizationalUnit pSuperOu, AuthorizableOrgUnit rootOu)
 	{
-		return OrganizationalUnitMapper.mapFromEntity(pSuperOu, rootOu, rootOu);
+		return OrganizationalUnitMapper.mapFromEntity(pSuperOu, rootOu, rootOu, false, false);
 	}
 	
 	public static class OrgUnitMemberMapper
@@ -134,7 +140,7 @@ public class OrganizationalUnitMapper
 			return pMember;
 		}
 		
-		public static AuthorizableMember mapFromEntity(POrgUnitMember persistable, String orgUnitId)
+		public static AuthorizableMember mapFromEntity(POrgUnitMember persistable, String orgUnitId, boolean inclRoles)
 		{
 			Person person = PersonMapper.mapFromEntity(persistable.getPerson());
 			AuthorizableMemberBuilder immutableBuilder = new AuthorizableMemberBuilder(person, orgUnitId);
@@ -146,10 +152,13 @@ public class OrganizationalUnitMapper
 				immutableBuilder.identifier(persistable.getIdentifier());
 			}
 			
-			persistable.getRoles()
-				.stream()
-				.map(RoleMapper::mapFromEntity)
-				.forEach(immutableBuilder::addRole);
+			if (inclRoles)
+			{
+				persistable.getRoles()
+					.stream()
+					.map(RoleMapper::mapFromEntity)
+					.forEach(immutableBuilder::addRole);				
+			}
 			
 			return immutableBuilder.build();
 		}
