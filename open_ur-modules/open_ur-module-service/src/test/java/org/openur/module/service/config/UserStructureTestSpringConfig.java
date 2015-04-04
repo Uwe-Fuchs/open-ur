@@ -2,7 +2,9 @@ package org.openur.module.service.config;
 
 import static org.mockito.Mockito.mock;
 
-import org.openur.module.persistence.dao.IUserStructureDao;
+import org.openur.module.persistence.dao.IOrgUnitDao;
+import org.openur.module.persistence.dao.IPersonDao;
+import org.openur.module.persistence.dao.ITechnicalUserDao;
 import org.openur.module.service.userstructure.IOrgUnitServices;
 import org.openur.module.service.userstructure.IUserServices;
 import org.openur.module.service.userstructure.OrgUnitServicesImpl;
@@ -27,9 +29,21 @@ public class UserStructureTestSpringConfig
 		return new OrgUnitServicesImpl();
 	}
 
-	@Bean(name = "userStructureDaoMock")
-	public IUserStructureDao userStructureDao()
+	@Bean(name = "personDaoMock")
+	public IPersonDao personDao()
 	{		
-		return mock(IUserStructureDao.class);
+		return mock(IPersonDao.class);
+	}
+
+	@Bean(name = "technicalUserDaoMock")
+	public ITechnicalUserDao technicalUserDao()
+	{		
+		return mock(ITechnicalUserDao.class);
+	}
+
+	@Bean(name = "orgUnitDaoMock")
+	public IOrgUnitDao orgUnitDao()
+	{		
+		return mock(IOrgUnitDao.class);
 	}
 }

@@ -9,18 +9,22 @@ import javax.inject.Inject;
 import org.apache.commons.collections4.CollectionUtils;
 import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
-import org.openur.module.persistence.dao.IUserStructureDao;
+import org.openur.module.persistence.dao.IPersonDao;
+import org.openur.module.persistence.dao.ITechnicalUserDao;
 
 public class UserServicesImpl
 	implements IUserServices
 {
 	@Inject
-	private IUserStructureDao userStructureDao;
+	private IPersonDao personDao;
+
+	@Inject
+	private ITechnicalUserDao technicalUserDao;
 
 	@Override
 	public IPerson findPersonById(String personId)
 	{
-		IPerson person = userStructureDao.findPersonById(personId);
+		IPerson person = personDao.findPersonById(personId);
 
 		return person;
 	}
@@ -28,7 +32,7 @@ public class UserServicesImpl
 	@Override
 	public IPerson findPersonByNumber(String personalNumber)
 	{
-		IPerson person = userStructureDao.findPersonByNumber(personalNumber);
+		IPerson person = personDao.findPersonByNumber(personalNumber);
 
 		return person;
 	}
@@ -38,7 +42,7 @@ public class UserServicesImpl
 	{
 		Set<IPerson> personSet = new HashSet<>();
 
-		List<IPerson> personList = userStructureDao.obtainAllPersons();
+		List<IPerson> personList = personDao.obtainAllPersons();
 
 		if (!CollectionUtils.isEmpty(personList))
 		{
@@ -51,7 +55,7 @@ public class UserServicesImpl
 	@Override
 	public ITechnicalUser findTechnicalUserById(String techUserId)
 	{
-		ITechnicalUser techUser = userStructureDao.findTechnicalUserById(techUserId);
+		ITechnicalUser techUser = technicalUserDao.findTechnicalUserById(techUserId);
 
 		return techUser;
 	}
@@ -59,7 +63,7 @@ public class UserServicesImpl
 	@Override
 	public ITechnicalUser findTechnicalUserByNumber(String techUserNumber)
 	{
-		ITechnicalUser techUser = userStructureDao.findTechnicalUserByNumber(techUserNumber);
+		ITechnicalUser techUser = technicalUserDao.findTechnicalUserByNumber(techUserNumber);
 
 		return techUser;
 	}
@@ -69,7 +73,7 @@ public class UserServicesImpl
 	{
 		Set<ITechnicalUser> techUsersSet = new HashSet<>();
 
-		List<ITechnicalUser> techUsersList = userStructureDao.obtainAllTechnicalUsers();
+		List<ITechnicalUser> techUsersList = technicalUserDao.obtainAllTechnicalUsers();
 
 		if (!CollectionUtils.isEmpty(techUsersList))
 		{
