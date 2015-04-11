@@ -14,4 +14,7 @@ public interface OrgUnitRepository
 	
 	@Query("select ou from ORGANIZATIONAL_UNIT ou where ou.superOu.id = :orgUnitId")
 	List<POrganizationalUnit> findSubOrgUnitsForOrgUnit(@Param("orgUnitId") Long orgUnitId);
+	
+	@Query("select ou from ORGANIZATIONAL_UNIT ou where ou.superOu.id = null")
+	List<POrganizationalUnit> findRootOrgUnits();
 }

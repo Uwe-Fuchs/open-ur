@@ -142,7 +142,7 @@ public class OrgUnitServicesTest
 		orgUnit2.setSuperOrgUnit(SUPER_OU);
 		orgUnit2.setRootOrgUnit(ROOT_OU);
 		
-		Mockito.when(orgUnitDaoMock.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID, false)).thenReturn(Arrays.asList(orgUnit1, orgUnit2));
+		Mockito.when(orgUnitDaoMock.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID)).thenReturn(Arrays.asList(orgUnit1, orgUnit2));
 		
 		Set<IAuthorizableOrgUnit> orgUnitSet = orgUnitServices.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID, false);
 		
@@ -178,7 +178,7 @@ public class OrgUnitServicesTest
 		orgUnit2_m.addMember(mA);
 		orgUnit2_m.addMember(mB);
 		
-		Mockito.when(orgUnitDaoMock.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID, true)).thenReturn(Arrays.asList(orgUnit1, orgUnit2_m));
+		Mockito.when(orgUnitDaoMock.obtainSubOrgUnitsForOrgUnitInclMembers(SUPER_OU_ID)).thenReturn(Arrays.asList(orgUnit1, orgUnit2_m));
 		
 		orgUnitSet = orgUnitServices.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID, true);
 		

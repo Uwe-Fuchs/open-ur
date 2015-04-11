@@ -5,10 +5,14 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import org.openur.module.domain.security.authorization.IAuthorizableMember;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.persistence.dao.IOrgUnitDao;
 import org.openur.module.persistence.mapper.rdbms.OrganizationalUnitMapper;
+import org.openur.module.persistence.mapper.rdbms.OrganizationalUnitMapper.OrgUnitMemberMapper;
+import org.openur.module.persistence.rdbms.entity.POrgUnitMember;
 import org.openur.module.persistence.rdbms.entity.POrganizationalUnit;
+import org.openur.module.persistence.rdbms.repository.OrgUnitMemberRepository;
 import org.openur.module.persistence.rdbms.repository.OrgUnitRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +24,9 @@ public class OrgUnitDaoImplRdbms
 {
 	@Inject
 	private OrgUnitRepository orgUnitRepository;
+
+	@Inject
+	private OrgUnitMemberRepository orgUnitMemberRepository;
 	
 	public OrgUnitDaoImplRdbms()
 	{
@@ -46,26 +53,6 @@ public class OrgUnitDaoImplRdbms
 	}
 
 	/**
-	 * searches an organizational-unit including its members via the unique
-	 * identifier.
-	 * 
-	 * @param orgUnitId
-	 *          : the unique identifier of the organizational-unit.
-	 * 
-	 * @return the (authorizable) organizational-unit including its members or
-	 *         null, if no organizational-unit is found.
-	 * 
-	 * @throws NumberFormatException
-	 *           , if orgUnitId cannot be casted into a long-value.
-	 */
-	@Override
-	public IAuthorizableOrgUnit findOrgUnitAndMembersById(String orgUnitId)
-		throws NumberFormatException
-	{
-		return findOrgUnitById_internal(orgUnitId, true, false);
-	}
-
-	/**
 	 * searches an organizational-unit including its members and roles via the
 	 * unique identifier.
 	 * 
@@ -79,7 +66,7 @@ public class OrgUnitDaoImplRdbms
 	 *           , if orgUnitId cannot be casted into a long-value.
 	 */
 	@Override
-	public IAuthorizableOrgUnit findOrgUnitAndMembersRolesById(String orgUnitId)
+	public IAuthorizableOrgUnit findOrgUnitAndMembersById(String orgUnitId)
 		throws NumberFormatException
 	{
 		return findOrgUnitById_internal(orgUnitId, true, true);
@@ -109,12 +96,6 @@ public class OrgUnitDaoImplRdbms
 	@Override
 	public IAuthorizableOrgUnit findOrgUnitAndMembersByNumber(String orgUnitNumber)
 	{
-		return findOrgUnitByNumber_internal(orgUnitNumber, true, false);
-	}
-
-	@Override
-	public IAuthorizableOrgUnit findOrgUnitAndMembersRolesByNumber(String orgUnitNumber)
-	{
 		return findOrgUnitByNumber_internal(orgUnitNumber, true, true);
 	}
 	
@@ -135,29 +116,52 @@ public class OrgUnitDaoImplRdbms
 	{
 		List<POrganizationalUnit> allOrgUnits = orgUnitRepository.findAll();
 		
-		return allOrgUnits
-					.stream()
-					.map(o -> OrganizationalUnitMapper.mapFromEntity(o, false, false))
-					.collect(Collectors.toList());
+		return mapEntityOrgUnitListToImmutable(allOrgUnits, false);
 	}
 
 	@Override
-	public List<IAuthorizableOrgUnit> obtainSubOrgUnitsForOrgUnit(String orgUnitId, boolean inclMembers)
+	public List<IAuthorizableOrgUnit> obtainSubOrgUnitsForOrgUnit(String orgUnitId)
 	{
 		long orgUnitIdL = Long.parseLong(orgUnitId);
 		
 		List<POrganizationalUnit> subOrgUnits = orgUnitRepository.findSubOrgUnitsForOrgUnit(orgUnitIdL);
 		
-		return subOrgUnits
-					.stream()
-					.map(o -> OrganizationalUnitMapper.mapFromEntity(o, false, false))
-					.collect(Collectors.toList());
+		return mapEntityOrgUnitListToImmutable(subOrgUnits, false);
+	}
+
+	@Override
+	public List<IAuthorizableOrgUnit> obtainSubOrgUnitsForOrgUnitInclMembers(String orgUnitId)
+	{
+		long orgUnitIdL = Long.parseLong(orgUnitId);
+		
+		List<POrganizationalUnit> subOrgUnits = orgUnitRepository.findSubOrgUnitsForOrgUnit(orgUnitIdL);
+		
+		return mapEntityOrgUnitListToImmutable(subOrgUnits, true);
 	}
 
 	@Override
 	public List<IAuthorizableOrgUnit> obtainRootOrgUnits()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		List<POrganizationalUnit> rootOrgUnits = orgUnitRepository.findRootOrgUnits();
+		
+		return mapEntityOrgUnitListToImmutable(rootOrgUnits, false);
+	}
+
+	@Override
+	public List<IAuthorizableMember> findMembersForOrgUnit(POrganizationalUnit orgUnit)
+	{
+		List<POrgUnitMember> orgUnitMembers = orgUnitMemberRepository.findOrgUnitMemberByOrgUnit(orgUnit);
+		
+		return orgUnitMembers
+					.stream()
+					.map(o -> OrgUnitMemberMapper.mapFromEntity(o, orgUnit.getIdentifier(), true))
+					.collect(Collectors.toList());
+	}
+	
+	private List<IAuthorizableOrgUnit> mapEntityOrgUnitListToImmutable(List<POrganizationalUnit> entities, boolean inclMembers) {
+		return entities
+					.stream()
+					.map(o -> OrganizationalUnitMapper.mapFromEntity(o, inclMembers, inclMembers))
+					.collect(Collectors.toList());
 	}
 }

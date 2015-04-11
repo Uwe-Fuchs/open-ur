@@ -45,8 +45,15 @@ public class OrgUnitServicesImpl
 	public Set<IAuthorizableOrgUnit> obtainSubOrgUnitsForOrgUnit(String orgUnitId,
 		boolean inclMembers)
 	{
-		List<IAuthorizableOrgUnit> orgUnitList = orgUnitDao.obtainSubOrgUnitsForOrgUnit(
-			orgUnitId, inclMembers);
+		List<IAuthorizableOrgUnit> orgUnitList;
+		
+		if (inclMembers)
+		{
+			orgUnitList = orgUnitDao.obtainSubOrgUnitsForOrgUnitInclMembers(orgUnitId);
+		} else
+		{
+			orgUnitList = orgUnitDao.obtainSubOrgUnitsForOrgUnit(orgUnitId);
+		}
 		
 		if (orgUnitList == null)
 		{
