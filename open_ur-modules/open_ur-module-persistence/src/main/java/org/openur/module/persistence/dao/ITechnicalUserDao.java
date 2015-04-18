@@ -4,6 +4,10 @@ import java.util.List;
 
 import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 
+/**
+ * 
+ * @author info@uwefuchs.com
+ */
 public interface ITechnicalUserDao
 {
 	/**
