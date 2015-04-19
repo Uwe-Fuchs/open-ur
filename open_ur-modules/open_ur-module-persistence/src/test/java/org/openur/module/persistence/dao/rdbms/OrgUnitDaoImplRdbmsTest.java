@@ -445,12 +445,12 @@ public class OrgUnitDaoImplRdbmsTest
 		POrganizationalUnit pOrgUnit2 = new POrganizationalUnit("orgUnitNo2", "hr department");
 		saveOrgUnit(pOrgUnit2);
 		
-		List<IAuthorizableMember> members = orgUnitDao.findMembersForOrgUnit(pOrgUnit);
+		List<IAuthorizableMember> members = orgUnitDao.findMembersForOrgUnit(pOrgUnit.getIdentifier());
 		assertEquals(2, members.size());
 		assertTrue(members.contains(OrgUnitMemberMapper.mapFromEntity(pMember1, pOrgUnit.getIdentifier(), false)));
 		assertTrue(members.contains(OrgUnitMemberMapper.mapFromEntity(pMember2, pOrgUnit.getIdentifier(), false)));
 		
-		members = orgUnitDao.findMembersForOrgUnit(pOrgUnit2);
+		members = orgUnitDao.findMembersForOrgUnit(pOrgUnit2.getIdentifier());
 		assertEquals(0, members.size());
   }
 

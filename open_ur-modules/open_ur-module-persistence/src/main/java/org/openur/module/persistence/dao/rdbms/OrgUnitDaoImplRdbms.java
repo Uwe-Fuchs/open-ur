@@ -148,13 +148,15 @@ public class OrgUnitDaoImplRdbms
 	}
 
 	@Override
-	public List<IAuthorizableMember> findMembersForOrgUnit(POrganizationalUnit orgUnit)
+	public List<IAuthorizableMember> findMembersForOrgUnit(String orgUnitId)
 	{
-		List<POrgUnitMember> orgUnitMembers = orgUnitMemberRepository.findOrgUnitMemberByOrgUnit(orgUnit);
+		long orgUnitIdL = Long.parseLong(orgUnitId);
+		
+		List<POrgUnitMember> orgUnitMembers = orgUnitMemberRepository.findOrgUnitMemberByOrgUnitId(orgUnitIdL);
 		
 		return orgUnitMembers
 					.stream()
-					.map(o -> OrgUnitMemberMapper.mapFromEntity(o, orgUnit.getIdentifier(), true))
+					.map(o -> OrgUnitMemberMapper.mapFromEntity(o, orgUnitId, true))
 					.collect(Collectors.toList());
 	}
 	

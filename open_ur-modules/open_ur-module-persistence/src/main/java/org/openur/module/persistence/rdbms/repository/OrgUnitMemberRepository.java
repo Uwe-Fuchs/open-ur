@@ -10,4 +10,6 @@ public interface OrgUnitMemberRepository
 	extends JpaRepository<POrgUnitMember, Long>
 {
 	List<POrgUnitMember> findOrgUnitMemberByOrgUnit(POrganizationalUnit orgUnit);
+	
+	List<POrgUnitMember> findOrgUnitMemberByOrgUnitId(Long orgUnitId);
 }

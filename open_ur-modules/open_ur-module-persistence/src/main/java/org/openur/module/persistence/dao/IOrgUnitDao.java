@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.openur.module.domain.security.authorization.IAuthorizableMember;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
-import org.openur.module.persistence.rdbms.entity.POrganizationalUnit;
 
 public interface IOrgUnitDao
 {
@@ -99,9 +98,9 @@ public interface IOrgUnitDao
 	 * returns all members of a given org-unit in a list. If the org-unit has no members,
 	 * the result-list will be empty (not null).
 	 * 
-	 * @param orgUnit: the org-unit, of which members are needed.
+	 * @param orgUnitId: the org-unit-id, of which the members are needed.
 	 * 
 	 * @return List with all (authorizable) members.
 	 */
-	List<IAuthorizableMember> findMembersForOrgUnit(POrganizationalUnit orgUnit);
+	List<IAuthorizableMember> findMembersForOrgUnit(String orgUnitId);
 }
