@@ -11,7 +11,7 @@
   </parent>
   
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>open_ur-module-persistence</artifactId>
+  <artifactId>open_ur-module-persistence-impl</artifactId>
   <packaging>jar</packaging>
   
   <dependencies>
@@ -38,12 +38,14 @@
     <dependency>
       <groupId>org.open-ur.module</groupId>
       <artifactId>open_ur-module-domain-api</artifactId>
-      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>org.open-ur.module</groupId>
       <artifactId>open_ur-module-domain-impl</artifactId>
-      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.open-ur.module</groupId>
+      <artifactId>open_ur-module-persistence-api</artifactId>
     </dependency>
   </dependencies>
   
