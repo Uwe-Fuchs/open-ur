@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: org.openur.module.persistence.dao.rdbms.SecurityDaoImplRdbmsTest
--------------------------------------------------------------------------------
-Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.268 sec
