@@ -1,0 +1,5 @@
+org/openur/module/persistence/dao/ITechnicalUserDao.class
+org/openur/module/persistence/dao/IApplicationDao.class
+org/openur/module/persistence/dao/IPersonDao.class
+org/openur/module/persistence/dao/IOrgUnitDao.class
+org/openur/module/persistence/dao/ISecurityDao.class
