@@ -47,7 +47,7 @@ public class PermissionMapperTest
 	
 	public static boolean immutableEqualsToEntity(OpenURPermission immutable, PPermission persistable)
 	{
-		if (!AbstractEntityMapperTest.immutableEqualsToEntityIdentifiable(immutable, persistable))
+		if (!AbstractEntityMapperTest.immutableEqualsToEntityBase(immutable, persistable))
 		{
 			return false;
 		}

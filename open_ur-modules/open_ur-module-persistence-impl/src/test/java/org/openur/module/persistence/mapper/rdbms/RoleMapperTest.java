@@ -78,7 +78,7 @@ public class RoleMapperTest
 	
 	public static boolean immutableEqualsToEntity(OpenURRole immutable, PRole persistable)
 	{
-		if (!AbstractEntityMapperTest.immutableEqualsToEntityIdentifiable(immutable, persistable))
+		if (!AbstractEntityMapperTest.immutableEqualsToEntityBase(immutable, persistable))
 		{
 			return false;
 		}

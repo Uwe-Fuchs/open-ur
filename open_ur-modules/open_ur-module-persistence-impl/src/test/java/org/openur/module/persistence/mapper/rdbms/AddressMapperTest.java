@@ -1,13 +1,12 @@
 package org.openur.module.persistence.mapper.rdbms;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.junit.Test;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.Address.AddressBuilder;
 import org.openur.module.domain.userstructure.Country;
-import org.openur.module.persistence.mapper.rdbms.AddressMapper;
 import org.openur.module.persistence.rdbms.entity.PAddress;
 
 public class AddressMapperTest
@@ -50,19 +49,11 @@ public class AddressMapperTest
 
 	public static boolean immutableEqualsToEntity(Address immutable, PAddress persistable)
 	{
-		if (!AbstractEntityMapperTest.immutableEqualsToEntityIdentifiable(immutable, persistable))
+		if (!AbstractEntityMapperTest.immutableEqualsToEntityBase(immutable, persistable))
 		{
 			return false;
 		}
 		
-		return new EqualsBuilder()
-				.append(immutable.getCareOf(), persistable.getCareOf())
-				.append(immutable.getCity(), persistable.getCity())
-				.append(immutable.getCountry() != null ? immutable.getCountry().getCountryCode() : null, persistable.getCountryCode())
-				.append(immutable.getPoBox(), persistable.getPoBox())
-				.append(immutable.getPostcode(), persistable.getPostcode())
-				.append(immutable.getStreet(), persistable.getStreet())
-				.append(immutable.getStreetNo(), persistable.getStreetNo())
-				.isEquals();
+		return AddressMapper.immutableEqualsToEntity(immutable, persistable);
 	}
 }

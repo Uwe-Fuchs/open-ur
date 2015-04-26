@@ -2,7 +2,6 @@ package org.openur.module.persistence.mapper.rdbms;
 
 import java.time.LocalDateTime;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.openur.module.domain.IdentifiableEntityImpl;
 import org.openur.module.domain.userstructure.UserStructureBase;
@@ -13,7 +12,7 @@ import org.openur.module.util.exception.OpenURRuntimeException;
 public class AbstractEntityMapperTest
 {
 	public static <I extends IdentifiableEntityImpl, P extends AbstractOpenUrPersistable> 
-		boolean immutableEqualsToEntityIdentifiable(I immutable, P persistable)
+		boolean immutableEqualsToEntityBase(I immutable, P persistable)
 	{
 		if (immutable == null && persistable == null)
 		{
@@ -25,19 +24,13 @@ public class AbstractEntityMapperTest
 			return false;
 		}
 
-		if (StringUtils.isNotEmpty(immutable.getIdentifier()) && StringUtils.isNotEmpty(persistable.getIdentifier())
-			&& !immutable.getIdentifier().equals(persistable.getIdentifier()))
-		{
-			return false;
-		}
-
 		return compareLocalDateTimes(immutable.getCreationDate(), persistable.getCreationDate());
 	}
 
 	public static <I extends UserStructureBase, P extends PUserStructureBase> 
 		boolean immutableEqualsToEntityUserStructureBase(I immutable, P persistable)
 	{
-		if (!immutableEqualsToEntityIdentifiable(immutable, persistable))
+		if (!immutableEqualsToEntityBase(immutable, persistable))
 		{
 			return false;
 		}

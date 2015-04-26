@@ -225,7 +225,7 @@ public class OrgUnitMapperTest
 	
 	public static boolean immutableMemberEqualsToEntityMember(AuthorizableMember immutableMember, POrgUnitMember persistableMember)
 	{
-		if (!AbstractEntityMapperTest.immutableEqualsToEntityIdentifiable(immutableMember, persistableMember))
+		if (!AbstractEntityMapperTest.immutableEqualsToEntityBase(immutableMember, persistableMember))
 		{
 			return false;
 		}
