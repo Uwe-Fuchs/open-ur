@@ -1,6 +1,8 @@
 package org.openur.module.persistence.dao.rdbms;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Iterator;
 import java.util.List;
@@ -12,11 +14,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.application.OpenURApplication;
-import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
 import org.openur.module.persistence.dao.IApplicationDao;
 import org.openur.module.persistence.mapper.rdbms.ApplicationMapper;
 import org.openur.module.persistence.mapper.rdbms.ApplicationMapperTest;
-import org.openur.module.persistence.mapper.rdbms.TechnicalUserMapperTest;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
 import org.openur.module.persistence.rdbms.config.RepositorySpringConfig;
 import org.openur.module.persistence.rdbms.entity.PApplication;
