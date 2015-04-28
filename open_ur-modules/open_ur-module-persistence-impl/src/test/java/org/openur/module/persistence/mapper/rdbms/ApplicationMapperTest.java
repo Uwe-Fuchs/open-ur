@@ -3,11 +3,9 @@ package org.openur.module.persistence.mapper.rdbms;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.junit.Test;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
-import org.openur.module.persistence.mapper.rdbms.ApplicationMapper;
 import org.openur.module.persistence.rdbms.entity.PApplication;
 
 public class ApplicationMapperTest
@@ -36,13 +34,11 @@ public class ApplicationMapperTest
 
 	public static boolean immutableEqualsToEntity(OpenURApplication immutable, PApplication persistable)
 	{
-		if (!AbstractEntityMapperTest.immutableEqualsToEntityIdentifiable(immutable, persistable))
+		if (!AbstractEntityMapperTest.immutableEqualsToEntityBase(immutable, persistable))
 		{
 			return false;
 		}
 	
-		return new EqualsBuilder()
-				.append(immutable.getApplicationName(), persistable.getApplicationName())
-				.isEquals();
+		return ApplicationMapper.immutableEqualsToEntity(immutable, persistable);
 	}
 }

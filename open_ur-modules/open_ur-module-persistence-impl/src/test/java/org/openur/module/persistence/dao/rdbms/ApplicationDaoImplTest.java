@@ -2,6 +2,7 @@ package org.openur.module.persistence.dao.rdbms;
 
 import static org.junit.Assert.*;
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -10,8 +11,12 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openur.module.domain.application.IApplication;
+import org.openur.module.domain.application.OpenURApplication;
+import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
 import org.openur.module.persistence.dao.IApplicationDao;
 import org.openur.module.persistence.mapper.rdbms.ApplicationMapper;
+import org.openur.module.persistence.mapper.rdbms.ApplicationMapperTest;
+import org.openur.module.persistence.mapper.rdbms.TechnicalUserMapperTest;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
 import org.openur.module.persistence.rdbms.config.RepositorySpringConfig;
 import org.openur.module.persistence.rdbms.entity.PApplication;
@@ -40,10 +45,10 @@ public class ApplicationDaoImplTest
 		PApplication persistable = new PApplication(APP_NAME);
 		persistable = saveApplication(persistable);
 
-		IApplication tu = applicationDao.findApplicationById(persistable.getIdentifier());
+		IApplication immutable = applicationDao.findApplicationById(persistable.getIdentifier());
 
-		assertNotNull(tu);
-		assertEquals(ApplicationMapper.mapFromEntity(persistable), tu);
+		assertNotNull(immutable);
+		assertEquals(ApplicationMapper.mapFromEntityWithIdentifier(persistable, immutable.getIdentifier()), immutable);
 	}
 
 	@Test
@@ -52,10 +57,10 @@ public class ApplicationDaoImplTest
 		PApplication persistable = new PApplication(APP_NAME);
 		persistable = saveApplication(persistable);
 
-		IApplication tu = applicationDao.findApplicationByName(APP_NAME);
+		IApplication immutable = applicationDao.findApplicationByName(APP_NAME);
 
-		assertNotNull(tu);
-		assertEquals(ApplicationMapper.mapFromEntity(persistable), tu);
+		assertNotNull(immutable);
+		assertEquals(ApplicationMapper.mapFromEntityWithIdentifier(persistable, immutable.getIdentifier()), immutable);
 	}
 
 	@Test
@@ -73,8 +78,15 @@ public class ApplicationDaoImplTest
 		allApps = applicationDao.obtainAllApplications();
 		assertNotNull(allApps);
 		assertEquals(allApps.size(), 2);
-		assertTrue(allApps.contains(ApplicationMapper.mapFromEntity(persistable)));
-		assertTrue(allApps.contains(ApplicationMapper.mapFromEntity(persistable2)));
+
+		Iterator<IApplication> iter = allApps.iterator();
+		OpenURApplication _app1 = (OpenURApplication) iter.next();
+		OpenURApplication _app2 = (OpenURApplication) iter.next();
+		OpenURApplication app1 = _app1.getApplicationName().equals(persistable.getApplicationName()) ? _app1 : _app2;
+		OpenURApplication app2 = _app2.getApplicationName().equals(persistable2.getApplicationName()) ? _app2 : _app1;
+
+		assertTrue(ApplicationMapperTest.immutableEqualsToEntity(app1, persistable));
+		assertTrue(ApplicationMapperTest.immutableEqualsToEntity(app2, persistable2));
 	}
 
 	@After
