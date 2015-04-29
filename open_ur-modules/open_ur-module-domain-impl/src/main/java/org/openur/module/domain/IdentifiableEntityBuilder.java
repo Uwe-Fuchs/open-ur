@@ -9,7 +9,7 @@ import org.openur.module.domain.util.DefaultsUtil;
 public abstract class IdentifiableEntityBuilder<T extends IdentifiableEntityBuilder<T>>
 {
 	// properties:
-	private String identifier = DefaultsUtil.getRandomIdentifierByDefaultMechanism();
+	private String identifier;
 	private LocalDateTime creationDate = null;
 	private LocalDateTime lastModifiedDate = null;
 	
@@ -17,6 +17,8 @@ public abstract class IdentifiableEntityBuilder<T extends IdentifiableEntityBuil
 	protected IdentifiableEntityBuilder()
 	{
 		super();
+		
+		identifier = DefaultsUtil.getRandomIdentifierByDefaultMechanism();
 	}
 	
 	// builder-methods:
