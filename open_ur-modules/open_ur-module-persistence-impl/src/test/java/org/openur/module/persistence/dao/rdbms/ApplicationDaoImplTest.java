@@ -15,7 +15,6 @@ import org.junit.runner.RunWith;
 import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.persistence.dao.IApplicationDao;
-import org.openur.module.persistence.mapper.rdbms.ApplicationMapper;
 import org.openur.module.persistence.mapper.rdbms.ApplicationMapperTest;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
 import org.openur.module.persistence.rdbms.config.RepositorySpringConfig;
@@ -48,7 +47,7 @@ public class ApplicationDaoImplTest
 		IApplication immutable = applicationDao.findApplicationById(persistable.getIdentifier());
 
 		assertNotNull(immutable);
-		assertEquals(ApplicationMapper.mapFromEntityWithIdentifier(persistable, immutable.getIdentifier()), immutable);
+		assertTrue(ApplicationMapperTest.immutableEqualsToEntity((OpenURApplication) immutable, persistable));
 	}
 
 	@Test
@@ -60,7 +59,7 @@ public class ApplicationDaoImplTest
 		IApplication immutable = applicationDao.findApplicationByName(APP_NAME);
 
 		assertNotNull(immutable);
-		assertEquals(ApplicationMapper.mapFromEntityWithIdentifier(persistable, immutable.getIdentifier()), immutable);
+		assertTrue(ApplicationMapperTest.immutableEqualsToEntity((OpenURApplication) immutable, persistable));
 	}
 
 	@Test

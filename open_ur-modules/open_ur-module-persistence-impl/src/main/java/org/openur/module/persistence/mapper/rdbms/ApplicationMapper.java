@@ -19,29 +19,18 @@ public class ApplicationMapper
 
 	public static OpenURApplication mapFromEntity(PApplication persistable)
 	{
-		return mapInternal(persistable).build();
-	}
-	
-	public static OpenURApplication mapFromEntityWithIdentifier(PApplication persistable, String identifier)
-	{
-		return mapInternal(persistable)
-				.identifier(identifier)
-				.build();
-	}
-	
-	private static OpenURApplicationBuilder mapInternal(PApplication persistable)
-	{
 		OpenURApplicationBuilder immutableBuilder = new OpenURApplicationBuilder(persistable.getApplicationName());
 		
 		return immutableBuilder
-			.creationDate(persistable.getCreationDate())
-			.lastModifiedDate(persistable.getLastModifiedDate());
+				.creationDate(persistable.getCreationDate())
+				.lastModifiedDate(persistable.getLastModifiedDate())
+				.build();
 	}
 
 	public static boolean immutableEqualsToEntity(OpenURApplication immutable, PApplication persistable)
 	{
 		return new EqualsBuilder()
-		.append(immutable.getApplicationName(), persistable.getApplicationName())
-		.isEquals();
+				.append(immutable.getApplicationName(), persistable.getApplicationName())
+				.isEquals();
 	}
 }
