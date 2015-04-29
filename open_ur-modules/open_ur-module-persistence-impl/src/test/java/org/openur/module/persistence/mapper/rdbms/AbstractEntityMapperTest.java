@@ -24,7 +24,12 @@ public class AbstractEntityMapperTest
 			return false;
 		}
 
-		return compareLocalDateTimes(immutable.getCreationDate(), persistable.getCreationDate());
+		if (!compareLocalDateTimes(immutable.getCreationDate(), persistable.getCreationDate()))
+		{
+			return false;
+		}
+
+		return compareLocalDateTimes(immutable.getLastModifiedDate(), persistable.getLastModifiedDate());
 	}
 
 	public static <I extends UserStructureBase, P extends PUserStructureBase> 
