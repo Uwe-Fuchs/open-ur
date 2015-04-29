@@ -3,6 +3,7 @@ package org.openur.module.persistence.mapper.rdbms;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.junit.Test;
 import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
@@ -41,8 +42,10 @@ public class TechnicalUserMapperTest
 		if (!AbstractEntityMapperTest.immutableEqualsToEntityUserStructureBase(immutable, persistable))
 		{
 			return false;
-		}
-		
-		return TechnicalUserMapper.immutableEqualsToEntity(immutable, persistable);
+		}		
+
+		return new EqualsBuilder()
+				.append(immutable.getTechUserNumber(), persistable.getTechUserNumber())
+				.isEquals();
 	}
 }

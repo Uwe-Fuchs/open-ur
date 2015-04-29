@@ -1,6 +1,5 @@
 package org.openur.module.persistence.mapper.rdbms;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUser.TechnicalUserBuilder;
 import org.openur.module.persistence.rdbms.entity.PTechnicalUser;
@@ -30,8 +29,6 @@ public class TechnicalUserMapper
 
 	public static boolean immutableEqualsToEntity(TechnicalUser immutable, PTechnicalUser persistable)
 	{
-		return new EqualsBuilder()
-				.append(immutable.getTechUserNumber(), persistable.getTechUserNumber())
-				.isEquals();
+		return immutable.getTechUserNumber().equals(persistable.getTechUserNumber());
 	}
 }

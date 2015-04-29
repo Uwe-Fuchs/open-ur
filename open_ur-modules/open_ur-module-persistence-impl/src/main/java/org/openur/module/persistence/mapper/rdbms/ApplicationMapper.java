@@ -1,6 +1,5 @@
 package org.openur.module.persistence.mapper.rdbms;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.persistence.rdbms.entity.PApplication;
@@ -29,8 +28,6 @@ public class ApplicationMapper
 
 	public static boolean immutableEqualsToEntity(OpenURApplication immutable, PApplication persistable)
 	{
-		return new EqualsBuilder()
-				.append(immutable.getApplicationName(), persistable.getApplicationName())
-				.isEquals();
+		return immutable.getApplicationName().equals(persistable.getApplicationName());
 	}
 }
