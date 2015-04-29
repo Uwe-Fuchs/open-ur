@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -18,7 +19,6 @@ import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.persistence.dao.ISecurityDao;
 import org.openur.module.persistence.mapper.rdbms.ApplicationMapper;
-import org.openur.module.persistence.mapper.rdbms.PermissionMapper;
 import org.openur.module.persistence.mapper.rdbms.PermissionMapperTest;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
 import org.openur.module.persistence.rdbms.config.RepositorySpringConfig;
@@ -102,8 +102,15 @@ public class SecurityDaoImplRdbmsTest
 		allPermissions = securityDao.obtainAllPermissions();
 		assertNotNull(allPermissions);
 		assertEquals(allPermissions.size(), 2);
-		assertTrue(allPermissions.contains(PermissionMapper.mapFromEntity(perm1)));
-		assertTrue(allPermissions.contains(PermissionMapper.mapFromEntity(perm2)));
+
+		Iterator<IPermission> iter = allPermissions.iterator();
+		OpenURPermission _p1 = (OpenURPermission) iter.next();
+		OpenURPermission _p2 = (OpenURPermission) iter.next();
+		OpenURPermission permission_1 = _p1.getPermissionName().equals(perm1.getPermissionName()) ? _p1 : _p2;
+		OpenURPermission permission_2 = _p1.getPermissionName().equals(perm1.getPermissionName()) ? _p2 : _p1;
+
+		assertTrue(PermissionMapperTest.immutableEqualsToEntity(permission_1, perm1));
+		assertTrue(PermissionMapperTest.immutableEqualsToEntity(permission_2, perm2));
 	}
 
 	@Test
@@ -128,8 +135,15 @@ public class SecurityDaoImplRdbmsTest
 		List<IPermission> permList = securityDao.obtainPermissionsForApp(appName1);
 		assertNotNull(permList);
 		assertEquals(permList.size(), 2);
-		assertTrue(permList.contains(PermissionMapper.mapFromEntity(perm11)));
-		assertTrue(permList.contains(PermissionMapper.mapFromEntity(perm12)));		
+
+		Iterator<IPermission> iter = permList.iterator();
+		OpenURPermission _p1 = (OpenURPermission) iter.next();
+		OpenURPermission _p2 = (OpenURPermission) iter.next();
+		OpenURPermission permission_1 = _p1.getPermissionName().equals(perm11.getPermissionName()) ? _p1 : _p2;
+		OpenURPermission permission_2 = _p1.getPermissionName().equals(perm11.getPermissionName()) ? _p2 : _p1;
+
+		assertTrue(PermissionMapperTest.immutableEqualsToEntity(permission_1, perm11));
+		assertTrue(PermissionMapperTest.immutableEqualsToEntity(permission_2, perm12));
 	}
 
 	@Test

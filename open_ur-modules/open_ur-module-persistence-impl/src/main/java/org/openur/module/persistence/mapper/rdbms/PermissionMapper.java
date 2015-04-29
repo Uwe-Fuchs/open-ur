@@ -1,6 +1,5 @@
 package org.openur.module.persistence.mapper.rdbms;
 
-import org.apache.commons.lang3.StringUtils;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.domain.security.authorization.OpenURPermissionBuilder;
@@ -25,16 +24,16 @@ public class PermissionMapper
 		OpenURApplication app = ApplicationMapper.mapFromEntity(persistable.getApplication());
 		OpenURPermissionBuilder immutableBuilder = new OpenURPermissionBuilder(persistable.getPermissionName(), app);
 		
-		if (StringUtils.isNotEmpty(persistable.getIdentifier()))
-		{
-			immutableBuilder.identifier(persistable.getIdentifier());
-		}
-		
 		return immutableBuilder
 				.permissionScope(persistable.getPermissionScope())
 				.description(persistable.getDescription())
 				.creationDate(persistable.getCreationDate())
 				.lastModifiedDate(persistable.getLastModifiedDate())
 				.build();
+	}
+	
+	public static boolean immutableEqualsToEntity(OpenURPermission immutable, PPermission persistable)
+	{
+		return immutable.getPermissionName().equals(persistable.getPermissionName());
 	}
 }
