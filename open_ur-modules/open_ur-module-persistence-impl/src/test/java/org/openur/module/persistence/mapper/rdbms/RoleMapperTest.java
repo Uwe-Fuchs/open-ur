@@ -85,7 +85,9 @@ public class RoleMapperTest
 		
 		for (PPermission pPerm : persistable.getPermissions())
 		{
-			if (findPermissionInImmutable(pPerm, immutable) == null)
+			OpenURPermission permission = findPermissionInImmutable(pPerm, immutable);
+			
+			if (permission == null || !PermissionMapperTest.immutableEqualsToEntity(permission, pPerm))
 			{
 				return false;
 			}

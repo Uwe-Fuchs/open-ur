@@ -2,7 +2,6 @@ package org.openur.module.persistence.mapper.rdbms;
 
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.security.authorization.OpenURRole;
 import org.openur.module.domain.security.authorization.OpenURRoleBuilder;
@@ -38,11 +37,6 @@ public class RoleMapper
 	public static OpenURRole mapFromEntity(PRole persistable)
 	{
 		OpenURRoleBuilder immutableBuilder = new OpenURRoleBuilder(persistable.getRoleName());
-		
-		if (StringUtils.isNotEmpty(persistable.getIdentifier()))
-		{
-			immutableBuilder.identifier(persistable.getIdentifier());
-		}
 		
 		immutableBuilder.permissions(
 			persistable.getPermissions()

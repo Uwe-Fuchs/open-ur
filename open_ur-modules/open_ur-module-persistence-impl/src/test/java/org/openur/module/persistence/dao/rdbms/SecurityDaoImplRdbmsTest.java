@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -16,10 +15,13 @@ import org.junit.runner.RunWith;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.domain.security.authorization.IPermission;
+import org.openur.module.domain.security.authorization.IRole;
 import org.openur.module.domain.security.authorization.OpenURPermission;
+import org.openur.module.domain.security.authorization.OpenURRole;
 import org.openur.module.persistence.dao.ISecurityDao;
 import org.openur.module.persistence.mapper.rdbms.ApplicationMapper;
 import org.openur.module.persistence.mapper.rdbms.PermissionMapperTest;
+import org.openur.module.persistence.mapper.rdbms.RoleMapperTest;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
 import org.openur.module.persistence.rdbms.config.RepositorySpringConfig;
 import org.openur.module.persistence.rdbms.entity.PApplication;
@@ -158,17 +160,10 @@ public class SecurityDaoImplRdbmsTest
 		pRole.addPermssion(perm2);		
 		saveRole(pRole);
 		
-		PRole resultRole = roleRepository.findOne(pRole.getId());	
-		assertNotNull(resultRole);
-		assertEquals(resultRole, pRole);
-		assertNotNull(resultRole.getPermissions());
-		assertEquals(resultRole.getPermissions().size(), 2);
-		// put permissions into standard List-Object, for Hibernate's PersistentBag seems not to call equals() in its contains-method (???)
-		List<PPermission> permList = new ArrayList<PPermission>(resultRole.getPermissions());
-		assertNotNull(permList);
-		assertEquals(permList.size(), 2);
-		assertTrue(permList.contains(perm1));
-		assertTrue(permList.contains(perm2));
+		IRole p = securityDao.findRoleById(pRole.getIdentifier());
+		
+		assertNotNull(p);	
+		assertTrue(RoleMapperTest.immutableEqualsToEntity((OpenURRole) p, pRole));
 	}
 
 	@Test
@@ -183,17 +178,10 @@ public class SecurityDaoImplRdbmsTest
 		pRole.addPermssion(perm2);		
 		saveRole(pRole);
 		
-		PRole resultRole = roleRepository.findRoleByRoleName(pRole.getRoleName());	
-		assertNotNull(resultRole);
-		assertEquals(resultRole, pRole);
-		assertNotNull(resultRole.getPermissions());
-		assertEquals(resultRole.getPermissions().size(), 2);
-		// put permissions into standard List-Object, for Hibernate's PersistentBag seems not to call equals() in its contains-method (???)
-		List<PPermission> permList = new ArrayList<PPermission>(resultRole.getPermissions());
-		assertNotNull(permList);
-		assertEquals(permList.size(), 2);
-		assertTrue(permList.contains(perm1));
-		assertTrue(permList.contains(perm2));
+		IRole p = securityDao.findRoleByName(pRole.getRoleName());	
+		
+		assertNotNull(p);	
+		assertTrue(RoleMapperTest.immutableEqualsToEntity((OpenURRole) p, pRole));
 	}
 
 
@@ -216,14 +204,18 @@ public class SecurityDaoImplRdbmsTest
 		pRoleB.addPermssion(perm2_B);		
 		saveRole(pRoleB);
 		
-		List<PRole> allRoles = roleRepository.findAll();
-		
+		List<IRole> allRoles = securityDao.obtainAllRoles();
 		assertNotNull(allRoles);
 		assertEquals(allRoles.size(), 2);
-		// put roles into standard List-Object, for Hibernate's PersistentBag seems not to call equals() in its contains-method (???)
-		allRoles = new ArrayList<PRole>(allRoles);
-		assertTrue(allRoles.contains(pRoleA));
-		assertTrue(allRoles.contains(pRoleB));
+		
+		Iterator<IRole> iter = allRoles.iterator();
+		OpenURRole _r1 = (OpenURRole) iter.next();
+		OpenURRole _r2 = (OpenURRole) iter.next();
+		OpenURRole role_A = _r1.getRoleName().equals(pRoleA.getRoleName()) ? _r1 : _r2;
+		OpenURRole role_B = _r1.getRoleName().equals(pRoleA.getRoleName()) ? _r2 : _r1;
+
+		assertTrue(RoleMapperTest.immutableEqualsToEntity(role_A, pRoleA));
+		assertTrue(RoleMapperTest.immutableEqualsToEntity(role_B, pRoleB));
 	}
 
 	@After
