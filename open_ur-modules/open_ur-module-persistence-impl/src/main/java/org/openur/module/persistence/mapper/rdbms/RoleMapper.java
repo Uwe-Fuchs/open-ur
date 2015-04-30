@@ -51,4 +51,9 @@ public class RoleMapper
 				.lastModifiedDate(persistable.getLastModifiedDate())
 				.build();
 	}
+	
+	public static boolean immutableEqualsToEntity(OpenURRole immutable, PRole persistable)
+	{
+		return immutable.getRoleName().equals(persistable.getRoleName());
+	}
 }

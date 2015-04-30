@@ -20,7 +20,6 @@ import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.person.Title;
 import org.openur.module.persistence.dao.IPersonDao;
-import org.openur.module.persistence.mapper.rdbms.PersonMapper;
 import org.openur.module.persistence.mapper.rdbms.PersonMapperTest;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
 import org.openur.module.persistence.rdbms.config.RepositorySpringConfig;
@@ -92,7 +91,7 @@ public class PersonDaoImplRdbmsTest
 		IPerson p = personDao.findPersonById(persistable.getIdentifier());
 
 		assertNotNull(p);
-		assertEquals(PersonMapper.mapFromEntity(persistable), p);
+		assertTrue(PersonMapperTest.immutableEqualsToEntity((Person) p, persistable));
 	}
 
 	@Test(expected = NumberFormatException.class)
@@ -121,8 +120,8 @@ public class PersonDaoImplRdbmsTest
 		Iterator<IPerson> iter = allPersons.iterator();
 		Person _p1 = (Person) iter.next();
 		Person _p2 = (Person) iter.next();
-		Person p = _p1.getIdentifier().equals(persistable1.getIdentifier()) ? _p1 : _p2;
-		Person p2 = _p1.getIdentifier().equals(persistable1.getIdentifier()) ? _p2 : _p1;
+		Person p = _p1.getPersonalNumber().equals(persistable1.getPersonalNumber()) ? _p1 : _p2;
+		Person p2 = _p1.getPersonalNumber().equals(persistable1.getPersonalNumber()) ? _p2 : _p1;
 
 		assertTrue(PersonMapperTest.immutableEqualsToEntity(p, persistable1));
 		assertTrue(PersonMapperTest.immutableEqualsToEntity(p2, persistable2));

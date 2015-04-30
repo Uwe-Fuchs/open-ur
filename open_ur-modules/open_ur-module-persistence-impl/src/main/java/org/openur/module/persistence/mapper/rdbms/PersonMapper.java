@@ -56,11 +56,6 @@ public class PersonMapper
 		
 		PersonBuilder immutableBuilder = new PersonBuilder(persistable.getPersonalNumber(), name);
 		
-		if (StringUtils.isNotEmpty(persistable.getIdentifier()))
-		{
-			immutableBuilder.identifier(persistable.getIdentifier());
-		}
-		
 		immutableBuilder
 				.emailAddress(StringUtils.isNotEmpty(persistable.getEmailAddress()) ? EMailAddress.create(persistable.getEmailAddress()) : null)
 				.faxNumber(persistable.getFaxNumber())
@@ -79,5 +74,10 @@ public class PersonMapper
 				.forEach(immutableBuilder::addApplication);
 		
 		return immutableBuilder.build();
+	}
+
+	public static boolean immutableEqualsToEntity(Person immutable, PPerson persistable)
+	{
+		return immutable.getPersonalNumber().equals(persistable.getPersonalNumber());
 	}
 }
