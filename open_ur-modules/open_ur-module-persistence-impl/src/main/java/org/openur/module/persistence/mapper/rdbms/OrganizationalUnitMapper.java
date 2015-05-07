@@ -1,7 +1,5 @@
 package org.openur.module.persistence.mapper.rdbms;
 
-import java.util.UUID;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.security.authorization.AuthorizableMember;
@@ -10,6 +8,7 @@ import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.AuthorizableOrgUnit.AuthorizableOrgUnitBuilder;
 import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.person.Person;
+import org.openur.module.domain.util.DefaultsUtil;
 import org.openur.module.persistence.rdbms.entity.POrgUnitMember;
 import org.openur.module.persistence.rdbms.entity.POrganizationalUnit;
 import org.openur.module.persistence.rdbms.entity.PPerson;
@@ -80,7 +79,7 @@ public class OrganizationalUnitMapper
 	static AuthorizableOrgUnit mapFromEntity(
 		POrganizationalUnit persistable, AuthorizableOrgUnit rootOu, AuthorizableOrgUnit superOu, boolean inclMembers, boolean inclRoles)
 	{		
-		final String IDENTIFIER = StringUtils.isNotEmpty(persistable.getIdentifier()) ? persistable.getIdentifier() : UUID.randomUUID().toString();
+		final String IDENTIFIER = DefaultsUtil.getRandomIdentifierByDefaultMechanism();
 
 		AuthorizableOrgUnitBuilder immutableBuilder = new AuthorizableOrgUnitBuilder(persistable.getOrgUnitNumber(), persistable.getName());
 
@@ -162,5 +161,10 @@ public class OrganizationalUnitMapper
 			
 			return immutableBuilder.build();
 		}
+	}
+
+	public static boolean immutableEqualsToEntity(AuthorizableOrgUnit immutable, POrganizationalUnit persistable)
+	{
+		return immutable.getOrgUnitNumber().equals(persistable.getOrgUnitNumber());
 	}
 }

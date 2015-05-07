@@ -1,13 +1,14 @@
 package org.openur.module.persistence.dao.rdbms;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 import javax.inject.Inject;
 
@@ -249,10 +250,22 @@ public class OrgUnitDaoImplRdbmsTest
 		List<IAuthorizableOrgUnit> allOrgUnits = orgUnitDao.obtainAllOrgUnits();
 		
 		assertEquals(3, allOrgUnits.size());
-		assertTrue(allOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit1, false, false)));
-		assertTrue(allOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit2, false, false)));
-		assertTrue(allOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit3, false, false)));
-		assertFalse(allOrgUnits.contains(new AuthorizableOrgUnit.AuthorizableOrgUnitBuilder("orgUnitNo4", "some department").build()));
+		IAuthorizableOrgUnit orgUnit1 = findOrgUnitInList(allOrgUnits, ORG_UNIT_NO);
+		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit1, pOrgUnit1));
+		IAuthorizableOrgUnit orgUnit2 = findOrgUnitInList(allOrgUnits, "orgUnitNo2");
+		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit2, pOrgUnit2));
+		IAuthorizableOrgUnit orgUnit3 = findOrgUnitInList(allOrgUnits, "orgUnitNo3");
+		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit3, pOrgUnit3));
+		assertNull(findOrgUnitInList(allOrgUnits, "orgUnitNo4"));
+	}
+	
+	private IAuthorizableOrgUnit findOrgUnitInList(List<IAuthorizableOrgUnit> orgUnitList, String orgUnitNumber) {
+		Optional<IAuthorizableOrgUnit> result = orgUnitList
+				.stream()
+				.filter(o -> o.getOrgUnitNumber().equals(orgUnitNumber))
+				.findFirst();
+		
+		return result.isPresent() ? result.get() : null;
 	}
 	
 	@Test
@@ -289,14 +302,29 @@ public class OrgUnitDaoImplRdbmsTest
 		List<IAuthorizableOrgUnit> subOrgUnits = orgUnitDao.obtainSubOrgUnitsForOrgUnit(pSuperOu.getIdentifier());
 		
 		assertEquals(3, subOrgUnits.size());
-		assertTrue(subOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit1, false, false)));
-		assertTrue(subOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit2, false, false)));
-		assertTrue(subOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit3, false, false)));
-		assertFalse(subOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit4, false, false)));
+		IAuthorizableOrgUnit orgUnit1 = findOrgUnitInList(subOrgUnits, ORG_UNIT_NO);
+		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit1, pOrgUnit1));
+		IAuthorizableOrgUnit orgUnit2 = findOrgUnitInList(subOrgUnits, "orgUnitNo2");
+		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit2, pOrgUnit2));
+		IAuthorizableOrgUnit orgUnit3 = findOrgUnitInList(subOrgUnits, "orgUnitNo3");
+		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit3, pOrgUnit3));
+		assertNull(findOrgUnitInList(subOrgUnits, "orgUnitNo4"));
 		
 		for (IAuthorizableOrgUnit orgUnit : subOrgUnits)
 		{
-			assertEquals(orgUnit.getSuperOrgUnit(), OrganizationalUnitMapper.mapFromEntity(pSuperOu, false, false));
+			assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit.getSuperOrgUnit(), pSuperOu));
+		}
+		
+		subOrgUnits = orgUnitDao.obtainSubOrgUnitsForOrgUnit(pRootOu.getIdentifier());
+		assertEquals(2, subOrgUnits.size());
+		IAuthorizableOrgUnit superOu = findOrgUnitInList(subOrgUnits, SUPER_OU_NO);
+		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity((AuthorizableOrgUnit) superOu, pSuperOu));
+		IAuthorizableOrgUnit orgUnit4 = findOrgUnitInList(subOrgUnits, "orgUnitNo4");
+		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit4, pOrgUnit4));
+		
+		for (IAuthorizableOrgUnit orgUnit : subOrgUnits)
+		{
+			assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit.getSuperOrgUnit(), pRootOu));
 		}
 	}
 	
@@ -373,35 +401,16 @@ public class OrgUnitDaoImplRdbmsTest
 		pOrgUnit3.addMember(pMember3_3);
 		saveOrgUnit(pOrgUnit3);
 		
-		List<IAuthorizableOrgUnit> subOrgUnits = orgUnitDao.obtainSubOrgUnitsForOrgUnitInclMembers(pSuperOu.getIdentifier());
-		
+		List<IAuthorizableOrgUnit> subOrgUnits = orgUnitDao.obtainSubOrgUnitsForOrgUnitInclMembers(pSuperOu.getIdentifier());		
 		assertEquals(3, subOrgUnits.size());
-		assertTrue(subOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit1, false, false)));
-		assertTrue(subOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit2, false, false)));
-		assertTrue(subOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit3, false, false)));
 		
-		IAuthorizableOrgUnit resultOrgUnit = subOrgUnits
-				.stream()
-				.filter(o -> o.equals(OrganizationalUnitMapper.mapFromEntity(pOrgUnit1, true, true)))
-				.findFirst()
-				.get();
-		
+		IAuthorizableOrgUnit resultOrgUnit = findOrgUnitInList(subOrgUnits, ORG_UNIT_NO);		
 		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity((AuthorizableOrgUnit) resultOrgUnit, pOrgUnit1));
 		
-		resultOrgUnit = subOrgUnits
-				.stream()
-				.filter(o -> o.equals(OrganizationalUnitMapper.mapFromEntity(pOrgUnit2, true, true)))
-				.findFirst()
-				.get();
-		
+		resultOrgUnit = findOrgUnitInList(subOrgUnits, "orgUnitNo2");		
 		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity((AuthorizableOrgUnit) resultOrgUnit, pOrgUnit2));
 		
-		resultOrgUnit = subOrgUnits
-				.stream()
-				.filter(o -> o.equals(OrganizationalUnitMapper.mapFromEntity(pOrgUnit3, true, true)))
-				.findFirst()
-				.get();
-		
+		resultOrgUnit = findOrgUnitInList(subOrgUnits, "orgUnitNo3");		
 		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity((AuthorizableOrgUnit) resultOrgUnit, pOrgUnit3));
 	}
 
@@ -419,11 +428,14 @@ public class OrgUnitDaoImplRdbmsTest
 		pOrgUnit.setRootOu(pRootOu1);
 		saveOrgUnit(pOrgUnit);
 		
-		List<IAuthorizableOrgUnit> subOrgUnits = orgUnitDao.obtainRootOrgUnits();
-		assertEquals(2, subOrgUnits.size());
-		assertTrue(subOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pRootOu1, false, false)));
-		assertTrue(subOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pRootOu2, false, false)));
-		assertFalse(subOrgUnits.contains(OrganizationalUnitMapper.mapFromEntity(pOrgUnit, false, false)));
+		List<IAuthorizableOrgUnit> rootOrgUnits = orgUnitDao.obtainRootOrgUnits();
+		assertEquals(2, rootOrgUnits.size());
+		IAuthorizableOrgUnit rootOu1 = findOrgUnitInList(rootOrgUnits, ROOT_OU_NO);
+		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity((AuthorizableOrgUnit) rootOu1, pRootOu1));
+		IAuthorizableOrgUnit rootOu2 = findOrgUnitInList(rootOrgUnits, "rootOuNo2");
+		assertTrue(OrgUnitMapperTest.immutableEqualsToEntity((AuthorizableOrgUnit) rootOu2, pRootOu2));
+		
+		assertNull(findOrgUnitInList(rootOrgUnits, ORG_UNIT_NO));
   }
 
   @Test
