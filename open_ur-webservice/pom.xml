@@ -12,17 +12,11 @@
   </parent>
   
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.open-ur.module</groupId>
-  <artifactId>open_ur-modules</artifactId>
+  <groupId>org.open-ur.webservice</groupId>
+  <artifactId>open_ur-webservices</artifactId>
   <packaging>pom</packaging>
   
   <modules>
-    <module>open_ur-module-util</module>
-    <module>open_ur-module-domain-api</module>
-    <module>open_ur-module-domain-impl</module>
-    <module>open_ur-module-persistence-api</module>
-    <module>open_ur-module-persistence-impl</module>
-    <module>open_ur-module-service</module>
   </modules>
 
   <build>
@@ -36,42 +30,6 @@
 
   <dependencyManagement>
     <dependencies>
-      <dependency>
-        <groupId>org.open-ur.module</groupId>
-        <artifactId>open_ur-module-util</artifactId>
-        <version>${project.version}</version>
-        <type>jar</type>
-      </dependency>
-      <dependency>
-        <groupId>org.open-ur.module</groupId>
-        <artifactId>open_ur-module-domain-api</artifactId>
-        <version>${project.version}</version>
-        <type>jar</type>
-      </dependency>
-      <dependency>
-        <groupId>org.open-ur.module</groupId>
-        <artifactId>open_ur-module-domain-impl</artifactId>
-        <version>${project.version}</version>
-        <type>jar</type>
-      </dependency>
-      <dependency>
-        <groupId>org.open-ur.module</groupId>
-        <artifactId>open_ur-module-persistence-api</artifactId>
-        <version>${project.version}</version>
-        <type>jar</type>
-      </dependency>
-      <dependency>
-        <groupId>org.open-ur.module</groupId>
-        <artifactId>open_ur-module-persistence-impl</artifactId>
-        <version>${project.version}</version>
-        <type>jar</type>
-      </dependency>
-      <dependency>
-        <groupId>org.open-ur.module</groupId>
-        <artifactId>open_ur-module-service</artifactId>
-        <version>${project.version}</version>
-        <type>jar</type>
-      </dependency>
     </dependencies>
   </dependencyManagement>
 
