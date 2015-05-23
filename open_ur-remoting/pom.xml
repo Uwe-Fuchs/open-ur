@@ -17,9 +17,9 @@
   <packaging>pom</packaging>
   
   <modules>
-    <module>services-rest</module>
-    <module>x-change</module>
-    <module>webservice-app</module>
+    <module>open_ur-remoting-services-rest</module>
+    <module>open_ur-remoting-x-change</module>
+    <module>open_ur-remoting-webservice-app</module>
   </modules>
 
   <build>
@@ -33,6 +33,18 @@
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>open_ur-remoting-services-rest</groupId>
+        <artifactId>services-rest</artifactId>
+        <version>${project.version}</version>
+        <type>jar</type>
+      </dependency>
+      <dependency>
+        <groupId>org.open-ur.remoting</groupId>
+        <artifactId>open_ur-remoting-x-change</artifactId>
+        <version>${project.version}</version>
+        <type>jar</type>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 

@@ -1,4 +1,4 @@
-package org.open-ur.remoting;
+package org.openur.remoting;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

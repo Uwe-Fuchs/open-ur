@@ -2,22 +2,25 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
+  
+  <properties>
+  </properties>
+  
   <parent>
     <groupId>org.open-ur.remoting</groupId>
     <artifactId>open_ur-remoting</artifactId>
     <version>0.1-SNAPSHOT</version>
   </parent>
-  <groupId>org.open-ur.remoting</groupId>
-  <artifactId>x-change</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <name>x-change</name>
-  <url>http://maven.apache.org</url>
+
+  <artifactId>open_ur-remoting-x-change</artifactId>
+  <packaging>jar</packaging>
+
   <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
+      <groupId>org.open-ur.pom</groupId>
+      <artifactId>open_ur-pom-testbase-component</artifactId>
+      <type>pom</type>
     </dependency>
   </dependencies>
+
 </project>

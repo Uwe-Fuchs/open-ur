@@ -1,4 +1,4 @@
-package org.open-ur.remoting;
+package org.openur.remoting;
 
 /**
  * Hello world!
