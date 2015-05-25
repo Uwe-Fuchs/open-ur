@@ -33,7 +33,18 @@
 	    <artifactId>spring-beans</artifactId>
 	  </exclusion>
 	</exclusions>
-    </dependency>
+    </dependency>	
+    <dependency>
+	<groupId>org.glassfish.jersey.test-framework.providers</groupId>
+	<artifactId>jersey-test-framework-provider-external</artifactId>
+	<version>2.5.1</version>
+    </dependency>		
+    <dependency>
+	<groupId>javax.servlet</groupId>
+	<artifactId>javax.servlet-api</artifactId>
+	<version>3.1.0</version>
+	<scope>provided</scope>
+    </dependency>		
   </dependencies>
 
 </project>
