@@ -26,6 +26,24 @@
       <artifactId>open_ur-pom-spring-component</artifactId>
       <type>pom</type>
     </dependency>
+    <dependency>
+	<groupId>org.glassfish.jersey.ext</groupId>
+	<artifactId>jersey-spring3</artifactId>
+	<exclusions>
+	  <exclusion>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-core</artifactId>
+	  </exclusion>
+	  <exclusion>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-web</artifactId>
+	  </exclusion>
+	  <exclusion>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-beans</artifactId>
+	  </exclusion>
+	</exclusions>
+    </dependency>	
   </dependencies>
 
 </project>
