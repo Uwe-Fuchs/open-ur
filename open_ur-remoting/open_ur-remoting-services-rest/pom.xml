@@ -1,49 +1,41 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
-  
-  <properties>
-  </properties>
-  
-  <parent>
-    <groupId>org.open-ur.remoting</groupId>
-    <artifactId>open_ur-remoting</artifactId>
-    <version>0.1-SNAPSHOT</version>
-  </parent>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
 
-  <artifactId>open_ur-remoting-services-rest</artifactId>
-  <packaging>jar</packaging>
+	<properties>
+	</properties>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.open-ur.pom</groupId>
-      <artifactId>open_ur-pom-testbase-component</artifactId>
-      <type>pom</type>
-    </dependency>
-    <dependency>
-      <groupId>org.open-ur.pom</groupId>
-      <artifactId>open_ur-pom-spring-component</artifactId>
-      <type>pom</type>
-    </dependency>
-    <dependency>
-	<groupId>org.glassfish.jersey.ext</groupId>
-	<artifactId>jersey-spring3</artifactId>
-	<exclusions>
-	  <exclusion>
-	    <groupId>org.springframework</groupId>
-	    <artifactId>spring-core</artifactId>
-	  </exclusion>
-	  <exclusion>
-	    <groupId>org.springframework</groupId>
-	    <artifactId>spring-web</artifactId>
-	  </exclusion>
-	  <exclusion>
-	    <groupId>org.springframework</groupId>
-	    <artifactId>spring-beans</artifactId>
-	  </exclusion>
-	</exclusions>
-    </dependency>	
-  </dependencies>
+	<parent>
+		<groupId>org.open-ur.remoting</groupId>
+		<artifactId>open_ur-remoting</artifactId>
+		<version>0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>open_ur-remoting-services-rest</artifactId>
+	<packaging>jar</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.open-ur.pom</groupId>
+			<artifactId>open_ur-pom-testbase-component</artifactId>
+			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>org.open-ur.pom</groupId>
+			<artifactId>open_ur-pom-spring-component</artifactId>
+			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>org.open-ur.module</groupId>
+			<artifactId>open_ur-module-service</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-grizzly2-http</artifactId>
+		</dependency>
+	</dependencies>
 
 </project>
