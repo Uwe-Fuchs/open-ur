@@ -26,7 +26,6 @@
     <module>open_ur-pom-testbase-component</module>
     <module>open_ur-pom-persistence-component</module>
     <module>open_ur-pom-spring-component</module>
-    <module>open_ur-pom-jersey-component</module>
     <module>open_ur-pom-logging-component</module>
   </modules>
 
@@ -116,12 +115,6 @@
       <dependency>
         <groupId>org.open-ur.pom</groupId>
         <artifactId>open_ur-pom-logging-component</artifactId>
-        <version>${project.version}</version>
-        <type>pom</type>
-      </dependency>
-      <dependency>
-        <groupId>org.open-ur.pom</groupId>
-        <artifactId>open_ur-pom-jersey-component</artifactId>
         <version>${project.version}</version>
         <type>pom</type>
       </dependency>
