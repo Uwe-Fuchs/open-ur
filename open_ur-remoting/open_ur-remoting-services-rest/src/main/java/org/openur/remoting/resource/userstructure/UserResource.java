@@ -10,12 +10,11 @@ import javax.ws.rs.core.Response;
 
 import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.service.userstructure.IUserServices;
-import org.springframework.beans.factory.annotation.Autowired;
 
-@Path("userstructure")
+@Path("/userstructure")
 public class UserResource
 {
-	@Autowired
+	@Resource
 	private IUserServices userServices;
 
 	@GET
