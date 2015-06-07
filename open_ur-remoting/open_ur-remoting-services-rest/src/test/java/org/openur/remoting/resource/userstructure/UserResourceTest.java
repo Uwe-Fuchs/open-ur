@@ -11,7 +11,6 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Assert;
 import org.junit.Test;
-import org.openur.module.service.userstructure.IGreetingService;
 import org.openur.module.service.userstructure.IUserServices;
 
 public class UserResourceTest
