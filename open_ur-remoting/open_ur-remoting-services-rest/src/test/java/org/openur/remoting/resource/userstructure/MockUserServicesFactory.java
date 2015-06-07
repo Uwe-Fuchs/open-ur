@@ -10,14 +10,14 @@ public class MockUserServicesFactory
 	@Override
 	public IUserServices provide()
 	{
-		final IUserServices mockedService = Mockito.mock(IUserServices.class);
-		return mockedService;
+		final IUserServices userServicesMock = Mockito.mock(IUserServices.class);
+		Mockito.when(userServicesMock.findPersonById("123")).thenReturn(ResourceTestUtils.PERSON_1);
+		
+		return userServicesMock;
 	}
 
 	@Override
 	public void dispose(IUserServices userServices)
 	{
-		// TODO Auto-generated method stub
-
 	}
 }
