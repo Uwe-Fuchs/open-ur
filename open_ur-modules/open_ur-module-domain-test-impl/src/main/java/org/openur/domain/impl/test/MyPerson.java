@@ -1,4 +1,4 @@
-package org.openur.module.service;
+package org.openur.domain.impl.test;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;

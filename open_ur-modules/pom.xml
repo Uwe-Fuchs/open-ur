@@ -20,6 +20,7 @@
     <module>open_ur-module-util</module>
     <module>open_ur-module-domain-api</module>
     <module>open_ur-module-domain-impl</module>
+    <module>open_ur-module-domain-test-impl</module>
     <module>open_ur-module-persistence-api</module>
     <module>open_ur-module-persistence-impl</module>
     <module>open_ur-module-service</module>
@@ -53,6 +54,13 @@
         <artifactId>open_ur-module-domain-impl</artifactId>
         <version>${project.version}</version>
         <type>jar</type>
+      </dependency>
+      <dependency>
+        <groupId>org.open-ur.module</groupId>
+        <artifactId>open_ur-module-domain-test-impl</artifactId>
+        <version>${project.version}</version>
+        <type>jar</type>
+        <scope>jar</scope>
       </dependency>
       <dependency>
         <groupId>org.open-ur.module</groupId>

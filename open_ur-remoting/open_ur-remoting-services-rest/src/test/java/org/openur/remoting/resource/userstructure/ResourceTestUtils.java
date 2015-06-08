@@ -2,6 +2,7 @@ package org.openur.remoting.resource.userstructure;
 
 import java.util.UUID;
 
+import org.openur.domain.impl.test.MyPerson;
 import org.openur.module.domain.userstructure.person.IPerson;
 
 final class ResourceTestUtils
