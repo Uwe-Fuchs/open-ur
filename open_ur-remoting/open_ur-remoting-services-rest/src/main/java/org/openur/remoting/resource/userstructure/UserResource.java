@@ -41,8 +41,6 @@ public class UserResource
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getIt()
 	{
-		IPerson p = userServices.findPersonById("123");
-
 		return "Got it!";
 	}
 }

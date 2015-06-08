@@ -11,7 +11,8 @@ public class MockUserServicesFactory
 	public IUserServices provide()
 	{
 		final IUserServices userServicesMock = Mockito.mock(IUserServices.class);
-		Mockito.when(userServicesMock.findPersonById("123")).thenReturn(ResourceTestUtils.PERSON_1);
+		Mockito.when(userServicesMock.findPersonById(ResourceTestUtils.UUID_1)).thenReturn(ResourceTestUtils.PERSON_1);
+		Mockito.when(userServicesMock.findPersonByNumber(ResourceTestUtils.NO_123)).thenReturn(ResourceTestUtils.PERSON_1);
 		
 		return userServicesMock;
 	}
