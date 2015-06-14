@@ -6,12 +6,17 @@ import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Assert;
 import org.junit.Test;
+import org.openur.domain.test.dummyimpl.MyPerson;
+import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.service.userstructure.IUserServices;
+
+import com.google.gson.Gson;
 
 public class UserResourceTest
 	extends JerseyTest
@@ -35,7 +40,7 @@ public class UserResourceTest
 	}
 
 	@Test
-  public void testMockedGreetingService() {
+  public void testGetItResource() {
       Client client = ClientBuilder.newClient();
       Response response = client.target("http://localhost:9998/userstructure")
               .request(MediaType.TEXT_PLAIN).get();
@@ -48,4 +53,22 @@ public class UserResourceTest
       response.close();
       client.close();
   }
+
+	@Test
+  public void testGetPersonByIdResource() {
+    Client client = ClientBuilder.newClient();
+    Response response = client.target("http://localhost:9998/userstructure/id/" + ResourceTestUtils.UUID_1)
+            .request(MediaType.APPLICATION_JSON).get();
+    Assert.assertEquals(200, response.getStatus());
+
+    String result = response.readEntity(String.class);
+    System.out.println("Result: " + result);
+    
+    Gson gson = new Gson();
+    IPerson p = gson.fromJson(result, MyPerson.class);
+    Assert.assertTrue(EqualsBuilder.reflectionEquals(ResourceTestUtils.PERSON_1, p));
+
+    response.close();
+    client.close();
+	}
 }

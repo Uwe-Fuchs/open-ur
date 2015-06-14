@@ -11,6 +11,8 @@ import javax.ws.rs.core.Response;
 import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.service.userstructure.IUserServices;
 
+import com.google.gson.Gson;
+
 @Path("/userstructure")
 public class UserResource
 {
@@ -23,8 +25,11 @@ public class UserResource
 	public Response getPersonById(@PathParam("id") String id)
 	{
 		IPerson p = userServices.findPersonById(id);
-
-		return null;
+		Gson gson = new Gson();
+		
+		return Response.status(Response.Status.OK)
+			.entity(gson.toJson(p))
+			.build();
 	}
 
 	@GET

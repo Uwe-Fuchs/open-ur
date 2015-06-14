@@ -1,4 +1,4 @@
-package org.openur.domain.impl.test;
+package org.openur.domain.test.dummyimpl;
 
 import java.time.LocalDateTime;
 
