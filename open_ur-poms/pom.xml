@@ -3,13 +3,11 @@
   
   <properties>
     <jdk.version>1.8</jdk.version>
-    <cdi-api.version>1.0-SP2</cdi-api.version>
     <compilerId>javac</compilerId>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>    
     <build.dir>target</build.dir>
     <build.outputDir>target/classes</build.outputDir>
     <build.testOutputDir>target/test-classes</build.testOutputDir>
-    <jersey.version>2.17</jersey.version>
   </properties>
 
   <parent>
@@ -162,15 +160,20 @@
     <dependency>
        <groupId>javax.enterprise</groupId>
        <artifactId>cdi-api</artifactId>
-       <version>${cdi-api.version}</version>
+       <version>1.0-SP2</version>
      </dependency>
       <dependency>
         <groupId>org.glassfish.jersey</groupId>
         <artifactId>jersey-bom</artifactId>
-        <version>${jersey.version}</version>
+        <version>2.17</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+	<dependency>
+		<groupId>com.google.code.gson</groupId>
+		<artifactId>gson</artifactId>
+		<version>2.3.1</version>
+	</dependency>
 
       <!--dependency>
          <groupId>javax.validation</groupId>
