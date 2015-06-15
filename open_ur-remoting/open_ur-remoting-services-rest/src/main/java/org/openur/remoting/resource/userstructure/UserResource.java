@@ -1,5 +1,7 @@
 package org.openur.remoting.resource.userstructure;
 
+import java.util.Set;
+
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -25,10 +27,9 @@ public class UserResource
 	public Response getPersonById(@PathParam("id") String id)
 	{
 		IPerson p = userServices.findPersonById(id);
-		Gson gson = new Gson();
 		
 		return Response.status(Response.Status.OK)
-				.entity(gson.toJson(p))
+				.entity(new Gson().toJson(p))
 				.build();
 	}
 
@@ -38,10 +39,21 @@ public class UserResource
 	public Response getPersonByNumber(@PathParam("number") String number)
 	{
 		IPerson p = userServices.findPersonByNumber(number);
-		Gson gson = new Gson();
 		
 		return Response.status(Response.Status.OK)
-				.entity(gson.toJson(p))
+				.entity(new Gson().toJson(p))
+				.build();
+	}
+
+	@GET
+	@Path("/allPersons")
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	public Response obtainAllPersons()
+	{
+		Set<IPerson> allPersons = userServices.obtainAllPersons();
+		
+		return Response.status(Response.Status.OK)
+				.entity(new Gson().toJson(allPersons, Set.class))
 				.build();
 	}
 

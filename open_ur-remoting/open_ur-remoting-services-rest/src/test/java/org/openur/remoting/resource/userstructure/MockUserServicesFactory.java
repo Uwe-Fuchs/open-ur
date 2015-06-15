@@ -1,5 +1,8 @@
 package org.openur.remoting.resource.userstructure;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 import org.glassfish.hk2.api.Factory;
 import org.mockito.Mockito;
 import org.openur.module.service.userstructure.IUserServices;
@@ -13,6 +16,7 @@ public class MockUserServicesFactory
 		final IUserServices userServicesMock = Mockito.mock(IUserServices.class);
 		Mockito.when(userServicesMock.findPersonById(ResourceTestUtils.UUID_1)).thenReturn(ResourceTestUtils.PERSON_1);
 		Mockito.when(userServicesMock.findPersonByNumber(ResourceTestUtils.NO_123)).thenReturn(ResourceTestUtils.PERSON_1);
+		Mockito.when(userServicesMock.obtainAllPersons()).thenReturn(new HashSet<>(Arrays.asList(ResourceTestUtils.PERSON_1)));
 		
 		return userServicesMock;
 	}

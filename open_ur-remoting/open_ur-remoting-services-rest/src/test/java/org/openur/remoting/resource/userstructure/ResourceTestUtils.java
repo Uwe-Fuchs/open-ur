@@ -23,15 +23,12 @@ final class ResourceTestUtils
 	static final String UUID_1 = UUID.randomUUID().toString();
 	static final String NO_123 = "123";
 	static final IPerson PERSON_1;
-	static final Name name;
-	static final Address address;
-	static final Set<OpenURApplication> applications;
 
 	static
 	{
-		name = Name.create(Gender.MALE, "Uwe", "Fuchs");
+		Name name = Name.create(Gender.MALE, "Uwe", "Fuchs");
 
-		address = new AddressBuilder("11")
+		Address address = new AddressBuilder("11")
 			.country(Country.byCode("DE"))
 			.city("city_1")
 			.street("street_1")
@@ -41,7 +38,7 @@ final class ResourceTestUtils
 		
 		OpenURApplication app1 = new OpenURApplicationBuilder("app1").build();
 		OpenURApplication app2 = new OpenURApplicationBuilder("app2").build();
-		applications = new HashSet<>(Arrays.asList(app1, app2));
+		Set<OpenURApplication> applications = new HashSet<>(Arrays.asList(app1, app2));
 
 		PERSON_1 = new PersonBuilder(NO_123, name)
 			.identifier(UUID_1)
