@@ -12,8 +12,8 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Assert;
 import org.junit.Test;
-import org.openur.domain.test.dummyimpl.MyPerson;
 import org.openur.module.domain.userstructure.person.IPerson;
+import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.service.userstructure.IUserServices;
 
 import com.google.gson.Gson;
@@ -65,10 +65,29 @@ public class UserResourceTest
     System.out.println("Result: " + result);
     
     Gson gson = new Gson();
-    IPerson p = gson.fromJson(result, MyPerson.class);
+    IPerson p = gson.fromJson(result, Person.class);
     Assert.assertTrue(EqualsBuilder.reflectionEquals(ResourceTestUtils.PERSON_1, p));
 
     response.close();
     client.close();
+	}
+
+	@Test
+  public void testGetPersonByNumberResource() {
+    Client client = ClientBuilder.newClient();
+    Response response = client.target("http://localhost:9998/userstructure/number/" + ResourceTestUtils.NO_123)
+            .request(MediaType.APPLICATION_JSON).get();
+    Assert.assertEquals(200, response.getStatus());
+
+    String result = response.readEntity(String.class);
+    System.out.println("Result: " + result);
+    
+    Gson gson = new Gson();
+    IPerson p = gson.fromJson(result, Person.class);
+    Assert.assertTrue(EqualsBuilder.reflectionEquals(ResourceTestUtils.PERSON_1, p));
+
+    response.close();
+    client.close();
+		
 	}
 }

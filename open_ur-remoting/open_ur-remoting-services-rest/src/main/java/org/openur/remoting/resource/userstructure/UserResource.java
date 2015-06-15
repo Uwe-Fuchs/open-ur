@@ -28,8 +28,8 @@ public class UserResource
 		Gson gson = new Gson();
 		
 		return Response.status(Response.Status.OK)
-			.entity(gson.toJson(p))
-			.build();
+				.entity(gson.toJson(p))
+				.build();
 	}
 
 	@GET
@@ -38,8 +38,11 @@ public class UserResource
 	public Response getPersonByNumber(@PathParam("number") String number)
 	{
 		IPerson p = userServices.findPersonByNumber(number);
-
-		return null;
+		Gson gson = new Gson();
+		
+		return Response.status(Response.Status.OK)
+				.entity(gson.toJson(p))
+				.build();
 	}
 
 	@GET
