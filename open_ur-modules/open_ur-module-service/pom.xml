@@ -39,7 +39,7 @@
     </dependency>
     <dependency>
       <groupId>org.open-ur.module</groupId>
-      <artifactId>open_ur-module-domain-test-impl</artifactId>
+      <artifactId>open_ur-module-domain-testfixture</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

@@ -20,7 +20,7 @@
     <module>open_ur-module-util</module>
     <module>open_ur-module-domain-api</module>
     <module>open_ur-module-domain-impl</module>
-    <module>open_ur-module-domain-test-impl</module>
+    <module>open_ur-module-domain-testfixture</module>
     <module>open_ur-module-persistence-api</module>
     <module>open_ur-module-persistence-impl</module>
     <module>open_ur-module-service</module>
@@ -57,7 +57,7 @@
       </dependency>
       <dependency>
         <groupId>org.open-ur.module</groupId>
-        <artifactId>open_ur-module-domain-test-impl</artifactId>
+        <artifactId>open_ur-module-domain-testfixture</artifactId>
         <version>${project.version}</version>
         <type>jar</type>
         <scope>jar</scope>
