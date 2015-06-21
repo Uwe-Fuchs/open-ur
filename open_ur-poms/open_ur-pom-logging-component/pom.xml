@@ -2,10 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   
-  <properties>
-    <slf4j.version>1.7.7</slf4j.version>
-  </properties>
-  
   <parent>
     <groupId>org.open-ur.pom</groupId>
     <artifactId>open_ur-poms</artifactId>
@@ -14,6 +10,10 @@
   
   <artifactId>open_ur-pom-logging-component</artifactId>
   <packaging>pom</packaging>
+  
+  <properties>
+    <slf4j.version>1.7.7</slf4j.version>
+  </properties>
   
   <dependencies>
     <!-- LOGGING DEPENDENCIES - LOG4J -->
