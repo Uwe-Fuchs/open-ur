@@ -60,7 +60,7 @@
         <artifactId>open_ur-module-domain-testfixture</artifactId>
         <version>${project.version}</version>
         <type>jar</type>
-        <scope>jar</scope>
+        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.open-ur.module</groupId>
