@@ -22,12 +22,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.open-ur.module</groupId>
-			<artifactId>open_ur-module-domain-test-impl</artifactId>
-			<version>${project.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.open-ur.module</groupId>
 			<artifactId>open_ur-module-service</artifactId>
 			<version>${project.version}</version>
 		</dependency>
