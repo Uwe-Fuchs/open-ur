@@ -27,6 +27,8 @@ import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.person.PersonBuilder;
 import org.openur.module.domain.userstructure.person.Title;
+import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
+import org.openur.module.domain.userstructure.technicaluser.TechnicalUser.TechnicalUserBuilder;
 
 /**
  * 
@@ -53,9 +55,9 @@ public class TestObjectContainer
 	public static final String PERSON_UUID_1 = UUID.randomUUID().toString();
 	public static final String PERSON_UUID_2 = UUID.randomUUID().toString();
 	public static final String PERSON_UUID_3 = UUID.randomUUID().toString();
-	public static final String PERSON_NUMBER_1 = "111aaa";
-	public static final String PERSON_NUMBER_2 = "222bbb";
-	public static final String PERSON_NUMBER_3 = "333ccc";
+	public static final String PERSON_NUMBER_1 = "person_no_1";
+	public static final String PERSON_NUMBER_2 = "person_no_2";
+	public static final String PERSON_NUMBER_3 = "person_no_3";
 	public static final Person PERSON_1;
 	public static final Person PERSON_2;
 	public static final Person PERSON_3;
@@ -78,6 +80,16 @@ public class TestObjectContainer
 	public static final AuthorizableOrgUnit ORG_UNIT_A;
 	public static final AuthorizableOrgUnit ORG_UNIT_B;
 	public static final AuthorizableOrgUnit ORG_UNIT_C;
+
+	public static final String TECH_USER_UUID_1 = UUID.randomUUID().toString();
+	public static final String TECH_USER_UUID_2 = UUID.randomUUID().toString();
+	public static final String TECH_USER_UUID_3 = UUID.randomUUID().toString();
+	public static final String TECH_USER_NUMBER_1 = "tech_user_no_1";
+	public static final String TECH_USER_NUMBER_2 = "tech_user_no_2";
+	public static final String TECH_USER_NUMBER_3 = "tech_user_no_3";
+	public static final TechnicalUser TECH_USER_1;
+	public static final TechnicalUser TECH_USER_2;
+	public static final TechnicalUser TECH_USER_3;
 	
 	static
 	{
@@ -190,7 +202,7 @@ public class TestObjectContainer
 		applications = new HashSet<>(Arrays.asList(APP_B, APP_C));
 		
 		PERSON_2 = new PersonBuilder(PERSON_NUMBER_2, name_2)
-				.identifier(PERSON_UUID_3)
+				.identifier(PERSON_UUID_2)
 				.creationDate(LocalDateTime.now())
 				.status(Status.ACTIVE)
 				.emailAddress(EMailAddress.create("office@name_2.com"))
@@ -309,5 +321,24 @@ public class TestObjectContainer
 				.superOrgUnit(SUPER_OU_2)
 				.emailAddress(EMailAddress.create("org_unit_C@company.com"))
 				.build();		
+		
+		// technical Users:
+		TECH_USER_1 = new TechnicalUserBuilder(TECH_USER_NUMBER_1)
+				.identifier(TECH_USER_UUID_1)
+				.status(Status.ACTIVE)
+				.creationDate(LocalDateTime.now())
+				.build();
+		
+		TECH_USER_2 = new TechnicalUserBuilder(TECH_USER_NUMBER_2)
+				.identifier(TECH_USER_UUID_2)
+				.status(Status.ACTIVE)
+				.creationDate(LocalDateTime.now())
+				.build();
+		
+		TECH_USER_3 = new TechnicalUserBuilder(TECH_USER_NUMBER_3)
+				.identifier(TECH_USER_UUID_3)
+				.status(Status.INACTIVE)
+				.creationDate(LocalDateTime.of(2012, 06, 20, 0, 0))
+				.build();
 	}
 }
