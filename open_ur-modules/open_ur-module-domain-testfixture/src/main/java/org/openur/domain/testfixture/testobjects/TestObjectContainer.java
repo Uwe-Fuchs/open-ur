@@ -180,7 +180,7 @@ public class TestObjectContainer
 		Name name_2 = Name.create(Gender.MALE, Title.DR, "male_first_name_2", "last_name_2");
 		
 		address = new AddressBuilder("22")
-				.country(Country.byCode("UK"))
+				.country(Country.byCode("GB"))
 				.city("city_2")
 				.street("street_2")
 				.streetNo("22")
