@@ -11,6 +11,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.openur.module.domain.userstructure.person.IPerson;
+import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 import org.openur.module.service.userstructure.IUserServices;
 
 import com.google.gson.Gson;
@@ -22,7 +23,7 @@ public class UserResource
 	private IUserServices userServices;
 
 	@GET
-	@Path("/id/{id}")
+	@Path("/person/id/{id}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public Response getPersonById(@PathParam("id") String id)
 	{
@@ -34,7 +35,7 @@ public class UserResource
 	}
 
 	@GET
-	@Path("/number/{number}")
+	@Path("/person/number/{number}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public Response getPersonByNumber(@PathParam("number") String number)
 	{
@@ -46,7 +47,7 @@ public class UserResource
 	}
 
 	@GET
-	@Path("/allPersons")
+	@Path("/person/allPersons")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public Response obtainAllPersons()
 	{
@@ -58,9 +59,38 @@ public class UserResource
 	}
 
 	@GET
-	@Produces(MediaType.TEXT_PLAIN)
-	public String getIt()
+	@Path("/techuser/id/{id}")
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	public Response findTechnicalUserById(@PathParam("id") String id)
 	{
-		return "Got it!";
+		ITechnicalUser tu = userServices.findTechnicalUserById(id);
+		
+		return Response.status(Response.Status.OK)
+				.entity(new Gson().toJson(tu))
+				.build();
+	}
+
+	@GET
+	@Path("/techuser/number/{number}")
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	public Response findTechnicalUserByNumber(@PathParam("number") String number)
+	{
+		ITechnicalUser tu = userServices.findTechnicalUserByNumber(number);
+		
+		return Response.status(Response.Status.OK)
+				.entity(new Gson().toJson(tu))
+				.build();
+	}
+
+	@GET
+	@Path("/techuser/allPersons")
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	public Response obtainAllTechnicalUsers()
+	{
+		Set<ITechnicalUser> techUsersSet = userServices.obtainAllTechnicalUsers();
+		
+		return Response.status(Response.Status.OK)
+				.entity(new Gson().toJson(techUsersSet, Set.class))
+				.build();
 	}
 }
