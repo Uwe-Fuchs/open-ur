@@ -11,12 +11,14 @@ import java.util.UUID;
 
 import javax.inject.Inject;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.openur.domain.testfixture.dummyimpl.MyAuthorizableMember;
 import org.openur.domain.testfixture.dummyimpl.MyAuthorizableOrgUnit;
 import org.openur.domain.testfixture.dummyimpl.MyPerson;
+import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
@@ -32,26 +34,25 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {UserStructureTestSpringConfig.class})
 public class OrgUnitServicesTest
 {
-	private final String UUID_1;
-	private final String UUID_2;
-	private final String OTHER_UUID;	
-	private final String NO_123;	
-	private final String NO_456;
-	private final String NUMBER_DIFFERENT_FROM_ALL_OTHERS;
+	private static String UUID_1;
+	private static String UUID_2;
+	private static String OTHER_UUID;	
+	private static String NO_123;	
+	private static String NO_456;
+	private static String NUMBER_DIFFERENT_FROM_ALL_OTHERS;
 
-	private final IAuthorizableOrgUnit ORG_UNIT_1;
-	private final IAuthorizableOrgUnit ORG_UNIT_2;
+	private static IAuthorizableOrgUnit ORG_UNIT_1;
+	private static IAuthorizableOrgUnit ORG_UNIT_2;
 	
 	@Inject
 	private IOrgUnitDao orgUnitDaoMock;
 	
 	@Inject
 	private IOrgUnitServices orgUnitServices;
-
-	public OrgUnitServicesTest()
+	
+	@BeforeClass
+	public static void init()
 	{
-		super();
-
 		UUID_1 = UUID.randomUUID().toString();
 		UUID_2 = UUID.randomUUID().toString();
 		OTHER_UUID = UUID.randomUUID().toString();
@@ -67,10 +68,26 @@ public class OrgUnitServicesTest
 	@Test
 	public void testFindOrgUnitById()
 	{		
+		// test with open-ur-specific domain-objects:
+		Mockito.when(orgUnitDaoMock.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_A)).thenReturn(TestObjectContainer.ORG_UNIT_A);
+		Mockito.when(orgUnitDaoMock.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_B)).thenReturn(TestObjectContainer.ORG_UNIT_B);	
+		
+		IOrganizationalUnit o = orgUnitServices.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_A);		
+		assertNotNull(o);
+		assertEquals(TestObjectContainer.ORG_UNIT_A, o);
+		
+		o = orgUnitServices.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_B);		
+		assertNotNull(o);
+		assertEquals(TestObjectContainer.ORG_UNIT_B, o);
+		
+		o = orgUnitServices.findOrgUnitById(OTHER_UUID);
+		assertTrue(o == null);
+
+		// test with arbitrary domain-objects:
 		Mockito.when(orgUnitDaoMock.findOrgUnitById(UUID_1)).thenReturn(ORG_UNIT_1);
 		Mockito.when(orgUnitDaoMock.findOrgUnitById(UUID_2)).thenReturn(ORG_UNIT_2);	
 		
-		IOrganizationalUnit o = orgUnitServices.findOrgUnitById(UUID_1);		
+		o = orgUnitServices.findOrgUnitById(UUID_1);		
 		assertNotNull(o);
 		assertEquals("identifier", o.getIdentifier(), UUID_1);
 		assertEquals("orgunit-number", o.getNumber(), NO_123);
@@ -81,16 +98,32 @@ public class OrgUnitServicesTest
 		assertEquals("orgunit-number", o.getNumber(), NO_456);
 		
 		o = orgUnitServices.findOrgUnitById(OTHER_UUID);
-		assertTrue(o == null || !o.getIdentifier().equals(UUID_1) || !o.getIdentifier().equals(UUID_2));
+		assertTrue(o == null);
 	}
 
 	@Test
 	public void testFindOrgUnitByNumber()
 	{
+		// test with open-ur-specific domain-objects:
+		Mockito.when(orgUnitDaoMock.findOrgUnitByNumber(TestObjectContainer.ORG_UNIT_NUMBER_A)).thenReturn(TestObjectContainer.ORG_UNIT_A);
+		Mockito.when(orgUnitDaoMock.findOrgUnitByNumber(TestObjectContainer.ORG_UNIT_NUMBER_B)).thenReturn(TestObjectContainer.ORG_UNIT_B);
+		
+		IOrganizationalUnit o = orgUnitServices.findOrgUnitByNumber(TestObjectContainer.ORG_UNIT_NUMBER_A);		
+		assertNotNull(o);
+		assertEquals(TestObjectContainer.ORG_UNIT_A, o);
+		
+		o = orgUnitServices.findOrgUnitByNumber(TestObjectContainer.ORG_UNIT_NUMBER_B);		
+		assertNotNull(o);
+		assertEquals(TestObjectContainer.ORG_UNIT_B, o);
+		
+		o = orgUnitServices.findOrgUnitById(NUMBER_DIFFERENT_FROM_ALL_OTHERS);
+		assertTrue(o == null);
+
+		// test with arbitrary domain-objects:
 		Mockito.when(orgUnitDaoMock.findOrgUnitByNumber(NO_123)).thenReturn(ORG_UNIT_1);
 		Mockito.when(orgUnitDaoMock.findOrgUnitByNumber(NO_456)).thenReturn(ORG_UNIT_2);
 		
-		IOrganizationalUnit o = orgUnitServices.findOrgUnitByNumber(NO_123);		
+		o = orgUnitServices.findOrgUnitByNumber(NO_123);		
 		assertNotNull(o);
 		assertEquals("orgunit-number", o.getNumber(), NO_123);
 		assertEquals("identifier", o.getIdentifier(), UUID_1);
@@ -101,15 +134,29 @@ public class OrgUnitServicesTest
 		assertEquals("identifier", o.getIdentifier(), UUID_2);
 		
 		o = orgUnitServices.findOrgUnitById(NUMBER_DIFFERENT_FROM_ALL_OTHERS);
-		assertTrue(o == null || !o.getNumber().equals(NO_123) || !o.getNumber().equals(NO_456));
+		assertTrue(o == null);
 	}
 
 	@Test
 	public void testObtainAllOrgUnits()
-	{
-		Mockito.when(orgUnitDaoMock.obtainAllOrgUnits()).thenReturn(Arrays.asList(ORG_UNIT_1, ORG_UNIT_2));
+	{		
+		// test with open-ur-specific domain-objects:
+		Mockito.when(orgUnitDaoMock.obtainAllOrgUnits()).thenReturn(Arrays.asList(TestObjectContainer.ORG_UNIT_A, TestObjectContainer.ORG_UNIT_B));
 		
 		Set<IAuthorizableOrgUnit> orgUnitSet = orgUnitServices.obtainAllOrgUnits();
+		
+		assertNotNull(orgUnitSet);
+		assertEquals(2, orgUnitSet.size());
+		
+		for (IOrganizationalUnit o : orgUnitSet)
+		{
+			assertTrue(TestObjectContainer.ORG_UNIT_A.equals(o) || TestObjectContainer.ORG_UNIT_B.equals(o));
+		}
+
+		// test with arbitrary domain-objects:
+		Mockito.when(orgUnitDaoMock.obtainAllOrgUnits()).thenReturn(Arrays.asList(ORG_UNIT_1, ORG_UNIT_2));
+		
+		orgUnitSet = orgUnitServices.obtainAllOrgUnits();
 		
 		assertNotNull(orgUnitSet);
 		assertEquals(2, orgUnitSet.size());
@@ -130,6 +177,41 @@ public class OrgUnitServicesTest
 	@Test
 	public void testObtainSubOrgUnitsForOrgUnit()
 	{		
+		// test with open-ur-specific domain-objects:
+		Mockito.when(orgUnitDaoMock.obtainSubOrgUnitsForOrgUnitInclMembers(TestObjectContainer.SUPER_OU_NUMBER_1))
+				.thenReturn(Arrays.asList(TestObjectContainer.ORG_UNIT_A, TestObjectContainer.ORG_UNIT_B));
+		
+		Set<? extends IOrganizationalUnit> orgUnitSet = orgUnitServices.obtainSubOrgUnitsForOrgUnit(TestObjectContainer.SUPER_OU_NUMBER_1, true);
+		
+		assertNotNull(orgUnitSet);
+		assertEquals(2, orgUnitSet.size());
+		
+		for (IOrganizationalUnit o : orgUnitSet)
+		{
+			assertTrue(TestObjectContainer.ORG_UNIT_A.equals(o) || TestObjectContainer.ORG_UNIT_B.equals(o));
+			
+			if (TestObjectContainer.ORG_UNIT_A.equals(o))
+			{
+				assertNotNull(o.getMembers());
+				assertEquals(2, o.getMembers().size());
+				
+				for (IOrgUnitMember m : o.getMembers())
+				{
+					assertTrue(TestObjectContainer.PERSON_1.equals(m.getPerson()) || TestObjectContainer.PERSON_2.equals(m.getPerson()));
+				}
+			} else
+			{
+				assertNotNull(o.getMembers());
+				assertEquals(2, o.getMembers().size());
+				
+				for (IOrgUnitMember m : o.getMembers())
+				{
+					assertTrue(TestObjectContainer.PERSON_1.equals(m.getPerson()) || TestObjectContainer.PERSON_3.equals(m.getPerson()));
+				}
+			}
+		}
+
+		// test with arbitrary domain-objects:
 		final String SUPER_OU_ID = UUID.randomUUID().toString();		
 		final MyAuthorizableOrgUnit SUPER_OU = new MyAuthorizableOrgUnit(SUPER_OU_ID, "superOuNumber");		
 		final MyAuthorizableOrgUnit ROOT_OU = new MyAuthorizableOrgUnit(UUID.randomUUID().toString(), "rootOuNumber");		
@@ -144,7 +226,7 @@ public class OrgUnitServicesTest
 		
 		Mockito.when(orgUnitDaoMock.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID)).thenReturn(Arrays.asList(orgUnit1, orgUnit2));
 		
-		Set<IAuthorizableOrgUnit> orgUnitSet = orgUnitServices.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID, false);
+		orgUnitSet = orgUnitServices.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID, false);
 		
 		assertNotNull(orgUnitSet);
 		assertEquals(2, orgUnitSet.size());
@@ -206,6 +288,18 @@ public class OrgUnitServicesTest
 	@Test
 	public void testObtainRootOrgUnits()
 	{		
+		// test with open-ur-specific domain-objects:
+		Mockito.when(orgUnitDaoMock.obtainRootOrgUnits()).thenReturn(Arrays.asList(TestObjectContainer.ROOT_OU));
+		
+		Set<? extends IOrganizationalUnit> orgUnitSet = orgUnitServices.obtainRootOrgUnits();
+		
+		assertNotNull(orgUnitSet);
+		assertEquals(1, orgUnitSet.size());
+		IOrganizationalUnit resultOu = orgUnitSet.iterator().next();
+		assertEquals(TestObjectContainer.ROOT_OU, resultOu);
+		assertEquals(resultOu, TestObjectContainer.ORG_UNIT_A.getRootOrgUnit());
+
+		// test with arbitrary domain-objects:
 		final String ROOT_OU_ID = UUID.randomUUID().toString();
 		final String ROOT_OU_NUMBER = "rootOuNumber";
 		MyAuthorizableOrgUnit rootOu = new MyAuthorizableOrgUnit(ROOT_OU_ID, ROOT_OU_NUMBER);
@@ -215,11 +309,11 @@ public class OrgUnitServicesTest
 		
 		Mockito.when(orgUnitDaoMock.obtainRootOrgUnits()).thenReturn(Arrays.asList(rootOu));
 		
-		Set<IAuthorizableOrgUnit> orgUnitSet = orgUnitServices.obtainRootOrgUnits();
+		orgUnitSet = orgUnitServices.obtainRootOrgUnits();
 		
 		assertNotNull(orgUnitSet);
 		assertEquals(1, orgUnitSet.size());
-		IOrganizationalUnit resultOu = orgUnitSet.iterator().next();
+		resultOu = orgUnitSet.iterator().next();
 		assertEquals(ROOT_OU_ID, resultOu.getIdentifier());
 		assertEquals(ROOT_OU_NUMBER, resultOu.getNumber());
 		assertEquals(resultOu, orgUnit1.getRootOrgUnit());
