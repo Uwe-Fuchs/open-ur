@@ -54,7 +54,8 @@ public class UserServicesTest
 	private IUserServices userServices;
 	
 	@BeforeClass
-	public static void init() {
+	public static void init()
+	{
 		UUID_1 = UUID.randomUUID().toString();
 		UUID_2 = UUID.randomUUID().toString();
 		OTHER_UUID = UUID.randomUUID().toString();
