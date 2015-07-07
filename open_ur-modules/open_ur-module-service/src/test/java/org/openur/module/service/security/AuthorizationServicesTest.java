@@ -18,6 +18,7 @@ import org.openur.domain.testfixture.dummyimpl.MyAuthorizableOrgUnit;
 import org.openur.domain.testfixture.dummyimpl.MyPermissionImpl;
 import org.openur.domain.testfixture.dummyimpl.MyPerson;
 import org.openur.domain.testfixture.dummyimpl.MyRoleImpl;
+import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.persistence.dao.ISecurityDao;
 import org.openur.module.service.config.SecurityTestSpringConfig;
@@ -45,16 +46,28 @@ public class AuthorizationServicesTest
 	private ISecurityDao securityDaoMock;
 
 	@Test
-	public void testAuthenticate()
-	{
-		// Nothing to test yet => job is done completely by Shiro.
-		// maybe test the integration of different security-clients like Shiro, Spring-Sec, JAAS ??
-		assertTrue(true);
-	}
-
-	@Test
 	public void testHasPermissionIPersonIOrganizationalUnitIPermissionIApplication()
 	{
+		// test with open-ur-specific domain-objects:
+		Mockito.when(orgUnitServicesMock.findOrgUnitById(TestObjectContainer.SUPER_OU_UUID_1)).thenReturn(TestObjectContainer.SUPER_OU_1);		
+		
+		// has permission in org-unit:
+		assertTrue(authorizationServices.hasPermission(
+				TestObjectContainer.PERSON_1, TestObjectContainer.ORG_UNIT_A, TestObjectContainer.PERMISSION_1_A, TestObjectContainer.APP_A));
+		
+		// doesn't have permission:
+		assertFalse(authorizationServices.hasPermission(
+				TestObjectContainer.PERSON_1, TestObjectContainer.ORG_UNIT_A, TestObjectContainer.PERMISSION_1_C, TestObjectContainer.APP_A));
+		
+		// has permission in super-org-unit:
+		assertTrue(authorizationServices.hasPermission(
+				TestObjectContainer.PERSON_3, TestObjectContainer.ORG_UNIT_A, TestObjectContainer.PERMISSION_2_C, TestObjectContainer.APP_C));
+		
+		// doesn't have permission in super-org-unit:
+		assertFalse(authorizationServices.hasPermission(
+				TestObjectContainer.PERSON_3, TestObjectContainer.ORG_UNIT_A, TestObjectContainer.PERMISSION_1_A, TestObjectContainer.APP_A));
+		
+		// test with arbitrary domain-objects:
 		final String APP_ID = UUID.randomUUID().toString();
 		final String APP_NAME = "appName";
 		MyApplicationImpl app = new MyApplicationImpl(APP_ID, APP_NAME);
@@ -105,6 +118,37 @@ public class AuthorizationServicesTest
 	@Test
 	public void testHasPermissionStringStringStringIApplication()
 	{
+		// test with open-ur-specific domain-objects:
+		Mockito.when(securityDaoMock.findPermissionByName(TestObjectContainer.PERMISSION_1_A.getPermissionName()))
+				.thenReturn(TestObjectContainer.PERMISSION_1_A);
+		Mockito.when(orgUnitServicesMock.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_A)).thenReturn(TestObjectContainer.ORG_UNIT_A);
+		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
+		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_3)).thenReturn(TestObjectContainer.PERSON_3);
+		Mockito.when(securityDaoMock.findPermissionByName(TestObjectContainer.PERMISSION_2_C.getPermissionName()))
+				.thenReturn(TestObjectContainer.PERMISSION_2_C);
+		Mockito.when(orgUnitServicesMock.findOrgUnitById(TestObjectContainer.SUPER_OU_UUID_1)).thenReturn(TestObjectContainer.SUPER_OU_1);		
+		
+		// has permission in org-unit:
+		assertTrue(authorizationServices.hasPermission(
+				TestObjectContainer.PERSON_UUID_1, TestObjectContainer.ORG_UNIT_UUID_A, 
+				TestObjectContainer.PERMISSION_1_A.getPermissionName(), TestObjectContainer.APP_A));
+		
+		// doesn't have permission:
+		assertFalse(authorizationServices.hasPermission(
+				TestObjectContainer.PERSON_UUID_1, TestObjectContainer.ORG_UNIT_UUID_A, 
+				TestObjectContainer.PERMISSION_1_C.getPermissionName(), TestObjectContainer.APP_A));
+		
+		// has permission in super-org-unit:
+		assertTrue(authorizationServices.hasPermission(
+				TestObjectContainer.PERSON_UUID_3, TestObjectContainer.ORG_UNIT_UUID_A, 
+				TestObjectContainer.PERMISSION_2_C.getPermissionName(), TestObjectContainer.APP_C));
+		
+		// doesn't have permission in super-org-unit:
+		assertFalse(authorizationServices.hasPermission(
+				TestObjectContainer.PERSON_UUID_3, TestObjectContainer.ORG_UNIT_UUID_A, 
+				TestObjectContainer.PERMISSION_1_A.getPermissionName(), TestObjectContainer.APP_A));
+		
+		// test with arbitrary domain-objects:
 		final String APP_ID = UUID.randomUUID().toString();
 		final String APP_NAME = "appName";
 		MyApplicationImpl app = new MyApplicationImpl(APP_ID, APP_NAME);

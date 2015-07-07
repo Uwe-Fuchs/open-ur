@@ -145,19 +145,19 @@ public class TestObjectContainer
 		ROLE_X = new OpenURRoleBuilder("role_X")
 				.description("description role_X")
 				.creationDate(LocalDateTime.now())
-				.permissions(new HashSet<OpenURPermission>(Arrays.asList(PERMISSION_1_A, PERMISSION_1_B)))
+				.permissions(new HashSet<OpenURPermission>(Arrays.asList(PERMISSION_1_A, PERMISSION_2_A)))
 				.build();
 
 		ROLE_Y = new OpenURRoleBuilder("role_Y")
 				.description("description role_Y")
 				.creationDate(LocalDateTime.now())
-				.permissions(new HashSet<OpenURPermission>(Arrays.asList(PERMISSION_1_C, PERMISSION_2_A)))
+				.permissions(new HashSet<OpenURPermission>(Arrays.asList(PERMISSION_1_B, PERMISSION_2_B)))
 				.build();
 
 		ROLE_Z = new OpenURRoleBuilder("role_Z")
 				.description("description role_Z")
 				.creationDate(LocalDateTime.now())
-				.permissions(new HashSet<OpenURPermission>(Arrays.asList(PERMISSION_2_B, PERMISSION_2_C)))
+				.permissions(new HashSet<OpenURPermission>(Arrays.asList(PERMISSION_1_C, PERMISSION_2_C)))
 				.build();
 		
 		// persons:
@@ -257,11 +257,16 @@ public class TestObjectContainer
 				.address(address)
 				.build();
 		
+		AuthorizableMember super_ou_1_member_3 = new AuthorizableMemberBuilder(PERSON_3, SUPER_OU_UUID_1)
+				.roles(Arrays.asList(ROLE_Z))
+				.build();	
+		
 		SUPER_OU_1 = new AuthorizableOrgUnitBuilder(SUPER_OU_NUMBER_1, "superOu_1")
 				.identifier(SUPER_OU_UUID_1)
 				.shortName("short_name_super_ou_1")
 				.rootOrgUnit(ROOT_OU)
 			  .superOrgUnit(ROOT_OU)
+				.addMember(super_ou_1_member_3)
 				.build();
 		
 		SUPER_OU_2 = new AuthorizableOrgUnitBuilder(SUPER_OU_NUMBER_2, "superOu_2")
