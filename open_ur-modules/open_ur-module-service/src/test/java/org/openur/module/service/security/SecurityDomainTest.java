@@ -17,6 +17,7 @@ import org.mockito.Mockito;
 import org.openur.domain.testfixture.dummyimpl.MyApplicationImpl;
 import org.openur.domain.testfixture.dummyimpl.MyPermissionImpl;
 import org.openur.domain.testfixture.dummyimpl.MyRoleImpl;
+import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
@@ -39,7 +40,19 @@ public class SecurityDomainTest
 
 	@Test
 	public void testObtainAllRoles()
-	{
+	{	
+		// test with open-ur-specific domain-objects:
+		Mockito.when(securityDao.obtainAllRoles()).thenReturn(Arrays.asList(TestObjectContainer.ROLE_X, TestObjectContainer.ROLE_Y));
+		
+		Set<IRole> resultSet = securityDomainServices.obtainAllRoles();
+		
+		assertNotNull(resultSet);
+		assertEquals(2, resultSet.size());
+		assertTrue(resultSet.contains(TestObjectContainer.ROLE_X));
+		assertTrue(resultSet.contains(TestObjectContainer.ROLE_Y));
+		assertFalse(resultSet.contains(TestObjectContainer.ROLE_Z));
+
+		// test with arbitrary domain-objects:
 		final String ROLE_1_ID = UUID.randomUUID().toString();
 		final String ROLE_1_NAME = "role1Name";
 		IRole role1 = new MyRoleImpl(ROLE_1_ID, ROLE_1_NAME);
@@ -50,7 +63,7 @@ public class SecurityDomainTest
 
 		Mockito.when(securityDao.obtainAllRoles()).thenReturn(Arrays.asList(role1, role2));
 		
-		Set<IRole> resultSet = securityDomainServices.obtainAllRoles();
+		resultSet = securityDomainServices.obtainAllRoles();
 		
 		assertNotNull(resultSet);
 		assertEquals(2, resultSet.size());
@@ -72,13 +85,27 @@ public class SecurityDomainTest
 	@Test
 	public void testFindRoleById()
 	{
+		// test with open-ur-specific domain-objects:
+		Mockito.when(securityDao.findRoleById(TestObjectContainer.ROLE_X.getIdentifier())).thenReturn(TestObjectContainer.ROLE_X);		
+		IRole resultRole = securityDomainServices.findRoleById(TestObjectContainer.ROLE_X.getIdentifier());
+		assertEquals(TestObjectContainer.ROLE_X, resultRole);
+
+		Mockito.when(securityDao.findRoleById(TestObjectContainer.ROLE_Y.getIdentifier())).thenReturn(TestObjectContainer.ROLE_Y);
+		resultRole = securityDomainServices.findRoleById(TestObjectContainer.ROLE_Y.getIdentifier());
+		assertEquals(TestObjectContainer.ROLE_Y, resultRole);
+		
+		String otherId = UUID.randomUUID().toString();
+		resultRole = securityDomainServices.findRoleById(otherId);
+		assertTrue(resultRole == null);
+
+		// test with arbitrary domain-objects:
 		final String ROLE_1_ID = UUID.randomUUID().toString();
 		final String ROLE_1_NAME = "role1Name";
 		IRole role1 = new MyRoleImpl(ROLE_1_ID, ROLE_1_NAME);
 		
 		Mockito.when(securityDao.findRoleById(ROLE_1_ID)).thenReturn(role1);
 		
-		IRole resultRole = securityDomainServices.findRoleById(ROLE_1_ID);
+		resultRole = securityDomainServices.findRoleById(ROLE_1_ID);
 		assertEquals(ROLE_1_ID, resultRole.getIdentifier());
 		assertEquals(ROLE_1_NAME, resultRole.getRoleName());
 
@@ -92,21 +119,35 @@ public class SecurityDomainTest
 		assertEquals(ROLE_2_ID, resultRole.getIdentifier());
 		assertEquals(ROLE_2_NAME, resultRole.getRoleName());
 		
-		final String OTHER_ID = UUID.randomUUID().toString();
-		resultRole = securityDomainServices.findRoleById(OTHER_ID);
-		assertTrue(resultRole == null || !ROLE_1_ID.equals(resultRole.getIdentifier()) || !ROLE_2_ID.equals(resultRole.getIdentifier()));
+		otherId = UUID.randomUUID().toString();
+		resultRole = securityDomainServices.findRoleById(otherId);
+		assertTrue(resultRole == null);
 	}
 
 	@Test
 	public void testFindRoleByName()
 	{
+		// test with open-ur-specific domain-objects:
+		Mockito.when(securityDao.findRoleByName(TestObjectContainer.ROLE_X.getRoleName())).thenReturn(TestObjectContainer.ROLE_X);		
+		IRole resultRole = securityDomainServices.findRoleByName(TestObjectContainer.ROLE_X.getRoleName());
+		assertEquals(TestObjectContainer.ROLE_X, resultRole);
+
+		Mockito.when(securityDao.findRoleByName(TestObjectContainer.ROLE_Y.getRoleName())).thenReturn(TestObjectContainer.ROLE_Y);
+		resultRole = securityDomainServices.findRoleByName(TestObjectContainer.ROLE_Y.getRoleName());
+		assertEquals(TestObjectContainer.ROLE_Y, resultRole);
+		
+		String otherName = "otherName";
+		resultRole = securityDomainServices.findRoleByName(otherName);
+		assertTrue(resultRole == null);
+
+		// test with arbitrary domain-objects:
 		final String ROLE_1_ID = UUID.randomUUID().toString();
 		final String ROLE_1_NAME = "role1Name";
 		IRole role1 = new MyRoleImpl(ROLE_1_ID, ROLE_1_NAME);
 		
 		Mockito.when(securityDao.findRoleByName(ROLE_1_ID)).thenReturn(role1);
 		
-		IRole resultRole = securityDomainServices.findRoleByName(ROLE_1_ID);
+		resultRole = securityDomainServices.findRoleByName(ROLE_1_ID);
 		assertEquals(ROLE_1_NAME, resultRole.getRoleName());
 		assertEquals(ROLE_1_ID, resultRole.getIdentifier());
 
@@ -119,15 +160,29 @@ public class SecurityDomainTest
 		resultRole = securityDomainServices.findRoleByName(ROLE_2_ID);
 		assertEquals(ROLE_2_NAME, resultRole.getRoleName());
 		assertEquals(ROLE_2_ID, resultRole.getIdentifier());
-		
-		final String OTHER_NAME = "otherName";
-		resultRole = securityDomainServices.findRoleByName(OTHER_NAME);
-		assertTrue(resultRole == null || !OTHER_NAME.equals(resultRole.getRoleName()) || !OTHER_NAME.equals(resultRole.getRoleName()));
+
+		resultRole = securityDomainServices.findRoleByName(otherName);
+		assertTrue(resultRole == null);
 	}
 
 	@Test
 	public void testFindPermissionById()
 	{
+		// test with open-ur-specific domain-objects:
+		Mockito.when(securityDao.findPermissionById(TestObjectContainer.PERMISSION_1_A.getIdentifier())).thenReturn(TestObjectContainer.PERMISSION_1_A);
+		Mockito.when(securityDao.findPermissionById(TestObjectContainer.PERMISSION_1_B.getIdentifier())).thenReturn(TestObjectContainer.PERMISSION_1_B);
+		
+		IPermission resultPermission = securityDomainServices.findPermissionById(TestObjectContainer.PERMISSION_1_A.getIdentifier());
+		assertEquals(TestObjectContainer.PERMISSION_1_A, resultPermission);
+		
+		resultPermission = securityDomainServices.findPermissionById(TestObjectContainer.PERMISSION_1_B.getIdentifier());
+		assertEquals(TestObjectContainer.PERMISSION_1_B, resultPermission);
+		
+		String otherId = UUID.randomUUID().toString();
+		resultPermission = securityDomainServices.findPermissionById(otherId);
+		assertTrue(resultPermission == null);
+
+		// test with arbitrary domain-objects:
 		final String APP_ID = UUID.randomUUID().toString();
 		final String APP_NAME = "appName";
 		IApplication app = new MyApplicationImpl(APP_ID, APP_NAME);
@@ -143,7 +198,7 @@ public class SecurityDomainTest
 		Mockito.when(securityDao.findPermissionById(PERM_ID_1)).thenReturn(perm1);
 		Mockito.when(securityDao.findPermissionById(PERM_ID_2)).thenReturn(perm2);
 		
-		IPermission resultPermission = securityDomainServices.findPermissionById(PERM_ID_1);
+		resultPermission = securityDomainServices.findPermissionById(PERM_ID_1);
 		assertEquals(resultPermission.getIdentifier(), perm1.getIdentifier());
 		assertEquals(resultPermission.getPermissionName(), perm1.getPermissionName());
 		
@@ -151,14 +206,35 @@ public class SecurityDomainTest
 		assertEquals(resultPermission.getIdentifier(), perm2.getIdentifier());
 		assertEquals(resultPermission.getPermissionName(), perm2.getPermissionName());
 		
-		final String OTHER_ID = UUID.randomUUID().toString();
-		resultPermission = securityDomainServices.findPermissionById(OTHER_ID);
-		assertTrue(resultPermission == null || !PERM_ID_1.equals(resultPermission.getIdentifier()) || !!PERM_ID_2.equals(resultPermission.getIdentifier()));
+		otherId = UUID.randomUUID().toString();
+		resultPermission = securityDomainServices.findPermissionById(otherId);
+		assertTrue(resultPermission == null);
 	}
 
 	@Test
 	public void testFindPermissionByName()
 	{
+		// test with open-ur-specific domain-objects:
+		Mockito.when(securityDao.findPermissionByName(TestObjectContainer.PERMISSION_1_A.getPermissionName())).thenReturn(TestObjectContainer.PERMISSION_1_A);
+		Mockito.when(securityDao.findPermissionByName(TestObjectContainer.PERMISSION_1_B.getPermissionName())).thenReturn(TestObjectContainer.PERMISSION_1_B);
+		
+		IPermission resultPermission = securityDomainServices.findPermissionByName(
+				TestObjectContainer.PERMISSION_1_A.getPermissionName(), TestObjectContainer.APP_A);
+		assertEquals(TestObjectContainer.PERMISSION_1_A, resultPermission);
+		
+		resultPermission = securityDomainServices.findPermissionByName(
+				TestObjectContainer.PERMISSION_1_B.getPermissionName(), TestObjectContainer.APP_B);
+		assertEquals(TestObjectContainer.PERMISSION_1_B, resultPermission);
+		
+		String otherId = UUID.randomUUID().toString();
+		resultPermission = securityDomainServices.findPermissionByName(otherId, TestObjectContainer.APP_A);
+		assertTrue(resultPermission == null);
+		resultPermission = securityDomainServices.findPermissionByName(otherId, TestObjectContainer.APP_B);
+		assertTrue(resultPermission == null);
+		resultPermission = securityDomainServices.findPermissionByName(otherId, TestObjectContainer.APP_C);
+		assertTrue(resultPermission == null);
+
+		// test with arbitrary domain-objects:
 		final String APP_ID = UUID.randomUUID().toString();
 		final String APP_NAME = "appName";
 		IApplication app = new MyApplicationImpl(APP_ID, APP_NAME);
@@ -174,7 +250,7 @@ public class SecurityDomainTest
 		Mockito.when(securityDao.findPermissionByName(PERM_1_NAME)).thenReturn(perm1);
 		Mockito.when(securityDao.findPermissionByName(PERM_2_NAME)).thenReturn(perm2);
 		
-		IPermission resultPermission = securityDomainServices.findPermissionByName(PERM_1_NAME, app);
+		resultPermission = securityDomainServices.findPermissionByName(PERM_1_NAME, app);
 		assertEquals(resultPermission.getPermissionName(), perm1.getPermissionName());
 		assertEquals(resultPermission.getIdentifier(), perm1.getIdentifier());
 		
@@ -187,12 +263,27 @@ public class SecurityDomainTest
 		
 		final String OTHER_NAME = "otherName";
 		resultPermission = securityDomainServices.findPermissionByName(OTHER_NAME, app);
-		assertTrue(resultPermission == null || !PERM_ID_1.equals(resultPermission.getPermissionName()) || !!PERM_ID_2.equals(resultPermission.getPermissionName()));
+		assertTrue(resultPermission == null);
 	}
 
 	@Test
 	public void testObtainAllPermissions()
-	{
+	{		
+		// test with open-ur-specific domain-objects:
+		Mockito.when(securityDao.obtainAllPermissions()).thenReturn(Arrays.asList(TestObjectContainer.PERMISSION_1_A, TestObjectContainer.PERMISSION_1_B));
+		
+		Set<IPermission> resultSet = securityDomainServices.obtainAllPermissions();
+		
+		assertNotNull(resultSet);
+		assertEquals(2, resultSet.size());
+		assertTrue(resultSet.contains(TestObjectContainer.PERMISSION_1_A));
+		assertTrue(resultSet.contains(TestObjectContainer.PERMISSION_1_B));
+		assertFalse(resultSet.contains(TestObjectContainer.PERMISSION_2_A));
+		assertFalse(resultSet.contains(TestObjectContainer.PERMISSION_2_B));
+		assertFalse(resultSet.contains(TestObjectContainer.PERMISSION_1_C));
+		assertFalse(resultSet.contains(TestObjectContainer.PERMISSION_2_C));
+
+		// test with arbitrary domain-objects:
 		final String APP_ID = UUID.randomUUID().toString();
 		final String APP_NAME = "appName";
 		IApplication app = new MyApplicationImpl(APP_ID, APP_NAME);
@@ -207,7 +298,7 @@ public class SecurityDomainTest
 		
 		Mockito.when(securityDao.obtainAllPermissions()).thenReturn(Arrays.asList(perm1, perm2));
 		
-		Set<IPermission> resultSet = securityDomainServices.obtainAllPermissions();
+		resultSet = securityDomainServices.obtainAllPermissions();
 		
 		assertNotNull(resultSet);
 		assertEquals(2, resultSet.size());
@@ -229,6 +320,22 @@ public class SecurityDomainTest
 	@Test
 	public void testObtainPermissionsForApp()
 	{
+		// test with open-ur-specific domain-objects:
+		Mockito.when(securityDao.obtainPermissionsForApp(TestObjectContainer.APP_A.getApplicationName()))
+				.thenReturn(Arrays.asList(TestObjectContainer.PERMISSION_1_A, TestObjectContainer.PERMISSION_2_A));
+		
+		Set<IPermission> resultSet = securityDomainServices.obtainPermissionsForApp(TestObjectContainer.APP_A);
+		
+		assertNotNull(resultSet);
+		assertEquals(2, resultSet.size());
+		assertTrue(resultSet.contains(TestObjectContainer.PERMISSION_1_A));
+		assertTrue(resultSet.contains(TestObjectContainer.PERMISSION_2_A));
+		assertFalse(resultSet.contains(TestObjectContainer.PERMISSION_1_B));
+		assertFalse(resultSet.contains(TestObjectContainer.PERMISSION_2_B));
+		assertFalse(resultSet.contains(TestObjectContainer.PERMISSION_1_C));
+		assertFalse(resultSet.contains(TestObjectContainer.PERMISSION_2_C));
+
+		// test with arbitrary domain-objects:
 		final String APP_1_ID = UUID.randomUUID().toString();
 		final String APP_1_NAME = "app1Name";
 		IApplication app1 = new MyApplicationImpl(APP_1_ID, APP_1_NAME);
@@ -257,7 +364,7 @@ public class SecurityDomainTest
 
 		Mockito.when(securityDao.obtainPermissionsForApp(app2.getApplicationName())).thenReturn(Arrays.asList(perm21, perm22));
 		
-		Set<IPermission> resultSet = securityDomainServices.obtainPermissionsForApp(app1);
+		resultSet = securityDomainServices.obtainPermissionsForApp(app1);
 		assertNotNull(resultSet);
 		assertEquals(2, resultSet.size());
 		
