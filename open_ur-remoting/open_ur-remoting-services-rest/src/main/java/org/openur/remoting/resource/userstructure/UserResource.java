@@ -47,7 +47,7 @@ public class UserResource
 	}
 
 	@GET
-	@Path("/person/allPersons")
+	@Path("/person/all")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public Response obtainAllPersons()
 	{
@@ -83,7 +83,7 @@ public class UserResource
 	}
 
 	@GET
-	@Path("/techuser/allPersons")
+	@Path("/techuser/all")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public Response obtainAllTechnicalUsers()
 	{

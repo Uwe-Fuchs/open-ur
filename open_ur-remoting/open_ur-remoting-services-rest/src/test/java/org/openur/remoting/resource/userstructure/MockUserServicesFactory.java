@@ -15,10 +15,15 @@ public class MockUserServicesFactory
 	public IUserServices provide()
 	{
 		final IUserServices userServicesMock = Mockito.mock(IUserServices.class);
+		
 		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
 		Mockito.when(userServicesMock.findPersonByNumber(TestObjectContainer.PERSON_NUMBER_1)).thenReturn(TestObjectContainer.PERSON_1);
 		Mockito.when(userServicesMock.obtainAllPersons()).thenReturn(new HashSet<>(Arrays.asList(TestObjectContainer.PERSON_1, TestObjectContainer.PERSON_2, 
 			TestObjectContainer.PERSON_3)));
+		Mockito.when(userServicesMock.findTechnicalUserById(TestObjectContainer.TECH_USER_UUID_1)).thenReturn(TestObjectContainer.TECH_USER_1);
+		Mockito.when(userServicesMock.findTechnicalUserByNumber(TestObjectContainer.TECH_USER_NUMBER_1)).thenReturn(TestObjectContainer.TECH_USER_1);
+		Mockito.when(userServicesMock.obtainAllTechnicalUsers()).thenReturn(new HashSet<>(Arrays.asList(TestObjectContainer.TECH_USER_1, 
+			TestObjectContainer.TECH_USER_2, TestObjectContainer.TECH_USER_3)));
 
 		return userServicesMock;
 	}
