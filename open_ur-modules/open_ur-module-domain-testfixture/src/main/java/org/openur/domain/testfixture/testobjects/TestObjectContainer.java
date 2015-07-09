@@ -51,6 +51,10 @@ public class TestObjectContainer
 	public static final OpenURRole ROLE_X;
 	public static final OpenURRole ROLE_Y;
 	public static final OpenURRole ROLE_Z;
+	
+	public static final Address ADDRESS_1;
+	public static final Address ADDRESS_2;
+	public static final Address ADDRESS_3;
 
 	public static final String PERSON_UUID_1 = UUID.randomUUID().toString();
 	public static final String PERSON_UUID_2 = UUID.randomUUID().toString();
@@ -164,12 +168,13 @@ public class TestObjectContainer
 		// person 1:
 		Name name_1 = Name.create(Gender.MALE, "male_first_name_1", "last_name_1");
 		
-		Address address = new AddressBuilder("11")
+		ADDRESS_1 = new AddressBuilder("11")
 				.country(Country.byCode("DE"))
 				.city("city_1")
 				.street("street_1")
 				.streetNo("11")
 				.poBox("poBox_1")
+				.creationDate(LocalDateTime.now())
 				.build();
 
 		Set<OpenURApplication> applications = new HashSet<>(Arrays.asList(APP_A, APP_A));
@@ -182,7 +187,7 @@ public class TestObjectContainer
 				.phoneNumber("0049111111111")
 				.faxNumber("0049111111112")
 				.mobileNumber("0049111111113")
-				.homeAddress(address)
+				.homeAddress(ADDRESS_1)
 				.homePhoneNumber("0049111111114")
 				.homeEmailAddress(EMailAddress.create("home@name_1.de"))
 				.applications(applications)
@@ -191,12 +196,13 @@ public class TestObjectContainer
 		// person 2:
 		Name name_2 = Name.create(Gender.MALE, Title.DR, "male_first_name_2", "last_name_2");
 		
-		address = new AddressBuilder("22")
+		ADDRESS_2 = new AddressBuilder("22")
 				.country(Country.byCode("GB"))
 				.city("city_2")
 				.street("street_2")
 				.streetNo("22")
 				.poBox("poBox_2")
+				.creationDate(LocalDateTime.now())
 				.build();
 
 		applications = new HashSet<>(Arrays.asList(APP_B, APP_C));
@@ -209,7 +215,7 @@ public class TestObjectContainer
 				.phoneNumber("00442222222221")
 				.faxNumber("00442222222222")
 				.mobileNumber("00442222222223")
-				.homeAddress(address)
+				.homeAddress(ADDRESS_2)
 				.homePhoneNumber("00442222222224")
 				.homeEmailAddress(EMailAddress.create("home@name_2.co.uk"))
 				.applications(applications)
@@ -218,12 +224,13 @@ public class TestObjectContainer
 		// person 3:
 		Name name_3 = Name.create(Gender.FEMALE, "female_first_name_3", "last_name_3");
 		
-		address = new AddressBuilder("33")
+		ADDRESS_3 = new AddressBuilder("33")
 				.country(Country.byCode("FR"))
 				.city("city_3")
 				.street("street_3")
 				.streetNo("33")
 				.poBox("poBox_3")
+				.creationDate(LocalDateTime.now())
 				.build();
 
 		applications = new HashSet<>(Arrays.asList(APP_B, APP_C));
@@ -236,14 +243,14 @@ public class TestObjectContainer
 				.phoneNumber("0033333333331")
 				.faxNumber("0033333333332")
 				.mobileNumber("0033333333333")
-				.homeAddress(address)
+				.homeAddress(ADDRESS_3)
 				.homePhoneNumber("0033333333334")
 				.homeEmailAddress(EMailAddress.create("home@name_3.fr"))
 				.applications(applications)
 				.build();
 		
 		// org-units:		
-		address = new AddressBuilder("55555")
+		Address address = new AddressBuilder("55555")
 				.country(Country.byCode("DE"))
 				.city("city_company")
 				.street("street_company")
