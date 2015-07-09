@@ -11,12 +11,9 @@ public class XmlAddressMapper
 {
 	public static XmlAddress mapFromImmutable(Address immutable)
 	{
-    XmlDateConverter converter = new XmlDateConverter();
-    
-		XmlAddress address = new XmlAddress(
+    XmlAddress address = new XmlAddress(
 					immutable.getPostcode(), 
-					immutable.getCountry() != null ? immutable.getCountry().getCountryCode() : null, 
-					converter.convertDateTimeToXml(immutable.getCreationDate()));
+					immutable.getCountry() != null ? immutable.getCountry().getCountryCode() : null);
 	
 		address.setIdentifier(immutable.getIdentifier());
 		address.setCareOf(immutable.getCareOf());
@@ -25,30 +22,23 @@ public class XmlAddressMapper
 		address.setStreet(immutable.getStreet());
 		address.setStreetNo(immutable.getStreetNo());
 		
-		if (immutable.getLastModifiedDate() != null)
-		{
-			address.setLastModifiedDate(converter.convertDateTimeToXml(immutable.getLastModifiedDate()));			
-		}
-		
-		return address;
+		return AbstractXmlMapper.mapFromImmutable(immutable, address);
 	}
 
 	public static Address mapFromXmlRepresentation(XmlAddress xmlRepresentation)
-	{
-    XmlDateConverter converter = new XmlDateConverter();
+	{    
 		AddressBuilder immutableBuilder = new AddressBuilder(xmlRepresentation.getPostcode());
 		
-		immutableBuilder
+		immutableBuilder = immutableBuilder
 				.identifier(xmlRepresentation.getIdentifier())
 				.careOf(xmlRepresentation.getCareOf())
 				.city(xmlRepresentation.getCity())
 				.poBox(xmlRepresentation.getPoBox())
 				.street(xmlRepresentation.getStreet())
 				.streetNo(xmlRepresentation.getStreetNo())
-				.country(StringUtils.isNotEmpty(xmlRepresentation.getCountryCode()) ? Country.byCode(xmlRepresentation.getCountryCode()) : null)
-				.creationDate(converter.convertDateTimeFromXml(xmlRepresentation.getCreationDate()))
-				.lastModifiedDate(xmlRepresentation.getLastModifiedDate() != null ? converter.convertDateTimeFromXml(xmlRepresentation.getLastModifiedDate()) : null)
-				.build();
+				.country(StringUtils.isNotEmpty(xmlRepresentation.getCountryCode()) ? Country.byCode(xmlRepresentation.getCountryCode()) : null);
+		
+		immutableBuilder = AbstractXmlMapper.mapFromXmlRepresentation(immutableBuilder, xmlRepresentation);
 		
 		return immutableBuilder.build();
 	}

@@ -33,6 +33,12 @@ public abstract class AbstractXmlRepresentation
 		return creationDate;
 	}
 
+	public void setCreationDate(XMLGregorianCalendar creationDate)
+	{
+		Validate.notNull(creationDate, "creation-date must not be null!");
+		this.creationDate = creationDate;
+	}
+
 	public XMLGregorianCalendar getLastModifiedDate()
 	{
 		return lastModifiedDate;
@@ -41,14 +47,6 @@ public abstract class AbstractXmlRepresentation
 	public void setLastModifiedDate(XMLGregorianCalendar lastModifiedDate)
 	{
 		this.lastModifiedDate = lastModifiedDate;
-	}
-
-	protected AbstractXmlRepresentation(XMLGregorianCalendar creationDate)
-	{
-		this();
-		
-		Validate.notNull(creationDate, "creation-date must not be null!");
-		this.creationDate = creationDate;
 	}
 
 	protected AbstractXmlRepresentation()

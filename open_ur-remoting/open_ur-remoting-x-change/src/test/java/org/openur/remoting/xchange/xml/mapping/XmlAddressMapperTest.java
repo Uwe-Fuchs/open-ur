@@ -2,8 +2,6 @@ package org.openur.remoting.xchange.xml.mapping;
 
 import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.userstructure.Address;
@@ -11,19 +9,6 @@ import org.openur.remoting.xchange.xml.representations.XmlAddress;
 
 public class XmlAddressMapperTest
 {
-
-	@Before
-	public void setUp()
-		throws Exception
-	{
-	}
-
-	@After
-	public void tearDown()
-		throws Exception
-	{
-	}
-
 	@Test
 	public void testMapFromImmutable()
 	{
@@ -36,11 +21,11 @@ public class XmlAddressMapperTest
 	public void testMapFromXmlRepresentation()
 	{
 		Address address = TestObjectContainer.ADDRESS_1;
-		XmlDateConverter converter = new XmlDateConverter();
 		
 		XmlAddress xmlAddress = new XmlAddress(
-				address.getPostcode(), address.getCountry().getCountryCode(), converter.convertDateTimeToXml(address.getCreationDate()));
+				address.getPostcode(), address.getCountry().getCountryCode());
 		xmlAddress.setIdentifier(address.getIdentifier());
+		xmlAddress.setCreationDate(new XmlDateConverter().convertDateTimeToXml(address.getCreationDate()));
 		xmlAddress.setCareOf(address.getCareOf());
 		xmlAddress.setCity(address.getCity());
 		xmlAddress.setPoBox(address.getPoBox());
