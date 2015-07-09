@@ -1,9 +1,7 @@
 package org.openur.remoting.xchange.xml.mapping;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
