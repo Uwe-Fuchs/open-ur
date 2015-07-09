@@ -4,7 +4,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.commons.lang3.Validate;
 
@@ -94,9 +93,9 @@ public class XmlAddress
 		return countryCode;
 	}
 
-	public XmlAddress(String postcode, String countryCode, XMLGregorianCalendar creationDate)
+	public XmlAddress(String postcode, String countryCode)
 	{
-		super(creationDate);
+		super();
 		
 		Validate.notEmpty(postcode, "post-code must not be empty!");
 		Validate.notEmpty(countryCode, "country-code must not be empty!");	
