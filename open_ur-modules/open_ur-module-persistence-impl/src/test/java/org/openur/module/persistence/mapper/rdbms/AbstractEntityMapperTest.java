@@ -1,8 +1,6 @@
 package org.openur.module.persistence.mapper.rdbms;
 
-import java.time.LocalDateTime;
-
-import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.openur.domain.testfixture.util.TestHelper;
 import org.openur.module.domain.IdentifiableEntityImpl;
 import org.openur.module.domain.userstructure.UserStructureBase;
 import org.openur.module.persistence.rdbms.entity.AbstractOpenUrPersistable;
@@ -24,12 +22,12 @@ public class AbstractEntityMapperTest
 			return false;
 		}
 
-		if (!compareLocalDateTimes(immutable.getCreationDate(), persistable.getCreationDate()))
+		if (!TestHelper.compareLocalDateTimes(immutable.getCreationDate(), persistable.getCreationDate()))
 		{
 			return false;
 		}
 
-		return compareLocalDateTimes(immutable.getLastModifiedDate(), persistable.getLastModifiedDate());
+		return TestHelper.compareLocalDateTimes(immutable.getLastModifiedDate(), persistable.getLastModifiedDate());
 	}
 
 	public static <I extends UserStructureBase, P extends PUserStructureBase> 
@@ -41,27 +39,5 @@ public class AbstractEntityMapperTest
 		}
 
 		return (immutable.getStatus() == persistable.getStatus());
-	}
-
-	private static boolean compareLocalDateTimes(LocalDateTime first, LocalDateTime second)
-	{
-		if (first == null && second == null)
-		{
-			return true;
-		}
-
-		if (first == null || second == null)
-		{
-			return false;
-		}
-
-		return new EqualsBuilder()
-				.append(first.getYear(), second.getYear())
-				.append(first.getMonth(), second.getMonth())
-				.append(first.getDayOfMonth(), second.getDayOfMonth())
-				.append(first.getHour(), second.getHour())
-				.append(first.getMinute(), second.getMinute())
-				.append(first.getSecond(), second.getSecond())
-				.isEquals();
 	}
 }
