@@ -19,5 +19,10 @@ public class XmlApplicationMapper
 		immutableBuilder = AbstractXmlMapper.mapFromXmlRepresentation(immutableBuilder, xmlRepresentation);
 		
 		return immutableBuilder.build();
+	}	
+	
+	public static boolean immutableEqualsToXmlRepresentation(OpenURApplication immutable, XmlApplication xmlRepresentation)
+	{
+		return immutable.getApplicationName().equals(xmlRepresentation.getApplicationName());
 	}
 }
