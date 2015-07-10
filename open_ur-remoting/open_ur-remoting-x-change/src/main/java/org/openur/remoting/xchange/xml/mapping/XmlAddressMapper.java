@@ -30,7 +30,6 @@ public class XmlAddressMapper
 		AddressBuilder immutableBuilder = new AddressBuilder(xmlRepresentation.getPostcode());
 		
 		immutableBuilder = immutableBuilder
-				.identifier(xmlRepresentation.getIdentifier())
 				.careOf(xmlRepresentation.getCareOf())
 				.city(xmlRepresentation.getCity())
 				.poBox(xmlRepresentation.getPoBox())

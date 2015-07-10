@@ -27,6 +27,7 @@ public class AbstractXmlMapper
     
 		return immutableBuilder
 			.creationDate(converter.convertDateTimeFromXml(xmlRepresentation.getCreationDate()))
-			.lastModifiedDate(xmlRepresentation.getLastModifiedDate() != null ? converter.convertDateTimeFromXml(xmlRepresentation.getLastModifiedDate()) : null);
+			.lastModifiedDate(xmlRepresentation.getLastModifiedDate() != null ? converter.convertDateTimeFromXml(xmlRepresentation.getLastModifiedDate()) : null)
+			.identifier(xmlRepresentation.getIdentifier());
 	}
 }
