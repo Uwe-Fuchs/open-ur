@@ -18,6 +18,14 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.open-ur.pom</groupId>
 			<artifactId>open_ur-pom-testbase-component</artifactId>
 			<type>pom</type>
