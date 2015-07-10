@@ -2,6 +2,7 @@ package org.openur.remoting.xchange.xml.representations;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.commons.lang3.Validate;
@@ -12,9 +13,11 @@ public abstract class AbstractXmlRepresentation
 	@XmlAttribute
 	private String identifier;
 
+  @XmlSchemaType(name = "date")
 	@XmlAttribute(required = true)
 	private XMLGregorianCalendar creationDate;
 
+  @XmlSchemaType(name = "date")
 	@XmlAttribute
 	private XMLGregorianCalendar lastModifiedDate;
 

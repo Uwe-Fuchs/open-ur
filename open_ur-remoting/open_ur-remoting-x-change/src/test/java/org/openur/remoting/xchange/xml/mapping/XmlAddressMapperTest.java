@@ -20,18 +20,18 @@ public class XmlAddressMapperTest
 	@Test
 	public void testMapFromXmlRepresentation()
 	{
-		Address address = TestObjectContainer.ADDRESS_1;
-		
 		XmlAddress xmlAddress = new XmlAddress(
-				address.getPostcode(), address.getCountry().getCountryCode());
-		xmlAddress.setIdentifier(address.getIdentifier());
-		xmlAddress.setCreationDate(new XmlDateConverter().convertDateTimeToXml(address.getCreationDate()));
-		xmlAddress.setCareOf(address.getCareOf());
-		xmlAddress.setCity(address.getCity());
-		xmlAddress.setPoBox(address.getPoBox());
-		xmlAddress.setStreet(address.getStreet());
-		xmlAddress.setStreetNo(address.getStreetNo());
-
+			TestObjectContainer.ADDRESS_1.getPostcode(), TestObjectContainer.ADDRESS_1.getCountry().getCountryCode());
+		xmlAddress.setIdentifier(TestObjectContainer.ADDRESS_1.getIdentifier());
+		xmlAddress.setCreationDate(new XmlDateConverter().convertDateTimeToXml(TestObjectContainer.ADDRESS_1.getCreationDate()));
+		xmlAddress.setCareOf(TestObjectContainer.ADDRESS_1.getCareOf());
+		xmlAddress.setCity(TestObjectContainer.ADDRESS_1.getCity());
+		xmlAddress.setPoBox(TestObjectContainer.ADDRESS_1.getPoBox());
+		xmlAddress.setStreet(TestObjectContainer.ADDRESS_1.getStreet());
+		xmlAddress.setStreetNo(TestObjectContainer.ADDRESS_1.getStreetNo());
+		
+		Address address = XmlAddressMapper.mapFromXmlRepresentation(xmlAddress);
+		
 		assertTrue(immutableEqualsToXmlRepresentation(address, xmlAddress));
 	}
 
