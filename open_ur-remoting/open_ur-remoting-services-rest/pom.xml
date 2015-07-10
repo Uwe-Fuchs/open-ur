@@ -28,9 +28,19 @@
 		</dependency>
 		<dependency>
 			<groupId>org.open-ur.module</groupId>
+			<artifactId>open_ur-module-domain-impl</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.open-ur.module</groupId>
 			<artifactId>open_ur-module-domain-testfixture</artifactId>
 			<version>${project.version}</version>
-      		<scope>test</scope>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.open-ur.remoting</groupId>
+			<artifactId>open_ur-remoting-x-change</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jersey.test-framework.providers</groupId>
@@ -39,6 +49,7 @@
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 

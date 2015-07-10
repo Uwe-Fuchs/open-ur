@@ -22,6 +22,9 @@ import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
 import org.openur.module.service.userstructure.IUserServices;
+import org.openur.remoting.xchange.providers.json.PersonProvider;
+import org.openur.remoting.xchange.providers.json.UserSetProvider;
+import org.openur.remoting.xchange.providers.json.TechnicalUserProvider;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -41,8 +44,11 @@ public class UserResourceTest
 			}
 		};
 
-		ResourceConfig config = new ResourceConfig(UserResource.class);
-		config.register(binder);
+		ResourceConfig config = new ResourceConfig(UserResource.class)
+				.register(PersonProvider.class)
+				.register(TechnicalUserProvider.class)
+				.register(UserSetProvider.class)
+				.register(binder);
 
 		return config;
 	}

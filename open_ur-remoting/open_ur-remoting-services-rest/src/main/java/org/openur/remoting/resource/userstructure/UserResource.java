@@ -14,8 +14,6 @@ import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 import org.openur.module.service.userstructure.IUserServices;
 
-import com.google.gson.Gson;
-
 @Path("/userstructure")
 public class UserResource
 {
@@ -30,7 +28,7 @@ public class UserResource
 		IPerson p = userServices.findPersonById(id);
 		
 		return Response.status(Response.Status.OK)
-				.entity(new Gson().toJson(p))
+				.entity(p)
 				.build();
 	}
 
@@ -42,7 +40,7 @@ public class UserResource
 		IPerson p = userServices.findPersonByNumber(number);
 		
 		return Response.status(Response.Status.OK)
-				.entity(new Gson().toJson(p))
+				.entity(p)
 				.build();
 	}
 
@@ -54,7 +52,7 @@ public class UserResource
 		Set<IPerson> allPersons = userServices.obtainAllPersons();
 		
 		return Response.status(Response.Status.OK)
-				.entity(new Gson().toJson(allPersons, Set.class))
+				.entity(allPersons)
 				.build();
 	}
 
@@ -66,7 +64,7 @@ public class UserResource
 		ITechnicalUser tu = userServices.findTechnicalUserById(id);
 		
 		return Response.status(Response.Status.OK)
-				.entity(new Gson().toJson(tu))
+				.entity(tu)
 				.build();
 	}
 
@@ -78,7 +76,7 @@ public class UserResource
 		ITechnicalUser tu = userServices.findTechnicalUserByNumber(number);
 		
 		return Response.status(Response.Status.OK)
-				.entity(new Gson().toJson(tu))
+				.entity(tu)
 				.build();
 	}
 
@@ -90,7 +88,7 @@ public class UserResource
 		Set<ITechnicalUser> techUsersSet = userServices.obtainAllTechnicalUsers();
 		
 		return Response.status(Response.Status.OK)
-				.entity(new Gson().toJson(techUsersSet, Set.class))
+				.entity(techUsersSet)
 				.build();
 	}
 }
