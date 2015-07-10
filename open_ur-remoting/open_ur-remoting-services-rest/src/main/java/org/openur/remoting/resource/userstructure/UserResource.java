@@ -8,7 +8,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
@@ -16,6 +15,7 @@ import org.openur.module.service.userstructure.IUserServices;
 
 @Path("/userstructure")
 public class UserResource
+	implements IUserServices
 {
 	@Inject
 	private IUserServices userServices;
@@ -23,72 +23,48 @@ public class UserResource
 	@GET
 	@Path("/person/id/{id}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public Response getPersonById(@PathParam("id") String id)
+	public IPerson findPersonById(@PathParam("id") String id)
 	{
-		IPerson p = userServices.findPersonById(id);
-		
-		return Response.status(Response.Status.OK)
-				.entity(p)
-				.build();
+		return userServices.findPersonById(id);
 	}
 
 	@GET
 	@Path("/person/number/{number}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public Response getPersonByNumber(@PathParam("number") String number)
+	public IPerson findPersonByNumber(@PathParam("number") String number)
 	{
-		IPerson p = userServices.findPersonByNumber(number);
-		
-		return Response.status(Response.Status.OK)
-				.entity(p)
-				.build();
+		return userServices.findPersonByNumber(number);
 	}
 
 	@GET
 	@Path("/person/all")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public Response obtainAllPersons()
+	public Set<IPerson> obtainAllPersons()
 	{
-		Set<IPerson> allPersons = userServices.obtainAllPersons();
-		
-		return Response.status(Response.Status.OK)
-				.entity(allPersons)
-				.build();
+		return userServices.obtainAllPersons();
 	}
 
 	@GET
 	@Path("/techuser/id/{id}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public Response findTechnicalUserById(@PathParam("id") String id)
+	public ITechnicalUser findTechnicalUserById(@PathParam("id") String id)
 	{
-		ITechnicalUser tu = userServices.findTechnicalUserById(id);
-		
-		return Response.status(Response.Status.OK)
-				.entity(tu)
-				.build();
+		return userServices.findTechnicalUserById(id);
 	}
 
 	@GET
 	@Path("/techuser/number/{number}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public Response findTechnicalUserByNumber(@PathParam("number") String number)
+	public ITechnicalUser findTechnicalUserByNumber(@PathParam("number") String number)
 	{
-		ITechnicalUser tu = userServices.findTechnicalUserByNumber(number);
-		
-		return Response.status(Response.Status.OK)
-				.entity(tu)
-				.build();
+		return userServices.findTechnicalUserByNumber(number);
 	}
 
 	@GET
 	@Path("/techuser/all")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public Response obtainAllTechnicalUsers()
+	public Set<ITechnicalUser> obtainAllTechnicalUsers()
 	{
-		Set<ITechnicalUser> techUsersSet = userServices.obtainAllTechnicalUsers();
-		
-		return Response.status(Response.Status.OK)
-				.entity(techUsersSet)
-				.build();
+		return userServices.obtainAllTechnicalUsers();
 	}
 }

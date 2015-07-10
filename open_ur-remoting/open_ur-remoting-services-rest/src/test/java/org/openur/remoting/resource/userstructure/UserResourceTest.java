@@ -1,6 +1,8 @@
 package org.openur.remoting.resource.userstructure;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Type;
 import java.util.Set;
@@ -17,14 +19,12 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
-import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.domain.userstructure.person.Person;
-import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
 import org.openur.module.service.userstructure.IUserServices;
 import org.openur.remoting.xchange.providers.json.PersonProvider;
-import org.openur.remoting.xchange.providers.json.UserSetProvider;
 import org.openur.remoting.xchange.providers.json.TechnicalUserProvider;
+import org.openur.remoting.xchange.providers.json.UserSetProvider;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -66,7 +66,7 @@ public class UserResourceTest
 		String result = response.readEntity(String.class);
 		System.out.println("Result: " + result);
 
-		IPerson p = new Gson().fromJson(result, Person.class);
+		Person p = new Gson().fromJson(result, Person.class);
 		assertTrue(EqualsBuilder.reflectionEquals(TestObjectContainer.PERSON_1, p));
 
 		response.close();
@@ -86,7 +86,7 @@ public class UserResourceTest
 		String result = response.readEntity(String.class);
 		System.out.println("Result: " + result);
 
-		IPerson p = new Gson().fromJson(result, Person.class);
+		Person p = new Gson().fromJson(result, Person.class);
 		assertTrue(EqualsBuilder.reflectionEquals(TestObjectContainer.PERSON_1, p));
 
 		response.close();
@@ -109,7 +109,7 @@ public class UserResourceTest
 		Type resultType = new TypeToken<Set<Person>>()
 		{
 		}.getType();
-		Set<? extends IPerson> resultSet = new Gson().fromJson(result, resultType);
+		Set<Person> resultSet = new Gson().fromJson(result, resultType);
 
 		assertFalse(resultSet.isEmpty());
 		assertEquals(3, resultSet.size());
@@ -131,7 +131,7 @@ public class UserResourceTest
 		String result = response.readEntity(String.class);
 		System.out.println("Result: " + result);
 
-		ITechnicalUser tu = new Gson().fromJson(result, TechnicalUser.class);
+		TechnicalUser tu = new Gson().fromJson(result, TechnicalUser.class);
 		assertTrue(EqualsBuilder.reflectionEquals(TestObjectContainer.TECH_USER_1, tu));
 
 		response.close();
@@ -151,7 +151,7 @@ public class UserResourceTest
 		String result = response.readEntity(String.class);
 		System.out.println("Result: " + result);
 
-		ITechnicalUser tu = new Gson().fromJson(result, TechnicalUser.class);
+		TechnicalUser tu = new Gson().fromJson(result, TechnicalUser.class);
 		assertTrue(EqualsBuilder.reflectionEquals(TestObjectContainer.TECH_USER_1, tu));
 
 		response.close();
@@ -174,7 +174,7 @@ public class UserResourceTest
 		Type resultType = new TypeToken<Set<TechnicalUser>>()
 		{
 		}.getType();
-		Set<? extends ITechnicalUser> resultSet = new Gson().fromJson(result, resultType);
+		Set<TechnicalUser> resultSet = new Gson().fromJson(result, resultType);
 
 		assertFalse(resultSet.isEmpty());
 		assertEquals(3, resultSet.size());
