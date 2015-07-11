@@ -18,6 +18,31 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.open-ur.pom</groupId>
+			<artifactId>open_ur-pom-spring-component</artifactId>
+			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>org.open-ur.module</groupId>
+			<artifactId>open_ur-module-persistence-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.open-ur.module</groupId>
+			<artifactId>open_ur-module-persistence-impl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.open-ur.module</groupId>
+			<artifactId>open_ur-module-service</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.open-ur.remoting</groupId>
+			<artifactId>open_ur-remoting-services-rest</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.glassfish.jersey.ext</groupId>
 			<artifactId>jersey-spring3</artifactId>
 			<exclusions>
@@ -32,6 +57,10 @@
 				<exclusion>
 					<groupId>org.springframework</groupId>
 					<artifactId>spring-beans</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-context</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
