@@ -38,6 +38,7 @@ import org.openur.module.persistence.rdbms.repository.OrgUnitMemberRepository;
 import org.openur.module.persistence.rdbms.repository.OrgUnitRepository;
 import org.openur.module.persistence.rdbms.repository.PersonRepository;
 import org.openur.module.persistence.rdbms.repository.TechnicalUserRepository;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -330,6 +331,7 @@ public class OrgUnitDaoImplRdbmsTest
 	
 	@Test
 	@Transactional(readOnly=false)
+	//@Rollback(value=false)
 	public void testObtainSubOrgUnitsForOrgUnitInclMembers()
 	{
 		POrganizationalUnit pRootOu = new POrganizationalUnit(ROOT_OU_NO, "rootOu");
