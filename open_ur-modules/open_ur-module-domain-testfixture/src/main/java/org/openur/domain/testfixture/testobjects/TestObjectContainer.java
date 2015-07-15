@@ -230,14 +230,11 @@ public class TestObjectContainer
 				.street("street_3")
 				.streetNo("33")
 				.poBox("poBox_3")
-				.creationDate(LocalDateTime.now())
 				.build();
 
 		applications = new HashSet<>(Arrays.asList(APP_B, APP_C));
 		
 		PERSON_3 = new PersonBuilder(PERSON_NUMBER_3, name_3)
-				.identifier(PERSON_UUID_3)
-				.creationDate(LocalDateTime.now())
 				.status(Status.ACTIVE)
 				.emailAddress(EMailAddress.create("office@name_3.com"))
 				.phoneNumber("0033333333331")
