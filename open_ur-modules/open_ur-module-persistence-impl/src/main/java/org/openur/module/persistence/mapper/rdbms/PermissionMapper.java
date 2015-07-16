@@ -34,6 +34,11 @@ public class PermissionMapper
 	
 	public static boolean immutableEqualsToEntity(OpenURPermission immutable, PPermission persistable)
 	{
+		if (!AbstractEntityMapper.immutableEqualsToEntity(immutable, persistable))
+		{
+			return false;
+		}
+		
 		return immutable.getPermissionName().equals(persistable.getPermissionName());
 	}
 }

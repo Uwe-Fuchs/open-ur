@@ -3,7 +3,6 @@ package org.openur.module.persistence.mapper.rdbms;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.junit.Test;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
@@ -20,7 +19,7 @@ public class ApplicationMapperTest
 		PApplication persistable = ApplicationMapper.mapFromImmutable(immutable);
 		
 		assertNotNull(persistable);
-		assertTrue(ApplicationMapperTest.immutableEqualsToEntity(immutable, persistable));
+		assertTrue(ApplicationMapper.immutableEqualsToEntity(immutable, persistable));
 	}
 
 	@Test
@@ -30,18 +29,6 @@ public class ApplicationMapperTest
 		OpenURApplication immutable = ApplicationMapper.mapFromEntity(persistable);
 		
 		assertNotNull(immutable);
-		assertTrue(ApplicationMapperTest.immutableEqualsToEntity(immutable, persistable));
-	}
-
-	public static boolean immutableEqualsToEntity(OpenURApplication immutable, PApplication persistable)
-	{
-		if (!AbstractEntityMapperTest.immutableEqualsToEntityBase(immutable, persistable))
-		{
-			return false;
-		}	
-
-		return new EqualsBuilder()
-				.append(immutable.getApplicationName(), persistable.getApplicationName())
-				.isEquals();
+		assertTrue(ApplicationMapper.immutableEqualsToEntity(immutable, persistable));
 	}
 }

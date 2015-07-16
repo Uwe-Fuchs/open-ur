@@ -20,8 +20,8 @@ import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.domain.security.authorization.OpenURRole;
 import org.openur.module.persistence.dao.ISecurityDao;
 import org.openur.module.persistence.mapper.rdbms.ApplicationMapper;
-import org.openur.module.persistence.mapper.rdbms.PermissionMapperTest;
-import org.openur.module.persistence.mapper.rdbms.RoleMapperTest;
+import org.openur.module.persistence.mapper.rdbms.PermissionMapper;
+import org.openur.module.persistence.mapper.rdbms.RoleMapper;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
 import org.openur.module.persistence.rdbms.config.RepositorySpringConfig;
 import org.openur.module.persistence.rdbms.entity.PApplication;
@@ -64,7 +64,7 @@ public class SecurityDaoImplRdbmsTest
 		IPermission p = securityDao.findPermissionById(persistable.getIdentifier());
 		
 		assertNotNull(p);	
-		assertTrue(PermissionMapperTest.immutableEqualsToEntity((OpenURPermission) p, persistable));
+		assertTrue(PermissionMapper.immutableEqualsToEntity((OpenURPermission) p, persistable));
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class SecurityDaoImplRdbmsTest
 		IPermission p = securityDao.findPermissionByName(PERMISSION_NAME);
 		
 		assertNotNull(p);	
-		assertTrue(PermissionMapperTest.immutableEqualsToEntity((OpenURPermission) p, persistable));
+		assertTrue(PermissionMapper.immutableEqualsToEntity((OpenURPermission) p, persistable));
 	}
 	
 	@Test
@@ -111,8 +111,8 @@ public class SecurityDaoImplRdbmsTest
 		OpenURPermission permission_1 = _p1.getPermissionName().equals(perm1.getPermissionName()) ? _p1 : _p2;
 		OpenURPermission permission_2 = _p1.getPermissionName().equals(perm1.getPermissionName()) ? _p2 : _p1;
 
-		assertTrue(PermissionMapperTest.immutableEqualsToEntity(permission_1, perm1));
-		assertTrue(PermissionMapperTest.immutableEqualsToEntity(permission_2, perm2));
+		assertTrue(PermissionMapper.immutableEqualsToEntity(permission_1, perm1));
+		assertTrue(PermissionMapper.immutableEqualsToEntity(permission_2, perm2));
 	}
 
 	@Test
@@ -144,8 +144,8 @@ public class SecurityDaoImplRdbmsTest
 		OpenURPermission permission_1 = _p1.getPermissionName().equals(perm11.getPermissionName()) ? _p1 : _p2;
 		OpenURPermission permission_2 = _p1.getPermissionName().equals(perm11.getPermissionName()) ? _p2 : _p1;
 
-		assertTrue(PermissionMapperTest.immutableEqualsToEntity(permission_1, perm11));
-		assertTrue(PermissionMapperTest.immutableEqualsToEntity(permission_2, perm12));
+		assertTrue(PermissionMapper.immutableEqualsToEntity(permission_1, perm11));
+		assertTrue(PermissionMapper.immutableEqualsToEntity(permission_2, perm12));
 	}
 
 	@Test
@@ -163,7 +163,7 @@ public class SecurityDaoImplRdbmsTest
 		IRole p = securityDao.findRoleById(pRole.getIdentifier());
 		
 		assertNotNull(p);	
-		assertTrue(RoleMapperTest.immutableEqualsToEntity((OpenURRole) p, pRole));
+		assertTrue(RoleMapper.immutableEqualsToEntity((OpenURRole) p, pRole));
 	}
 
 	@Test
@@ -181,7 +181,7 @@ public class SecurityDaoImplRdbmsTest
 		IRole p = securityDao.findRoleByName(pRole.getRoleName());	
 		
 		assertNotNull(p);	
-		assertTrue(RoleMapperTest.immutableEqualsToEntity((OpenURRole) p, pRole));
+		assertTrue(RoleMapper.immutableEqualsToEntity((OpenURRole) p, pRole));
 	}
 
 
@@ -214,8 +214,8 @@ public class SecurityDaoImplRdbmsTest
 		OpenURRole role_A = _r1.getRoleName().equals(pRoleA.getRoleName()) ? _r1 : _r2;
 		OpenURRole role_B = _r1.getRoleName().equals(pRoleA.getRoleName()) ? _r2 : _r1;
 
-		assertTrue(RoleMapperTest.immutableEqualsToEntity(role_A, pRoleA));
-		assertTrue(RoleMapperTest.immutableEqualsToEntity(role_B, pRoleB));
+		assertTrue(RoleMapper.immutableEqualsToEntity(role_A, pRoleA));
+		assertTrue(RoleMapper.immutableEqualsToEntity(role_B, pRoleB));
 	}
 
 	@After

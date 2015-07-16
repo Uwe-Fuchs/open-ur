@@ -4,9 +4,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.userstructure.Address;
-import org.openur.module.domain.userstructure.Address.AddressBuilder;
-import org.openur.module.domain.userstructure.Country;
 import org.openur.module.persistence.rdbms.entity.PAddress;
 
 public class AddressMapperTest
@@ -14,19 +13,11 @@ public class AddressMapperTest
 	@Test
 	public void testMapFromImmutable()
 	{
-		AddressBuilder b = new AddressBuilder("11")
-				.country(Country.byCode("DE"))
-				.city("city_1")
-				.street("street_1")
-				.streetNo("11")
-				.poBox("poBox_1")
-				.careOf("Schmidt");
-		
-		Address immutable = b.build();
+		Address immutable = TestObjectContainer.ADDRESS_3;
 		PAddress persistable = AddressMapper.mapFromImmutable(immutable);
 		
 		assertNotNull(persistable);
-		assertTrue(AddressMapperTest.immutableEqualsToEntity(immutable, persistable));
+		assertTrue(AddressMapper.immutableEqualsToEntity(immutable, persistable));
 	}
 
 	@Test
@@ -44,16 +35,6 @@ public class AddressMapperTest
 		Address immutable = AddressMapper.mapFromEntity(persistable);
 		
 		assertNotNull(immutable);
-		assertTrue(AddressMapperTest.immutableEqualsToEntity(immutable, persistable));
-	}
-
-	public static boolean immutableEqualsToEntity(Address immutable, PAddress persistable)
-	{
-		if (!AbstractEntityMapperTest.immutableEqualsToEntityBase(immutable, persistable))
-		{
-			return false;
-		}
-		
-		return AddressMapper.immutableEqualsToEntity(immutable, persistable);
+		assertTrue(AddressMapper.immutableEqualsToEntity(immutable, persistable));
 	}
 }

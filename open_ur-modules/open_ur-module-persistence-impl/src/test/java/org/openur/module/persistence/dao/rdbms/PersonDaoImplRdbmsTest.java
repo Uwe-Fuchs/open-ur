@@ -20,7 +20,7 @@ import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.person.Title;
 import org.openur.module.persistence.dao.IPersonDao;
-import org.openur.module.persistence.mapper.rdbms.PersonMapperTest;
+import org.openur.module.persistence.mapper.rdbms.PersonMapper;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
 import org.openur.module.persistence.rdbms.config.RepositorySpringConfig;
 import org.openur.module.persistence.rdbms.entity.PAddress;
@@ -79,7 +79,7 @@ public class PersonDaoImplRdbmsTest
 		IPerson p = personDao.findPersonByNumber(USER_NUMBER);
 
 		assertNotNull(p);
-		assertTrue(PersonMapperTest.immutableEqualsToEntity((Person) p, persistable));
+		assertTrue(PersonMapper.immutableEqualsToEntity((Person) p, persistable));
 	}
 
 	@Test
@@ -91,7 +91,7 @@ public class PersonDaoImplRdbmsTest
 		IPerson p = personDao.findPersonById(persistable.getIdentifier());
 
 		assertNotNull(p);
-		assertTrue(PersonMapperTest.immutableEqualsToEntity((Person) p, persistable));
+		assertTrue(PersonMapper.immutableEqualsToEntity((Person) p, persistable));
 	}
 
 	@Test(expected = NumberFormatException.class)
@@ -123,8 +123,8 @@ public class PersonDaoImplRdbmsTest
 		Person p = _p1.getPersonalNumber().equals(persistable1.getPersonalNumber()) ? _p1 : _p2;
 		Person p2 = _p1.getPersonalNumber().equals(persistable1.getPersonalNumber()) ? _p2 : _p1;
 
-		assertTrue(PersonMapperTest.immutableEqualsToEntity(p, persistable1));
-		assertTrue(PersonMapperTest.immutableEqualsToEntity(p2, persistable2));
+		assertTrue(PersonMapper.immutableEqualsToEntity(p, persistable1));
+		assertTrue(PersonMapper.immutableEqualsToEntity(p2, persistable2));
 	}
 
 	@After
