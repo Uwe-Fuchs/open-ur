@@ -1,10 +1,10 @@
-package org.openur.domain.testfixture.util;
+package org.openur.module.util;
 
 import java.time.LocalDateTime;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
-public class TestHelper
+public class ObjectsComparator
 {
 	public static boolean compareLocalDateTimes(LocalDateTime first, LocalDateTime second)
 	{

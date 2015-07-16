@@ -2,9 +2,12 @@ package org.openur.module.persistence.mapper.rdbms;
 
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.openur.module.domain.application.OpenURApplication;
+import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.domain.security.authorization.OpenURRole;
 import org.openur.module.domain.security.authorization.OpenURRoleBuilder;
+import org.openur.module.persistence.rdbms.entity.PPermission;
 import org.openur.module.persistence.rdbms.entity.PRole;
 
 public class RoleMapper
@@ -54,6 +57,40 @@ public class RoleMapper
 	
 	public static boolean immutableEqualsToEntity(OpenURRole immutable, PRole persistable)
 	{
-		return immutable.getRoleName().equals(persistable.getRoleName());
+		if (!AbstractEntityMapper.immutableEqualsToEntity(immutable, persistable))
+		{
+			return false;
+		}
+		
+		for (PPermission pPerm : persistable.getPermissions())
+		{
+			OpenURPermission permission = findPermissionInImmutable(pPerm, immutable);
+			
+			if (permission == null || !PermissionMapper.immutableEqualsToEntity(permission, pPerm))
+			{
+				return false;
+			}
+		}
+		
+		return new EqualsBuilder()
+				.append(immutable.getRoleName(), persistable.getRoleName())
+				.append(immutable.getDescription(), persistable.getDescription())
+				.isEquals();
+	}
+	
+	private static OpenURPermission findPermissionInImmutable(PPermission pPerm, OpenURRole immutable)
+	{
+		for (OpenURApplication app : immutable.getAllPermissions().keySet())
+		{
+			for (OpenURPermission perm : immutable.getPermissions(app))
+			{
+				if (PermissionMapper.immutableEqualsToEntity(perm, pPerm))
+				{
+					return perm;
+				}
+			}
+		}
+		
+		return null;
 	}
 }

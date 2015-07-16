@@ -15,6 +15,11 @@
   <packaging>jar</packaging>
   
   <dependencies>
+    <dependency>
+      <groupId>org.open-ur.pom</groupId>
+      <artifactId>open_ur-pom-commons-component</artifactId>
+      <type>pom</type>
+    </dependency>
   </dependencies>
   
 </project>

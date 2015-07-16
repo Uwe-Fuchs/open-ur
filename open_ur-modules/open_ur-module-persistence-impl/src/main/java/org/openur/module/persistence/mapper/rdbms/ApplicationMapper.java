@@ -28,6 +28,11 @@ public class ApplicationMapper
 
 	public static boolean immutableEqualsToEntity(OpenURApplication immutable, PApplication persistable)
 	{
+		if (!AbstractEntityMapper.immutableEqualsToEntity(immutable, persistable))
+		{
+			return false;
+		}
+		
 		return immutable.getApplicationName().equals(persistable.getApplicationName());
 	}
 }

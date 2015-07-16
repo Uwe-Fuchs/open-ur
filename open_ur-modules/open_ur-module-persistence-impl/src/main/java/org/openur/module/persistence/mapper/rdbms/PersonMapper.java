@@ -1,10 +1,12 @@
 package org.openur.module.persistence.mapper.rdbms;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.person.PersonBuilder;
+import org.openur.module.persistence.rdbms.entity.PApplication;
 import org.openur.module.persistence.rdbms.entity.PPerson;
 
 public class PersonMapper
@@ -54,7 +56,8 @@ public class PersonMapper
 				);
 		}
 		
-		PersonBuilder immutableBuilder = new PersonBuilder(persistable.getPersonalNumber(), name);
+		PersonBuilder immutableBuilder = new PersonBuilder(persistable.getPersonalNumber(), name);		
+		immutableBuilder = UserStructureBaseMapper.buildImmutable(immutableBuilder, persistable);
 		
 		immutableBuilder
 				.emailAddress(StringUtils.isNotEmpty(persistable.getEmailAddress()) ? EMailAddress.create(persistable.getEmailAddress()) : null)
@@ -63,10 +66,7 @@ public class PersonMapper
 				.homePhoneNumber(persistable.getHomePhoneNumber())
 				.mobileNumber(persistable.getMobileNumber())
 				.phoneNumber(persistable.getPhoneNumber())
-				.status(persistable.getStatus())
-				.homeAddress(persistable.getHomeAddress() != null ? AddressMapper.mapFromEntity(persistable.getHomeAddress()) : null)
-				.creationDate(persistable.getCreationDate())
-				.lastModifiedDate(persistable.getLastModifiedDate());
+				.homeAddress(persistable.getHomeAddress() != null ? AddressMapper.mapFromEntity(persistable.getHomeAddress()) : null);
 		
 		persistable.getApplications()
 				.stream()
@@ -78,6 +78,39 @@ public class PersonMapper
 
 	public static boolean immutableEqualsToEntity(Person immutable, PPerson persistable)
 	{
-		return immutable.getPersonalNumber().equals(persistable.getPersonalNumber());
+		if (!UserStructureBaseMapper.immutableEqualsToEntity(immutable, persistable))
+		{
+			return false;
+		}
+		
+		for (PApplication app : persistable.getApplications())
+		{
+			if (!immutable.isInApplication(app.getApplicationName()))
+			{
+				return false;
+			}
+		}
+		
+		if ((immutable.getHomeAddress() != null || persistable.getHomeAddress() != null)
+			&& !AddressMapper.immutableEqualsToEntity(immutable.getHomeAddress(), persistable.getHomeAddress()))
+		{
+			return false;
+		}
+		
+		return new EqualsBuilder()
+				.append(immutable.getPersonalNumber(), persistable.getPersonalNumber())
+				.append(immutable.getName().getTitle(), persistable.getTitle())
+				.append(immutable.getName().getFirstName(), persistable.getFirstName())
+				.append(immutable.getName().getLastName(), persistable.getLastName())
+				.append(immutable.getName().getGender(), persistable.getGender())
+				.append(immutable.getPhoneNumber(), persistable.getPhoneNumber())
+				.append(immutable.getFaxNumber(), persistable.getFaxNumber())
+				.append(immutable.getMobileNumber(), persistable.getMobileNumber())
+				.append(immutable.getHomePhoneNumber(), persistable.getHomePhoneNumber())
+				.append(immutable.getEmailAddress() != null ? immutable.getEmailAddress().getAsPlainEMailAddress() : null, 
+						persistable.getEmailAddress())
+				.append(immutable.getHomeEmailAddress() != null ? immutable.getHomeEmailAddress().getAsPlainEMailAddress() : null, 
+						persistable.getHomeEmailAddress())
+				.isEquals();
 	}
 }

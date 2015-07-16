@@ -136,13 +136,11 @@ public class TestObjectContainer
 		PERMISSION_1_C = new OpenURPermissionBuilder("permName_1_C", APP_C)
 				.permissionScope(PermissionScope.SELECTED)
 				.description("permission description 1C")
-				.creationDate(LocalDateTime.now())
 				.build();
 		
 		PERMISSION_2_C = new OpenURPermissionBuilder("permName_2_C", APP_C)
 				.permissionScope(PermissionScope.SELECTED_SUB)
 				.description("permission description 2C")
-				.creationDate(LocalDateTime.now())
 				.build();
 		
 		// roles:
@@ -160,7 +158,6 @@ public class TestObjectContainer
 
 		ROLE_Z = new OpenURRoleBuilder("role_Z")
 				.description("description role_Z")
-				.creationDate(LocalDateTime.now())
 				.permissions(new HashSet<OpenURPermission>(Arrays.asList(PERMISSION_1_C, PERMISSION_2_C)))
 				.build();
 		
@@ -341,13 +338,12 @@ public class TestObjectContainer
 		TECH_USER_2 = new TechnicalUserBuilder(TECH_USER_NUMBER_2)
 				.identifier(TECH_USER_UUID_2)
 				.status(Status.ACTIVE)
-				.creationDate(LocalDateTime.now())
+				.creationDate(LocalDateTime.of(2012, 06, 20, 0, 0))
 				.build();
 		
 		TECH_USER_3 = new TechnicalUserBuilder(TECH_USER_NUMBER_3)
 				.identifier(TECH_USER_UUID_3)
 				.status(Status.INACTIVE)
-				.creationDate(LocalDateTime.of(2012, 06, 20, 0, 0))
 				.build();
 	}
 }

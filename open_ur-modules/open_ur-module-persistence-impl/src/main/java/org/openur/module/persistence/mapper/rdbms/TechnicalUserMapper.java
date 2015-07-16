@@ -17,18 +17,19 @@ public class TechnicalUserMapper
 	
 	public static TechnicalUser mapFromEntity(PTechnicalUser persistable)
 	{
-		TechnicalUserBuilder immutableBuilder = new TechnicalUserBuilder(persistable.getTechUserNumber());
-		
-		immutableBuilder
-				.status(persistable.getStatus())
-				.creationDate(persistable.getCreationDate())
-				.lastModifiedDate(persistable.getLastModifiedDate());
+		TechnicalUserBuilder immutableBuilder = new TechnicalUserBuilder(persistable.getTechUserNumber());		
+		immutableBuilder = UserStructureBaseMapper.buildImmutable(immutableBuilder, persistable);
 		
 		return immutableBuilder.build();
 	}
 
 	public static boolean immutableEqualsToEntity(TechnicalUser immutable, PTechnicalUser persistable)
 	{
+		if (!UserStructureBaseMapper.immutableEqualsToEntity(immutable, persistable))
+		{
+			return false;
+		}
+		
 		return immutable.getTechUserNumber().equals(persistable.getTechUserNumber());
 	}
 }

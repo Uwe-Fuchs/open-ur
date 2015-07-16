@@ -43,6 +43,11 @@ public class AddressMapper
 
 	public static boolean immutableEqualsToEntity(Address immutable, PAddress persistable)
 	{		
+		if (!AbstractEntityMapper.immutableEqualsToEntity(immutable, persistable))
+		{
+			return false;
+		}
+		
 		return new EqualsBuilder()
 				.append(immutable.getCareOf(), persistable.getCareOf())
 				.append(immutable.getCity(), persistable.getCity())
