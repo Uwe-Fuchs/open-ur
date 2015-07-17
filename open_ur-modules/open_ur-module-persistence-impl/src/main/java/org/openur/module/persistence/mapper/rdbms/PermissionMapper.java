@@ -7,6 +7,7 @@ import org.openur.module.persistence.rdbms.entity.PApplication;
 import org.openur.module.persistence.rdbms.entity.PPermission;
 
 public class PermissionMapper
+	extends AbstractEntityMapper
 {
 	public static PPermission mapFromImmutable(OpenURPermission immutable)
 	{
@@ -24,11 +25,11 @@ public class PermissionMapper
 		OpenURApplication app = ApplicationMapper.mapFromEntity(persistable.getApplication());
 		OpenURPermissionBuilder immutableBuilder = new OpenURPermissionBuilder(persistable.getPermissionName(), app);
 		
+		AbstractEntityMapper.mapFromEntity(immutableBuilder, persistable);
+		
 		return immutableBuilder
 				.permissionScope(persistable.getPermissionScope())
 				.description(persistable.getDescription())
-				.creationDate(persistable.getCreationDate())
-				.lastModifiedDate(persistable.getLastModifiedDate())
 				.build();
 	}
 	

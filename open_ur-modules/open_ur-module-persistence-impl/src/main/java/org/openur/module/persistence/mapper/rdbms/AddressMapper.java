@@ -8,6 +8,7 @@ import org.openur.module.domain.userstructure.Country;
 import org.openur.module.persistence.rdbms.entity.PAddress;
 
 public class AddressMapper
+	extends AbstractEntityMapper
 {	
 	public static PAddress mapFromImmutable(Address immutable)
 	{
@@ -27,6 +28,8 @@ public class AddressMapper
 	{
 		AddressBuilder immutableBuilder = new AddressBuilder(persistable.getPostcode());
 		
+		AbstractEntityMapper.mapFromEntity(immutableBuilder, persistable);
+		
 		immutableBuilder
 				.careOf(persistable.getCareOf())
 				.city(persistable.getCity())
@@ -34,8 +37,6 @@ public class AddressMapper
 				.street(persistable.getStreet())
 				.streetNo(persistable.getStreetNo())
 				.country(StringUtils.isNotEmpty(persistable.getCountryCode()) ? Country.byCode(persistable.getCountryCode()) : null)
-				.creationDate(persistable.getCreationDate())
-				.lastModifiedDate(persistable.getLastModifiedDate())
 				.build();
 		
 		return immutableBuilder.build();

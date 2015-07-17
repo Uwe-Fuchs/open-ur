@@ -23,6 +23,6 @@ public class UserStructureBaseMapper
 	{
 		immutableBuilder.status(persistable.getStatus());
 
-		return AbstractEntityMapper.buildImmutable(immutableBuilder, persistable);
+		return AbstractEntityMapper.mapFromEntity(immutableBuilder, persistable);
 	}
 }

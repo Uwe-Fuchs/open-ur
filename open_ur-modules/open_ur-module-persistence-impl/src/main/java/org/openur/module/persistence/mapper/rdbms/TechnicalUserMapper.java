@@ -5,6 +5,7 @@ import org.openur.module.domain.userstructure.technicaluser.TechnicalUser.Techni
 import org.openur.module.persistence.rdbms.entity.PTechnicalUser;
 
 public class TechnicalUserMapper
+	extends UserStructureBaseMapper
 {
 	public static PTechnicalUser mapFromImmutable(TechnicalUser immutable)
 	{

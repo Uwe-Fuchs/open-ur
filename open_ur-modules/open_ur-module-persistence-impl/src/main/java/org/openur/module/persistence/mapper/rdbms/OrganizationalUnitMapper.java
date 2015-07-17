@@ -17,6 +17,7 @@ import org.openur.module.persistence.rdbms.entity.PPerson;
 import org.openur.module.persistence.rdbms.entity.PRole;
 
 public class OrganizationalUnitMapper
+	extends UserStructureBaseMapper
 {
 	public static POrganizationalUnit mapFromImmutable(AuthorizableOrgUnit immutable)
 	{
