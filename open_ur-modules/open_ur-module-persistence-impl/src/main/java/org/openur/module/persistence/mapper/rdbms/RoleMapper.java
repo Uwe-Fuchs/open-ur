@@ -11,6 +11,7 @@ import org.openur.module.persistence.rdbms.entity.PPermission;
 import org.openur.module.persistence.rdbms.entity.PRole;
 
 public class RoleMapper
+	extends AbstractEntityMapper
 {
 	public static PRole mapFromImmutable(OpenURRole immutable)
 	{
@@ -41,6 +42,8 @@ public class RoleMapper
 	{
 		OpenURRoleBuilder immutableBuilder = new OpenURRoleBuilder(persistable.getRoleName());
 		
+		AbstractEntityMapper.mapFromEntity(immutableBuilder, persistable);
+		
 		immutableBuilder.permissions(
 			persistable.getPermissions()
 				.stream()
@@ -50,8 +53,6 @@ public class RoleMapper
 		
 		return immutableBuilder
 				.description(persistable.getDescription())
-				.creationDate(persistable.getCreationDate())
-				.lastModifiedDate(persistable.getLastModifiedDate())
 				.build();
 	}
 	

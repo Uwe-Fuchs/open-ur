@@ -30,7 +30,7 @@ public class AbstractEntityMapper
 	}
 
 	protected static <IB extends IdentifiableEntityBuilder<IB>, P extends AbstractOpenUrPersistable>
-			IB buildImmutable(IB immutableBuilder, P persistable)
+			IB mapFromEntity(IB immutableBuilder, P persistable)
 	{
 		immutableBuilder
 				.creationDate(persistable.getCreationDate())

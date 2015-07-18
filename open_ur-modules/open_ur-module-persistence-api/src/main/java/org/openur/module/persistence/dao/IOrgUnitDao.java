@@ -62,6 +62,14 @@ public interface IOrgUnitDao
 	List<IAuthorizableOrgUnit> obtainAllOrgUnits();
 
 	/**
+	 * returns all stored organizational-units including its members and roles in a list. If no
+	 * organizational-units are found, the result-list will be empty (not null).
+	 * 
+	 * @return List with all (authorizable) organizational-units (maybe empty).
+	 */
+	List<IAuthorizableOrgUnit> obtainAllOrgUnitsInclMembers();
+
+	/**
 	 * returns all subordinated org-units of an org-unit in a list. If no
 	 * org-units are found, the result-list will be empty (not null).
 	 * 

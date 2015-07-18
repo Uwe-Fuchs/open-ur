@@ -10,6 +10,7 @@ import org.openur.module.persistence.rdbms.entity.PApplication;
  * maps entity-data from and to immutable.
  */
 public class ApplicationMapper
+	extends AbstractEntityMapper
 {
 	public static PApplication mapFromImmutable(OpenURApplication immutable)
 	{
@@ -20,10 +21,8 @@ public class ApplicationMapper
 	{
 		OpenURApplicationBuilder immutableBuilder = new OpenURApplicationBuilder(persistable.getApplicationName());
 		
-		return immutableBuilder
-				.creationDate(persistable.getCreationDate())
-				.lastModifiedDate(persistable.getLastModifiedDate())
-				.build();
+		return AbstractEntityMapper.mapFromEntity(immutableBuilder, persistable)
+					.build();
 	}
 
 	public static boolean immutableEqualsToEntity(OpenURApplication immutable, PApplication persistable)
