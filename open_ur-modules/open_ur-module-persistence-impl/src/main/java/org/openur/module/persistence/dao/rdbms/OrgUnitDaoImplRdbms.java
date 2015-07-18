@@ -120,6 +120,14 @@ public class OrgUnitDaoImplRdbms
 	}
 
 	@Override
+	public List<IAuthorizableOrgUnit> obtainAllOrgUnitsInclMembers()
+	{
+		List<POrganizationalUnit> allOrgUnits = orgUnitRepository.findAll();
+		
+		return mapEntityOrgUnitListToImmutable(allOrgUnits, true);
+	}
+
+	@Override
 	public List<IAuthorizableOrgUnit> obtainSubOrgUnitsForOrgUnit(String orgUnitId)
 	{
 		long orgUnitIdL = Long.parseLong(orgUnitId);

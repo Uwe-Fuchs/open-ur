@@ -13,26 +13,32 @@ import java.util.Optional;
 import javax.inject.Inject;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IAuthorizableMember;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
-import org.openur.module.domain.userstructure.person.Gender;
-import org.openur.module.domain.userstructure.person.Title;
 import org.openur.module.persistence.dao.IOrgUnitDao;
+import org.openur.module.persistence.mapper.rdbms.ApplicationMapper;
 import org.openur.module.persistence.mapper.rdbms.OrganizationalUnitMapper;
 import org.openur.module.persistence.mapper.rdbms.OrganizationalUnitMapper.OrgUnitMemberMapper;
+import org.openur.module.persistence.mapper.rdbms.PermissionMapper;
+import org.openur.module.persistence.mapper.rdbms.PersonMapper;
+import org.openur.module.persistence.mapper.rdbms.RoleMapper;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
 import org.openur.module.persistence.rdbms.config.RepositorySpringConfig;
-import org.openur.module.persistence.rdbms.entity.PAddress;
+import org.openur.module.persistence.rdbms.entity.PApplication;
 import org.openur.module.persistence.rdbms.entity.POrgUnitMember;
 import org.openur.module.persistence.rdbms.entity.POrganizationalUnit;
+import org.openur.module.persistence.rdbms.entity.PPermission;
 import org.openur.module.persistence.rdbms.entity.PPerson;
 import org.openur.module.persistence.rdbms.entity.PRole;
 import org.openur.module.persistence.rdbms.entity.PTechnicalUser;
 import org.openur.module.persistence.rdbms.repository.AddressRepository;
+import org.openur.module.persistence.rdbms.repository.ApplicationRepository;
 import org.openur.module.persistence.rdbms.repository.OrgUnitMemberRepository;
 import org.openur.module.persistence.rdbms.repository.OrgUnitRepository;
 import org.openur.module.persistence.rdbms.repository.PersonRepository;
@@ -46,11 +52,22 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(classes = { RepositorySpringConfig.class, DaoSpringConfig.class })
 @ActiveProfiles(profiles = { "testRepository", "testDao" })
 @RunWith(SpringJUnit4ClassRunner.class)
+@Transactional(readOnly=false)
 public class OrgUnitDaoImplRdbmsTest
 {
-	private static final String ROOT_OU_NO = "rootOuNo";
-	private static final String SUPER_OU_NO = "superOuNo";
-	private static final String ORG_UNIT_NO = "orgUnitNo";
+	private POrganizationalUnit orgUnit_A;
+	private POrganizationalUnit orgUnit_B;
+	private POrganizationalUnit orgUnit_C;
+	private POrganizationalUnit superOu_1;
+	private POrganizationalUnit superOu_2;
+	private POrganizationalUnit rootOu;
+	private POrgUnitMember member_1_A;
+	private POrgUnitMember member_2_A;
+	private POrgUnitMember member_1_B;
+	private POrgUnitMember member_3_B;
+	
+	@Inject
+	private ApplicationRepository applicationRepository;
 
 	@Inject
 	private PersonRepository personRepository;
@@ -69,178 +86,152 @@ public class OrgUnitDaoImplRdbmsTest
 
 	@Inject
 	private IOrgUnitDao orgUnitDao;
+	
+	@Before
+	public void setUp()
+	{
+		PApplication app_A = ApplicationMapper.mapFromImmutable(TestObjectContainer.APP_A);
+		PApplication app_B = ApplicationMapper.mapFromImmutable(TestObjectContainer.APP_B);
+		PApplication app_C = ApplicationMapper.mapFromImmutable(TestObjectContainer.APP_C);
+		
+		PPermission perm_1_A = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);	
+		perm_1_A.setApplication(app_A);
+		PPermission perm_2_A = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_A);	
+		perm_2_A.setApplication(app_A);
+		PRole role_X = RoleMapper.mapFromImmutable(TestObjectContainer.ROLE_X);
+		role_X.setPermissions(new HashSet<>(Arrays.asList(perm_1_A, perm_2_A)));
 
+		PPermission perm_1_B = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_B);	
+		perm_1_B.setApplication(app_B);
+		PPermission perm_2_B = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_B);	
+		perm_2_B.setApplication(app_B);
+		PRole role_Y = RoleMapper.mapFromImmutable(TestObjectContainer.ROLE_Y);
+		role_Y.setPermissions(new HashSet<>(Arrays.asList(perm_1_B, perm_2_B)));
+
+		PPermission perm_1_C = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_C);	
+		perm_1_C.setApplication(app_C);
+		PPermission perm_2_C = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_C);	
+		perm_2_C.setApplication(app_C);
+		PRole role_Z = RoleMapper.mapFromImmutable(TestObjectContainer.ROLE_Z);
+		role_Z.setPermissions(new HashSet<>(Arrays.asList(perm_1_C, perm_2_C)));
+
+		PPerson person_1 = PersonMapper.mapFromImmutable(TestObjectContainer.PERSON_1);
+		person_1.setApplications(new HashSet<>(Arrays.asList(app_A, app_B)));
+		person_1 = savePerson(person_1);
+
+		PPerson person_2 = PersonMapper.mapFromImmutable(TestObjectContainer.PERSON_2);
+		person_2.setApplications(new HashSet<>(Arrays.asList(app_B, app_C)));
+		person_2 = savePerson(person_2);
+
+		PPerson person_3 = PersonMapper.mapFromImmutable(TestObjectContainer.PERSON_3);
+		person_3.setApplications(new HashSet<>(Arrays.asList(app_A, app_C)));
+		person_3 = savePerson(person_3);
+		
+		rootOu = OrganizationalUnitMapper.mapFromImmutable(TestObjectContainer.ROOT_OU);	
+		saveOrgUnit(rootOu);
+
+		superOu_1 = OrganizationalUnitMapper.mapFromImmutable(TestObjectContainer.SUPER_OU_1);
+		superOu_1.setRootOu(rootOu);
+		superOu_1.setSuperOu(rootOu);
+		POrgUnitMember member_3_s1 = new POrgUnitMember(superOu_1, person_3);
+		superOu_1.setMembers(new HashSet<>(Arrays.asList(member_3_s1)));
+		saveOrgUnit(superOu_1);
+
+		superOu_2 = OrganizationalUnitMapper.mapFromImmutable(TestObjectContainer.SUPER_OU_2);
+		superOu_2.setRootOu(rootOu);
+		superOu_2.setSuperOu(rootOu);
+		saveOrgUnit(superOu_2);
+		
+		orgUnit_A = OrganizationalUnitMapper.mapFromImmutable(TestObjectContainer.ORG_UNIT_A);
+		orgUnit_A.setRootOu(rootOu);
+		orgUnit_A.setSuperOu(superOu_1);
+
+		member_1_A = new POrgUnitMember(orgUnit_A, person_1);
+		member_1_A.addRole(role_X);
+		member_2_A = new POrgUnitMember(orgUnit_A, person_2);
+		member_2_A.addRole(role_Y);
+		orgUnit_A.setMembers(new HashSet<POrgUnitMember>(Arrays.asList(member_1_A, member_2_A)));
+		
+		orgUnit_A = saveOrgUnit(orgUnit_A);
+		
+		orgUnit_B = OrganizationalUnitMapper.mapFromImmutable(TestObjectContainer.ORG_UNIT_B);
+		orgUnit_B.setRootOu(rootOu);
+		orgUnit_B.setSuperOu(superOu_1);
+
+		member_1_B = new POrgUnitMember(orgUnit_B, person_1);
+		member_1_B.addRole(role_Y);
+		member_3_B = new POrgUnitMember(orgUnit_B, person_3);
+		member_3_B.addRole(role_Z);
+		orgUnit_B.setMembers(new HashSet<POrgUnitMember>(Arrays.asList(member_1_B, member_3_B)));
+		
+		orgUnit_B = saveOrgUnit(orgUnit_B);
+		
+		orgUnit_C = OrganizationalUnitMapper.mapFromImmutable(TestObjectContainer.ORG_UNIT_C);
+		orgUnit_C.setRootOu(rootOu);
+		orgUnit_C.setSuperOu(superOu_2);
+		
+		orgUnit_C = saveOrgUnit(orgUnit_C);
+	}
+	
 	@Test
 	public void testFindOrgUnitById()
 	{
-		POrganizationalUnit pRootOu = new POrganizationalUnit(ROOT_OU_NO, "rootOu");
-		saveOrgUnit(pRootOu);
-
-		POrganizationalUnit pSuperOu = new POrganizationalUnit(SUPER_OU_NO, "superOu");
-		pSuperOu.setSuperOu(pRootOu);
-		pSuperOu.setRootOu(pRootOu);
-		saveOrgUnit(pSuperOu);
-
-		POrganizationalUnit pOrgUnit = new POrganizationalUnit(ORG_UNIT_NO, "staff department");
-		pOrgUnit.setSuperOu(pSuperOu);
-		pOrgUnit.setRootOu(pRootOu);
-		pOrgUnit.setShortName("stf");
-		pOrgUnit.setDescription("managing staff");
-		pOrgUnit.setEmailAddress("staff@company.com");
-
-		PAddress pAddress = new PAddress("11");
-		pAddress.setCountryCode("DE");
-		pAddress.setCity("city_1");
-		pAddress.setStreet("street_1");
-		pAddress.setPoBox("poBox_1");
-		pOrgUnit.setAddress(pAddress);
-
-		pOrgUnit = saveOrgUnit(pOrgUnit);
-
-		IOrganizationalUnit immutable = orgUnitDao.findOrgUnitById(pOrgUnit.getIdentifier());
+		IOrganizationalUnit immutable = orgUnitDao.findOrgUnitById(orgUnit_C.getIdentifier());
 		assertNotNull(immutable);
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) immutable, pOrgUnit));
+		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) immutable, orgUnit_C));
 	}
 
 	@Test
 	public void testFindOrgUnitAndMembersRolesById()
 	{
-		POrganizationalUnit pRootOu = new POrganizationalUnit(ROOT_OU_NO, "rootOu");
-		saveOrgUnit(pRootOu);
-
-		POrganizationalUnit pSuperOu = new POrganizationalUnit(SUPER_OU_NO, "superOu");
-		pSuperOu.setSuperOu(pRootOu);
-		pSuperOu.setRootOu(pRootOu);
-		saveOrgUnit(pSuperOu);
-
-		POrganizationalUnit pOrgUnit = new POrganizationalUnit(ORG_UNIT_NO, "staff department");
-		pOrgUnit.setSuperOu(pSuperOu);
-		pOrgUnit.setRootOu(pRootOu);
-		pOrgUnit.setShortName("stf");
-		pOrgUnit.setDescription("managing staff");
-		pOrgUnit.setEmailAddress("staff@company.com");
-
-		PAddress pAddress = new PAddress("11");
-		pAddress.setCountryCode("DE");
-		pAddress.setCity("city_1");
-		pAddress.setStreet("street_1");
-		pAddress.setPoBox("poBox_1");
-		pOrgUnit.setAddress(pAddress);
-
-		PPerson pPerson1 = new PPerson("persNo1", "Obama");
-		pPerson1.setGender(Gender.MALE);
-		pPerson1.setFirstName("Barack");
-		savePerson(pPerson1);
-
-		PPerson pPerson2 = new PPerson("persNo2", "Merkel");
-		pPerson2.setGender(Gender.FEMALE);
-		pPerson2.setTitle(Title.DR);
-		pPerson2.setFirstName("Angela");
-		savePerson(pPerson2);
-
-		PRole pRole1 = new PRole("role1");
-		pRole1.setDescription("description role1");
-
-		PRole pRole2 = new PRole("role2");
-		pRole2.setDescription("description role2");
-
-		POrgUnitMember pMember1 = new POrgUnitMember(pOrgUnit, pPerson1);
-		pMember1.addRole(pRole1);
-
-		POrgUnitMember pMember2 = new POrgUnitMember(pOrgUnit, pPerson2);
-		pMember2.addRole(pRole2);
-
-		pOrgUnit.setMembers(new HashSet<POrgUnitMember>(Arrays.asList(pMember1, pMember2)));
-
-		saveOrgUnit(pOrgUnit);
-
-		IOrganizationalUnit immutable = orgUnitDao.findOrgUnitAndMembersById(pOrgUnit.getIdentifier());
+		IOrganizationalUnit immutable = orgUnitDao.findOrgUnitAndMembersById(orgUnit_A.getIdentifier());
 		assertNotNull(immutable);
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) immutable, pOrgUnit));
+		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) immutable, orgUnit_A));
 	}
 
 	@Test
 	public void testFindOrgUnitByNumber()
 	{
-		POrganizationalUnit pRootOu = new POrganizationalUnit(ROOT_OU_NO, "rootOu");
-		saveOrgUnit(pRootOu);
-
-		POrganizationalUnit pSuperOu = new POrganizationalUnit(SUPER_OU_NO, "superOu");
-		pSuperOu.setSuperOu(pRootOu);
-		pSuperOu.setRootOu(pRootOu);
-		saveOrgUnit(pSuperOu);
-
-		POrganizationalUnit pOrgUnit = new POrganizationalUnit(ORG_UNIT_NO, "staff department");
-
-		pOrgUnit.setSuperOu(pSuperOu);
-		pOrgUnit.setRootOu(pRootOu);
-		saveOrgUnit(pOrgUnit);
-
-		IOrganizationalUnit immutable = orgUnitDao.findOrgUnitByNumber(ORG_UNIT_NO);
+		IOrganizationalUnit immutable = orgUnitDao.findOrgUnitByNumber(TestObjectContainer.ORG_UNIT_NUMBER_C);
 		assertNotNull(immutable);
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) immutable, pOrgUnit));
+		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) immutable, orgUnit_C));
 
-		immutable = orgUnitDao.findOrgUnitByNumber(ROOT_OU_NO);
+		immutable = orgUnitDao.findOrgUnitByNumber(TestObjectContainer.ROOT_OU_NUMBER);
 		assertNotNull(immutable);
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) immutable, pRootOu));
+		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) immutable, rootOu));
 
-		immutable = orgUnitDao.findOrgUnitByNumber(SUPER_OU_NO);
+		immutable = orgUnitDao.findOrgUnitByNumber(TestObjectContainer.SUPER_OU_NUMBER_2);
 		assertNotNull(immutable);
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) immutable, pSuperOu));
+		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) immutable, superOu_2));
 	}
 
 	@Test
 	public void testFindOrgUnitAndMembersRolesByNumber()
 	{
-		POrganizationalUnit pRootOu = new POrganizationalUnit(ROOT_OU_NO, "rootOu");
-		saveOrgUnit(pRootOu);
-
-		POrganizationalUnit pSuperOu = new POrganizationalUnit(SUPER_OU_NO, "superOu");
-		pSuperOu.setSuperOu(pRootOu);
-		pSuperOu.setRootOu(pRootOu);
-		saveOrgUnit(pSuperOu);
-
-		POrganizationalUnit pOrgUnit = new POrganizationalUnit(ORG_UNIT_NO, "staff department");
-
-		pOrgUnit.setSuperOu(pSuperOu);
-		pOrgUnit.setRootOu(pRootOu);
-		
-		PPerson pPersonA = new PPerson("persNoA", "Obama");
-		pPersonA.setGender(Gender.MALE);
-		pPersonA.setFirstName("Barack");
-		savePerson(pPersonA);
-
-		PPerson pPersonB = new PPerson("persNoB", "Merkel");
-		pPersonB.setGender(Gender.FEMALE);
-		pPersonB.setTitle(Title.DR);
-		pPersonB.setFirstName("Angela");
-		savePerson(pPersonB);
-
-		PRole pRole1 = new PRole("role1");
-		pRole1.setDescription("description role1");
-
-		PRole pRole2 = new PRole("role2");
-		pRole2.setDescription("description role2");
-
-		POrgUnitMember pMember1 = new POrgUnitMember(pOrgUnit, pPersonA);
-		pMember1.addRole(pRole1);
-
-		POrgUnitMember pMember2 = new POrgUnitMember(pOrgUnit, pPersonB);
-		pMember2.addRole(pRole2);
-		
-		pOrgUnit.setMembers(new HashSet<POrgUnitMember>(Arrays.asList(pMember1, pMember1)));
-		
-		saveOrgUnit(pOrgUnit);
-
-		IOrganizationalUnit immutable = orgUnitDao.findOrgUnitAndMembersByNumber(ORG_UNIT_NO);
+		IOrganizationalUnit immutable = orgUnitDao.findOrgUnitAndMembersByNumber(TestObjectContainer.ORG_UNIT_NUMBER_A);
 		assertNotNull(immutable);
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) immutable, pOrgUnit));
+		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) immutable, orgUnit_A));
+	}
+	
+	@Test
+	public void testObtainAllOrgUnitsInclMembers()
+	{
+		List<IAuthorizableOrgUnit> allOrgUnits = orgUnitDao.obtainAllOrgUnitsInclMembers();
+		
+		assertEquals(6, allOrgUnits.size());
+		IAuthorizableOrgUnit orgUnit1 = findOrgUnitInList(allOrgUnits, TestObjectContainer.ORG_UNIT_NUMBER_A);
+		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit1, orgUnit_A));
+		IAuthorizableOrgUnit orgUnit2 = findOrgUnitInList(allOrgUnits, TestObjectContainer.ORG_UNIT_NUMBER_B);
+		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit2, orgUnit_B));
+		IAuthorizableOrgUnit orgUnit3 = findOrgUnitInList(allOrgUnits, TestObjectContainer.ORG_UNIT_NUMBER_C);
+		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit3, orgUnit_C));
+		assertNull(findOrgUnitInList(allOrgUnits, "orgUnitNo4"));
 	}
 	
 	@Test
 	public void testObtainAllOrgUnits()
 	{
-		POrganizationalUnit pOrgUnit1 = new POrganizationalUnit(ORG_UNIT_NO, "staff department");
+		POrganizationalUnit pOrgUnit1 = new POrganizationalUnit("orgUnitNo1", "staff department");
 		saveOrgUnit(pOrgUnit1);
 		POrganizationalUnit pOrgUnit2 = new POrganizationalUnit("orgUnitNo2", "hr department");
 		saveOrgUnit(pOrgUnit2);
@@ -248,9 +239,8 @@ public class OrgUnitDaoImplRdbmsTest
 		saveOrgUnit(pOrgUnit3);
 		
 		List<IAuthorizableOrgUnit> allOrgUnits = orgUnitDao.obtainAllOrgUnits();
-		
-		assertEquals(3, allOrgUnits.size());
-		IAuthorizableOrgUnit orgUnit1 = findOrgUnitInList(allOrgUnits, ORG_UNIT_NO);
+
+		IAuthorizableOrgUnit orgUnit1 = findOrgUnitInList(allOrgUnits, "orgUnitNo1");
 		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit1, pOrgUnit1));
 		IAuthorizableOrgUnit orgUnit2 = findOrgUnitInList(allOrgUnits, "orgUnitNo2");
 		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit2, pOrgUnit2));
@@ -271,30 +261,30 @@ public class OrgUnitDaoImplRdbmsTest
 	@Test
 	public void testObtainSubOrgUnitsForOrgUnit()
 	{
-		POrganizationalUnit pRootOu = new POrganizationalUnit(ROOT_OU_NO, "rootOu");
+		POrganizationalUnit pRootOu = new POrganizationalUnit("rootOu", "rootOu");
 		saveOrgUnit(pRootOu);
 
-		POrganizationalUnit pSuperOu = new POrganizationalUnit(SUPER_OU_NO, "superOu");
+		POrganizationalUnit pSuperOu = new POrganizationalUnit("superOu", "superOu");
 		pSuperOu.setSuperOu(pRootOu);
 		pSuperOu.setRootOu(pRootOu);
 		saveOrgUnit(pSuperOu);
 
-		POrganizationalUnit pOrgUnit1 = new POrganizationalUnit(ORG_UNIT_NO, "staff department");
+		POrganizationalUnit pOrgUnit1 = new POrganizationalUnit("orgUnit1", "staff department");
 		pOrgUnit1.setSuperOu(pSuperOu);
 		pOrgUnit1.setRootOu(pRootOu);
 		saveOrgUnit(pOrgUnit1);
 		
-		POrganizationalUnit pOrgUnit2 = new POrganizationalUnit("orgUnitNo2", "hr department");
+		POrganizationalUnit pOrgUnit2 = new POrganizationalUnit("orgUnit2", "hr department");
 		pOrgUnit2.setSuperOu(pSuperOu);
 		pOrgUnit2.setRootOu(pRootOu);
 		saveOrgUnit(pOrgUnit2);
 		
-		POrganizationalUnit pOrgUnit3 = new POrganizationalUnit("orgUnitNo3", "it department");
+		POrganizationalUnit pOrgUnit3 = new POrganizationalUnit("orgUnit3", "it department");
 		pOrgUnit3.setSuperOu(pSuperOu);
 		pOrgUnit3.setRootOu(pRootOu);
 		saveOrgUnit(pOrgUnit3);
 		
-		POrganizationalUnit pOrgUnit4 = new POrganizationalUnit("orgUnitNo4", "some department");
+		POrganizationalUnit pOrgUnit4 = new POrganizationalUnit("orgUnit4", "some department");
 		pOrgUnit4.setSuperOu(pRootOu);
 		pOrgUnit4.setRootOu(pRootOu);
 		saveOrgUnit(pOrgUnit4);
@@ -302,13 +292,13 @@ public class OrgUnitDaoImplRdbmsTest
 		List<IAuthorizableOrgUnit> subOrgUnits = orgUnitDao.obtainSubOrgUnitsForOrgUnit(pSuperOu.getIdentifier());
 		
 		assertEquals(3, subOrgUnits.size());
-		IAuthorizableOrgUnit orgUnit1 = findOrgUnitInList(subOrgUnits, ORG_UNIT_NO);
+		IAuthorizableOrgUnit orgUnit1 = findOrgUnitInList(subOrgUnits, "orgUnit1");
 		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit1, pOrgUnit1));
-		IAuthorizableOrgUnit orgUnit2 = findOrgUnitInList(subOrgUnits, "orgUnitNo2");
+		IAuthorizableOrgUnit orgUnit2 = findOrgUnitInList(subOrgUnits, "orgUnit2");
 		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit2, pOrgUnit2));
-		IAuthorizableOrgUnit orgUnit3 = findOrgUnitInList(subOrgUnits, "orgUnitNo3");
+		IAuthorizableOrgUnit orgUnit3 = findOrgUnitInList(subOrgUnits, "orgUnit3");
 		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit3, pOrgUnit3));
-		assertNull(findOrgUnitInList(subOrgUnits, "orgUnitNo4"));
+		assertNull(findOrgUnitInList(subOrgUnits, "orgUnit4"));
 		
 		for (IAuthorizableOrgUnit orgUnit : subOrgUnits)
 		{
@@ -317,9 +307,9 @@ public class OrgUnitDaoImplRdbmsTest
 		
 		subOrgUnits = orgUnitDao.obtainSubOrgUnitsForOrgUnit(pRootOu.getIdentifier());
 		assertEquals(2, subOrgUnits.size());
-		IAuthorizableOrgUnit superOu = findOrgUnitInList(subOrgUnits, SUPER_OU_NO);
+		IAuthorizableOrgUnit superOu = findOrgUnitInList(subOrgUnits, "superOu");
 		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) superOu, pSuperOu));
-		IAuthorizableOrgUnit orgUnit4 = findOrgUnitInList(subOrgUnits, "orgUnitNo4");
+		IAuthorizableOrgUnit orgUnit4 = findOrgUnitInList(subOrgUnits, "orgUnit4");
 		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit4, pOrgUnit4));
 		
 		for (IAuthorizableOrgUnit orgUnit : subOrgUnits)
@@ -333,137 +323,55 @@ public class OrgUnitDaoImplRdbmsTest
 	//@Rollback(value=false)
 	public void testObtainSubOrgUnitsForOrgUnitInclMembers()
 	{
-		POrganizationalUnit pRootOu = new POrganizationalUnit(ROOT_OU_NO, "rootOu");
-		saveOrgUnit(pRootOu);
-
-		POrganizationalUnit pSuperOu = new POrganizationalUnit(SUPER_OU_NO, "superOu");
-		pSuperOu.setSuperOu(pRootOu);
-		pSuperOu.setRootOu(pRootOu);
-		saveOrgUnit(pSuperOu);
+		List<IAuthorizableOrgUnit> subOrgUnits = orgUnitDao.obtainSubOrgUnitsForOrgUnitInclMembers(superOu_1.getIdentifier());
 		
-		PPerson pPersonA = new PPerson("persNoA", "namePersonA");
-		pPersonA.setGender(Gender.MALE);
-		pPersonA.setFirstName("firstNameA");
-		savePerson(pPersonA);
-
-		PPerson pPersonB = new PPerson("persNoB", "namePersonB");
-		pPersonB.setGender(Gender.FEMALE);
-		pPersonB.setTitle(Title.DR);
-		pPersonB.setFirstName("firstNameB");
-		savePerson(pPersonB);
+		assertEquals(2, subOrgUnits.size());
+		IAuthorizableOrgUnit orgUnit1 = findOrgUnitInList(subOrgUnits, TestObjectContainer.ORG_UNIT_NUMBER_A);
+		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit1, orgUnit_A));
+		IAuthorizableOrgUnit orgUnit2 = findOrgUnitInList(subOrgUnits, TestObjectContainer.ORG_UNIT_NUMBER_B);
+		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit2, orgUnit_B));
+		assertNull(findOrgUnitInList(subOrgUnits, "orgUnitNo4"));
 		
-		PPerson pPersonC = new PPerson("persNoC", "namePersonC");
-		pPersonC.setGender(Gender.MALE);
-		pPersonC.setFirstName("firstNameC");
-		savePerson(pPersonC);
-
-		PPerson pPersonD = new PPerson("persNoD", "namePersonD");
-		pPersonD.setGender(Gender.FEMALE);
-		pPersonD.setTitle(Title.PROF);
-		pPersonD.setFirstName("firstNameD");
-		savePerson(pPersonD);
-
-		PRole pRole1 = new PRole("role1");
-		pRole1.setDescription("description role1");
-
-		PRole pRole2 = new PRole("role2");
-		pRole2.setDescription("description role2");
-
-		POrganizationalUnit pOrgUnit1 = new POrganizationalUnit(ORG_UNIT_NO, "staff department");
-		pOrgUnit1.setSuperOu(pSuperOu);
-		pOrgUnit1.setRootOu(pRootOu);
-		POrgUnitMember pMember1_1 = new POrgUnitMember(pOrgUnit1, pPersonA);
-		pMember1_1.addRole(pRole1);	
-		pOrgUnit1.addMember(pMember1_1);
-		POrgUnitMember pMember1_2 = new POrgUnitMember(pOrgUnit1, pPersonB);
-		pMember1_2.addRole(pRole2);		
-		pOrgUnit1.addMember(pMember1_2);
-		saveOrgUnit(pOrgUnit1);
+		for (IAuthorizableOrgUnit orgUnit : subOrgUnits)
+		{
+			assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit.getSuperOrgUnit(), superOu_1));
+		}
 		
-		POrganizationalUnit pOrgUnit2 = new POrganizationalUnit("orgUnitNo2", "hr department");
-		pOrgUnit2.setSuperOu(pSuperOu);
-		pOrgUnit2.setRootOu(pRootOu);
-		POrgUnitMember pMember2_1 = new POrgUnitMember(pOrgUnit2, pPersonC);
-		pMember2_1.addRole(pRole2);		
-		pOrgUnit2.addMember(pMember2_1);
-		saveOrgUnit(pOrgUnit2);
+		subOrgUnits = orgUnitDao.obtainSubOrgUnitsForOrgUnitInclMembers(superOu_2.getIdentifier());
+		assertEquals(1, subOrgUnits.size());
+		IAuthorizableOrgUnit orgUnit3 = findOrgUnitInList(subOrgUnits, TestObjectContainer.ORG_UNIT_NUMBER_C);
+		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit3, orgUnit_C));
 		
-		POrganizationalUnit pOrgUnit3 = new POrganizationalUnit("orgUnitNo3", "it department");
-		pOrgUnit3.setSuperOu(pSuperOu);
-		pOrgUnit3.setRootOu(pRootOu);
-		POrgUnitMember pMember3_1 = new POrgUnitMember(pOrgUnit3, pPersonA);
-		pMember3_1.addRole(pRole1);	
-		pOrgUnit3.addMember(pMember3_1);
-		POrgUnitMember pMember3_2 = new POrgUnitMember(pOrgUnit3, pPersonB);
-		pMember3_2.addRole(pRole2);		
-		pOrgUnit3.addMember(pMember3_2);
-		POrgUnitMember pMember3_3 = new POrgUnitMember(pOrgUnit3, pPersonD);
-		pMember3_3.addRole(pRole2);		
-		pOrgUnit3.addMember(pMember3_3);
-		saveOrgUnit(pOrgUnit3);
+		for (IAuthorizableOrgUnit orgUnit : subOrgUnits)
+		{
+			assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit.getSuperOrgUnit(), superOu_2));
+		}
 		
-		List<IAuthorizableOrgUnit> subOrgUnits = orgUnitDao.obtainSubOrgUnitsForOrgUnitInclMembers(pSuperOu.getIdentifier());		
-		assertEquals(3, subOrgUnits.size());
-		
-		IAuthorizableOrgUnit resultOrgUnit = findOrgUnitInList(subOrgUnits, ORG_UNIT_NO);		
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) resultOrgUnit, pOrgUnit1));
-		
-		resultOrgUnit = findOrgUnitInList(subOrgUnits, "orgUnitNo2");		
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) resultOrgUnit, pOrgUnit2));
-		
-		resultOrgUnit = findOrgUnitInList(subOrgUnits, "orgUnitNo3");		
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) resultOrgUnit, pOrgUnit3));
+		subOrgUnits = orgUnitDao.obtainSubOrgUnitsForOrgUnitInclMembers(orgUnit_A.getIdentifier());
+		assertEquals(0, subOrgUnits.size());
 	}
 
   @Test
   public void testObtainRootOrgUnits()
   {
-		POrganizationalUnit pRootOu1 = new POrganizationalUnit(ROOT_OU_NO, "rootOu1");
-		saveOrgUnit(pRootOu1);
-
-		POrganizationalUnit pRootOu2 = new POrganizationalUnit("rootOuNo2", "rootOu2");
-		saveOrgUnit(pRootOu2);
-
-		POrganizationalUnit pOrgUnit = new POrganizationalUnit(ORG_UNIT_NO, "orgUnit");
-		pOrgUnit.setSuperOu(pRootOu1);
-		pOrgUnit.setRootOu(pRootOu1);
-		saveOrgUnit(pOrgUnit);
-		
 		List<IAuthorizableOrgUnit> rootOrgUnits = orgUnitDao.obtainRootOrgUnits();
-		assertEquals(2, rootOrgUnits.size());
-		IAuthorizableOrgUnit rootOu1 = findOrgUnitInList(rootOrgUnits, ROOT_OU_NO);
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) rootOu1, pRootOu1));
-		IAuthorizableOrgUnit rootOu2 = findOrgUnitInList(rootOrgUnits, "rootOuNo2");
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) rootOu2, pRootOu2));
+		assertEquals(1, rootOrgUnits.size());
+		IAuthorizableOrgUnit rootOu = findOrgUnitInList(rootOrgUnits, TestObjectContainer.ROOT_OU_NUMBER);
+		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) rootOu, this.rootOu));
 		
-		assertNull(findOrgUnitInList(rootOrgUnits, ORG_UNIT_NO));
+		assertNull(findOrgUnitInList(rootOrgUnits, TestObjectContainer.ORG_UNIT_NUMBER_A));
+		assertNull(findOrgUnitInList(rootOrgUnits, TestObjectContainer.SUPER_OU_NUMBER_1));
   }
 
   @Test
   public void testFindMembersForOrgUnit()
   {
-		PPerson pPerson1 = new PPerson("persNo1", "Obama");
-		savePerson(pPerson1);
-
-		PPerson pPerson2 = new PPerson("persNo2", "Merkel");
-		savePerson(pPerson2);
-		
-		POrganizationalUnit pOrgUnit = new POrganizationalUnit(ORG_UNIT_NO, "staff department");
-		POrgUnitMember pMember1 = new POrgUnitMember(pOrgUnit, pPerson1);
-		POrgUnitMember pMember2 = new POrgUnitMember(pOrgUnit, pPerson2);
-		pOrgUnit.setMembers(new HashSet<POrgUnitMember>(Arrays.asList(pMember1, pMember2)));
-
-		saveOrgUnit(pOrgUnit);		
-
-		POrganizationalUnit pOrgUnit2 = new POrganizationalUnit("orgUnitNo2", "hr department");
-		saveOrgUnit(pOrgUnit2);
-		
-		List<IAuthorizableMember> members = orgUnitDao.findMembersForOrgUnit(pOrgUnit.getIdentifier());
+		List<IAuthorizableMember> members = orgUnitDao.findMembersForOrgUnit(orgUnit_A.getIdentifier());
 		assertEquals(2, members.size());
-		assertTrue(members.contains(OrgUnitMemberMapper.mapFromEntity(pMember1, pOrgUnit.getIdentifier(), false)));
-		assertTrue(members.contains(OrgUnitMemberMapper.mapFromEntity(pMember2, pOrgUnit.getIdentifier(), false)));
+		assertTrue(members.contains(OrgUnitMemberMapper.mapFromEntity(member_1_A, orgUnit_A.getIdentifier(), false)));
+		assertTrue(members.contains(OrgUnitMemberMapper.mapFromEntity(member_2_A, orgUnit_A.getIdentifier(), false)));
 		
-		members = orgUnitDao.findMembersForOrgUnit(pOrgUnit2.getIdentifier());
+		members = orgUnitDao.findMembersForOrgUnit(orgUnit_C.getIdentifier());
 		assertEquals(0, members.size());
   }
 
@@ -475,6 +383,7 @@ public class OrgUnitDaoImplRdbmsTest
 		orgUnitRepository.deleteAll();
 		personRepository.deleteAll();
 		technicalUserRepository.deleteAll();
+		applicationRepository.deleteAll();
 		addressRepository.deleteAll();
 	}
 
@@ -500,5 +409,11 @@ public class OrgUnitDaoImplRdbmsTest
 	private POrgUnitMember saveMember(POrgUnitMember persistable)
 	{
 		return orgUnitMemberRepository.save(persistable);
+	}
+
+	@Transactional(readOnly = false)
+	private PApplication saveApplication(PApplication persistable)
+	{
+		return applicationRepository.save(persistable);
 	}
 }

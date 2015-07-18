@@ -67,9 +67,14 @@ public class PPermission
 
 	public void setPermissionScope(PermissionScope permissionScope)
 	{
-		Validate.notNull(permissionScope, "permission-scope must not be null!");
-		
+		Validate.notNull(permissionScope, "permission-scope must not be null!");		
 		this.permissionScope = permissionScope;
+	}
+
+	public void setApplication(PApplication application)
+	{
+		Validate.notNull(application, "application must not be null!");
+		this.application = application;
 	}
 
 	// constructors:

@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,14 +14,12 @@ import javax.inject.Inject;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openur.module.domain.application.OpenURApplication;
-import org.openur.module.domain.application.OpenURApplicationBuilder;
+import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
 import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.domain.security.authorization.OpenURRole;
 import org.openur.module.persistence.dao.ISecurityDao;
-import org.openur.module.persistence.mapper.rdbms.ApplicationMapper;
 import org.openur.module.persistence.mapper.rdbms.PermissionMapper;
 import org.openur.module.persistence.mapper.rdbms.RoleMapper;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
@@ -55,10 +55,7 @@ public class SecurityDaoImplRdbmsTest
 	@Test
 	public void testFindPermissionById()
 	{
-		PApplication pApp = new PApplication("applicationName");
-		
-		PPermission persistable = new PPermission("permName", pApp);
-		persistable.setDescription("permDescription");		
+		PPermission persistable = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);		
 		persistable = savePermission(persistable);
 		
 		IPermission p = securityDao.findPermissionById(persistable.getIdentifier());
@@ -70,16 +67,10 @@ public class SecurityDaoImplRdbmsTest
 	@Test
 	public void testFindPermissionByName()
 	{
-		final String PERMISSION_NAME = "permName";
-		
-		OpenURApplication app = new OpenURApplicationBuilder("appName").build();
-		PApplication pApp = ApplicationMapper.mapFromImmutable(app);
-		
-		PPermission persistable = new PPermission(PERMISSION_NAME, pApp);
-		persistable.setDescription("permDescription");		
+		PPermission persistable = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);	
 		persistable = savePermission(persistable);
 		
-		IPermission p = securityDao.findPermissionByName(PERMISSION_NAME);
+		IPermission p = securityDao.findPermissionByName(TestObjectContainer.PERMISSION_1_A.getPermissionName());
 		
 		assertNotNull(p);	
 		assertTrue(PermissionMapper.immutableEqualsToEntity((OpenURPermission) p, persistable));
@@ -94,11 +85,11 @@ public class SecurityDaoImplRdbmsTest
 		assertNotNull(allPermissions);
 		assertEquals(allPermissions.size(), 0);
 		
-		PApplication pApp = new PApplication("applicationName");
-		
-		PPermission perm1 = new PPermission("permName1", pApp);
+		PPermission perm1 = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);	
 		perm1 = savePermission(perm1);
-		PPermission perm2 = new PPermission("permName2", pApp);
+		PApplication pApp = perm1.getApplication();
+		PPermission perm2 = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_A);	
+		perm2.setApplication(pApp);
 		perm2 = savePermission(perm2);
 		
 		allPermissions = securityDao.obtainAllPermissions();
@@ -118,46 +109,45 @@ public class SecurityDaoImplRdbmsTest
 	@Test
 	@Transactional(readOnly=false)
 	public void testObtainPermissionsForApp()
-	{
-		final String appName1 = "appName1";
-		final String appName2 = "appName2";
+	{		
+		PPermission perm_1_A = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);	
+		perm_1_A = savePermission(perm_1_A);
+		PApplication app_A = perm_1_A.getApplication();
+		PPermission perm_2_A = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_A);	
+		perm_2_A.setApplication(app_A);
+		perm_2_A = savePermission(perm_2_A);
 		
-		PApplication pApp1 = new PApplication(appName1);		
-		PPermission perm11 = new PPermission("permName11", pApp1);
-		perm11 = savePermission(perm11);
-		PPermission perm12 = new PPermission("permName12", pApp1);
-		perm12 = savePermission(perm12);
+		PPermission perm_1_B = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_B);	
+		perm_1_B = savePermission(perm_1_B);
+		PApplication app_B = perm_1_B.getApplication();
+		PPermission perm_2_B = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_B);	
+		perm_2_B.setApplication(app_B);
+		perm_2_B = savePermission(perm_2_B);
 		
-		PApplication pApp2 = new PApplication(appName2);		
-		PPermission perm21 = new PPermission("permName21", pApp2);
-		perm21 = savePermission(perm21);
-		PPermission perm22 = new PPermission("permName22", pApp2);
-		perm22 = savePermission(perm22);
-		
-		List<IPermission> permList = securityDao.obtainPermissionsForApp(appName1);
+		List<IPermission> permList = securityDao.obtainPermissionsForApp(TestObjectContainer.APP_A.getApplicationName());
 		assertNotNull(permList);
 		assertEquals(permList.size(), 2);
 
 		Iterator<IPermission> iter = permList.iterator();
 		OpenURPermission _p1 = (OpenURPermission) iter.next();
 		OpenURPermission _p2 = (OpenURPermission) iter.next();
-		OpenURPermission permission_1 = _p1.getPermissionName().equals(perm11.getPermissionName()) ? _p1 : _p2;
-		OpenURPermission permission_2 = _p1.getPermissionName().equals(perm11.getPermissionName()) ? _p2 : _p1;
+		OpenURPermission permission_1 = _p1.getPermissionName().equals(perm_1_A.getPermissionName()) ? _p1 : _p2;
+		OpenURPermission permission_2 = _p1.getPermissionName().equals(perm_1_A.getPermissionName()) ? _p2 : _p1;
 
-		assertTrue(PermissionMapper.immutableEqualsToEntity(permission_1, perm11));
-		assertTrue(PermissionMapper.immutableEqualsToEntity(permission_2, perm12));
+		assertTrue(PermissionMapper.immutableEqualsToEntity(permission_1, perm_1_A));
+		assertTrue(PermissionMapper.immutableEqualsToEntity(permission_2, perm_2_A));
 	}
 
 	@Test
 	@Transactional(readOnly=false)
 	public void testFindRoleById()
 	{
-		PApplication pApp = new PApplication("applicationName");		
-		PPermission perm1 = new PPermission("permName1", pApp);
-		PPermission perm2 = new PPermission("permName2", pApp);		
-		PRole pRole = new PRole("roleName");
-		pRole.addPermssion(perm1);
-		pRole.addPermssion(perm2);		
+		PPermission perm1 = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);	
+		PApplication pApp = perm1.getApplication();
+		PPermission perm2 = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_A);	
+		perm2.setApplication(pApp);
+		PRole pRole = RoleMapper.mapFromImmutable(TestObjectContainer.ROLE_X);
+		pRole.setPermissions(new HashSet<>(Arrays.asList(perm1, perm2)));
 		saveRole(pRole);
 		
 		IRole p = securityDao.findRoleById(pRole.getIdentifier());
@@ -170,12 +160,12 @@ public class SecurityDaoImplRdbmsTest
 	@Transactional(readOnly=false)
 	public void testFindRoleByName()
 	{
-		PApplication pApp = new PApplication("applicationName");		
-		PPermission perm1 = new PPermission("permName1", pApp);
-		PPermission perm2 = new PPermission("permName2", pApp);		
-		PRole pRole = new PRole("roleName");
-		pRole.addPermssion(perm1);
-		pRole.addPermssion(perm2);		
+		PPermission perm1 = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);	
+		PApplication pApp = perm1.getApplication();
+		PPermission perm2 = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_A);	
+		perm2.setApplication(pApp);
+		PRole pRole = RoleMapper.mapFromImmutable(TestObjectContainer.ROLE_X);
+		pRole.setPermissions(new HashSet<>(Arrays.asList(perm1, perm2)));
 		saveRole(pRole);
 		
 		IRole p = securityDao.findRoleByName(pRole.getRoleName());	
@@ -189,20 +179,21 @@ public class SecurityDaoImplRdbmsTest
 	@Transactional(readOnly=false)
 	public void testObtainAllRoles()
 	{
-		PApplication pApp = new PApplication("appName");		
-		PPermission perm1_A = new PPermission("permName1_A", pApp);
-		PPermission perm2_A = new PPermission("permName2_A", pApp);		
-		PRole pRoleA = new PRole("roleNameA");
-		pRoleA.addPermssion(perm1_A);
-		pRoleA.addPermssion(perm2_A);		
-		saveRole(pRoleA);
+		PPermission perm_1_A = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);	
+		PApplication app_A = perm_1_A.getApplication();
+		PPermission perm_2_A = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_A);	
+		perm_2_A.setApplication(app_A);
+		PRole pRole_X = RoleMapper.mapFromImmutable(TestObjectContainer.ROLE_X);
+		pRole_X.setPermissions(new HashSet<>(Arrays.asList(perm_1_A, perm_2_A)));
+		saveRole(pRole_X);
 
-		PPermission perm1_B = new PPermission("permName1_B", pApp);
-		PPermission perm2_B = new PPermission("permName2_B", pApp);		
-		PRole pRoleB = new PRole("roleNameB");
-		pRoleB.addPermssion(perm1_B);
-		pRoleB.addPermssion(perm2_B);		
-		saveRole(pRoleB);
+		PPermission perm_1_B = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_B);	
+		PApplication app_B = perm_1_B.getApplication();
+		PPermission perm_2_B = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_B);	
+		perm_2_B.setApplication(app_B);
+		PRole pRole_Y = RoleMapper.mapFromImmutable(TestObjectContainer.ROLE_Y);
+		pRole_Y.setPermissions(new HashSet<>(Arrays.asList(perm_1_B, perm_2_B)));
+		saveRole(pRole_Y);
 		
 		List<IRole> allRoles = securityDao.obtainAllRoles();
 		assertNotNull(allRoles);
@@ -211,11 +202,11 @@ public class SecurityDaoImplRdbmsTest
 		Iterator<IRole> iter = allRoles.iterator();
 		OpenURRole _r1 = (OpenURRole) iter.next();
 		OpenURRole _r2 = (OpenURRole) iter.next();
-		OpenURRole role_A = _r1.getRoleName().equals(pRoleA.getRoleName()) ? _r1 : _r2;
-		OpenURRole role_B = _r1.getRoleName().equals(pRoleA.getRoleName()) ? _r2 : _r1;
+		OpenURRole role_X = _r1.getRoleName().equals(pRole_X.getRoleName()) ? _r1 : _r2;
+		OpenURRole role_Y = _r2.getRoleName().equals(pRole_Y.getRoleName()) ? _r2 : _r1;
 
-		assertTrue(RoleMapper.immutableEqualsToEntity(role_A, pRoleA));
-		assertTrue(RoleMapper.immutableEqualsToEntity(role_B, pRoleB));
+		assertTrue(RoleMapper.immutableEqualsToEntity(role_X, pRole_X));
+		assertTrue(RoleMapper.immutableEqualsToEntity(role_Y, pRole_Y));
 	}
 
 	@After

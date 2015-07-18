@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openur.module.domain.userstructure.Status;
+import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
 import org.openur.module.persistence.dao.ITechnicalUserDao;
@@ -31,8 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TechnicalUserDaoImplRdbmsTest
 {
-	private static final String USER_NUMBER = "123abc";
-
 	@Inject
 	private TechnicalUserRepository technicalUserRepository;
 
@@ -42,7 +40,7 @@ public class TechnicalUserDaoImplRdbmsTest
 	@Test
 	public void testFindTechnicalUserById()
 	{
-		PTechnicalUser persistable = new PTechnicalUser(USER_NUMBER);
+		PTechnicalUser persistable = TechnicalUserMapper.mapFromImmutable(TestObjectContainer.TECH_USER_1);
 		persistable = saveTechnicalUser(persistable);
 
 		ITechnicalUser tu = technicalUserDao.findTechnicalUserById(persistable.getIdentifier());
@@ -54,11 +52,10 @@ public class TechnicalUserDaoImplRdbmsTest
 	@Test
 	public void testFindTechnicalUserByNumber()
 	{
-		PTechnicalUser persistable = new PTechnicalUser(USER_NUMBER);
-		persistable.setStatus(Status.INACTIVE);
+		PTechnicalUser persistable = TechnicalUserMapper.mapFromImmutable(TestObjectContainer.TECH_USER_1);
 		persistable = saveTechnicalUser(persistable);
 
-		ITechnicalUser tu = technicalUserDao.findTechnicalUserByNumber(USER_NUMBER);
+		ITechnicalUser tu = technicalUserDao.findTechnicalUserByNumber(TestObjectContainer.TECH_USER_NUMBER_1);
 
 		assertNotNull(tu);
 		assertTrue(TechnicalUserMapper.immutableEqualsToEntity((TechnicalUser) tu, persistable));
@@ -71,11 +68,10 @@ public class TechnicalUserDaoImplRdbmsTest
 		assertNotNull(allTechUsers);
 		assertEquals(allTechUsers.size(), 0);
 
-		PTechnicalUser persistable1 = new PTechnicalUser(USER_NUMBER);
+		PTechnicalUser persistable1 = TechnicalUserMapper.mapFromImmutable(TestObjectContainer.TECH_USER_1);
 		persistable1 = saveTechnicalUser(persistable1);
 
-		PTechnicalUser persistable2 = new PTechnicalUser("456xyz");
-		persistable2.setStatus(Status.INACTIVE);
+		PTechnicalUser persistable2 = TechnicalUserMapper.mapFromImmutable(TestObjectContainer.TECH_USER_2);
 		persistable2 = saveTechnicalUser(persistable2);
 
 		allTechUsers = technicalUserDao.obtainAllTechnicalUsers();

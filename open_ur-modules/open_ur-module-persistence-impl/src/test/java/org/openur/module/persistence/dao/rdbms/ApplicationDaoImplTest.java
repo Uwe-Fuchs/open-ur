@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.persistence.dao.IApplicationDao;
@@ -30,8 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ApplicationDaoImplTest
 {
-	private static final String APP_NAME = "nameOfApplication";
-	
 	@Inject
 	private ApplicationRepository applicationRepository;
 	
@@ -41,7 +40,7 @@ public class ApplicationDaoImplTest
 	@Test
 	public void testFindApplicationById()
 	{
-		PApplication persistable = new PApplication(APP_NAME);
+		PApplication persistable = ApplicationMapper.mapFromImmutable(TestObjectContainer.APP_A);
 		persistable = saveApplication(persistable);
 
 		IApplication immutable = applicationDao.findApplicationById(persistable.getIdentifier());
@@ -53,10 +52,10 @@ public class ApplicationDaoImplTest
 	@Test
 	public void testFindApplicationByName()
 	{
-		PApplication persistable = new PApplication(APP_NAME);
+		PApplication persistable = ApplicationMapper.mapFromImmutable(TestObjectContainer.APP_A);
 		persistable = saveApplication(persistable);
 
-		IApplication immutable = applicationDao.findApplicationByName(APP_NAME);
+		IApplication immutable = applicationDao.findApplicationByName(TestObjectContainer.APP_A.getApplicationName());
 
 		assertNotNull(immutable);
 		assertTrue(ApplicationMapper.immutableEqualsToEntity((OpenURApplication) immutable, persistable));
@@ -69,9 +68,9 @@ public class ApplicationDaoImplTest
 		assertNotNull(allApps);
 		assertEquals(allApps.size(), 0);
 		
-		PApplication persistable = new PApplication(APP_NAME);
+		PApplication persistable = ApplicationMapper.mapFromImmutable(TestObjectContainer.APP_A);
 		persistable = saveApplication(persistable);
-		PApplication persistable2 = new PApplication("appName2");
+		PApplication persistable2 = ApplicationMapper.mapFromImmutable(TestObjectContainer.APP_B);
 		persistable2 = saveApplication(persistable2);
 		
 		allApps = applicationDao.obtainAllApplications();
