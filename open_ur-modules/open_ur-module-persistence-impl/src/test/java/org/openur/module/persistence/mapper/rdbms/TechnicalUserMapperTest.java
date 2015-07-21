@@ -13,7 +13,7 @@ public class TechnicalUserMapperTest
 	public void testMapFromImmutable()
 	{
 		TechnicalUser immutable = TestObjectContainer.TECH_USER_3;		
-		PTechnicalUser persistable = TechnicalUserMapper.mapFromImmutable(immutable);
+		PTechnicalUser persistable = new TechnicalUserMapper().mapFromImmutable(immutable);
 
 		assertTrue(TechnicalUserMapper.immutableEqualsToEntity(immutable, persistable));
 	}
@@ -21,8 +21,8 @@ public class TechnicalUserMapperTest
 	@Test
 	public void testMapToImmutable()
 	{
-		PTechnicalUser persistable = TechnicalUserMapper.mapFromImmutable(TestObjectContainer.TECH_USER_3);		
-		TechnicalUser immutable = TechnicalUserMapper.mapFromEntity(persistable);
+		PTechnicalUser persistable = new TechnicalUserMapper().mapFromImmutable(TestObjectContainer.TECH_USER_3);		
+		TechnicalUser immutable = new TechnicalUserMapper().mapFromEntity(persistable);
 
 		assertTrue(TechnicalUserMapper.immutableEqualsToEntity(immutable, persistable));
 	}

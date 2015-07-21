@@ -18,6 +18,7 @@ import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
 import org.openur.module.persistence.dao.ITechnicalUserDao;
 import org.openur.module.persistence.mapper.rdbms.TechnicalUserMapper;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
+import org.openur.module.persistence.rdbms.config.MapperSpringConfig;
 import org.openur.module.persistence.rdbms.config.RepositorySpringConfig;
 import org.openur.module.persistence.rdbms.entity.PTechnicalUser;
 import org.openur.module.persistence.rdbms.repository.TechnicalUserRepository;
@@ -26,11 +27,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-@ContextConfiguration(classes = { RepositorySpringConfig.class, DaoSpringConfig.class })
-@ActiveProfiles(profiles = { "testRepository", "testDao" })
+@ContextConfiguration(classes = { RepositorySpringConfig.class, DaoSpringConfig.class, MapperSpringConfig.class })
+@ActiveProfiles(profiles = { "testRepository", "testDao", "testMappers" })
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TechnicalUserDaoImplRdbmsTest
 {
+	@Inject
+	private TechnicalUserMapper technicalUserMapper;
+	
 	@Inject
 	private TechnicalUserRepository technicalUserRepository;
 
@@ -40,7 +44,7 @@ public class TechnicalUserDaoImplRdbmsTest
 	@Test
 	public void testFindTechnicalUserById()
 	{
-		PTechnicalUser persistable = TechnicalUserMapper.mapFromImmutable(TestObjectContainer.TECH_USER_1);
+		PTechnicalUser persistable = technicalUserMapper.mapFromImmutable(TestObjectContainer.TECH_USER_1);
 		persistable = saveTechnicalUser(persistable);
 
 		ITechnicalUser tu = technicalUserDao.findTechnicalUserById(persistable.getIdentifier());
@@ -52,7 +56,7 @@ public class TechnicalUserDaoImplRdbmsTest
 	@Test
 	public void testFindTechnicalUserByNumber()
 	{
-		PTechnicalUser persistable = TechnicalUserMapper.mapFromImmutable(TestObjectContainer.TECH_USER_1);
+		PTechnicalUser persistable = technicalUserMapper.mapFromImmutable(TestObjectContainer.TECH_USER_1);
 		persistable = saveTechnicalUser(persistable);
 
 		ITechnicalUser tu = technicalUserDao.findTechnicalUserByNumber(TestObjectContainer.TECH_USER_NUMBER_1);
@@ -68,10 +72,10 @@ public class TechnicalUserDaoImplRdbmsTest
 		assertNotNull(allTechUsers);
 		assertEquals(allTechUsers.size(), 0);
 
-		PTechnicalUser persistable1 = TechnicalUserMapper.mapFromImmutable(TestObjectContainer.TECH_USER_1);
+		PTechnicalUser persistable1 = technicalUserMapper.mapFromImmutable(TestObjectContainer.TECH_USER_1);
 		persistable1 = saveTechnicalUser(persistable1);
 
-		PTechnicalUser persistable2 = TechnicalUserMapper.mapFromImmutable(TestObjectContainer.TECH_USER_2);
+		PTechnicalUser persistable2 = technicalUserMapper.mapFromImmutable(TestObjectContainer.TECH_USER_2);
 		persistable2 = saveTechnicalUser(persistable2);
 
 		allTechUsers = technicalUserDao.obtainAllTechnicalUsers();

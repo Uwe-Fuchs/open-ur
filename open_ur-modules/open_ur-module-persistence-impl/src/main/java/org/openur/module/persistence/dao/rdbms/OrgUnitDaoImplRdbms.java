@@ -23,6 +23,12 @@ public class OrgUnitDaoImplRdbms
 	implements IOrgUnitDao
 {
 	@Inject
+	private OrganizationalUnitMapper organizationalUnitMapper;
+	
+	@Inject
+	private OrgUnitMemberMapper orgUnitMemberMapper;
+	
+	@Inject
 	private OrgUnitRepository orgUnitRepository;
 
 	@Inject
@@ -84,7 +90,7 @@ public class OrgUnitDaoImplRdbms
 			return null;
 		}
 		
-		return OrganizationalUnitMapper.mapFromEntity(persistable, inclMembers, inclRoles);
+		return organizationalUnitMapper.mapFromEntity(persistable, inclMembers, inclRoles);
 	}
 
 	@Override
@@ -108,7 +114,7 @@ public class OrgUnitDaoImplRdbms
 			return null;
 		}
 		
-		return OrganizationalUnitMapper.mapFromEntity(persistable, inclMembers, inclRoles);
+		return organizationalUnitMapper.mapFromEntity(persistable, inclMembers, inclRoles);
 	}
 
 	@Override
@@ -164,14 +170,15 @@ public class OrgUnitDaoImplRdbms
 		
 		return orgUnitMembers
 					.stream()
-					.map(o -> OrgUnitMemberMapper.mapFromEntity(o, orgUnitId, true))
+					.map(o -> orgUnitMemberMapper.mapFromEntity(o, orgUnitId, true))
 					.collect(Collectors.toList());
 	}
 	
-	private List<IAuthorizableOrgUnit> mapEntityOrgUnitListToImmutable(List<POrganizationalUnit> entities, boolean inclMembers) {
+	private List<IAuthorizableOrgUnit> mapEntityOrgUnitListToImmutable(List<POrganizationalUnit> entities, boolean inclMembers)
+	{
 		return entities
 					.stream()
-					.map(o -> OrganizationalUnitMapper.mapFromEntity(o, inclMembers, inclMembers))
+					.map(o -> organizationalUnitMapper.mapFromEntity(o, inclMembers, inclMembers))
 					.collect(Collectors.toList());
 	}
 }

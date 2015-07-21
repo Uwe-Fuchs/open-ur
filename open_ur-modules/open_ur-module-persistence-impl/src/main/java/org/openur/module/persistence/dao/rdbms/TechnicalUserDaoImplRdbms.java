@@ -19,6 +19,9 @@ public class TechnicalUserDaoImplRdbms
 	implements ITechnicalUserDao
 {
 	@Inject
+	private TechnicalUserMapper technicalUserMapper;
+	
+	@Inject
 	private TechnicalUserRepository technicalUserRepository;
 	
 	public TechnicalUserDaoImplRdbms()
@@ -50,7 +53,7 @@ public class TechnicalUserDaoImplRdbms
 			return null;
 		}
 
-		return TechnicalUserMapper.mapFromEntity(persistable);
+		return technicalUserMapper.mapFromEntity(persistable);
 	}
 
 	@Override
@@ -63,7 +66,7 @@ public class TechnicalUserDaoImplRdbms
 			return null;
 		}
 
-		return TechnicalUserMapper.mapFromEntity(persistable);
+		return technicalUserMapper.mapFromEntity(persistable);
 	}
 
 	@Override
@@ -73,7 +76,7 @@ public class TechnicalUserDaoImplRdbms
 
 		return techUsers
 				.stream()
-				.map(TechnicalUserMapper::mapFromEntity)
+				.map(technicalUserMapper::mapFromEntity)
 				.collect(Collectors.toList());
 	}
 }

@@ -18,11 +18,11 @@ public class UserStructureBaseMapper
 		return (immutable.getStatus() == persistable.getStatus());
 	}
 
-	protected static <UB extends UserStructureBaseBuilder<UB>, P extends PUserStructureBase>
+	protected <UB extends UserStructureBaseBuilder<UB>, P extends PUserStructureBase>
 			UB buildImmutable(UB immutableBuilder, P persistable)
 	{
 		immutableBuilder.status(persistable.getStatus());
 
-		return AbstractEntityMapper.mapFromEntity(immutableBuilder, persistable);
+		return super.mapFromEntity(immutableBuilder, persistable);
 	}
 }

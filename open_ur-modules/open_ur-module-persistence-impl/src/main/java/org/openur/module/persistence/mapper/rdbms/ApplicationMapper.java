@@ -12,16 +12,16 @@ import org.openur.module.persistence.rdbms.entity.PApplication;
 public class ApplicationMapper
 	extends AbstractEntityMapper
 {
-	public static PApplication mapFromImmutable(OpenURApplication immutable)
+	public PApplication mapFromImmutable(OpenURApplication immutable)
 	{
 		return new PApplication(immutable.getApplicationName());
 	}
 
-	public static OpenURApplication mapFromEntity(PApplication persistable)
+	public OpenURApplication mapFromEntity(PApplication persistable)
 	{
 		OpenURApplicationBuilder immutableBuilder = new OpenURApplicationBuilder(persistable.getApplicationName());
 		
-		return AbstractEntityMapper.mapFromEntity(immutableBuilder, persistable)
+		return super.mapFromEntity(immutableBuilder, persistable)
 					.build();
 	}
 

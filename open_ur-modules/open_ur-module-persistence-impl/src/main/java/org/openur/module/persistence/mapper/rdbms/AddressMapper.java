@@ -10,7 +10,7 @@ import org.openur.module.persistence.rdbms.entity.PAddress;
 public class AddressMapper
 	extends AbstractEntityMapper
 {	
-	public static PAddress mapFromImmutable(Address immutable)
+	public PAddress mapFromImmutable(Address immutable)
 	{
 		PAddress persistable = new PAddress(immutable.getPostcode());
 		
@@ -24,11 +24,11 @@ public class AddressMapper
 		return persistable;
 	}
 	
-	public static Address mapFromEntity(PAddress persistable)
+	public Address mapFromEntity(PAddress persistable)
 	{
 		AddressBuilder immutableBuilder = new AddressBuilder(persistable.getPostcode());
 		
-		AbstractEntityMapper.mapFromEntity(immutableBuilder, persistable);
+		super.mapFromEntity(immutableBuilder, persistable);
 		
 		immutableBuilder
 				.careOf(persistable.getCareOf())

@@ -29,7 +29,7 @@ public class AbstractEntityMapper
 		return ObjectsComparator.compareLocalDateTimes(immutable.getLastModifiedDate(), persistable.getLastModifiedDate());
 	}
 
-	protected static <IB extends IdentifiableEntityBuilder<IB>, P extends AbstractOpenUrPersistable>
+	protected <IB extends IdentifiableEntityBuilder<IB>, P extends AbstractOpenUrPersistable>
 			IB mapFromEntity(IB immutableBuilder, P persistable)
 	{
 		immutableBuilder

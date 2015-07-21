@@ -1,5 +1,7 @@
 package org.openur.module.persistence.mapper.rdbms;
 
+import javax.inject.Inject;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.openur.module.domain.userstructure.EMailAddress;
@@ -12,7 +14,13 @@ import org.openur.module.persistence.rdbms.entity.PPerson;
 public class PersonMapper
 	extends UserStructureBaseMapper
 {
-	public static PPerson mapFromImmutable(Person immutable)
+	@Inject
+	private AddressMapper addressMapper;
+	
+	@Inject
+	private ApplicationMapper applicationMapper;
+	
+	public PPerson mapFromImmutable(Person immutable)
 	{
 		PPerson persistable = new PPerson(immutable.getPersonalNumber(), immutable.getName().getLastName());
 
@@ -26,17 +34,17 @@ public class PersonMapper
 		persistable.setMobileNumber(immutable.getMobileNumber());
 		persistable.setPhoneNumber(immutable.getPhoneNumber());
 		persistable.setStatus(immutable.getStatus());
-		persistable.setHomeAddress(immutable.getHomeAddress() != null ? AddressMapper.mapFromImmutable(immutable.getHomeAddress()) : null);
+		persistable.setHomeAddress(immutable.getHomeAddress() != null ? addressMapper.mapFromImmutable(immutable.getHomeAddress()) : null);
 		
 		immutable.getApplications()
 				.stream()
-				.map(ApplicationMapper::mapFromImmutable)
+				.map(applicationMapper::mapFromImmutable)
 				.forEach(persistable::addApplication);
 		
 		return persistable;
 	}
 	
-	public static Person mapFromEntity(PPerson persistable)
+	public Person mapFromEntity(PPerson persistable)
 	{
 		Name name;
 		
@@ -58,7 +66,7 @@ public class PersonMapper
 		}
 		
 		PersonBuilder immutableBuilder = new PersonBuilder(persistable.getPersonalNumber(), name);		
-		immutableBuilder = UserStructureBaseMapper.buildImmutable(immutableBuilder, persistable);
+		immutableBuilder = super.buildImmutable(immutableBuilder, persistable);
 		
 		immutableBuilder
 				.emailAddress(StringUtils.isNotEmpty(persistable.getEmailAddress()) ? EMailAddress.create(persistable.getEmailAddress()) : null)
@@ -67,11 +75,11 @@ public class PersonMapper
 				.homePhoneNumber(persistable.getHomePhoneNumber())
 				.mobileNumber(persistable.getMobileNumber())
 				.phoneNumber(persistable.getPhoneNumber())
-				.homeAddress(persistable.getHomeAddress() != null ? AddressMapper.mapFromEntity(persistable.getHomeAddress()) : null);
+				.homeAddress(persistable.getHomeAddress() != null ? addressMapper.mapFromEntity(persistable.getHomeAddress()) : null);
 		
 		persistable.getApplications()
 				.stream()
-				.map(ApplicationMapper::mapFromEntity)
+				.map(applicationMapper::mapFromEntity)
 				.forEach(immutableBuilder::addApplication);
 		
 		return immutableBuilder.build();
