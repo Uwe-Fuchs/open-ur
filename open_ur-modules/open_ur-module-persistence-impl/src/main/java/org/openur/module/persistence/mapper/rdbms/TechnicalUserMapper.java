@@ -7,7 +7,7 @@ import org.openur.module.persistence.rdbms.entity.PTechnicalUser;
 public class TechnicalUserMapper
 	extends UserStructureBaseMapper
 {
-	public static PTechnicalUser mapFromImmutable(TechnicalUser immutable)
+	public PTechnicalUser mapFromImmutable(TechnicalUser immutable)
 	{
 		PTechnicalUser persistable = new PTechnicalUser(immutable.getTechUserNumber());
 
@@ -16,10 +16,10 @@ public class TechnicalUserMapper
 		return persistable;
 	}
 	
-	public static TechnicalUser mapFromEntity(PTechnicalUser persistable)
+	public TechnicalUser mapFromEntity(PTechnicalUser persistable)
 	{
 		TechnicalUserBuilder immutableBuilder = new TechnicalUserBuilder(persistable.getTechUserNumber());		
-		immutableBuilder = UserStructureBaseMapper.buildImmutable(immutableBuilder, persistable);
+		immutableBuilder = super.buildImmutable(immutableBuilder, persistable);
 		
 		return immutableBuilder.build();
 	}

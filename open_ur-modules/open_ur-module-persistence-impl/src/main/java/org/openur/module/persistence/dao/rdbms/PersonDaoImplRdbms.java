@@ -19,6 +19,9 @@ public class PersonDaoImplRdbms
 	implements IPersonDao
 {
 	@Inject
+	private PersonMapper personMapper;
+	
+	@Inject
 	private PersonRepository personRepository;
 	
 	public PersonDaoImplRdbms()
@@ -49,7 +52,7 @@ public class PersonDaoImplRdbms
 			return null;
 		}
 
-		return PersonMapper.mapFromEntity(persistable);
+		return personMapper.mapFromEntity(persistable);
 	}
 
 	@Override
@@ -62,7 +65,7 @@ public class PersonDaoImplRdbms
 			return null;
 		}
 
-		return PersonMapper.mapFromEntity(persistable);
+		return personMapper.mapFromEntity(persistable);
 	}
 
 	@Override
@@ -72,7 +75,7 @@ public class PersonDaoImplRdbms
 
 		return persons
 				.stream()
-				.map(PersonMapper::mapFromEntity)
+				.map(personMapper::mapFromEntity)
 				.collect(Collectors.toList());
 	}
 }

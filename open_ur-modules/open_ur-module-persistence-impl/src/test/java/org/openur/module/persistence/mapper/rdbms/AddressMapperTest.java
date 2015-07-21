@@ -14,7 +14,7 @@ public class AddressMapperTest
 	public void testMapFromImmutable()
 	{
 		Address immutable = TestObjectContainer.ADDRESS_3;
-		PAddress persistable = AddressMapper.mapFromImmutable(immutable);
+		PAddress persistable = new AddressMapper().mapFromImmutable(immutable);
 		
 		assertNotNull(persistable);
 		assertTrue(AddressMapper.immutableEqualsToEntity(immutable, persistable));
@@ -32,7 +32,7 @@ public class AddressMapperTest
 		persistable.setStreetNo("11");
 		persistable.setCountryCode("DE");
 		
-		Address immutable = AddressMapper.mapFromEntity(persistable);
+		Address immutable = new AddressMapper().mapFromEntity(persistable);
 		
 		assertNotNull(immutable);
 		assertTrue(AddressMapper.immutableEqualsToEntity(immutable, persistable));

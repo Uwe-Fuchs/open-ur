@@ -23,6 +23,12 @@ public class SecurityDaoImplRdbms
 	implements ISecurityDao
 {
 	@Inject
+	private PermissionMapper permissionMapper;
+	
+	@Inject
+	private RoleMapper roleMapper;
+	
+	@Inject
 	private PermissionRepository permissionRepository;
 	
 	@Inject
@@ -55,7 +61,7 @@ public class SecurityDaoImplRdbms
 			return null;
 		}
 		
-		return PermissionMapper.mapFromEntity(persistable);
+		return permissionMapper.mapFromEntity(persistable);
 	}
 
 	@Override
@@ -68,7 +74,7 @@ public class SecurityDaoImplRdbms
 			return null;
 		}
 		
-		return PermissionMapper.mapFromEntity(persistable);
+		return permissionMapper.mapFromEntity(persistable);
 	}
 
 	@Override
@@ -78,7 +84,7 @@ public class SecurityDaoImplRdbms
 		
 		return permissions
 			.stream()
-			.map(PermissionMapper::mapFromEntity)
+			.map(permissionMapper::mapFromEntity)
 			.collect(Collectors.toList());
 	}
 
@@ -89,7 +95,7 @@ public class SecurityDaoImplRdbms
 		
 		return permissions
 			.stream()
-			.map(PermissionMapper::mapFromEntity)
+			.map(permissionMapper::mapFromEntity)
 			.collect(Collectors.toList());
 	}
 
@@ -115,7 +121,7 @@ public class SecurityDaoImplRdbms
 			return null;
 		}
 		
-		return RoleMapper.mapFromEntity(role);
+		return roleMapper.mapFromEntity(role);
 	}
 
 	@Override
@@ -128,7 +134,7 @@ public class SecurityDaoImplRdbms
 			return null;
 		}
 		
-		return RoleMapper.mapFromEntity(role);
+		return roleMapper.mapFromEntity(role);
 	}
 
 	@Override
@@ -138,7 +144,7 @@ public class SecurityDaoImplRdbms
 		
 		return allRoles
 				.stream()
-				.map(RoleMapper::mapFromEntity)
+				.map(roleMapper::mapFromEntity)
 				.collect(Collectors.toList());
 	}
 }

@@ -29,6 +29,7 @@ import org.openur.module.persistence.mapper.rdbms.PermissionMapper;
 import org.openur.module.persistence.mapper.rdbms.PersonMapper;
 import org.openur.module.persistence.mapper.rdbms.RoleMapper;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
+import org.openur.module.persistence.rdbms.config.MapperSpringConfig;
 import org.openur.module.persistence.rdbms.config.RepositorySpringConfig;
 import org.openur.module.persistence.rdbms.entity.PApplication;
 import org.openur.module.persistence.rdbms.entity.POrgUnitMember;
@@ -49,8 +50,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-@ContextConfiguration(classes = { RepositorySpringConfig.class, DaoSpringConfig.class })
-@ActiveProfiles(profiles = { "testRepository", "testDao" })
+@ContextConfiguration(classes = { RepositorySpringConfig.class, DaoSpringConfig.class, MapperSpringConfig.class })
+@ActiveProfiles(profiles = { "testRepository", "testDao", "testMappers" })
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional(readOnly=false)
 public class OrgUnitDaoImplRdbmsTest
@@ -65,6 +66,24 @@ public class OrgUnitDaoImplRdbmsTest
 	private POrgUnitMember member_2_A;
 	private POrgUnitMember member_1_B;
 	private POrgUnitMember member_3_B;
+	
+	@Inject
+	private OrganizationalUnitMapper organizationalUnitMapper;
+	
+	@Inject
+	private OrgUnitMemberMapper orgUnitMemberMapper;
+	
+	@Inject
+	private ApplicationMapper applicationMapper;
+	
+	@Inject
+	private PersonMapper personMapper;
+	
+	@Inject
+	private PermissionMapper permissionMapper;
+	
+	@Inject
+	private RoleMapper roleMapper;
 	
 	@Inject
 	private ApplicationRepository applicationRepository;
@@ -90,59 +109,59 @@ public class OrgUnitDaoImplRdbmsTest
 	@Before
 	public void setUp()
 	{
-		PApplication app_A = ApplicationMapper.mapFromImmutable(TestObjectContainer.APP_A);
-		PApplication app_B = ApplicationMapper.mapFromImmutable(TestObjectContainer.APP_B);
-		PApplication app_C = ApplicationMapper.mapFromImmutable(TestObjectContainer.APP_C);
+		PApplication app_A = applicationMapper.mapFromImmutable(TestObjectContainer.APP_A);
+		PApplication app_B = applicationMapper.mapFromImmutable(TestObjectContainer.APP_B);
+		PApplication app_C = applicationMapper.mapFromImmutable(TestObjectContainer.APP_C);
 		
-		PPermission perm_1_A = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);	
+		PPermission perm_1_A = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);	
 		perm_1_A.setApplication(app_A);
-		PPermission perm_2_A = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_A);	
+		PPermission perm_2_A = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_A);	
 		perm_2_A.setApplication(app_A);
-		PRole role_X = RoleMapper.mapFromImmutable(TestObjectContainer.ROLE_X);
+		PRole role_X = roleMapper.mapFromImmutable(TestObjectContainer.ROLE_X);
 		role_X.setPermissions(new HashSet<>(Arrays.asList(perm_1_A, perm_2_A)));
 
-		PPermission perm_1_B = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_B);	
+		PPermission perm_1_B = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_B);	
 		perm_1_B.setApplication(app_B);
-		PPermission perm_2_B = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_B);	
+		PPermission perm_2_B = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_B);	
 		perm_2_B.setApplication(app_B);
-		PRole role_Y = RoleMapper.mapFromImmutable(TestObjectContainer.ROLE_Y);
+		PRole role_Y = roleMapper.mapFromImmutable(TestObjectContainer.ROLE_Y);
 		role_Y.setPermissions(new HashSet<>(Arrays.asList(perm_1_B, perm_2_B)));
 
-		PPermission perm_1_C = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_C);	
+		PPermission perm_1_C = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_C);	
 		perm_1_C.setApplication(app_C);
-		PPermission perm_2_C = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_C);	
+		PPermission perm_2_C = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_C);	
 		perm_2_C.setApplication(app_C);
-		PRole role_Z = RoleMapper.mapFromImmutable(TestObjectContainer.ROLE_Z);
+		PRole role_Z = roleMapper.mapFromImmutable(TestObjectContainer.ROLE_Z);
 		role_Z.setPermissions(new HashSet<>(Arrays.asList(perm_1_C, perm_2_C)));
 
-		PPerson person_1 = PersonMapper.mapFromImmutable(TestObjectContainer.PERSON_1);
+		PPerson person_1 = personMapper.mapFromImmutable(TestObjectContainer.PERSON_1);
 		person_1.setApplications(new HashSet<>(Arrays.asList(app_A, app_B)));
 		person_1 = savePerson(person_1);
 
-		PPerson person_2 = PersonMapper.mapFromImmutable(TestObjectContainer.PERSON_2);
+		PPerson person_2 = personMapper.mapFromImmutable(TestObjectContainer.PERSON_2);
 		person_2.setApplications(new HashSet<>(Arrays.asList(app_B, app_C)));
 		person_2 = savePerson(person_2);
 
-		PPerson person_3 = PersonMapper.mapFromImmutable(TestObjectContainer.PERSON_3);
+		PPerson person_3 = personMapper.mapFromImmutable(TestObjectContainer.PERSON_3);
 		person_3.setApplications(new HashSet<>(Arrays.asList(app_A, app_C)));
 		person_3 = savePerson(person_3);
 		
-		rootOu = OrganizationalUnitMapper.mapFromImmutable(TestObjectContainer.ROOT_OU);	
+		rootOu = organizationalUnitMapper.mapFromImmutable(TestObjectContainer.ROOT_OU);	
 		saveOrgUnit(rootOu);
 
-		superOu_1 = OrganizationalUnitMapper.mapFromImmutable(TestObjectContainer.SUPER_OU_1);
+		superOu_1 = organizationalUnitMapper.mapFromImmutable(TestObjectContainer.SUPER_OU_1);
 		superOu_1.setRootOu(rootOu);
 		superOu_1.setSuperOu(rootOu);
 		POrgUnitMember member_3_s1 = new POrgUnitMember(superOu_1, person_3);
 		superOu_1.setMembers(new HashSet<>(Arrays.asList(member_3_s1)));
 		saveOrgUnit(superOu_1);
 
-		superOu_2 = OrganizationalUnitMapper.mapFromImmutable(TestObjectContainer.SUPER_OU_2);
+		superOu_2 = organizationalUnitMapper.mapFromImmutable(TestObjectContainer.SUPER_OU_2);
 		superOu_2.setRootOu(rootOu);
 		superOu_2.setSuperOu(rootOu);
 		saveOrgUnit(superOu_2);
 		
-		orgUnit_A = OrganizationalUnitMapper.mapFromImmutable(TestObjectContainer.ORG_UNIT_A);
+		orgUnit_A = organizationalUnitMapper.mapFromImmutable(TestObjectContainer.ORG_UNIT_A);
 		orgUnit_A.setRootOu(rootOu);
 		orgUnit_A.setSuperOu(superOu_1);
 
@@ -154,7 +173,7 @@ public class OrgUnitDaoImplRdbmsTest
 		
 		orgUnit_A = saveOrgUnit(orgUnit_A);
 		
-		orgUnit_B = OrganizationalUnitMapper.mapFromImmutable(TestObjectContainer.ORG_UNIT_B);
+		orgUnit_B = organizationalUnitMapper.mapFromImmutable(TestObjectContainer.ORG_UNIT_B);
 		orgUnit_B.setRootOu(rootOu);
 		orgUnit_B.setSuperOu(superOu_1);
 
@@ -166,7 +185,7 @@ public class OrgUnitDaoImplRdbmsTest
 		
 		orgUnit_B = saveOrgUnit(orgUnit_B);
 		
-		orgUnit_C = OrganizationalUnitMapper.mapFromImmutable(TestObjectContainer.ORG_UNIT_C);
+		orgUnit_C = organizationalUnitMapper.mapFromImmutable(TestObjectContainer.ORG_UNIT_C);
 		orgUnit_C.setRootOu(rootOu);
 		orgUnit_C.setSuperOu(superOu_2);
 		
@@ -368,8 +387,8 @@ public class OrgUnitDaoImplRdbmsTest
   {
 		List<IAuthorizableMember> members = orgUnitDao.findMembersForOrgUnit(orgUnit_A.getIdentifier());
 		assertEquals(2, members.size());
-		assertTrue(members.contains(OrgUnitMemberMapper.mapFromEntity(member_1_A, orgUnit_A.getIdentifier(), false)));
-		assertTrue(members.contains(OrgUnitMemberMapper.mapFromEntity(member_2_A, orgUnit_A.getIdentifier(), false)));
+		assertTrue(members.contains(orgUnitMemberMapper.mapFromEntity(member_1_A, orgUnit_A.getIdentifier(), false)));
+		assertTrue(members.contains(orgUnitMemberMapper.mapFromEntity(member_2_A, orgUnit_A.getIdentifier(), false)));
 		
 		members = orgUnitDao.findMembersForOrgUnit(orgUnit_C.getIdentifier());
 		assertEquals(0, members.size());

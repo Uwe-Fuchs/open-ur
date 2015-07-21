@@ -2,6 +2,8 @@ package org.openur.module.persistence.mapper.rdbms;
 
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.security.authorization.OpenURPermission;
@@ -13,7 +15,10 @@ import org.openur.module.persistence.rdbms.entity.PRole;
 public class RoleMapper
 	extends AbstractEntityMapper
 {
-	public static PRole mapFromImmutable(OpenURRole immutable)
+	@Inject
+	private PermissionMapper permissionMapper;
+	
+	public PRole mapFromImmutable(OpenURRole immutable)
 	{
 		PRole persistable = new PRole(immutable.getRoleName());
 		persistable.setDescription(immutable.getDescription());
@@ -23,7 +28,7 @@ public class RoleMapper
 //			.forEach(
 //				app -> immutable.getPermissions(app)
 //					.stream()
-//					.map(PermissionMapper::mapFromImmutable)
+//					.map(permissionMapper::mapFromImmutable)
 //					.forEach(pPerm -> persistable.addPermssion(pPerm))
 //			);
 
@@ -31,23 +36,23 @@ public class RoleMapper
 		{
 			immutable.getPermissions(app)
 				.stream()
-				.map(PermissionMapper::mapFromImmutable)
+				.map(permissionMapper::mapFromImmutable)
 				.forEach(p -> persistable.addPermssion(p));
 		}
 		
 		return persistable;
 	}
 	
-	public static OpenURRole mapFromEntity(PRole persistable)
+	public OpenURRole mapFromEntity(PRole persistable)
 	{
 		OpenURRoleBuilder immutableBuilder = new OpenURRoleBuilder(persistable.getRoleName());
 		
-		AbstractEntityMapper.mapFromEntity(immutableBuilder, persistable);
+		super.mapFromEntity(immutableBuilder, persistable);
 		
 		immutableBuilder.permissions(
 			persistable.getPermissions()
 				.stream()
-				.map(PermissionMapper::mapFromEntity)
+				.map(permissionMapper::mapFromEntity)
 				.collect(Collectors.toSet())
 		);
 		

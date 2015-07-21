@@ -1,5 +1,7 @@
 package org.openur.module.persistence.mapper.rdbms;
 
+import javax.inject.Inject;
+
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.domain.security.authorization.OpenURPermissionBuilder;
@@ -9,9 +11,12 @@ import org.openur.module.persistence.rdbms.entity.PPermission;
 public class PermissionMapper
 	extends AbstractEntityMapper
 {
-	public static PPermission mapFromImmutable(OpenURPermission immutable)
+	@Inject
+	private ApplicationMapper applicationMapper;
+	
+	public PPermission mapFromImmutable(OpenURPermission immutable)
 	{
-		PApplication pApp = ApplicationMapper.mapFromImmutable(immutable.getApplication());
+		PApplication pApp = applicationMapper.mapFromImmutable(immutable.getApplication());
 		PPermission persistable = new PPermission(immutable.getPermissionName(), pApp);
 
 		persistable.setPermissionScope(immutable.getPermissionScope());
@@ -20,12 +25,12 @@ public class PermissionMapper
 		return persistable;
 	}
 	
-	public static OpenURPermission mapFromEntity(PPermission persistable)
+	public OpenURPermission mapFromEntity(PPermission persistable)
 	{
-		OpenURApplication app = ApplicationMapper.mapFromEntity(persistable.getApplication());
+		OpenURApplication app = applicationMapper.mapFromEntity(persistable.getApplication());
 		OpenURPermissionBuilder immutableBuilder = new OpenURPermissionBuilder(persistable.getPermissionName(), app);
 		
-		AbstractEntityMapper.mapFromEntity(immutableBuilder, persistable);
+		super.mapFromEntity(immutableBuilder, persistable);
 		
 		return immutableBuilder
 				.permissionScope(persistable.getPermissionScope())

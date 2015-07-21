@@ -23,6 +23,7 @@ import org.openur.module.persistence.dao.ISecurityDao;
 import org.openur.module.persistence.mapper.rdbms.PermissionMapper;
 import org.openur.module.persistence.mapper.rdbms.RoleMapper;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
+import org.openur.module.persistence.rdbms.config.MapperSpringConfig;
 import org.openur.module.persistence.rdbms.config.RepositorySpringConfig;
 import org.openur.module.persistence.rdbms.entity.PApplication;
 import org.openur.module.persistence.rdbms.entity.PPermission;
@@ -35,11 +36,17 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-@ContextConfiguration(classes = { RepositorySpringConfig.class, DaoSpringConfig.class })
-@ActiveProfiles(profiles={"testRepository", "testDao"})
+@ContextConfiguration(classes = { RepositorySpringConfig.class, DaoSpringConfig.class, MapperSpringConfig.class })
+@ActiveProfiles(profiles = { "testRepository", "testDao", "testMappers" })
 @RunWith(SpringJUnit4ClassRunner.class)
 public class SecurityDaoImplRdbmsTest
 {	
+	@Inject
+	private PermissionMapper permissionMapper;
+	
+	@Inject
+	private RoleMapper roleMapper;
+	
 	@Inject
 	private RoleRepository roleRepository;
 	
@@ -55,7 +62,7 @@ public class SecurityDaoImplRdbmsTest
 	@Test
 	public void testFindPermissionById()
 	{
-		PPermission persistable = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);		
+		PPermission persistable = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);		
 		persistable = savePermission(persistable);
 		
 		IPermission p = securityDao.findPermissionById(persistable.getIdentifier());
@@ -67,7 +74,7 @@ public class SecurityDaoImplRdbmsTest
 	@Test
 	public void testFindPermissionByName()
 	{
-		PPermission persistable = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);	
+		PPermission persistable = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);	
 		persistable = savePermission(persistable);
 		
 		IPermission p = securityDao.findPermissionByName(TestObjectContainer.PERMISSION_1_A.getPermissionName());
@@ -85,10 +92,10 @@ public class SecurityDaoImplRdbmsTest
 		assertNotNull(allPermissions);
 		assertEquals(allPermissions.size(), 0);
 		
-		PPermission perm1 = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);	
+		PPermission perm1 = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);	
 		perm1 = savePermission(perm1);
 		PApplication pApp = perm1.getApplication();
-		PPermission perm2 = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_A);	
+		PPermission perm2 = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_A);	
 		perm2.setApplication(pApp);
 		perm2 = savePermission(perm2);
 		
@@ -110,17 +117,17 @@ public class SecurityDaoImplRdbmsTest
 	@Transactional(readOnly=false)
 	public void testObtainPermissionsForApp()
 	{		
-		PPermission perm_1_A = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);	
+		PPermission perm_1_A = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);	
 		perm_1_A = savePermission(perm_1_A);
 		PApplication app_A = perm_1_A.getApplication();
-		PPermission perm_2_A = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_A);	
+		PPermission perm_2_A = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_A);	
 		perm_2_A.setApplication(app_A);
 		perm_2_A = savePermission(perm_2_A);
 		
-		PPermission perm_1_B = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_B);	
+		PPermission perm_1_B = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_B);	
 		perm_1_B = savePermission(perm_1_B);
 		PApplication app_B = perm_1_B.getApplication();
-		PPermission perm_2_B = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_B);	
+		PPermission perm_2_B = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_B);	
 		perm_2_B.setApplication(app_B);
 		perm_2_B = savePermission(perm_2_B);
 		
@@ -142,11 +149,11 @@ public class SecurityDaoImplRdbmsTest
 	@Transactional(readOnly=false)
 	public void testFindRoleById()
 	{
-		PPermission perm1 = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);	
+		PPermission perm1 = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);	
 		PApplication pApp = perm1.getApplication();
-		PPermission perm2 = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_A);	
+		PPermission perm2 = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_A);	
 		perm2.setApplication(pApp);
-		PRole pRole = RoleMapper.mapFromImmutable(TestObjectContainer.ROLE_X);
+		PRole pRole = roleMapper.mapFromImmutable(TestObjectContainer.ROLE_X);
 		pRole.setPermissions(new HashSet<>(Arrays.asList(perm1, perm2)));
 		saveRole(pRole);
 		
@@ -160,11 +167,11 @@ public class SecurityDaoImplRdbmsTest
 	@Transactional(readOnly=false)
 	public void testFindRoleByName()
 	{
-		PPermission perm1 = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);	
+		PPermission perm1 = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);	
 		PApplication pApp = perm1.getApplication();
-		PPermission perm2 = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_A);	
+		PPermission perm2 = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_A);	
 		perm2.setApplication(pApp);
-		PRole pRole = RoleMapper.mapFromImmutable(TestObjectContainer.ROLE_X);
+		PRole pRole = roleMapper.mapFromImmutable(TestObjectContainer.ROLE_X);
 		pRole.setPermissions(new HashSet<>(Arrays.asList(perm1, perm2)));
 		saveRole(pRole);
 		
@@ -179,19 +186,19 @@ public class SecurityDaoImplRdbmsTest
 	@Transactional(readOnly=false)
 	public void testObtainAllRoles()
 	{
-		PPermission perm_1_A = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);	
+		PPermission perm_1_A = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);	
 		PApplication app_A = perm_1_A.getApplication();
-		PPermission perm_2_A = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_A);	
+		PPermission perm_2_A = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_A);	
 		perm_2_A.setApplication(app_A);
-		PRole pRole_X = RoleMapper.mapFromImmutable(TestObjectContainer.ROLE_X);
+		PRole pRole_X = roleMapper.mapFromImmutable(TestObjectContainer.ROLE_X);
 		pRole_X.setPermissions(new HashSet<>(Arrays.asList(perm_1_A, perm_2_A)));
 		saveRole(pRole_X);
 
-		PPermission perm_1_B = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_B);	
+		PPermission perm_1_B = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_B);	
 		PApplication app_B = perm_1_B.getApplication();
-		PPermission perm_2_B = PermissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_B);	
+		PPermission perm_2_B = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_B);	
 		perm_2_B.setApplication(app_B);
-		PRole pRole_Y = RoleMapper.mapFromImmutable(TestObjectContainer.ROLE_Y);
+		PRole pRole_Y = roleMapper.mapFromImmutable(TestObjectContainer.ROLE_Y);
 		pRole_Y.setPermissions(new HashSet<>(Arrays.asList(perm_1_B, perm_2_B)));
 		saveRole(pRole_Y);
 		

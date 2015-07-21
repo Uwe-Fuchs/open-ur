@@ -19,6 +19,9 @@ public class ApplicationDaoImpl
 	implements IApplicationDao
 {
 	@Inject
+	private ApplicationMapper applicationMapper;
+	
+	@Inject
 	private ApplicationRepository applicationRepository;
 
 	public ApplicationDaoImpl()
@@ -49,7 +52,7 @@ public class ApplicationDaoImpl
 			return null;
 		}
 
-		return ApplicationMapper.mapFromEntity(persistable);
+		return applicationMapper.mapFromEntity(persistable);
 	}
 
 	@Override
@@ -62,7 +65,7 @@ public class ApplicationDaoImpl
 			return null;
 		}
 
-		return ApplicationMapper.mapFromEntity(persistable);
+		return applicationMapper.mapFromEntity(persistable);
 	}
 
 	@Override
@@ -72,7 +75,7 @@ public class ApplicationDaoImpl
 
 		return apps
 				.stream()
-				.map(ApplicationMapper::mapFromEntity)
+				.map(applicationMapper::mapFromEntity)
 				.collect(Collectors.toList());
 	}
 }
