@@ -4,34 +4,31 @@ import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.persistence.rdbms.entity.PApplication;
 
-/**
- * @author uwe
- * 
- * maps entity-data from and to immutable.
- */
 public class ApplicationMapper
-	extends AbstractEntityMapper
+	extends AbstractEntityMapper implements IApplicationMapper<OpenURApplication>
 {
-	public PApplication mapFromImmutable(OpenURApplication immutable)
+	@Override
+	public PApplication mapFromDomainObject(OpenURApplication domainObject)
 	{
-		return new PApplication(immutable.getApplicationName());
+		return new PApplication(domainObject.getApplicationName());
 	}
 
-	public OpenURApplication mapFromEntity(PApplication persistable)
+	@Override
+	public OpenURApplication mapFromEntity(PApplication entity)
 	{
-		OpenURApplicationBuilder immutableBuilder = new OpenURApplicationBuilder(persistable.getApplicationName());
+		OpenURApplicationBuilder immutableBuilder = new OpenURApplicationBuilder(entity.getApplicationName());
 		
-		return super.mapFromEntity(immutableBuilder, persistable)
+		return super.mapFromEntity(immutableBuilder, entity)
 					.build();
 	}
 
-	public static boolean immutableEqualsToEntity(OpenURApplication immutable, PApplication persistable)
+	public static boolean domainObjectEqualsToEntity(OpenURApplication domainObject, PApplication entity)
 	{
-		if (!AbstractEntityMapper.immutableEqualsToEntity(immutable, persistable))
+		if (!AbstractEntityMapper.domainObjectEqualsToEntity(domainObject, entity))
 		{
 			return false;
 		}
 		
-		return immutable.getApplicationName().equals(persistable.getApplicationName());
+		return domainObject.getApplicationName().equals(entity.getApplicationName());
 	}
 }

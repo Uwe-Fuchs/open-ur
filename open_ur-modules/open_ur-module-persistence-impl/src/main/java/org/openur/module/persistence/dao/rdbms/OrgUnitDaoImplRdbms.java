@@ -8,8 +8,8 @@ import javax.inject.Inject;
 import org.openur.module.domain.security.authorization.IAuthorizableMember;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.persistence.dao.IOrgUnitDao;
-import org.openur.module.persistence.mapper.rdbms.OrganizationalUnitMapper;
-import org.openur.module.persistence.mapper.rdbms.OrganizationalUnitMapper.OrgUnitMemberMapper;
+import org.openur.module.persistence.mapper.rdbms.IOrgUnitMemberMapper;
+import org.openur.module.persistence.mapper.rdbms.IOrganizationalUnitMapper;
 import org.openur.module.persistence.rdbms.entity.POrgUnitMember;
 import org.openur.module.persistence.rdbms.entity.POrganizationalUnit;
 import org.openur.module.persistence.rdbms.repository.OrgUnitMemberRepository;
@@ -23,10 +23,10 @@ public class OrgUnitDaoImplRdbms
 	implements IOrgUnitDao
 {
 	@Inject
-	private OrganizationalUnitMapper organizationalUnitMapper;
+	private IOrganizationalUnitMapper<? extends IAuthorizableOrgUnit> organizationalUnitMapper;
 	
 	@Inject
-	private OrgUnitMemberMapper orgUnitMemberMapper;
+	private IOrgUnitMemberMapper<? extends IAuthorizableMember> orgUnitMemberMapper;
 	
 	@Inject
 	private OrgUnitRepository orgUnitRepository;

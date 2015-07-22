@@ -8,14 +8,14 @@ public class UserStructureBaseMapper
 	extends AbstractEntityMapper
 {
 	protected static <I extends UserStructureBase, P extends PUserStructureBase>
-			boolean immutableEqualsToEntity(I immutable, P persistable)
+			boolean domainObjectEqualsToEntity(I domainObject, P entity)
 	{
-		if (!AbstractEntityMapper.immutableEqualsToEntity(immutable, persistable))
+		if (!AbstractEntityMapper.domainObjectEqualsToEntity(domainObject, entity))
 		{
 			return false;
 		}
 
-		return (immutable.getStatus() == persistable.getStatus());
+		return (domainObject.getStatus() == entity.getStatus());
 	}
 
 	protected <UB extends UserStructureBaseBuilder<UB>, P extends PUserStructureBase>

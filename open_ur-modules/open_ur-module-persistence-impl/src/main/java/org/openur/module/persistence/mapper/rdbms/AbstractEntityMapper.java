@@ -9,32 +9,32 @@ import org.openur.module.util.exception.OpenURRuntimeException;
 public class AbstractEntityMapper
 {
 	protected static <I extends IdentifiableEntityImpl, P extends AbstractOpenUrPersistable>
-			boolean immutableEqualsToEntity(I immutable, P persistable)
+			boolean domainObjectEqualsToEntity(I domainObject, P entity)
 	{
-		if (immutable == null && persistable == null)
+		if (domainObject == null && entity == null)
 		{
 			throw new OpenURRuntimeException("Both objects, immutable and entity, are null!");
 		}
 
-		if (immutable == null || persistable == null)
+		if (domainObject == null || entity == null)
 		{
 			return false;
 		}
 
-		if (!ObjectsComparator.compareLocalDateTimes(immutable.getCreationDate(), persistable.getCreationDate()))
+		if (!ObjectsComparator.compareLocalDateTimes(domainObject.getCreationDate(), entity.getCreationDate()))
 		{
 			return false;
 		}
 
-		return ObjectsComparator.compareLocalDateTimes(immutable.getLastModifiedDate(), persistable.getLastModifiedDate());
+		return ObjectsComparator.compareLocalDateTimes(domainObject.getLastModifiedDate(), entity.getLastModifiedDate());
 	}
 
 	protected <IB extends IdentifiableEntityBuilder<IB>, P extends AbstractOpenUrPersistable>
-			IB mapFromEntity(IB immutableBuilder, P persistable)
+			IB mapFromEntity(IB immutableBuilder, P entity)
 	{
 		immutableBuilder
-				.creationDate(persistable.getCreationDate())
-				.lastModifiedDate(persistable.getLastModifiedDate());
+				.creationDate(entity.getCreationDate())
+				.lastModifiedDate(entity.getLastModifiedDate());
 
 		return immutableBuilder;
 	}

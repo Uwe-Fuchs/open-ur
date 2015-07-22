@@ -23,20 +23,20 @@ public class PermissionMapperTest
 	private PermissionMapper permissionMapper;
 	
 	@Test
-	public void testMapFromImmutable()
+	public void testMapFromDomainObject()
 	{
 		OpenURPermission immutable = TestObjectContainer.PERMISSION_2_C;		
-		PPermission persistable = permissionMapper.mapFromImmutable(immutable);
+		PPermission persistable = permissionMapper.mapFromDomainObject(immutable);
 		
-		assertTrue(PermissionMapper.immutableEqualsToEntity(immutable, persistable));
+		assertTrue(PermissionMapper.domainObjectEqualsToEntity(immutable, persistable));
 	}
 
 	@Test
 	public void testMapFromEntity()
 	{
-		PPermission persistable = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_C);		
+		PPermission persistable = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_2_C);		
 		OpenURPermission immutable = permissionMapper.mapFromEntity(persistable);
 		
-		assertTrue(PermissionMapper.immutableEqualsToEntity(immutable, persistable));
+		assertTrue(PermissionMapper.domainObjectEqualsToEntity(immutable, persistable));
 	}
 }

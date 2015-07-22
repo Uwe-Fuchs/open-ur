@@ -16,6 +16,7 @@ import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
 import org.openur.module.persistence.dao.ITechnicalUserDao;
+import org.openur.module.persistence.mapper.rdbms.ITechnicalUserMapper;
 import org.openur.module.persistence.mapper.rdbms.TechnicalUserMapper;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
 import org.openur.module.persistence.rdbms.config.MapperSpringConfig;
@@ -33,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TechnicalUserDaoImplRdbmsTest
 {
 	@Inject
-	private TechnicalUserMapper technicalUserMapper;
+	private ITechnicalUserMapper<TechnicalUser> technicalUserMapper;
 	
 	@Inject
 	private TechnicalUserRepository technicalUserRepository;
@@ -44,25 +45,25 @@ public class TechnicalUserDaoImplRdbmsTest
 	@Test
 	public void testFindTechnicalUserById()
 	{
-		PTechnicalUser persistable = technicalUserMapper.mapFromImmutable(TestObjectContainer.TECH_USER_1);
+		PTechnicalUser persistable = technicalUserMapper.mapFromDomainObject(TestObjectContainer.TECH_USER_1);
 		persistable = saveTechnicalUser(persistable);
 
 		ITechnicalUser tu = technicalUserDao.findTechnicalUserById(persistable.getIdentifier());
 
 		assertNotNull(tu);
-		assertTrue(TechnicalUserMapper.immutableEqualsToEntity((TechnicalUser) tu, persistable));
+		assertTrue(TechnicalUserMapper.domainObjectEqualsToEntity((TechnicalUser) tu, persistable));
 	}
 
 	@Test
 	public void testFindTechnicalUserByNumber()
 	{
-		PTechnicalUser persistable = technicalUserMapper.mapFromImmutable(TestObjectContainer.TECH_USER_1);
+		PTechnicalUser persistable = technicalUserMapper.mapFromDomainObject(TestObjectContainer.TECH_USER_1);
 		persistable = saveTechnicalUser(persistable);
 
 		ITechnicalUser tu = technicalUserDao.findTechnicalUserByNumber(TestObjectContainer.TECH_USER_NUMBER_1);
 
 		assertNotNull(tu);
-		assertTrue(TechnicalUserMapper.immutableEqualsToEntity((TechnicalUser) tu, persistable));
+		assertTrue(TechnicalUserMapper.domainObjectEqualsToEntity((TechnicalUser) tu, persistable));
 	}
 
 	@Test
@@ -72,10 +73,10 @@ public class TechnicalUserDaoImplRdbmsTest
 		assertNotNull(allTechUsers);
 		assertEquals(allTechUsers.size(), 0);
 
-		PTechnicalUser persistable1 = technicalUserMapper.mapFromImmutable(TestObjectContainer.TECH_USER_1);
+		PTechnicalUser persistable1 = technicalUserMapper.mapFromDomainObject(TestObjectContainer.TECH_USER_1);
 		persistable1 = saveTechnicalUser(persistable1);
 
-		PTechnicalUser persistable2 = technicalUserMapper.mapFromImmutable(TestObjectContainer.TECH_USER_2);
+		PTechnicalUser persistable2 = technicalUserMapper.mapFromDomainObject(TestObjectContainer.TECH_USER_2);
 		persistable2 = saveTechnicalUser(persistable2);
 
 		allTechUsers = technicalUserDao.obtainAllTechnicalUsers();
@@ -88,8 +89,8 @@ public class TechnicalUserDaoImplRdbmsTest
 		TechnicalUser tu1 = _tu1.getTechUserNumber().equals(persistable1.getTechUserNumber()) ? _tu1 : _tu2;
 		TechnicalUser tu2 = _tu1.getTechUserNumber().equals(persistable1.getTechUserNumber()) ? _tu2 : _tu1;
 
-		assertTrue(TechnicalUserMapper.immutableEqualsToEntity(tu1, persistable1));
-		assertTrue(TechnicalUserMapper.immutableEqualsToEntity(tu2, persistable2));
+		assertTrue(TechnicalUserMapper.domainObjectEqualsToEntity(tu1, persistable1));
+		assertTrue(TechnicalUserMapper.domainObjectEqualsToEntity(tu2, persistable2));
 	}
 
 	@After

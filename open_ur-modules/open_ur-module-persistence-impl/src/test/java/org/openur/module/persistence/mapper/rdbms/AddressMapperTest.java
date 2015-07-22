@@ -11,13 +11,13 @@ import org.openur.module.persistence.rdbms.entity.PAddress;
 public class AddressMapperTest
 {
 	@Test
-	public void testMapFromImmutable()
+	public void testMapFromDomainObject()
 	{
 		Address immutable = TestObjectContainer.ADDRESS_3;
-		PAddress persistable = new AddressMapper().mapFromImmutable(immutable);
+		PAddress persistable = new AddressMapper().mapFromDomainObject(immutable);
 		
 		assertNotNull(persistable);
-		assertTrue(AddressMapper.immutableEqualsToEntity(immutable, persistable));
+		assertTrue(AddressMapper.domainObjectEqualsToEntity(immutable, persistable));
 	}
 
 	@Test
@@ -35,6 +35,6 @@ public class AddressMapperTest
 		Address immutable = new AddressMapper().mapFromEntity(persistable);
 		
 		assertNotNull(immutable);
-		assertTrue(AddressMapper.immutableEqualsToEntity(immutable, persistable));
+		assertTrue(AddressMapper.domainObjectEqualsToEntity(immutable, persistable));
 	}
 }

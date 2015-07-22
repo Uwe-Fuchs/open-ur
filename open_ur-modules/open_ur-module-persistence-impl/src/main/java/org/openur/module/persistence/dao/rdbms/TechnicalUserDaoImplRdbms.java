@@ -7,7 +7,7 @@ import javax.inject.Inject;
 
 import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 import org.openur.module.persistence.dao.ITechnicalUserDao;
-import org.openur.module.persistence.mapper.rdbms.TechnicalUserMapper;
+import org.openur.module.persistence.mapper.rdbms.ITechnicalUserMapper;
 import org.openur.module.persistence.rdbms.entity.PTechnicalUser;
 import org.openur.module.persistence.rdbms.repository.TechnicalUserRepository;
 import org.springframework.stereotype.Repository;
@@ -19,7 +19,7 @@ public class TechnicalUserDaoImplRdbms
 	implements ITechnicalUserDao
 {
 	@Inject
-	private TechnicalUserMapper technicalUserMapper;
+	private ITechnicalUserMapper<? extends ITechnicalUser> technicalUserMapper;
 	
 	@Inject
 	private TechnicalUserRepository technicalUserRepository;

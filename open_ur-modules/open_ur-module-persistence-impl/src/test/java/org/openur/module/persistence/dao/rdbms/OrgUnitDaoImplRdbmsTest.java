@@ -17,17 +17,23 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
+import org.openur.module.domain.application.OpenURApplication;
+import org.openur.module.domain.security.authorization.AuthorizableMember;
 import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IAuthorizableMember;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
+import org.openur.module.domain.security.authorization.OpenURPermission;
+import org.openur.module.domain.security.authorization.OpenURRole;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
+import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.persistence.dao.IOrgUnitDao;
-import org.openur.module.persistence.mapper.rdbms.ApplicationMapper;
+import org.openur.module.persistence.mapper.rdbms.IApplicationMapper;
+import org.openur.module.persistence.mapper.rdbms.IOrgUnitMemberMapper;
+import org.openur.module.persistence.mapper.rdbms.IOrganizationalUnitMapper;
+import org.openur.module.persistence.mapper.rdbms.IPermissionMapper;
+import org.openur.module.persistence.mapper.rdbms.IPersonMapper;
+import org.openur.module.persistence.mapper.rdbms.IRoleMapper;
 import org.openur.module.persistence.mapper.rdbms.OrganizationalUnitMapper;
-import org.openur.module.persistence.mapper.rdbms.OrganizationalUnitMapper.OrgUnitMemberMapper;
-import org.openur.module.persistence.mapper.rdbms.PermissionMapper;
-import org.openur.module.persistence.mapper.rdbms.PersonMapper;
-import org.openur.module.persistence.mapper.rdbms.RoleMapper;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
 import org.openur.module.persistence.rdbms.config.MapperSpringConfig;
 import org.openur.module.persistence.rdbms.config.RepositorySpringConfig;
@@ -68,22 +74,22 @@ public class OrgUnitDaoImplRdbmsTest
 	private POrgUnitMember member_3_B;
 	
 	@Inject
-	private OrganizationalUnitMapper organizationalUnitMapper;
+	private IOrganizationalUnitMapper<AuthorizableOrgUnit> organizationalUnitMapper;
 	
 	@Inject
-	private OrgUnitMemberMapper orgUnitMemberMapper;
+	private IOrgUnitMemberMapper<AuthorizableMember> orgUnitMemberMapper;
 	
 	@Inject
-	private ApplicationMapper applicationMapper;
+	private IApplicationMapper<OpenURApplication> applicationMapper;
 	
 	@Inject
-	private PersonMapper personMapper;
+	private IPersonMapper<Person> personMapper;
 	
 	@Inject
-	private PermissionMapper permissionMapper;
+	private IPermissionMapper<OpenURPermission> permissionMapper;
 	
 	@Inject
-	private RoleMapper roleMapper;
+	private IRoleMapper<OpenURRole> roleMapper;
 	
 	@Inject
 	private ApplicationRepository applicationRepository;
@@ -109,59 +115,59 @@ public class OrgUnitDaoImplRdbmsTest
 	@Before
 	public void setUp()
 	{
-		PApplication app_A = applicationMapper.mapFromImmutable(TestObjectContainer.APP_A);
-		PApplication app_B = applicationMapper.mapFromImmutable(TestObjectContainer.APP_B);
-		PApplication app_C = applicationMapper.mapFromImmutable(TestObjectContainer.APP_C);
+		PApplication app_A = applicationMapper.mapFromDomainObject(TestObjectContainer.APP_A);
+		PApplication app_B = applicationMapper.mapFromDomainObject(TestObjectContainer.APP_B);
+		PApplication app_C = applicationMapper.mapFromDomainObject(TestObjectContainer.APP_C);
 		
-		PPermission perm_1_A = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);	
+		PPermission perm_1_A = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_1_A);	
 		perm_1_A.setApplication(app_A);
-		PPermission perm_2_A = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_A);	
+		PPermission perm_2_A = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_2_A);	
 		perm_2_A.setApplication(app_A);
-		PRole role_X = roleMapper.mapFromImmutable(TestObjectContainer.ROLE_X);
+		PRole role_X = roleMapper.mapFromDomainObject(TestObjectContainer.ROLE_X);
 		role_X.setPermissions(new HashSet<>(Arrays.asList(perm_1_A, perm_2_A)));
 
-		PPermission perm_1_B = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_B);	
+		PPermission perm_1_B = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_1_B);	
 		perm_1_B.setApplication(app_B);
-		PPermission perm_2_B = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_B);	
+		PPermission perm_2_B = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_2_B);	
 		perm_2_B.setApplication(app_B);
-		PRole role_Y = roleMapper.mapFromImmutable(TestObjectContainer.ROLE_Y);
+		PRole role_Y = roleMapper.mapFromDomainObject(TestObjectContainer.ROLE_Y);
 		role_Y.setPermissions(new HashSet<>(Arrays.asList(perm_1_B, perm_2_B)));
 
-		PPermission perm_1_C = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_C);	
+		PPermission perm_1_C = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_1_C);	
 		perm_1_C.setApplication(app_C);
-		PPermission perm_2_C = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_C);	
+		PPermission perm_2_C = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_2_C);	
 		perm_2_C.setApplication(app_C);
-		PRole role_Z = roleMapper.mapFromImmutable(TestObjectContainer.ROLE_Z);
+		PRole role_Z = roleMapper.mapFromDomainObject(TestObjectContainer.ROLE_Z);
 		role_Z.setPermissions(new HashSet<>(Arrays.asList(perm_1_C, perm_2_C)));
 
-		PPerson person_1 = personMapper.mapFromImmutable(TestObjectContainer.PERSON_1);
+		PPerson person_1 = personMapper.mapFromDomainObject(TestObjectContainer.PERSON_1);
 		person_1.setApplications(new HashSet<>(Arrays.asList(app_A, app_B)));
 		person_1 = savePerson(person_1);
 
-		PPerson person_2 = personMapper.mapFromImmutable(TestObjectContainer.PERSON_2);
+		PPerson person_2 = personMapper.mapFromDomainObject(TestObjectContainer.PERSON_2);
 		person_2.setApplications(new HashSet<>(Arrays.asList(app_B, app_C)));
 		person_2 = savePerson(person_2);
 
-		PPerson person_3 = personMapper.mapFromImmutable(TestObjectContainer.PERSON_3);
+		PPerson person_3 = personMapper.mapFromDomainObject(TestObjectContainer.PERSON_3);
 		person_3.setApplications(new HashSet<>(Arrays.asList(app_A, app_C)));
 		person_3 = savePerson(person_3);
 		
-		rootOu = organizationalUnitMapper.mapFromImmutable(TestObjectContainer.ROOT_OU);	
+		rootOu = organizationalUnitMapper.mapFromDomainObject(TestObjectContainer.ROOT_OU);	
 		saveOrgUnit(rootOu);
 
-		superOu_1 = organizationalUnitMapper.mapFromImmutable(TestObjectContainer.SUPER_OU_1);
+		superOu_1 = organizationalUnitMapper.mapFromDomainObject(TestObjectContainer.SUPER_OU_1);
 		superOu_1.setRootOu(rootOu);
 		superOu_1.setSuperOu(rootOu);
 		POrgUnitMember member_3_s1 = new POrgUnitMember(superOu_1, person_3);
 		superOu_1.setMembers(new HashSet<>(Arrays.asList(member_3_s1)));
 		saveOrgUnit(superOu_1);
 
-		superOu_2 = organizationalUnitMapper.mapFromImmutable(TestObjectContainer.SUPER_OU_2);
+		superOu_2 = organizationalUnitMapper.mapFromDomainObject(TestObjectContainer.SUPER_OU_2);
 		superOu_2.setRootOu(rootOu);
 		superOu_2.setSuperOu(rootOu);
 		saveOrgUnit(superOu_2);
 		
-		orgUnit_A = organizationalUnitMapper.mapFromImmutable(TestObjectContainer.ORG_UNIT_A);
+		orgUnit_A = organizationalUnitMapper.mapFromDomainObject(TestObjectContainer.ORG_UNIT_A);
 		orgUnit_A.setRootOu(rootOu);
 		orgUnit_A.setSuperOu(superOu_1);
 
@@ -173,7 +179,7 @@ public class OrgUnitDaoImplRdbmsTest
 		
 		orgUnit_A = saveOrgUnit(orgUnit_A);
 		
-		orgUnit_B = organizationalUnitMapper.mapFromImmutable(TestObjectContainer.ORG_UNIT_B);
+		orgUnit_B = organizationalUnitMapper.mapFromDomainObject(TestObjectContainer.ORG_UNIT_B);
 		orgUnit_B.setRootOu(rootOu);
 		orgUnit_B.setSuperOu(superOu_1);
 
@@ -185,7 +191,7 @@ public class OrgUnitDaoImplRdbmsTest
 		
 		orgUnit_B = saveOrgUnit(orgUnit_B);
 		
-		orgUnit_C = organizationalUnitMapper.mapFromImmutable(TestObjectContainer.ORG_UNIT_C);
+		orgUnit_C = organizationalUnitMapper.mapFromDomainObject(TestObjectContainer.ORG_UNIT_C);
 		orgUnit_C.setRootOu(rootOu);
 		orgUnit_C.setSuperOu(superOu_2);
 		
@@ -197,7 +203,7 @@ public class OrgUnitDaoImplRdbmsTest
 	{
 		IOrganizationalUnit immutable = orgUnitDao.findOrgUnitById(orgUnit_C.getIdentifier());
 		assertNotNull(immutable);
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) immutable, orgUnit_C));
+		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity((AuthorizableOrgUnit) immutable, orgUnit_C));
 	}
 
 	@Test
@@ -205,7 +211,7 @@ public class OrgUnitDaoImplRdbmsTest
 	{
 		IOrganizationalUnit immutable = orgUnitDao.findOrgUnitAndMembersById(orgUnit_A.getIdentifier());
 		assertNotNull(immutable);
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) immutable, orgUnit_A));
+		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity((AuthorizableOrgUnit) immutable, orgUnit_A));
 	}
 
 	@Test
@@ -213,15 +219,15 @@ public class OrgUnitDaoImplRdbmsTest
 	{
 		IOrganizationalUnit immutable = orgUnitDao.findOrgUnitByNumber(TestObjectContainer.ORG_UNIT_NUMBER_C);
 		assertNotNull(immutable);
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) immutable, orgUnit_C));
+		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity((AuthorizableOrgUnit) immutable, orgUnit_C));
 
 		immutable = orgUnitDao.findOrgUnitByNumber(TestObjectContainer.ROOT_OU_NUMBER);
 		assertNotNull(immutable);
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) immutable, rootOu));
+		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity((AuthorizableOrgUnit) immutable, rootOu));
 
 		immutable = orgUnitDao.findOrgUnitByNumber(TestObjectContainer.SUPER_OU_NUMBER_2);
 		assertNotNull(immutable);
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) immutable, superOu_2));
+		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity((AuthorizableOrgUnit) immutable, superOu_2));
 	}
 
 	@Test
@@ -229,7 +235,7 @@ public class OrgUnitDaoImplRdbmsTest
 	{
 		IOrganizationalUnit immutable = orgUnitDao.findOrgUnitAndMembersByNumber(TestObjectContainer.ORG_UNIT_NUMBER_A);
 		assertNotNull(immutable);
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) immutable, orgUnit_A));
+		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity((AuthorizableOrgUnit) immutable, orgUnit_A));
 	}
 	
 	@Test
@@ -239,11 +245,11 @@ public class OrgUnitDaoImplRdbmsTest
 		
 		assertEquals(6, allOrgUnits.size());
 		IAuthorizableOrgUnit orgUnit1 = findOrgUnitInList(allOrgUnits, TestObjectContainer.ORG_UNIT_NUMBER_A);
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit1, orgUnit_A));
+		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity((AuthorizableOrgUnit) orgUnit1, orgUnit_A));
 		IAuthorizableOrgUnit orgUnit2 = findOrgUnitInList(allOrgUnits, TestObjectContainer.ORG_UNIT_NUMBER_B);
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit2, orgUnit_B));
+		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity((AuthorizableOrgUnit) orgUnit2, orgUnit_B));
 		IAuthorizableOrgUnit orgUnit3 = findOrgUnitInList(allOrgUnits, TestObjectContainer.ORG_UNIT_NUMBER_C);
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit3, orgUnit_C));
+		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity((AuthorizableOrgUnit) orgUnit3, orgUnit_C));
 		assertNull(findOrgUnitInList(allOrgUnits, "orgUnitNo4"));
 	}
 	
@@ -260,11 +266,11 @@ public class OrgUnitDaoImplRdbmsTest
 		List<IAuthorizableOrgUnit> allOrgUnits = orgUnitDao.obtainAllOrgUnits();
 
 		IAuthorizableOrgUnit orgUnit1 = findOrgUnitInList(allOrgUnits, "orgUnitNo1");
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit1, pOrgUnit1));
+		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity((AuthorizableOrgUnit) orgUnit1, pOrgUnit1));
 		IAuthorizableOrgUnit orgUnit2 = findOrgUnitInList(allOrgUnits, "orgUnitNo2");
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit2, pOrgUnit2));
+		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity((AuthorizableOrgUnit) orgUnit2, pOrgUnit2));
 		IAuthorizableOrgUnit orgUnit3 = findOrgUnitInList(allOrgUnits, "orgUnitNo3");
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit3, pOrgUnit3));
+		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity((AuthorizableOrgUnit) orgUnit3, pOrgUnit3));
 		assertNull(findOrgUnitInList(allOrgUnits, "orgUnitNo4"));
 	}
 	
@@ -312,28 +318,28 @@ public class OrgUnitDaoImplRdbmsTest
 		
 		assertEquals(3, subOrgUnits.size());
 		IAuthorizableOrgUnit orgUnit1 = findOrgUnitInList(subOrgUnits, "orgUnit1");
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit1, pOrgUnit1));
+		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity((AuthorizableOrgUnit) orgUnit1, pOrgUnit1));
 		IAuthorizableOrgUnit orgUnit2 = findOrgUnitInList(subOrgUnits, "orgUnit2");
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit2, pOrgUnit2));
+		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity((AuthorizableOrgUnit) orgUnit2, pOrgUnit2));
 		IAuthorizableOrgUnit orgUnit3 = findOrgUnitInList(subOrgUnits, "orgUnit3");
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit3, pOrgUnit3));
+		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity((AuthorizableOrgUnit) orgUnit3, pOrgUnit3));
 		assertNull(findOrgUnitInList(subOrgUnits, "orgUnit4"));
 		
 		for (IAuthorizableOrgUnit orgUnit : subOrgUnits)
 		{
-			assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit.getSuperOrgUnit(), pSuperOu));
+			assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity((AuthorizableOrgUnit) orgUnit.getSuperOrgUnit(), pSuperOu));
 		}
 		
 		subOrgUnits = orgUnitDao.obtainSubOrgUnitsForOrgUnit(pRootOu.getIdentifier());
 		assertEquals(2, subOrgUnits.size());
 		IAuthorizableOrgUnit superOu = findOrgUnitInList(subOrgUnits, "superOu");
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) superOu, pSuperOu));
+		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity((AuthorizableOrgUnit) superOu, pSuperOu));
 		IAuthorizableOrgUnit orgUnit4 = findOrgUnitInList(subOrgUnits, "orgUnit4");
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit4, pOrgUnit4));
+		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity((AuthorizableOrgUnit) orgUnit4, pOrgUnit4));
 		
 		for (IAuthorizableOrgUnit orgUnit : subOrgUnits)
 		{
-			assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit.getSuperOrgUnit(), pRootOu));
+			assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity((AuthorizableOrgUnit) orgUnit.getSuperOrgUnit(), pRootOu));
 		}
 	}
 	
@@ -346,24 +352,24 @@ public class OrgUnitDaoImplRdbmsTest
 		
 		assertEquals(2, subOrgUnits.size());
 		IAuthorizableOrgUnit orgUnit1 = findOrgUnitInList(subOrgUnits, TestObjectContainer.ORG_UNIT_NUMBER_A);
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit1, orgUnit_A));
+		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity((AuthorizableOrgUnit) orgUnit1, orgUnit_A));
 		IAuthorizableOrgUnit orgUnit2 = findOrgUnitInList(subOrgUnits, TestObjectContainer.ORG_UNIT_NUMBER_B);
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit2, orgUnit_B));
+		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity((AuthorizableOrgUnit) orgUnit2, orgUnit_B));
 		assertNull(findOrgUnitInList(subOrgUnits, "orgUnitNo4"));
 		
 		for (IAuthorizableOrgUnit orgUnit : subOrgUnits)
 		{
-			assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit.getSuperOrgUnit(), superOu_1));
+			assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity((AuthorizableOrgUnit) orgUnit.getSuperOrgUnit(), superOu_1));
 		}
 		
 		subOrgUnits = orgUnitDao.obtainSubOrgUnitsForOrgUnitInclMembers(superOu_2.getIdentifier());
 		assertEquals(1, subOrgUnits.size());
 		IAuthorizableOrgUnit orgUnit3 = findOrgUnitInList(subOrgUnits, TestObjectContainer.ORG_UNIT_NUMBER_C);
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit3, orgUnit_C));
+		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity((AuthorizableOrgUnit) orgUnit3, orgUnit_C));
 		
 		for (IAuthorizableOrgUnit orgUnit : subOrgUnits)
 		{
-			assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) orgUnit.getSuperOrgUnit(), superOu_2));
+			assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity((AuthorizableOrgUnit) orgUnit.getSuperOrgUnit(), superOu_2));
 		}
 		
 		subOrgUnits = orgUnitDao.obtainSubOrgUnitsForOrgUnitInclMembers(orgUnit_A.getIdentifier());
@@ -376,7 +382,7 @@ public class OrgUnitDaoImplRdbmsTest
 		List<IAuthorizableOrgUnit> rootOrgUnits = orgUnitDao.obtainRootOrgUnits();
 		assertEquals(1, rootOrgUnits.size());
 		IAuthorizableOrgUnit rootOu = findOrgUnitInList(rootOrgUnits, TestObjectContainer.ROOT_OU_NUMBER);
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity((AuthorizableOrgUnit) rootOu, this.rootOu));
+		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity((AuthorizableOrgUnit) rootOu, this.rootOu));
 		
 		assertNull(findOrgUnitInList(rootOrgUnits, TestObjectContainer.ORG_UNIT_NUMBER_A));
 		assertNull(findOrgUnitInList(rootOrgUnits, TestObjectContainer.SUPER_OU_NUMBER_1));

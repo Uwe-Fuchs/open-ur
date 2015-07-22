@@ -9,42 +9,44 @@ import org.openur.module.persistence.rdbms.entity.PApplication;
 import org.openur.module.persistence.rdbms.entity.PPermission;
 
 public class PermissionMapper
-	extends AbstractEntityMapper
+	extends AbstractEntityMapper implements IPermissionMapper<OpenURPermission>
 {
 	@Inject
 	private ApplicationMapper applicationMapper;
 	
-	public PPermission mapFromImmutable(OpenURPermission immutable)
+	@Override
+	public PPermission mapFromDomainObject(OpenURPermission domainObject)
 	{
-		PApplication pApp = applicationMapper.mapFromImmutable(immutable.getApplication());
-		PPermission persistable = new PPermission(immutable.getPermissionName(), pApp);
+		PApplication pApp = applicationMapper.mapFromDomainObject(domainObject.getApplication());
+		PPermission persistable = new PPermission(domainObject.getPermissionName(), pApp);
 
-		persistable.setPermissionScope(immutable.getPermissionScope());
-		persistable.setDescription(immutable.getDescription());
+		persistable.setPermissionScope(domainObject.getPermissionScope());
+		persistable.setDescription(domainObject.getDescription());
 		
 		return persistable;
 	}
 	
-	public OpenURPermission mapFromEntity(PPermission persistable)
+	@Override
+	public OpenURPermission mapFromEntity(PPermission entity)
 	{
-		OpenURApplication app = applicationMapper.mapFromEntity(persistable.getApplication());
-		OpenURPermissionBuilder immutableBuilder = new OpenURPermissionBuilder(persistable.getPermissionName(), app);
+		OpenURApplication app = applicationMapper.mapFromEntity(entity.getApplication());
+		OpenURPermissionBuilder immutableBuilder = new OpenURPermissionBuilder(entity.getPermissionName(), app);
 		
-		super.mapFromEntity(immutableBuilder, persistable);
+		super.mapFromEntity(immutableBuilder, entity);
 		
 		return immutableBuilder
-				.permissionScope(persistable.getPermissionScope())
-				.description(persistable.getDescription())
+				.permissionScope(entity.getPermissionScope())
+				.description(entity.getDescription())
 				.build();
 	}
 	
-	public static boolean immutableEqualsToEntity(OpenURPermission immutable, PPermission persistable)
+	public static boolean domainObjectEqualsToEntity(OpenURPermission domainObject, PPermission entity)
 	{
-		if (!AbstractEntityMapper.immutableEqualsToEntity(immutable, persistable))
+		if (!AbstractEntityMapper.domainObjectEqualsToEntity(domainObject, entity))
 		{
 			return false;
 		}
 		
-		return immutable.getPermissionName().equals(persistable.getPermissionName());
+		return domainObject.getPermissionName().equals(entity.getPermissionName());
 	}
 }

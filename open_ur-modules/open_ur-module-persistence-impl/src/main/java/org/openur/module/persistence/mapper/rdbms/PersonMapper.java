@@ -12,7 +12,7 @@ import org.openur.module.persistence.rdbms.entity.PApplication;
 import org.openur.module.persistence.rdbms.entity.PPerson;
 
 public class PersonMapper
-	extends UserStructureBaseMapper
+	extends UserStructureBaseMapper implements IPersonMapper<Person>
 {
 	@Inject
 	private AddressMapper addressMapper;
@@ -20,64 +20,66 @@ public class PersonMapper
 	@Inject
 	private ApplicationMapper applicationMapper;
 	
-	public PPerson mapFromImmutable(Person immutable)
+	@Override
+	public PPerson mapFromDomainObject(Person domainObject)
 	{
-		PPerson persistable = new PPerson(immutable.getPersonalNumber(), immutable.getName().getLastName());
+		PPerson persistable = new PPerson(domainObject.getPersonalNumber(), domainObject.getName().getLastName());
 
-		persistable.setEmailAdress(immutable.getEmailAddress() != null ? immutable.getEmailAddress().getAsPlainEMailAddress() : null);
-		persistable.setFaxNumber(immutable.getFaxNumber());
-		persistable.setFirstName(immutable.getName().getFirstName());
-		persistable.setGender(immutable.getName().getGender());
-		persistable.setTitle(immutable.getName().getTitle());
-		persistable.setHomeEmailAdress(immutable.getHomeEmailAddress() != null ? immutable.getHomeEmailAddress().getAsPlainEMailAddress() : null);
-		persistable.setHomePhoneNumber(immutable.getHomePhoneNumber());
-		persistable.setMobileNumber(immutable.getMobileNumber());
-		persistable.setPhoneNumber(immutable.getPhoneNumber());
-		persistable.setStatus(immutable.getStatus());
-		persistable.setHomeAddress(immutable.getHomeAddress() != null ? addressMapper.mapFromImmutable(immutable.getHomeAddress()) : null);
+		persistable.setEmailAdress(domainObject.getEmailAddress() != null ? domainObject.getEmailAddress().getAsPlainEMailAddress() : null);
+		persistable.setFaxNumber(domainObject.getFaxNumber());
+		persistable.setFirstName(domainObject.getName().getFirstName());
+		persistable.setGender(domainObject.getName().getGender());
+		persistable.setTitle(domainObject.getName().getTitle());
+		persistable.setHomeEmailAdress(domainObject.getHomeEmailAddress() != null ? domainObject.getHomeEmailAddress().getAsPlainEMailAddress() : null);
+		persistable.setHomePhoneNumber(domainObject.getHomePhoneNumber());
+		persistable.setMobileNumber(domainObject.getMobileNumber());
+		persistable.setPhoneNumber(domainObject.getPhoneNumber());
+		persistable.setStatus(domainObject.getStatus());
+		persistable.setHomeAddress(domainObject.getHomeAddress() != null ? addressMapper.mapFromDomainObject(domainObject.getHomeAddress()) : null);
 		
-		immutable.getApplications()
+		domainObject.getApplications()
 				.stream()
-				.map(applicationMapper::mapFromImmutable)
+				.map(applicationMapper::mapFromDomainObject)
 				.forEach(persistable::addApplication);
 		
 		return persistable;
 	}
 	
-	public Person mapFromEntity(PPerson persistable)
+	@Override
+	public Person mapFromEntity(PPerson entity)
 	{
 		Name name;
 		
-		if (persistable.getTitle() != null)
+		if (entity.getTitle() != null)
 		{
 			name = Name.create(
-					persistable.getGender(), 
-					persistable.getTitle(), 
-					persistable.getFirstName(), 
-					persistable.getLastName()
+					entity.getGender(), 
+					entity.getTitle(), 
+					entity.getFirstName(), 
+					entity.getLastName()
 				);			
 		} else
 		{
 			name = Name.create(
-					persistable.getGender(), 
-					persistable.getFirstName(), 
-					persistable.getLastName()
+					entity.getGender(), 
+					entity.getFirstName(), 
+					entity.getLastName()
 				);
 		}
 		
-		PersonBuilder immutableBuilder = new PersonBuilder(persistable.getPersonalNumber(), name);		
-		immutableBuilder = super.buildImmutable(immutableBuilder, persistable);
+		PersonBuilder immutableBuilder = new PersonBuilder(entity.getPersonalNumber(), name);		
+		immutableBuilder = super.buildImmutable(immutableBuilder, entity);
 		
 		immutableBuilder
-				.emailAddress(StringUtils.isNotEmpty(persistable.getEmailAddress()) ? EMailAddress.create(persistable.getEmailAddress()) : null)
-				.faxNumber(persistable.getFaxNumber())
-				.homeEmailAddress(StringUtils.isNotEmpty(persistable.getHomeEmailAddress()) ? EMailAddress.create(persistable.getHomeEmailAddress()) : null)
-				.homePhoneNumber(persistable.getHomePhoneNumber())
-				.mobileNumber(persistable.getMobileNumber())
-				.phoneNumber(persistable.getPhoneNumber())
-				.homeAddress(persistable.getHomeAddress() != null ? addressMapper.mapFromEntity(persistable.getHomeAddress()) : null);
+				.emailAddress(StringUtils.isNotEmpty(entity.getEmailAddress()) ? EMailAddress.create(entity.getEmailAddress()) : null)
+				.faxNumber(entity.getFaxNumber())
+				.homeEmailAddress(StringUtils.isNotEmpty(entity.getHomeEmailAddress()) ? EMailAddress.create(entity.getHomeEmailAddress()) : null)
+				.homePhoneNumber(entity.getHomePhoneNumber())
+				.mobileNumber(entity.getMobileNumber())
+				.phoneNumber(entity.getPhoneNumber())
+				.homeAddress(entity.getHomeAddress() != null ? addressMapper.mapFromEntity(entity.getHomeAddress()) : null);
 		
-		persistable.getApplications()
+		entity.getApplications()
 				.stream()
 				.map(applicationMapper::mapFromEntity)
 				.forEach(immutableBuilder::addApplication);
@@ -85,41 +87,41 @@ public class PersonMapper
 		return immutableBuilder.build();
 	}
 
-	public static boolean immutableEqualsToEntity(Person immutable, PPerson persistable)
+	public static boolean domainObjectEqualsToEntity(Person domainObject, PPerson entity)
 	{
-		if (!UserStructureBaseMapper.immutableEqualsToEntity(immutable, persistable))
+		if (!UserStructureBaseMapper.domainObjectEqualsToEntity(domainObject, entity))
 		{
 			return false;
 		}
 		
-		for (PApplication app : persistable.getApplications())
+		for (PApplication app : entity.getApplications())
 		{
-			if (!immutable.isInApplication(app.getApplicationName()))
+			if (!domainObject.isInApplication(app.getApplicationName()))
 			{
 				return false;
 			}
 		}
 		
-		if ((immutable.getHomeAddress() != null || persistable.getHomeAddress() != null)
-			&& !AddressMapper.immutableEqualsToEntity(immutable.getHomeAddress(), persistable.getHomeAddress()))
+		if ((domainObject.getHomeAddress() != null || entity.getHomeAddress() != null)
+			&& !AddressMapper.domainObjectEqualsToEntity(domainObject.getHomeAddress(), entity.getHomeAddress()))
 		{
 			return false;
 		}
 		
 		return new EqualsBuilder()
-				.append(immutable.getPersonalNumber(), persistable.getPersonalNumber())
-				.append(immutable.getName().getTitle(), persistable.getTitle())
-				.append(immutable.getName().getFirstName(), persistable.getFirstName())
-				.append(immutable.getName().getLastName(), persistable.getLastName())
-				.append(immutable.getName().getGender(), persistable.getGender())
-				.append(immutable.getPhoneNumber(), persistable.getPhoneNumber())
-				.append(immutable.getFaxNumber(), persistable.getFaxNumber())
-				.append(immutable.getMobileNumber(), persistable.getMobileNumber())
-				.append(immutable.getHomePhoneNumber(), persistable.getHomePhoneNumber())
-				.append(immutable.getEmailAddress() != null ? immutable.getEmailAddress().getAsPlainEMailAddress() : null, 
-						persistable.getEmailAddress())
-				.append(immutable.getHomeEmailAddress() != null ? immutable.getHomeEmailAddress().getAsPlainEMailAddress() : null, 
-						persistable.getHomeEmailAddress())
+				.append(domainObject.getPersonalNumber(), entity.getPersonalNumber())
+				.append(domainObject.getName().getTitle(), entity.getTitle())
+				.append(domainObject.getName().getFirstName(), entity.getFirstName())
+				.append(domainObject.getName().getLastName(), entity.getLastName())
+				.append(domainObject.getName().getGender(), entity.getGender())
+				.append(domainObject.getPhoneNumber(), entity.getPhoneNumber())
+				.append(domainObject.getFaxNumber(), entity.getFaxNumber())
+				.append(domainObject.getMobileNumber(), entity.getMobileNumber())
+				.append(domainObject.getHomePhoneNumber(), entity.getHomePhoneNumber())
+				.append(domainObject.getEmailAddress() != null ? domainObject.getEmailAddress().getAsPlainEMailAddress() : null, 
+						entity.getEmailAddress())
+				.append(domainObject.getHomeEmailAddress() != null ? domainObject.getHomeEmailAddress().getAsPlainEMailAddress() : null, 
+						entity.getHomeEmailAddress())
 				.isEquals();
 	}
 }

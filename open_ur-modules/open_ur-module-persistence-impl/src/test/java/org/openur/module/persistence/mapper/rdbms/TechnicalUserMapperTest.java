@@ -10,20 +10,20 @@ import org.openur.module.persistence.rdbms.entity.PTechnicalUser;
 public class TechnicalUserMapperTest
 {
 	@Test
-	public void testMapFromImmutable()
+	public void testMapFromDomainObject()
 	{
 		TechnicalUser immutable = TestObjectContainer.TECH_USER_3;		
-		PTechnicalUser persistable = new TechnicalUserMapper().mapFromImmutable(immutable);
+		PTechnicalUser persistable = new TechnicalUserMapper().mapFromDomainObject(immutable);
 
-		assertTrue(TechnicalUserMapper.immutableEqualsToEntity(immutable, persistable));
+		assertTrue(TechnicalUserMapper.domainObjectEqualsToEntity(immutable, persistable));
 	}
 
 	@Test
 	public void testMapToImmutable()
 	{
-		PTechnicalUser persistable = new TechnicalUserMapper().mapFromImmutable(TestObjectContainer.TECH_USER_3);		
+		PTechnicalUser persistable = new TechnicalUserMapper().mapFromDomainObject(TestObjectContainer.TECH_USER_3);		
 		TechnicalUser immutable = new TechnicalUserMapper().mapFromEntity(persistable);
 
-		assertTrue(TechnicalUserMapper.immutableEqualsToEntity(immutable, persistable));
+		assertTrue(TechnicalUserMapper.domainObjectEqualsToEntity(immutable, persistable));
 	}
 }

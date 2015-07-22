@@ -5,32 +5,34 @@ import org.openur.module.domain.userstructure.technicaluser.TechnicalUser.Techni
 import org.openur.module.persistence.rdbms.entity.PTechnicalUser;
 
 public class TechnicalUserMapper
-	extends UserStructureBaseMapper
+	extends UserStructureBaseMapper implements ITechnicalUserMapper<TechnicalUser>
 {
-	public PTechnicalUser mapFromImmutable(TechnicalUser immutable)
+	@Override
+	public PTechnicalUser mapFromDomainObject(TechnicalUser domainObject)
 	{
-		PTechnicalUser persistable = new PTechnicalUser(immutable.getTechUserNumber());
+		PTechnicalUser persistable = new PTechnicalUser(domainObject.getTechUserNumber());
 
-		persistable.setStatus(immutable.getStatus());
+		persistable.setStatus(domainObject.getStatus());
 		
 		return persistable;
 	}
 	
-	public TechnicalUser mapFromEntity(PTechnicalUser persistable)
+	@Override
+	public TechnicalUser mapFromEntity(PTechnicalUser entity)
 	{
-		TechnicalUserBuilder immutableBuilder = new TechnicalUserBuilder(persistable.getTechUserNumber());		
-		immutableBuilder = super.buildImmutable(immutableBuilder, persistable);
+		TechnicalUserBuilder immutableBuilder = new TechnicalUserBuilder(entity.getTechUserNumber());		
+		immutableBuilder = super.buildImmutable(immutableBuilder, entity);
 		
 		return immutableBuilder.build();
 	}
 
-	public static boolean immutableEqualsToEntity(TechnicalUser immutable, PTechnicalUser persistable)
+	public static boolean domainObjectEqualsToEntity(TechnicalUser domainObject, PTechnicalUser entity)
 	{
-		if (!UserStructureBaseMapper.immutableEqualsToEntity(immutable, persistable))
+		if (!UserStructureBaseMapper.domainObjectEqualsToEntity(domainObject, entity))
 		{
 			return false;
 		}
 		
-		return immutable.getTechUserNumber().equals(persistable.getTechUserNumber());
+		return domainObject.getTechUserNumber().equals(entity.getTechUserNumber());
 	}
 }

@@ -23,20 +23,20 @@ public class RoleMapperTest
 	private RoleMapper roleMapper;
 	
 	@Test
-	public void testMapFromImmutable()
+	public void testMapFromDomainObject()
 	{
 		OpenURRole immutable = TestObjectContainer.ROLE_Z;		
-		PRole persistable = roleMapper.mapFromImmutable(immutable);
+		PRole persistable = roleMapper.mapFromDomainObject(immutable);
 		
-		assertTrue(RoleMapper.immutableEqualsToEntity(immutable, persistable));
+		assertTrue(RoleMapper.domainObjectEqualsToEntity(immutable, persistable));
 	}
 
 	@Test
 	public void testMapFromEntity()
 	{
-		PRole persistable = roleMapper.mapFromImmutable(TestObjectContainer.ROLE_Z);		
+		PRole persistable = roleMapper.mapFromDomainObject(TestObjectContainer.ROLE_Z);		
 		OpenURRole immutable = roleMapper.mapFromEntity(persistable);
 		
-		assertTrue(RoleMapper.immutableEqualsToEntity(immutable, persistable));
+		assertTrue(RoleMapper.domainObjectEqualsToEntity(immutable, persistable));
 	}
 }
