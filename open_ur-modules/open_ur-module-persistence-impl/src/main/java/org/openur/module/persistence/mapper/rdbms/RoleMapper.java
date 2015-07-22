@@ -13,15 +13,16 @@ import org.openur.module.persistence.rdbms.entity.PPermission;
 import org.openur.module.persistence.rdbms.entity.PRole;
 
 public class RoleMapper
-	extends AbstractEntityMapper
+	extends AbstractEntityMapper implements IRoleMapper<OpenURRole>
 {
 	@Inject
 	private PermissionMapper permissionMapper;
 	
-	public PRole mapFromImmutable(OpenURRole immutable)
+	@Override
+	public PRole mapFromDomainObject(OpenURRole domainObject)
 	{
-		PRole persistable = new PRole(immutable.getRoleName());
-		persistable.setDescription(immutable.getDescription());
+		PRole persistable = new PRole(domainObject.getRoleName());
+		persistable.setDescription(domainObject.getDescription());
 		
 //		immutable.getAllPermissions().keySet()
 //			.stream()
@@ -32,67 +33,68 @@ public class RoleMapper
 //					.forEach(pPerm -> persistable.addPermssion(pPerm))
 //			);
 
-		for (OpenURApplication app : immutable.getAllPermissions().keySet())
+		for (OpenURApplication app : domainObject.getAllPermissions().keySet())
 		{
-			immutable.getPermissions(app)
+			domainObject.getPermissions(app)
 				.stream()
-				.map(permissionMapper::mapFromImmutable)
+				.map(permissionMapper::mapFromDomainObject)
 				.forEach(p -> persistable.addPermssion(p));
 		}
 		
 		return persistable;
 	}
 	
-	public OpenURRole mapFromEntity(PRole persistable)
+	@Override
+	public OpenURRole mapFromEntity(PRole entity)
 	{
-		OpenURRoleBuilder immutableBuilder = new OpenURRoleBuilder(persistable.getRoleName());
+		OpenURRoleBuilder immutableBuilder = new OpenURRoleBuilder(entity.getRoleName());
 		
-		super.mapFromEntity(immutableBuilder, persistable);
+		super.mapFromEntity(immutableBuilder, entity);
 		
 		immutableBuilder.permissions(
-			persistable.getPermissions()
+			entity.getPermissions()
 				.stream()
 				.map(permissionMapper::mapFromEntity)
 				.collect(Collectors.toSet())
 		);
 		
 		return immutableBuilder
-				.description(persistable.getDescription())
+				.description(entity.getDescription())
 				.build();
 	}
 	
-	public static boolean immutableEqualsToEntity(OpenURRole immutable, PRole persistable)
+	public static boolean domainObjectEqualsToEntity(OpenURRole domainObject, PRole entity)
 	{
-		if (!AbstractEntityMapper.immutableEqualsToEntity(immutable, persistable))
+		if (!AbstractEntityMapper.domainObjectEqualsToEntity(domainObject, entity))
 		{
 			return false;
 		}
 		
-		for (PPermission pPerm : persistable.getPermissions())
+		for (PPermission pPerm : entity.getPermissions())
 		{
-			OpenURPermission permission = findPermissionInImmutable(pPerm, immutable);
+			OpenURPermission permission = findPermissionInDomainObject(pPerm, domainObject);
 			
-			if (permission == null || !PermissionMapper.immutableEqualsToEntity(permission, pPerm))
+			if (permission == null || !PermissionMapper.domainObjectEqualsToEntity(permission, pPerm))
 			{
 				return false;
 			}
 		}
 		
 		return new EqualsBuilder()
-				.append(immutable.getRoleName(), persistable.getRoleName())
-				.append(immutable.getDescription(), persistable.getDescription())
+				.append(domainObject.getRoleName(), entity.getRoleName())
+				.append(domainObject.getDescription(), entity.getDescription())
 				.isEquals();
 	}
 	
-	private static OpenURPermission findPermissionInImmutable(PPermission pPerm, OpenURRole immutable)
+	private static OpenURPermission findPermissionInDomainObject(PPermission pPerm, OpenURRole openUrRole)
 	{
-		for (OpenURApplication app : immutable.getAllPermissions().keySet())
+		for (OpenURApplication openUrApp : openUrRole.getAllPermissions().keySet())
 		{
-			for (OpenURPermission perm : immutable.getPermissions(app))
+			for (OpenURPermission openUrPerm : openUrRole.getPermissions(openUrApp))
 			{
-				if (PermissionMapper.immutableEqualsToEntity(perm, pPerm))
+				if (PermissionMapper.domainObjectEqualsToEntity(openUrPerm, pPerm))
 				{
-					return perm;
+					return openUrPerm;
 				}
 			}
 		}

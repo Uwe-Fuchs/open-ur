@@ -8,55 +8,57 @@ import org.openur.module.domain.userstructure.Country;
 import org.openur.module.persistence.rdbms.entity.PAddress;
 
 public class AddressMapper
-	extends AbstractEntityMapper
+	extends AbstractEntityMapper implements IAddressMapper<Address>
 {	
-	public PAddress mapFromImmutable(Address immutable)
+	@Override
+	public PAddress mapFromDomainObject(Address domainObject)
 	{
-		PAddress persistable = new PAddress(immutable.getPostcode());
+		PAddress persistable = new PAddress(domainObject.getPostcode());
 		
-		persistable.setCareOf(immutable.getCareOf());
-		persistable.setCity(immutable.getCity());
-		persistable.setPoBox(immutable.getPoBox());
-		persistable.setStreet(immutable.getStreet());
-		persistable.setStreetNo(immutable.getStreetNo());
-		persistable.setCountryCode(immutable.getCountry() != null ? immutable.getCountry().getCountryCode() : null);
+		persistable.setCareOf(domainObject.getCareOf());
+		persistable.setCity(domainObject.getCity());
+		persistable.setPoBox(domainObject.getPoBox());
+		persistable.setStreet(domainObject.getStreet());
+		persistable.setStreetNo(domainObject.getStreetNo());
+		persistable.setCountryCode(domainObject.getCountry() != null ? domainObject.getCountry().getCountryCode() : null);
 		
 		return persistable;
 	}
 	
-	public Address mapFromEntity(PAddress persistable)
+	@Override
+	public Address mapFromEntity(PAddress entity)
 	{
-		AddressBuilder immutableBuilder = new AddressBuilder(persistable.getPostcode());
+		AddressBuilder immutableBuilder = new AddressBuilder(entity.getPostcode());
 		
-		super.mapFromEntity(immutableBuilder, persistable);
+		super.mapFromEntity(immutableBuilder, entity);
 		
 		immutableBuilder
-				.careOf(persistable.getCareOf())
-				.city(persistable.getCity())
-				.poBox(persistable.getPoBox())
-				.street(persistable.getStreet())
-				.streetNo(persistable.getStreetNo())
-				.country(StringUtils.isNotEmpty(persistable.getCountryCode()) ? Country.byCode(persistable.getCountryCode()) : null)
+				.careOf(entity.getCareOf())
+				.city(entity.getCity())
+				.poBox(entity.getPoBox())
+				.street(entity.getStreet())
+				.streetNo(entity.getStreetNo())
+				.country(StringUtils.isNotEmpty(entity.getCountryCode()) ? Country.byCode(entity.getCountryCode()) : null)
 				.build();
 		
 		return immutableBuilder.build();
 	}
 
-	public static boolean immutableEqualsToEntity(Address immutable, PAddress persistable)
+	public static boolean domainObjectEqualsToEntity(Address domainObject, PAddress entity)
 	{		
-		if (!AbstractEntityMapper.immutableEqualsToEntity(immutable, persistable))
+		if (!AbstractEntityMapper.domainObjectEqualsToEntity(domainObject, entity))
 		{
 			return false;
 		}
 		
 		return new EqualsBuilder()
-				.append(immutable.getCareOf(), persistable.getCareOf())
-				.append(immutable.getCity(), persistable.getCity())
-				.append(immutable.getCountry() != null ? immutable.getCountry().getCountryCode() : null, persistable.getCountryCode())
-				.append(immutable.getPoBox(), persistable.getPoBox())
-				.append(immutable.getPostcode(), persistable.getPostcode())
-				.append(immutable.getStreet(), persistable.getStreet())
-				.append(immutable.getStreetNo(), persistable.getStreetNo())
+				.append(domainObject.getCareOf(), entity.getCareOf())
+				.append(domainObject.getCity(), entity.getCity())
+				.append(domainObject.getCountry() != null ? domainObject.getCountry().getCountryCode() : null, entity.getCountryCode())
+				.append(domainObject.getPoBox(), entity.getPoBox())
+				.append(domainObject.getPostcode(), entity.getPostcode())
+				.append(domainObject.getStreet(), entity.getStreet())
+				.append(domainObject.getStreetNo(), entity.getStreetNo())
 				.isEquals();
 	}
 }

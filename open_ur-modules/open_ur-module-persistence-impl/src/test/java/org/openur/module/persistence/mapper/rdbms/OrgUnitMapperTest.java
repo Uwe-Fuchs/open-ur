@@ -25,30 +25,30 @@ public class OrgUnitMapperTest
 	private OrganizationalUnitMapper organizationalUnitMapper;
 	
 	@Test
-	public void testMapFromImmutable()
+	public void testMapFromDomainObject()
 	{		
-		POrganizationalUnit pRootOu = organizationalUnitMapper.mapRootOuFromImmutable(TestObjectContainer.ROOT_OU);
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity(TestObjectContainer.ROOT_OU, pRootOu));
+		POrganizationalUnit pRootOu = organizationalUnitMapper.mapRootOuFromDomainObject(TestObjectContainer.ROOT_OU);
+		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity(TestObjectContainer.ROOT_OU, pRootOu));
 		
-		POrganizationalUnit pSuperOu = organizationalUnitMapper.mapSuperOuFromImmutable(TestObjectContainer.SUPER_OU_2, pRootOu);
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity(TestObjectContainer.SUPER_OU_2, pSuperOu));
+		POrganizationalUnit pSuperOu = organizationalUnitMapper.mapSuperOuFromDomainObject(TestObjectContainer.SUPER_OU_2, pRootOu);
+		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity(TestObjectContainer.SUPER_OU_2, pSuperOu));
 		
-		POrganizationalUnit pOrgUnit = organizationalUnitMapper.mapFromImmutable(TestObjectContainer.ORG_UNIT_C);		
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity(TestObjectContainer.ORG_UNIT_C, pOrgUnit));
+		POrganizationalUnit pOrgUnit = organizationalUnitMapper.mapFromDomainObject(TestObjectContainer.ORG_UNIT_C);		
+		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity(TestObjectContainer.ORG_UNIT_C, pOrgUnit));
 	}
 
 	@Test
 	public void testMapFromEntity()
 	{
-		POrganizationalUnit pRootOu = organizationalUnitMapper.mapRootOuFromImmutable(TestObjectContainer.ROOT_OU);		
+		POrganizationalUnit pRootOu = organizationalUnitMapper.mapRootOuFromDomainObject(TestObjectContainer.ROOT_OU);		
 		AuthorizableOrgUnit rootOu = organizationalUnitMapper.mapRootOuFromEntity(pRootOu);
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity(rootOu, pRootOu));
+		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity(rootOu, pRootOu));
 		
-		POrganizationalUnit pSuperOu = organizationalUnitMapper.mapSuperOuFromImmutable(TestObjectContainer.SUPER_OU_1, pRootOu);		
+		POrganizationalUnit pSuperOu = organizationalUnitMapper.mapSuperOuFromDomainObject(TestObjectContainer.SUPER_OU_1, pRootOu);		
 		AuthorizableOrgUnit superOu = organizationalUnitMapper.mapSuperOuFromEntity(pSuperOu, rootOu);
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity(superOu, pSuperOu));
+		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity(superOu, pSuperOu));
 		
-		POrganizationalUnit pOrgUnit = organizationalUnitMapper.mapFromImmutable(TestObjectContainer.ORG_UNIT_A);		
+		POrganizationalUnit pOrgUnit = organizationalUnitMapper.mapFromDomainObject(TestObjectContainer.ORG_UNIT_A);		
 		AuthorizableOrgUnit orgUnit = organizationalUnitMapper.mapFromEntity(pOrgUnit, false, false);
 		assertTrue(orgUnit.getMembers().isEmpty());
 
@@ -61,7 +61,7 @@ public class OrgUnitMapperTest
 		
 		orgUnit = organizationalUnitMapper.mapFromEntity(pOrgUnit, true, true);		
 		assertFalse(orgUnit.getMembers().isEmpty());
-		assertTrue(OrganizationalUnitMapper.immutableEqualsToEntity(orgUnit, pOrgUnit));
+		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity(orgUnit, pOrgUnit));
 	}
 
 	@Test(expected=IllegalArgumentException.class)

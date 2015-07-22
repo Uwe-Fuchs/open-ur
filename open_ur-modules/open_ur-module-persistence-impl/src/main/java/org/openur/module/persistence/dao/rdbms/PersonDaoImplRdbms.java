@@ -7,7 +7,7 @@ import javax.inject.Inject;
 
 import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.persistence.dao.IPersonDao;
-import org.openur.module.persistence.mapper.rdbms.PersonMapper;
+import org.openur.module.persistence.mapper.rdbms.IPersonMapper;
 import org.openur.module.persistence.rdbms.entity.PPerson;
 import org.openur.module.persistence.rdbms.repository.PersonRepository;
 import org.springframework.stereotype.Repository;
@@ -19,7 +19,7 @@ public class PersonDaoImplRdbms
 	implements IPersonDao
 {
 	@Inject
-	private PersonMapper personMapper;
+	private IPersonMapper<? extends IPerson> personMapper;
 	
 	@Inject
 	private PersonRepository personRepository;

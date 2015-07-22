@@ -20,6 +20,8 @@ import org.openur.module.domain.security.authorization.IRole;
 import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.domain.security.authorization.OpenURRole;
 import org.openur.module.persistence.dao.ISecurityDao;
+import org.openur.module.persistence.mapper.rdbms.IPermissionMapper;
+import org.openur.module.persistence.mapper.rdbms.IRoleMapper;
 import org.openur.module.persistence.mapper.rdbms.PermissionMapper;
 import org.openur.module.persistence.mapper.rdbms.RoleMapper;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
@@ -42,10 +44,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class SecurityDaoImplRdbmsTest
 {	
 	@Inject
-	private PermissionMapper permissionMapper;
+	private IPermissionMapper<OpenURPermission> permissionMapper;
 	
 	@Inject
-	private RoleMapper roleMapper;
+	private IRoleMapper<OpenURRole> roleMapper;
 	
 	@Inject
 	private RoleRepository roleRepository;
@@ -62,25 +64,25 @@ public class SecurityDaoImplRdbmsTest
 	@Test
 	public void testFindPermissionById()
 	{
-		PPermission persistable = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);		
+		PPermission persistable = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_1_A);		
 		persistable = savePermission(persistable);
 		
 		IPermission p = securityDao.findPermissionById(persistable.getIdentifier());
 		
 		assertNotNull(p);	
-		assertTrue(PermissionMapper.immutableEqualsToEntity((OpenURPermission) p, persistable));
+		assertTrue(PermissionMapper.domainObjectEqualsToEntity((OpenURPermission) p, persistable));
 	}
 
 	@Test
 	public void testFindPermissionByName()
 	{
-		PPermission persistable = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);	
+		PPermission persistable = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_1_A);	
 		persistable = savePermission(persistable);
 		
 		IPermission p = securityDao.findPermissionByName(TestObjectContainer.PERMISSION_1_A.getPermissionName());
 		
 		assertNotNull(p);	
-		assertTrue(PermissionMapper.immutableEqualsToEntity((OpenURPermission) p, persistable));
+		assertTrue(PermissionMapper.domainObjectEqualsToEntity((OpenURPermission) p, persistable));
 	}
 	
 	@Test
@@ -92,10 +94,10 @@ public class SecurityDaoImplRdbmsTest
 		assertNotNull(allPermissions);
 		assertEquals(allPermissions.size(), 0);
 		
-		PPermission perm1 = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);	
+		PPermission perm1 = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_1_A);	
 		perm1 = savePermission(perm1);
 		PApplication pApp = perm1.getApplication();
-		PPermission perm2 = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_A);	
+		PPermission perm2 = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_2_A);	
 		perm2.setApplication(pApp);
 		perm2 = savePermission(perm2);
 		
@@ -109,25 +111,25 @@ public class SecurityDaoImplRdbmsTest
 		OpenURPermission permission_1 = _p1.getPermissionName().equals(perm1.getPermissionName()) ? _p1 : _p2;
 		OpenURPermission permission_2 = _p1.getPermissionName().equals(perm1.getPermissionName()) ? _p2 : _p1;
 
-		assertTrue(PermissionMapper.immutableEqualsToEntity(permission_1, perm1));
-		assertTrue(PermissionMapper.immutableEqualsToEntity(permission_2, perm2));
+		assertTrue(PermissionMapper.domainObjectEqualsToEntity(permission_1, perm1));
+		assertTrue(PermissionMapper.domainObjectEqualsToEntity(permission_2, perm2));
 	}
 
 	@Test
 	@Transactional(readOnly=false)
 	public void testObtainPermissionsForApp()
 	{		
-		PPermission perm_1_A = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);	
+		PPermission perm_1_A = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_1_A);	
 		perm_1_A = savePermission(perm_1_A);
 		PApplication app_A = perm_1_A.getApplication();
-		PPermission perm_2_A = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_A);	
+		PPermission perm_2_A = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_2_A);	
 		perm_2_A.setApplication(app_A);
 		perm_2_A = savePermission(perm_2_A);
 		
-		PPermission perm_1_B = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_B);	
+		PPermission perm_1_B = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_1_B);	
 		perm_1_B = savePermission(perm_1_B);
 		PApplication app_B = perm_1_B.getApplication();
-		PPermission perm_2_B = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_B);	
+		PPermission perm_2_B = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_2_B);	
 		perm_2_B.setApplication(app_B);
 		perm_2_B = savePermission(perm_2_B);
 		
@@ -141,44 +143,44 @@ public class SecurityDaoImplRdbmsTest
 		OpenURPermission permission_1 = _p1.getPermissionName().equals(perm_1_A.getPermissionName()) ? _p1 : _p2;
 		OpenURPermission permission_2 = _p1.getPermissionName().equals(perm_1_A.getPermissionName()) ? _p2 : _p1;
 
-		assertTrue(PermissionMapper.immutableEqualsToEntity(permission_1, perm_1_A));
-		assertTrue(PermissionMapper.immutableEqualsToEntity(permission_2, perm_2_A));
+		assertTrue(PermissionMapper.domainObjectEqualsToEntity(permission_1, perm_1_A));
+		assertTrue(PermissionMapper.domainObjectEqualsToEntity(permission_2, perm_2_A));
 	}
 
 	@Test
 	@Transactional(readOnly=false)
 	public void testFindRoleById()
 	{
-		PPermission perm1 = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);	
+		PPermission perm1 = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_1_A);	
 		PApplication pApp = perm1.getApplication();
-		PPermission perm2 = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_A);	
+		PPermission perm2 = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_2_A);	
 		perm2.setApplication(pApp);
-		PRole pRole = roleMapper.mapFromImmutable(TestObjectContainer.ROLE_X);
+		PRole pRole = roleMapper.mapFromDomainObject(TestObjectContainer.ROLE_X);
 		pRole.setPermissions(new HashSet<>(Arrays.asList(perm1, perm2)));
 		saveRole(pRole);
 		
 		IRole p = securityDao.findRoleById(pRole.getIdentifier());
 		
 		assertNotNull(p);	
-		assertTrue(RoleMapper.immutableEqualsToEntity((OpenURRole) p, pRole));
+		assertTrue(RoleMapper.domainObjectEqualsToEntity((OpenURRole) p, pRole));
 	}
 
 	@Test
 	@Transactional(readOnly=false)
 	public void testFindRoleByName()
 	{
-		PPermission perm1 = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);	
+		PPermission perm1 = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_1_A);	
 		PApplication pApp = perm1.getApplication();
-		PPermission perm2 = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_A);	
+		PPermission perm2 = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_2_A);	
 		perm2.setApplication(pApp);
-		PRole pRole = roleMapper.mapFromImmutable(TestObjectContainer.ROLE_X);
+		PRole pRole = roleMapper.mapFromDomainObject(TestObjectContainer.ROLE_X);
 		pRole.setPermissions(new HashSet<>(Arrays.asList(perm1, perm2)));
 		saveRole(pRole);
 		
 		IRole p = securityDao.findRoleByName(pRole.getRoleName());	
 		
 		assertNotNull(p);	
-		assertTrue(RoleMapper.immutableEqualsToEntity((OpenURRole) p, pRole));
+		assertTrue(RoleMapper.domainObjectEqualsToEntity((OpenURRole) p, pRole));
 	}
 
 
@@ -186,19 +188,19 @@ public class SecurityDaoImplRdbmsTest
 	@Transactional(readOnly=false)
 	public void testObtainAllRoles()
 	{
-		PPermission perm_1_A = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_A);	
+		PPermission perm_1_A = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_1_A);	
 		PApplication app_A = perm_1_A.getApplication();
-		PPermission perm_2_A = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_A);	
+		PPermission perm_2_A = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_2_A);	
 		perm_2_A.setApplication(app_A);
-		PRole pRole_X = roleMapper.mapFromImmutable(TestObjectContainer.ROLE_X);
+		PRole pRole_X = roleMapper.mapFromDomainObject(TestObjectContainer.ROLE_X);
 		pRole_X.setPermissions(new HashSet<>(Arrays.asList(perm_1_A, perm_2_A)));
 		saveRole(pRole_X);
 
-		PPermission perm_1_B = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_1_B);	
+		PPermission perm_1_B = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_1_B);	
 		PApplication app_B = perm_1_B.getApplication();
-		PPermission perm_2_B = permissionMapper.mapFromImmutable(TestObjectContainer.PERMISSION_2_B);	
+		PPermission perm_2_B = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_2_B);	
 		perm_2_B.setApplication(app_B);
-		PRole pRole_Y = roleMapper.mapFromImmutable(TestObjectContainer.ROLE_Y);
+		PRole pRole_Y = roleMapper.mapFromDomainObject(TestObjectContainer.ROLE_Y);
 		pRole_Y.setPermissions(new HashSet<>(Arrays.asList(perm_1_B, perm_2_B)));
 		saveRole(pRole_Y);
 		
@@ -212,8 +214,8 @@ public class SecurityDaoImplRdbmsTest
 		OpenURRole role_X = _r1.getRoleName().equals(pRole_X.getRoleName()) ? _r1 : _r2;
 		OpenURRole role_Y = _r2.getRoleName().equals(pRole_Y.getRoleName()) ? _r2 : _r1;
 
-		assertTrue(RoleMapper.immutableEqualsToEntity(role_X, pRole_X));
-		assertTrue(RoleMapper.immutableEqualsToEntity(role_Y, pRole_Y));
+		assertTrue(RoleMapper.domainObjectEqualsToEntity(role_X, pRole_X));
+		assertTrue(RoleMapper.domainObjectEqualsToEntity(role_Y, pRole_Y));
 	}
 
 	@After

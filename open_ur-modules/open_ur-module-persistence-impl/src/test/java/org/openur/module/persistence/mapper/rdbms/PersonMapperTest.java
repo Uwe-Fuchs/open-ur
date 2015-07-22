@@ -23,20 +23,20 @@ public class PersonMapperTest
 	private PersonMapper personMapper;
 	
 	@Test
-	public void testMapFromImmutable()
+	public void testMapFromDomainObject()
 	{
 		Person immutable = TestObjectContainer.PERSON_3;
-		PPerson persistable = personMapper.mapFromImmutable(immutable);
+		PPerson persistable = personMapper.mapFromDomainObject(immutable);
 
-		assertTrue(PersonMapper.immutableEqualsToEntity(immutable, persistable));
+		assertTrue(PersonMapper.domainObjectEqualsToEntity(immutable, persistable));
 	}
 
 	@Test
 	public void testMapFromEntity()
 	{
-		PPerson persistable = personMapper.mapFromImmutable(TestObjectContainer.PERSON_1);
+		PPerson persistable = personMapper.mapFromDomainObject(TestObjectContainer.PERSON_1);
 		Person immutable = personMapper.mapFromEntity(persistable);
 		
-		assertTrue(PersonMapper.immutableEqualsToEntity(immutable, persistable));		
+		assertTrue(PersonMapper.domainObjectEqualsToEntity(immutable, persistable));		
 	}
 }
