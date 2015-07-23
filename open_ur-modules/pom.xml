@@ -21,6 +21,10 @@
     <module>open_ur-module-domain-api</module>
     <module>open_ur-module-domain-impl</module>
     <module>open_ur-module-domain-testfixture</module>
+    <module>open_ur-module-persistence-dao-api</module>
+    <module>open_ur-module-persistence-mapping-api-entity</module>
+    <module>open_ur-module-persistence-mapping-impl</module>
+    <module>open_ur-module-persistence-dao-impl</module>
     <module>open_ur-module-persistence-api</module>
     <module>open_ur-module-persistence-impl</module>
     <module>open_ur-module-service</module>
@@ -64,6 +68,31 @@
       </dependency>
       <dependency>
         <groupId>org.open-ur.module</groupId>
+        <artifactId>open_ur-module-persistence-dao-api</artifactId>
+        <version>${project.version}</version>
+        <type>jar</type>
+      </dependency>
+      <dependency>
+        <groupId>org.open-ur.module</groupId>
+        <artifactId>open_ur-module-persistence-dao-impl</artifactId>
+        <version>${project.version}</version>
+        <type>jar</type>
+      </dependency>
+      <dependency>
+        <groupId>org.open-ur.module</groupId>
+        <artifactId>open_ur-module-persistence-mapping-api-entity</artifactId>
+        <version>${project.version}</version>
+        <type>jar</type>
+      </dependency>
+      <dependency>
+        <groupId>org.open-ur.module</groupId>
+        <artifactId>open_ur-module-persistence-mapping-impl</artifactId>
+        <version>${project.version}</version>
+        <type>jar</type>
+      </dependency>
+
+      <dependency>
+        <groupId>org.open-ur.module</groupId>
         <artifactId>open_ur-module-persistence-api</artifactId>
         <version>${project.version}</version>
         <type>jar</type>
@@ -74,6 +103,7 @@
         <version>${project.version}</version>
         <type>jar</type>
       </dependency>
+
       <dependency>
         <groupId>org.open-ur.module</groupId>
         <artifactId>open_ur-module-service</artifactId>
