@@ -24,12 +24,22 @@
 		</dependency>
 		<dependency>
 			<groupId>org.open-ur.module</groupId>
-			<artifactId>open_ur-module-persistence-api</artifactId>
+			<artifactId>open_ur-module-persistence-dao-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.open-ur.module</groupId>
-			<artifactId>open_ur-module-persistence-impl</artifactId>
+			<artifactId>open_ur-module-persistence-dao-impl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.open-ur.module</groupId>
+			<artifactId>open_ur-module-persistence-mapping-api-entity</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.open-ur.module</groupId>
+			<artifactId>open_ur-module-persistence-mapping-impl</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
