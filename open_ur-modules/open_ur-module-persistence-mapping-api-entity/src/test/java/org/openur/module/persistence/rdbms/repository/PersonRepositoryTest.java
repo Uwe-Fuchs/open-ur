@@ -14,22 +14,18 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openur.module.domain.userstructure.Status;
-import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
-import org.openur.module.persistence.rdbms.config.MapperSpringConfig;
 import org.openur.module.persistence.rdbms.config.RepositorySpringConfig;
 import org.openur.module.persistence.rdbms.entity.PAddress;
 import org.openur.module.persistence.rdbms.entity.PApplication;
 import org.openur.module.persistence.rdbms.entity.PPerson;
-import org.openur.module.persistence.rdbms.repository.ApplicationRepository;
-import org.openur.module.persistence.rdbms.repository.PersonRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-@ContextConfiguration(classes = { RepositorySpringConfig.class, DaoSpringConfig.class, MapperSpringConfig.class })
-@ActiveProfiles(profiles = { "testRepository", "testDao", "testMappers" })
+@ContextConfiguration(classes = { RepositorySpringConfig.class })
+@ActiveProfiles(profiles = { "testRepository" })
 @RunWith(SpringJUnit4ClassRunner.class)
 public class PersonRepositoryTest
 {

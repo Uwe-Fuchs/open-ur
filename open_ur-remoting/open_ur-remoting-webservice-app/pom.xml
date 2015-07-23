@@ -44,16 +44,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.open-ur.module</groupId>
-			<artifactId>open_ur-module-persistence-api</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.open-ur.module</groupId>
-			<artifactId>open_ur-module-persistence-impl</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.open-ur.module</groupId>
 			<artifactId>open_ur-module-service</artifactId>
 			<version>${project.version}</version>
 		</dependency>
