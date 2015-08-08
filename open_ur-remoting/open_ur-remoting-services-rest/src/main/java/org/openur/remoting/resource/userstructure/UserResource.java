@@ -20,6 +20,7 @@ public class UserResource
 	@Inject
 	private IUserServices userServices;
 
+	@Override
 	@GET
 	@Path("/person/id/{id}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
@@ -28,6 +29,7 @@ public class UserResource
 		return userServices.findPersonById(id);
 	}
 
+	@Override
 	@GET
 	@Path("/person/number/{number}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
@@ -36,6 +38,7 @@ public class UserResource
 		return userServices.findPersonByNumber(number);
 	}
 
+	@Override
 	@GET
 	@Path("/person/all")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
@@ -44,6 +47,7 @@ public class UserResource
 		return userServices.obtainAllPersons();
 	}
 
+	@Override
 	@GET
 	@Path("/techuser/id/{id}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
@@ -52,6 +56,7 @@ public class UserResource
 		return userServices.findTechnicalUserById(id);
 	}
 
+	@Override
 	@GET
 	@Path("/techuser/number/{number}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
@@ -60,6 +65,7 @@ public class UserResource
 		return userServices.findTechnicalUserByNumber(number);
 	}
 
+	@Override
 	@GET
 	@Path("/techuser/all")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })

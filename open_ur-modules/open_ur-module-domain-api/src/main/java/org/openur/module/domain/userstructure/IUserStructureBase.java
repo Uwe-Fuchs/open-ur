@@ -11,16 +11,16 @@ public interface IUserStructureBase
 	/**
 	 * get the domain specific number (which nust not be identical with the technical id
 	 * such as a database primary key etc).
-	 * The number is not mandatory, thus the result may be null.
+	 * The number should always be set, i.e. never be null.
 	 * 
-	 * @return the number as String or null if no number is set.
+	 * @return the number as String.
 	 */
 	String getNumber();
 	
 	/**
-	 * the status of the userstructure-entity, such as active or inactive.
+	 * the {@link Status} of the userstructure-entity, such as active or inactive.
 	 * 
-	 * @return the status
+	 * @return the {@link Status}.
 	 */
 	Status getStatus();
 }
