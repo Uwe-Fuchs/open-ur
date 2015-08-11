@@ -66,13 +66,8 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 		
 		for (AbstractOrgUnitMember m : members)
 		{
-			if (!(this.getIdentifier().equals(m.getOrgUnitId())))
-			{
-				throw new OpenURRuntimeException("OrgUnit-ID's must be equal!");
-			}
+			addMember(m);
 		}
-
-		this.members.addAll(members);
 		
 		return (T) this;
 	}
