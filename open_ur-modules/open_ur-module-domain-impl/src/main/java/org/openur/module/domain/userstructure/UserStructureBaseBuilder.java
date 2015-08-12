@@ -15,12 +15,24 @@ public abstract class UserStructureBaseBuilder<T extends UserStructureBaseBuilde
 	protected UserStructureBaseBuilder(String number)
 	{
 		super();
-		
-		Validate.notEmpty(number, "number must not be empty!");
+
 		this.number = number;
 	}
 	
+	public UserStructureBaseBuilder()
+	{
+		super();
+	}
+
 	// builder-methods:
+	@SuppressWarnings("unchecked")
+	public T number(String number)
+	{
+		this.number = number;
+		
+		return (T) this;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public T status(Status status)
 	{
@@ -39,5 +51,13 @@ public abstract class UserStructureBaseBuilder<T extends UserStructureBaseBuilde
 	Status getStatus()
 	{
 		return status;
+	}
+	
+	// builder:
+	protected UserStructureBase build()
+	{
+		Validate.notEmpty(getNumber(), "number must not be empty!");
+		
+		return null;
 	}
 }

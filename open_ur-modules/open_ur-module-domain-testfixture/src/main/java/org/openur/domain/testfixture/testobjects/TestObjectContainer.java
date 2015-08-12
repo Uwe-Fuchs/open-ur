@@ -66,12 +66,12 @@ public class TestObjectContainer
 	public static final Person PERSON_2;
 	public static final Person PERSON_3;
 
-	public static final String ROOT_OU_UUID = UUID.randomUUID().toString();
-	public static final String SUPER_OU_UUID_1 = UUID.randomUUID().toString();
-	public static final String SUPER_OU_UUID_2 = UUID.randomUUID().toString();
-	public static final String ORG_UNIT_UUID_A = UUID.randomUUID().toString();
-	public static final String ORG_UNIT_UUID_B = UUID.randomUUID().toString();
-	public static final String ORG_UNIT_UUID_C = UUID.randomUUID().toString();
+	public static final String ROOT_OU_UUID = "rootOuUuid";
+	public static final String SUPER_OU_UUID_1 = "superOuUuid_1";
+	public static final String SUPER_OU_UUID_2 = "superOuUuid_2";
+	public static final String ORG_UNIT_UUID_A = "orgUnitUuid_A";
+	public static final String ORG_UNIT_UUID_B = "orgUnitUuid_B";
+	public static final String ORG_UNIT_UUID_C = "orgUnitUuid_C";
 	public static final String ROOT_OU_NUMBER = "rootOuNo";
 	public static final String SUPER_OU_NUMBER_1 = "superOuNo_1";
 	public static final String SUPER_OU_NUMBER_2 = "superOuNo_2";

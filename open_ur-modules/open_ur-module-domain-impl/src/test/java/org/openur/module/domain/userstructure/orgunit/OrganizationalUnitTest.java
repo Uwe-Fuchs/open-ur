@@ -1,6 +1,9 @@
 package org.openur.module.domain.userstructure.orgunit;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -219,5 +222,29 @@ public class OrganizationalUnitTest
 	public void testCreateAsNonRootWithEmptyRoot()
 	{
 		new MyOrgUnitBuilder("ouNumber", "ou").rootOrgUnit(null);
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void testCreateWithEmptyNumber()
+	{
+		new MyOrgUnitBuilder().name("someName").build();
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void testCreateWithEmptyName()
+	{
+		new MyOrgUnitBuilder().number("someNumber").build();
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void checkEmptyNumber()
+	{
+		new MyOrgUnitBuilder(null, "someName").build();
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void checkEmptyName()
+	{
+		new MyOrgUnitBuilder("someNumber", null).build();
 	}
 }

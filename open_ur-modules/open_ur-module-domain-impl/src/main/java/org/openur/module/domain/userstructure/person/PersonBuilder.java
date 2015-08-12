@@ -24,16 +24,34 @@ public class PersonBuilder
   private String homePhoneNumber = null;
   private EMailAddress homeEmailAddress = null;
 	
-  // constructor:
+  // constructors:
   public PersonBuilder(String personalNumber, Name name)
 	{
 		super(personalNumber);
 		
-		Validate.notNull(name, "name must not be null");
 		this.name = name;
 	}
 
-	// builder-methods:	
+	public PersonBuilder()
+	{
+		super();
+	}
+
+	// builder-methods:
+	public PersonBuilder personalNumber(String personalNumber)
+	{
+		super.number(personalNumber);
+		
+		return this;
+	}
+
+	public PersonBuilder name(Name name)
+	{
+		this.name = name;
+		
+		return this;
+	}
+	
 	public PersonBuilder applications(Collection<OpenURApplication> applications)
 	{
 		Validate.notEmpty(applications, "applications-list must not be empty!");		
@@ -141,6 +159,10 @@ public class PersonBuilder
 	// builder:
 	public Person build()
 	{
+		super.build();
+		
+		Validate.notNull(name, "name must not be null");
+		
 		return new Person(this);
 	}
 }

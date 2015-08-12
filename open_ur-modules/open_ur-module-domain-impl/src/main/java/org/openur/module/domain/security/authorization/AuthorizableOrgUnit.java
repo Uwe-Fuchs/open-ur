@@ -58,12 +58,17 @@ public class AuthorizableOrgUnit
 	public static class AuthorizableOrgUnitBuilder
 		extends AbstractOrgUnitBuilder<AuthorizableOrgUnitBuilder>
 	{
-		// constructor:
+		// constructors:
 		public AuthorizableOrgUnitBuilder(String orgUnitNumber, String name)
 		{
 			super(orgUnitNumber, name);
 		}
 		
+		public AuthorizableOrgUnitBuilder()
+		{
+			super();
+		}
+
 		// builder-methods:
 		public AuthorizableOrgUnitBuilder superOrgUnit(AuthorizableOrgUnit superOrgUnit)
 		{

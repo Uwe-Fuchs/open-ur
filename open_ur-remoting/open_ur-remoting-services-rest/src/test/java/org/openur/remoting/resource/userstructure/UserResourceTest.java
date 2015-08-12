@@ -22,11 +22,13 @@ import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
 import org.openur.module.service.userstructure.IUserServices;
-import org.openur.remoting.xchange.providers.json.PersonProvider;
-import org.openur.remoting.xchange.providers.json.TechnicalUserProvider;
-import org.openur.remoting.xchange.providers.json.UserSetProvider;
+import org.openur.remoting.xchange.marshalling.json.PersonSerializer;
+import org.openur.remoting.xchange.rest.providers.json.PersonProvider;
+import org.openur.remoting.xchange.rest.providers.json.TechnicalUserProvider;
+import org.openur.remoting.xchange.rest.providers.json.UserSetProvider;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 public class UserResourceTest
@@ -66,7 +68,10 @@ public class UserResourceTest
 		String result = response.readEntity(String.class);
 		System.out.println("Result: " + result);
 
-		Person p = new Gson().fromJson(result, Person.class);
+    Gson gson = new GsonBuilder()
+    		.registerTypeAdapter(Person.class, new PersonSerializer())
+    		.create();
+		Person p = gson.fromJson(result, Person.class);
 		assertTrue(EqualsBuilder.reflectionEquals(TestObjectContainer.PERSON_1, p));
 
 		response.close();
@@ -86,7 +91,10 @@ public class UserResourceTest
 		String result = response.readEntity(String.class);
 		System.out.println("Result: " + result);
 
-		Person p = new Gson().fromJson(result, Person.class);
+    Gson gson = new GsonBuilder()
+    		.registerTypeAdapter(Person.class, new PersonSerializer())
+    		.create();
+		Person p = gson.fromJson(result, Person.class);
 		assertTrue(EqualsBuilder.reflectionEquals(TestObjectContainer.PERSON_1, p));
 
 		response.close();
@@ -109,7 +117,11 @@ public class UserResourceTest
 		Type resultType = new TypeToken<Set<Person>>()
 		{
 		}.getType();
-		Set<Person> resultSet = new Gson().fromJson(result, resultType);
+
+    Gson gson = new GsonBuilder()
+    		.registerTypeAdapter(Person.class, new PersonSerializer())
+    		.create();
+		Set<Person> resultSet = gson.fromJson(result, resultType);
 
 		assertFalse(resultSet.isEmpty());
 		assertEquals(3, resultSet.size());

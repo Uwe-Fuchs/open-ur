@@ -1,4 +1,4 @@
-package org.openur.remoting.xchange.providers.json;
+package org.openur.remoting.xchange.rest.providers.json;
 
 import java.io.IOException;
 import java.io.OutputStream;
