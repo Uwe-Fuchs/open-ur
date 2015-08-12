@@ -6,12 +6,17 @@ import java.util.Collection;
 public class MyOrgUnitBuilder
 	extends AbstractOrgUnitBuilder<MyOrgUnitBuilder>
 {
-	// constructor:
+	// constructors:
 	public MyOrgUnitBuilder(String orgUnitNumber, String name)
 	{
 		super(orgUnitNumber, name);
 	}
 	
+	public MyOrgUnitBuilder()
+	{
+		super();
+	}
+
 	// builder-methods:
 	public MyOrgUnitBuilder superOrgUnit(MyOrgUnit superOrgUnit)
 	{

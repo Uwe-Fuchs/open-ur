@@ -24,15 +24,36 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 	private Address address = null;
 	private EMailAddress emailAddress = null;
 
+	// constructors:
 	protected AbstractOrgUnitBuilder(String orgUnitNumber, String name)
 	{
 		super(orgUnitNumber);
-		
-		Validate.notEmpty(name, "name must not be empty!");
+
 		this.name = name;
 	}
 
+	public AbstractOrgUnitBuilder()
+	{
+		super();
+	}
+
 	// builder-methods:
+	@SuppressWarnings("unchecked")
+	public T orgUnitNumber(String orgUnitNumber)
+	{
+		super.number(orgUnitNumber);
+		
+		return (T) this;
+	}
+
+	@SuppressWarnings("unchecked")
+	public T name(String name)
+	{
+		this.name = name;
+		
+		return (T) this;
+	}
+	
 	@SuppressWarnings("unchecked")
 	protected T superOrgUnit(AbstractOrgUnit superOrgUnit)
 	{
@@ -159,6 +180,10 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 	// builder:
 	protected AbstractOrgUnit build()
 	{
+		super.build();
+		
+		Validate.notEmpty(name, "name must not be empty!");
+		
 		if (getRootOrgUnit() != null && getSuperOrgUnit() == null)
 		{
 			throw new InconsistentHierarchyException(

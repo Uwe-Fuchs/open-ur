@@ -17,13 +17,13 @@ public class PersonTest
 	@Test(expected=NullPointerException.class)
 	public void checkEmptyNumber()
 	{
-		new PersonBuilder(null, this.NAME_1);
+		new PersonBuilder(null, this.NAME_1).build();
 	}
 	
 	@Test(expected=NullPointerException.class)
 	public void checkEmptyName()
 	{
-		new PersonBuilder("123abc", null);
+		new PersonBuilder("123abc", null).build();
 	}
 
 	@Test
@@ -74,5 +74,17 @@ public class PersonTest
 		new PersonBuilder("123abc", this.NAME_1)
 		.addApplication(null)
 		.build();
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void testCreateWithEmptyNumber()
+	{
+		new PersonBuilder().name(NAME_1).build();
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void testCreateWithEmptyName()
+	{
+		new PersonBuilder().number("someNumber").build();
 	}
 }
