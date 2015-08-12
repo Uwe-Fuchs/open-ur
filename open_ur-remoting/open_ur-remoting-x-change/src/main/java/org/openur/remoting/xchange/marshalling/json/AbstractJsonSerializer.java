@@ -2,7 +2,8 @@ package org.openur.remoting.xchange.marshalling.json;
 
 import java.time.LocalDateTime;
 
-import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
+import org.openur.module.domain.IdentifiableEntityBuilder;
+import org.openur.module.domain.IdentifiableEntityImpl;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -30,7 +31,7 @@ public abstract class AbstractJsonSerializer
 		return lastModifiedDate;
 	}
 
-	protected void serialize(AuthorizableOrgUnit src, JsonObject jsonObject, JsonSerializationContext context)
+	protected <I extends IdentifiableEntityImpl> void serialize(I src, JsonObject jsonObject, JsonSerializationContext context)
 	{
 		jsonObject.addProperty("identifier", src.getIdentifier());
     
@@ -47,12 +48,14 @@ public abstract class AbstractJsonSerializer
     }
 	}
 
-	protected void deserialize(JsonObject jsonObject)
+	protected <IB extends IdentifiableEntityBuilder<IB>> IB deserialize(JsonObject jsonObject, IB builder)
 	{
-		identifier = jsonObject.get("identifier").getAsString();
+		builder.identifier(jsonObject.get("identifier").getAsString());
 		JsonElement element = jsonObject.get("creationDate");
-		creationDate = element != null ? new Gson().fromJson(element.getAsJsonObject(), LocalDateTime.class) : null;
+		builder.creationDate(element != null ? new Gson().fromJson(element.getAsJsonObject(), LocalDateTime.class) : null);
 		element = jsonObject.get("lastModifiedDate");
-		lastModifiedDate = element != null ? new Gson().fromJson(element.getAsJsonObject(), LocalDateTime.class) : null;
+		builder.lastModifiedDate(element != null ? new Gson().fromJson(element.getAsJsonObject(), LocalDateTime.class) : null);
+		
+		return builder;
 	}
 }

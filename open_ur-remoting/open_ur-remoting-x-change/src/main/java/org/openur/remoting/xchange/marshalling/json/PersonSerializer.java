@@ -25,57 +25,44 @@ public class PersonSerializer
 	@Override
 	public Person deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 		throws JsonParseException
-	{
-		Set<OpenURApplication> applications = new HashSet<>();
-		Name name = null;
-	  String phoneNumber = null;
-		String faxNumber = null;
-		EMailAddress emailAddress = null;
-	  String mobileNumber = null;
-	  Address homeAddress = null;
-	  String homePhoneNumber = null;
-	  EMailAddress homeEmailAddress = null;
-	  
-		JsonObject jsonObject = json.getAsJsonObject();		
-		super.deserialize(jsonObject);
+	{	  
+		JsonObject jsonObject = json.getAsJsonObject();
+		PersonBuilder builder = new PersonBuilder();		
+		super.deserialize(jsonObject, builder);
 
-		name = context.deserialize(jsonObject.get("name").getAsJsonObject(), Name.class);
+		Name name = context.deserialize(jsonObject.get("name").getAsJsonObject(), Name.class);
 		JsonElement element = jsonObject.get("phoneNumber");
-		phoneNumber = element != null ? element.getAsString() : null;
+		String phoneNumber = element != null ? element.getAsString() : null;
 		element = jsonObject.get("faxNumber");
-		faxNumber = element != null ? element.getAsString() : null;
-		element = jsonObject.get("faxNumber");
-		faxNumber = element != null ? element.getAsString() : null;
+		String faxNumber = element != null ? element.getAsString() : null;
 		element = jsonObject.get("mobileNumber");
-		mobileNumber = element != null ? element.getAsString() : null;
+		String mobileNumber = element != null ? element.getAsString() : null;
 		element = jsonObject.get("homePhoneNumber");
-		homePhoneNumber = element != null ? element.getAsString() : null;
+		String homePhoneNumber = element != null ? element.getAsString() : null;
 		element = jsonObject.get("homeAddress");
-		homeAddress = element != null ? context.deserialize(element.getAsJsonObject(), Address.class) : null;
+		Address homeAddress = element != null ? context.deserialize(element.getAsJsonObject(), Address.class) : null;
 		element = jsonObject.get("emailAddress");
-		emailAddress = element != null ? context.deserialize(element.getAsJsonObject(), EMailAddress.class) : null;
+		EMailAddress emailAddress = element != null ? context.deserialize(element.getAsJsonObject(), EMailAddress.class) : null;
 		element = jsonObject.get("homeEmailAddress");
-		homeEmailAddress = element != null ? context.deserialize(element.getAsJsonObject(), EMailAddress.class) : null;
+		EMailAddress homeEmailAddress = element != null ? context.deserialize(element.getAsJsonObject(), EMailAddress.class) : null;
 		
 		JsonArray applicationsArray = jsonObject.get("applications").getAsJsonArray();
+		Set<OpenURApplication> applications = new HashSet<>();
 		for (JsonElement e : applicationsArray)
 		{
 			applications.add(context.deserialize(e, OpenURApplication.class));
 		}
 		
-		return new PersonBuilder(getNumber(), name)
-				.identifier(getIdentifier())
-				.creationDate(getCreationDate())
-				.lastModifiedDate(getLastModifiedDate())
-				.status(getStatus())
+		builder.name(name)
 				.phoneNumber(phoneNumber)
 				.faxNumber(faxNumber)
-				.emailAddress(emailAddress)
 				.mobileNumber(mobileNumber)
-				.homeAddress(homeAddress)
 				.homePhoneNumber(homePhoneNumber)
+				.homeAddress(homeAddress)
+				.emailAddress(emailAddress)
 				.homeEmailAddress(homeEmailAddress)
-				.applications(applications)
-				.build();
+				.applications(applications);
+		
+		return builder.build();
 	}	
 }
