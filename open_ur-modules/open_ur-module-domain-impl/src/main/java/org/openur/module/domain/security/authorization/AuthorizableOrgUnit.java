@@ -31,15 +31,15 @@ public class AuthorizableOrgUnit
 	}
 
 	@Override
-	public AuthorizableMember findMember(String id)
+	public AuthorizableMember findMemberByPersonId(String id)
 	{
-		return (AuthorizableMember) IAuthorizableOrgUnit.super.findMember(id);
+		return (AuthorizableMember) IAuthorizableOrgUnit.super.findMemberByPersonId(id);
 	}
 
 	@Override
-	public AuthorizableMember findMember(IPerson person)
+	public AuthorizableMember findMemberByPerson(IPerson person)
 	{
-		return (AuthorizableMember) IAuthorizableOrgUnit.super.findMember(person);
+		return (AuthorizableMember) IAuthorizableOrgUnit.super.findMemberByPerson(person);
 	}
 
 	@Override

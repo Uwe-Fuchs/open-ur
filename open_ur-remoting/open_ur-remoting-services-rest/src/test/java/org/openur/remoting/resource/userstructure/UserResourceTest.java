@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
+import org.openur.module.domain.utils.compare.PersonComparer;
 import org.openur.module.service.userstructure.IUserServices;
 import org.openur.remoting.xchange.marshalling.json.PersonSerializer;
 import org.openur.remoting.xchange.rest.providers.json.PersonProvider;
@@ -72,7 +73,7 @@ public class UserResourceTest
     		.registerTypeAdapter(Person.class, new PersonSerializer())
     		.create();
 		Person p = gson.fromJson(result, Person.class);
-		assertTrue(EqualsBuilder.reflectionEquals(TestObjectContainer.PERSON_1, p));
+		assertTrue(new PersonComparer().objectsAreEqual(TestObjectContainer.PERSON_1, p));
 
 		response.close();
 		client.close();
@@ -95,7 +96,7 @@ public class UserResourceTest
     		.registerTypeAdapter(Person.class, new PersonSerializer())
     		.create();
 		Person p = gson.fromJson(result, Person.class);
-		assertTrue(EqualsBuilder.reflectionEquals(TestObjectContainer.PERSON_1, p));
+		assertTrue(new PersonComparer().objectsAreEqual(TestObjectContainer.PERSON_1, p));
 
 		response.close();
 		client.close();
