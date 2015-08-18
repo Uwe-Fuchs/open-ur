@@ -41,13 +41,24 @@ public interface IOrganizationalUnit
 	}
 	
   /**
-   * searches the member with the given userId in this org-unit.
+   * searches the member with the given personId in this org-unit.
    *
-   * @param id : the id of the searched member.
+   * @param personId : the person-id of the searched member.
    *
    * @return IOrgUnitMember if found in this org-unit, else null.
    */
-	IOrgUnitMember findMember(String id);
+	default IOrgUnitMember findMemberByPersonId(String personId)
+	{
+		for (IOrgUnitMember m : this.getMembers())
+		{
+      if (m.getPerson().getIdentifier().equals(personId))
+      {
+        return m;
+      }
+		}
+
+		return null;
+	}
 	
   /**
    * searches the given person as a member in this org-unit.
@@ -56,7 +67,15 @@ public interface IOrganizationalUnit
    *
    * @return IOrgUnitMember if found in this org-unit, else null.
    */
-	IOrgUnitMember findMember(IPerson person);
+	default IOrgUnitMember findMemberByPerson(IPerson person)
+	{
+		if (person == null)
+    {
+      return null;
+    }
+		
+		return findMemberByPersonId(person.getIdentifier());
+	}
 	
 	/**
 	 * indicates wether this org-unit is the hierachical root of the organization,
@@ -83,7 +102,7 @@ public interface IOrganizationalUnit
       return false;
     }
 
-    return (this.findMember(id) != null);
+    return (this.findMemberByPersonId(id) != null);
 	}
 	
   /**
@@ -100,7 +119,7 @@ public interface IOrganizationalUnit
       return false;
     }
 
-    return (this.findMember(person) != null);
+    return (this.findMemberByPerson(person) != null);
 	}
 	
 	default int compareTo(IOrganizationalUnit ou)

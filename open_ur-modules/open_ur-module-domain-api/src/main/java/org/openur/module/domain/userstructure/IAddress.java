@@ -7,19 +7,19 @@ public interface IAddress
 	extends IIdentifiableEntity, Comparable<IAddress>
 {
 	// properties:
-	public abstract String getCareOf();
+	String getCareOf();
 
-	public abstract String getPoBox();
+	String getPoBox();
 
-	public abstract String getStreet();
+	String getStreet();
 
-	public abstract String getStreetNo();
+	String getStreetNo();
 
-	public abstract String getPostcode();
+	String getPostcode();
 
-	public abstract String getCity();
+	String getCity();
 
-	public abstract Country getCountry();
+	Country getCountry();
 	
 	// operations:
 	default int compareTo(IAddress other)

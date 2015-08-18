@@ -30,7 +30,7 @@ public class AuthorizableOrgUnitComparer
 		
 		for (AuthorizableMember member1 : orgUnit1.getMembers())
 		{
-			AuthorizableMember member2 = orgUnit2.findMember(member1.getPerson());
+			AuthorizableMember member2 = orgUnit2.findMemberByPerson(member1.getPerson());
 			
 			if (member2 == null || !memberComparer.objectsAreEqual(member1, member2))
 			{

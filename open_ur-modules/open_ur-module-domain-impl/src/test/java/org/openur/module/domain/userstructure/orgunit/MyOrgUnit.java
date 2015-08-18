@@ -40,7 +40,7 @@ public class MyOrgUnit
 	}
 	
 	@Override
-	public MyOrgUnitMember findMember(String id)
+	public MyOrgUnitMember findMemberByPersonId(String id)
 	{
 		if (id == null)
     {
@@ -59,13 +59,13 @@ public class MyOrgUnit
 	}
 
 	@Override
-	public MyOrgUnitMember findMember(IPerson person)
+	public MyOrgUnitMember findMemberByPerson(IPerson person)
 	{
 		if (person == null)
     {
       return null;
     }
 
-    return findMember(person.getIdentifier());
+    return findMemberByPersonId(person.getIdentifier());
 	}
 }

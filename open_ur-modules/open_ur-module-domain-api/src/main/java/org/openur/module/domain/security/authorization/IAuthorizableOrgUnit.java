@@ -34,20 +34,15 @@ public interface IAuthorizableOrgUnit
 	/**
    * searches the (authorizable) member with the given userId in this org-unit.
    *
-   * @param id : the id of the searched member.
+   * @param personId : the person-id of the searched member.
    *
    * @return IAuthorizableMember if found in this org-unit, else null.
    */
-	default IAuthorizableMember findMember(String id)
+	default IAuthorizableMember findMemberByPersonId(String personId)
 	{
-    if (id == null)
-    {
-      return null;
-    }
-
     for (IAuthorizableMember m : this.getMembers())
     {
-      if (id.equals(m.getPerson().getIdentifier()))
+      if (m.getPerson().getIdentifier().equals(personId))
       {
         return m;
       }
@@ -63,14 +58,14 @@ public interface IAuthorizableOrgUnit
    *
    * @return IAuthorizableMember if found in this org-unit, else null.
    */
-	default IAuthorizableMember findMember(IPerson person)
+	default IAuthorizableMember findMemberByPerson(IPerson person)
 	{
 		if (person == null)
     {
       return null;
     }
 		
-		return findMember(person.getIdentifier());
+		return findMemberByPersonId(person.getIdentifier());
 	}
 	
 	/**
@@ -84,7 +79,7 @@ public interface IAuthorizableOrgUnit
 	 */
 	default boolean hasPermission(IPerson person, IApplication app, IPermission permission)
 	{
-		IAuthorizableMember member = findMember(person.getIdentifier());
+		IAuthorizableMember member = findMemberByPersonId(person.getIdentifier());
 		
 		if (member == null)
 		{
