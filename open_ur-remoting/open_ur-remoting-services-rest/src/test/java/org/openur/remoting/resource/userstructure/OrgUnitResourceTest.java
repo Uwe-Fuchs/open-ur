@@ -1,6 +1,7 @@
 package org.openur.remoting.resource.userstructure;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -8,7 +9,6 @@ import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
@@ -18,6 +18,7 @@ import org.openur.module.domain.security.authorization.AuthorizableMember;
 import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.OpenURRole;
 import org.openur.module.domain.userstructure.person.Person;
+import org.openur.module.domain.utils.compare.AuthorizableOrgUnitComparer;
 import org.openur.module.service.userstructure.IOrgUnitServices;
 import org.openur.remoting.xchange.marshalling.json.AuthorizableMemberSerializer;
 import org.openur.remoting.xchange.marshalling.json.AuthorizableOrgUnitSerializer;
@@ -32,7 +33,6 @@ import com.google.gson.GsonBuilder;
 public class OrgUnitResourceTest
 	extends JerseyTest
 {
-
 	@Override
 	protected Application configure()
 	{
@@ -74,7 +74,7 @@ public class OrgUnitResourceTest
     Gson gson = gsonBuilder.create();
 
 		AuthorizableOrgUnit o = gson.fromJson(result, AuthorizableOrgUnit.class);
-		assertTrue(EqualsBuilder.reflectionEquals(TestObjectContainer.ORG_UNIT_A, o));
+		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A, o));
 
 		response.close();
 		client.close();
