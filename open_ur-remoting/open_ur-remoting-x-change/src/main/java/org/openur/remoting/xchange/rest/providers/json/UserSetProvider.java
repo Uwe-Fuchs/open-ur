@@ -32,7 +32,7 @@ public class UserSetProvider
 	@Override
 	public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType)
 	{
-		return true;
+		return Set.class.isAssignableFrom(type);
 	}
 
 	@Override
