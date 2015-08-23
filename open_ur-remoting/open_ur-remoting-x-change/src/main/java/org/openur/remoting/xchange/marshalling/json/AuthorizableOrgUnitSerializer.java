@@ -23,8 +23,7 @@ import com.google.gson.JsonSerializer;
 public class AuthorizableOrgUnitSerializer
 	extends UserStructureBaseSerializer
 	implements JsonSerializer<AuthorizableOrgUnit>, JsonDeserializer<AuthorizableOrgUnit>
-{
-	
+{	
 	@Override
 	public AuthorizableOrgUnit deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 		throws JsonParseException

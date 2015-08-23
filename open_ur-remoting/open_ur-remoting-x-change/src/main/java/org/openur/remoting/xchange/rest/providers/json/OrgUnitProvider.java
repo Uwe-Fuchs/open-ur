@@ -15,9 +15,11 @@ import javax.ws.rs.ext.Provider;
 import org.openur.module.domain.security.authorization.AuthorizableMember;
 import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.OpenURRole;
+import org.openur.module.domain.userstructure.person.Person;
 import org.openur.remoting.xchange.marshalling.json.AuthorizableMemberSerializer;
 import org.openur.remoting.xchange.marshalling.json.AuthorizableOrgUnitSerializer;
 import org.openur.remoting.xchange.marshalling.json.OpenURRoleSerializer;
+import org.openur.remoting.xchange.marshalling.json.PersonSerializer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -48,6 +50,7 @@ public class OrgUnitProvider
     gsonBuilder.registerTypeAdapter(AuthorizableOrgUnit.class, new AuthorizableOrgUnitSerializer());
     gsonBuilder.registerTypeAdapter(AuthorizableMember.class, new AuthorizableMemberSerializer());
     gsonBuilder.registerTypeAdapter(OpenURRole.class, new OpenURRoleSerializer());
+    gsonBuilder.registerTypeAdapter(Person.class, new PersonSerializer());
     Gson gson = gsonBuilder.create();
 		
 		entityStream.write(gson.toJson(t).getBytes());		
