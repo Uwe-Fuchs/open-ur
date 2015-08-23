@@ -324,7 +324,7 @@ public class SecurityDomainTest
 		Mockito.when(securityDao.obtainPermissionsForApp(TestObjectContainer.APP_A.getApplicationName()))
 				.thenReturn(Arrays.asList(TestObjectContainer.PERMISSION_1_A, TestObjectContainer.PERMISSION_2_A));
 		
-		Set<IPermission> resultSet = securityDomainServices.obtainPermissionsForApp(TestObjectContainer.APP_A);
+		Set<IPermission> resultSet = securityDomainServices.obtainPermissionsForApp(TestObjectContainer.APP_A.getApplicationName());
 		
 		assertNotNull(resultSet);
 		assertEquals(2, resultSet.size());
@@ -364,7 +364,7 @@ public class SecurityDomainTest
 
 		Mockito.when(securityDao.obtainPermissionsForApp(app2.getApplicationName())).thenReturn(Arrays.asList(perm21, perm22));
 		
-		resultSet = securityDomainServices.obtainPermissionsForApp(app1);
+		resultSet = securityDomainServices.obtainPermissionsForApp(app1.getApplicationName());
 		assertNotNull(resultSet);
 		assertEquals(2, resultSet.size());
 		
@@ -374,7 +374,7 @@ public class SecurityDomainTest
 			assertFalse(PERM_21_ID.equals(p.getIdentifier()) || PERM_22_ID.equals(p.getIdentifier()));
 		}
 		
-		resultSet = securityDomainServices.obtainPermissionsForApp(app2);
+		resultSet = securityDomainServices.obtainPermissionsForApp(app2.getApplicationName());
 		assertNotNull(resultSet);
 		assertEquals(2, resultSet.size());
 		

@@ -2,7 +2,6 @@ package org.openur.module.service.security;
 
 import java.util.Set;
 
-import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
 
@@ -54,11 +53,11 @@ public interface ISecurityDomainServices
 	/**
 	 * obtains all defined user-permissions for a given application.
 	 * 
-	 * @param application : application
+	 * @param applicationName : name of the given application.
 	 * 
 	 * @return Set with user-permissions (empty if no permissions are defined for the given app).
 	 */
-	Set<IPermission> obtainPermissionsForApp(IApplication application);
+	Set<IPermission> obtainPermissionsForApp(String applicationName);
 	
 	/**
 	 * obtains all defined user-permissions.

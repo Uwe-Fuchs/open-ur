@@ -6,7 +6,6 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
-import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
 import org.openur.module.persistence.dao.ISecurityDao;
@@ -50,9 +49,9 @@ public class SecurityDomainServicesImpl
 	}
 
 	@Override
-	public Set<IPermission> obtainPermissionsForApp(IApplication application)
+	public Set<IPermission> obtainPermissionsForApp(String applicationName)
 	{
-		List<IPermission> permissionList = securityDao.obtainPermissionsForApp(application.getApplicationName());
+		List<IPermission> permissionList = securityDao.obtainPermissionsForApp(applicationName);
 		
 		return new HashSet<>(permissionList);
 	}
