@@ -20,6 +20,7 @@ import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.utils.common.DomainObjectHelper;
 import org.openur.module.domain.utils.compare.AuthorizableOrgUnitComparer;
 import org.openur.module.service.userstructure.IOrgUnitServices;
+import org.openur.remoting.resource.AbstractResourceTest;
 import org.openur.remoting.xchange.marshalling.json.AuthorizableMemberSerializer;
 import org.openur.remoting.xchange.marshalling.json.AuthorizableOrgUnitSerializer;
 import org.openur.remoting.xchange.marshalling.json.OpenURRoleSerializer;

@@ -19,6 +19,7 @@ import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
 import org.openur.module.domain.utils.common.DomainObjectHelper;
 import org.openur.module.domain.utils.compare.PersonComparer;
 import org.openur.module.service.userstructure.IUserServices;
+import org.openur.remoting.resource.AbstractResourceTest;
 import org.openur.remoting.xchange.marshalling.json.PersonSerializer;
 import org.openur.remoting.xchange.rest.providers.json.PersonProvider;
 import org.openur.remoting.xchange.rest.providers.json.TechnicalUserProvider;
