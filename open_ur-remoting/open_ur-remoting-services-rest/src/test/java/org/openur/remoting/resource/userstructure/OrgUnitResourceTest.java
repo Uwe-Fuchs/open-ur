@@ -131,6 +131,17 @@ public class OrgUnitResourceTest
 		p = DomainObjectHelper.findIdentifiableEntityInCollection(resultSet, MockOrgUnitServicesFactory.MY_OU_2.getIdentifier());
 		assertTrue(p.getMembers().isEmpty());
 		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(MockOrgUnitServicesFactory.MY_OU_2, p));
+		
+		// default value for query-param => without members:
+		result = performRestCall("userstructure/orgunit/sub/" + MockOrgUnitServicesFactory.MY_SUPER_OU.getIdentifier());
+    resultSet = buildGson().fromJson(result, resultType);
+
+		assertFalse(resultSet.isEmpty());
+		assertEquals(2, resultSet.size());
+		
+		p = DomainObjectHelper.findIdentifiableEntityInCollection(resultSet, MockOrgUnitServicesFactory.MY_OU_1.getIdentifier());
+		assertTrue(p.getMembers().isEmpty());
+		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(MockOrgUnitServicesFactory.MY_OU_1, p));		
 	}
 
 	@Test

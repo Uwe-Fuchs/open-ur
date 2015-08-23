@@ -3,6 +3,7 @@ package org.openur.remoting.resource.userstructure;
 import java.util.Set;
 
 import javax.inject.Inject;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -51,7 +52,8 @@ public class OrgUnitResource
 	@GET
 	@Path("/orgunit/sub/{id}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public Set<IAuthorizableOrgUnit> obtainSubOrgUnitsForOrgUnit(@PathParam("id") String orgUnitId, @QueryParam("inclMembers") boolean inclMembers)
+	public Set<IAuthorizableOrgUnit> obtainSubOrgUnitsForOrgUnit(@PathParam("id") String orgUnitId, 
+		@DefaultValue("false") @QueryParam("inclMembers") boolean inclMembers)
 	{
 		return orgUnitServices.obtainSubOrgUnitsForOrgUnit(orgUnitId, inclMembers);
 	}
