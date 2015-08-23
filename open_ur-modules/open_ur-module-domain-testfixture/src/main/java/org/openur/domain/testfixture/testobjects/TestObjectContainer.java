@@ -237,6 +237,7 @@ public class TestObjectContainer
 		applications = new HashSet<>(Arrays.asList(APP_A, APP_C));
 		
 		PERSON_3 = new PersonBuilder(PERSON_NUMBER_3, name_3)
+				.identifier(PERSON_UUID_3)
 				.status(Status.ACTIVE)
 				.emailAddress(EMailAddress.create("office@name_3.com"))
 				.phoneNumber("0033333333331")

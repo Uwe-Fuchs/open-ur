@@ -49,7 +49,7 @@ public class OrgUnitResource
 
 	@Override
 	@GET
-	@Path("/orgunit/sub")
+	@Path("/orgunit/sub/{id}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public Set<IAuthorizableOrgUnit> obtainSubOrgUnitsForOrgUnit(@PathParam("id") String orgUnitId, @QueryParam("inclMembers") boolean inclMembers)
 	{
