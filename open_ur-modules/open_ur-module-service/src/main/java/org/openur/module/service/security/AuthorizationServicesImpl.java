@@ -43,7 +43,7 @@ public class AuthorizationServicesImpl
 	{
 		IPerson person = userServices.findPersonById(userId);
 		IAuthorizableOrgUnit orgUnit = orgUnitServices.findOrgUnitById(orgUnitId);
-		IPermission permission = securityDomainServices.findPermissionByName(perm, app);
+		IPermission permission = securityDomainServices.findPermissionByName(perm);
 		
 		return hasPermission(person, orgUnit, permission, app);
 	}

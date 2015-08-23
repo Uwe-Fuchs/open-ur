@@ -44,7 +44,7 @@ public class SecurityDomainServicesImpl
 	}
 
 	@Override
-	public IPermission findPermissionByName(String permissionName, IApplication application)
+	public IPermission findPermissionByName(String permissionName)
 	{
 		return securityDao.findPermissionByName(permissionName);
 	}
