@@ -19,10 +19,11 @@ import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
 import org.openur.module.domain.utils.common.DomainObjectHelper;
 import org.openur.module.domain.utils.compare.PersonComparer;
 import org.openur.module.service.userstructure.IUserServices;
+import org.openur.remoting.resource.AbstractResourceTest;
 import org.openur.remoting.xchange.marshalling.json.PersonSerializer;
 import org.openur.remoting.xchange.rest.providers.json.PersonProvider;
 import org.openur.remoting.xchange.rest.providers.json.TechnicalUserProvider;
-import org.openur.remoting.xchange.rest.providers.json.UserSetProvider;
+import org.openur.remoting.xchange.rest.providers.json.IdentifiableEntitySetProvider;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -46,7 +47,7 @@ public class UserResourceTest
 		ResourceConfig config = new ResourceConfig(UserResource.class)
 				.register(PersonProvider.class)
 				.register(TechnicalUserProvider.class)
-				.register(UserSetProvider.class)
+				.register(IdentifiableEntitySetProvider.class)
 				.register(binder);
 
 		return config;

@@ -20,12 +20,13 @@ import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.utils.common.DomainObjectHelper;
 import org.openur.module.domain.utils.compare.AuthorizableOrgUnitComparer;
 import org.openur.module.service.userstructure.IOrgUnitServices;
+import org.openur.remoting.resource.AbstractResourceTest;
 import org.openur.remoting.xchange.marshalling.json.AuthorizableMemberSerializer;
 import org.openur.remoting.xchange.marshalling.json.AuthorizableOrgUnitSerializer;
 import org.openur.remoting.xchange.marshalling.json.OpenURRoleSerializer;
 import org.openur.remoting.xchange.marshalling.json.PersonSerializer;
 import org.openur.remoting.xchange.rest.providers.json.OrgUnitProvider;
-import org.openur.remoting.xchange.rest.providers.json.UserSetProvider;
+import org.openur.remoting.xchange.rest.providers.json.IdentifiableEntitySetProvider;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -48,7 +49,7 @@ public class OrgUnitResourceTest
 
 		ResourceConfig config = new ResourceConfig(OrgUnitResource.class)
 				.register(OrgUnitProvider.class)
-				.register(UserSetProvider.class)
+				.register(IdentifiableEntitySetProvider.class)
 				.register(binder);
 
 		return config;
@@ -130,6 +131,17 @@ public class OrgUnitResourceTest
 		p = DomainObjectHelper.findIdentifiableEntityInCollection(resultSet, MockOrgUnitServicesFactory.MY_OU_2.getIdentifier());
 		assertTrue(p.getMembers().isEmpty());
 		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(MockOrgUnitServicesFactory.MY_OU_2, p));
+		
+		// default value for query-param => without members:
+		result = performRestCall("userstructure/orgunit/sub/" + MockOrgUnitServicesFactory.MY_SUPER_OU.getIdentifier());
+    resultSet = buildGson().fromJson(result, resultType);
+
+		assertFalse(resultSet.isEmpty());
+		assertEquals(2, resultSet.size());
+		
+		p = DomainObjectHelper.findIdentifiableEntityInCollection(resultSet, MockOrgUnitServicesFactory.MY_OU_1.getIdentifier());
+		assertTrue(p.getMembers().isEmpty());
+		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(MockOrgUnitServicesFactory.MY_OU_1, p));		
 	}
 
 	@Test

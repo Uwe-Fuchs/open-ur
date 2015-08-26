@@ -121,13 +121,11 @@ public class TestObjectContainer
 				.build();
 
 		PERMISSION_2_A = new OpenURPermissionBuilder("permName_2_A", APP_A)
-				.permissionScope(PermissionScope.SELECTED_SUB)
 				.description("permission description 2A")
 				.creationDate(LocalDateTime.now())
 				.build();
 
 		PERMISSION_1_B = new OpenURPermissionBuilder("permName_1_B", APP_B)
-				.permissionScope(PermissionScope.SELECTED_SUB)
 				.description("permission description 1B")
 				.creationDate(LocalDateTime.now())
 				.build();
@@ -144,7 +142,6 @@ public class TestObjectContainer
 				.build();
 		
 		PERMISSION_2_C = new OpenURPermissionBuilder("permName_2_C", APP_C)
-				.permissionScope(PermissionScope.SELECTED_SUB)
 				.description("permission description 2C")
 				.build();
 		

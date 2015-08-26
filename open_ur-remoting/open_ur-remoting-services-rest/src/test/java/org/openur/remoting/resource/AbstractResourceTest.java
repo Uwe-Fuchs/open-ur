@@ -1,4 +1,4 @@
-package org.openur.remoting.resource.userstructure;
+package org.openur.remoting.resource;
 
 import static org.junit.Assert.assertEquals;
 
