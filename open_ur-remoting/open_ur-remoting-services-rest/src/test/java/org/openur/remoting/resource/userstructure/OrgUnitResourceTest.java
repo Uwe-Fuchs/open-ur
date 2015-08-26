@@ -26,7 +26,7 @@ import org.openur.remoting.xchange.marshalling.json.AuthorizableOrgUnitSerialize
 import org.openur.remoting.xchange.marshalling.json.OpenURRoleSerializer;
 import org.openur.remoting.xchange.marshalling.json.PersonSerializer;
 import org.openur.remoting.xchange.rest.providers.json.OrgUnitProvider;
-import org.openur.remoting.xchange.rest.providers.json.UserSetProvider;
+import org.openur.remoting.xchange.rest.providers.json.IdentifiableEntitySetProvider;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -49,7 +49,7 @@ public class OrgUnitResourceTest
 
 		ResourceConfig config = new ResourceConfig(OrgUnitResource.class)
 				.register(OrgUnitProvider.class)
-				.register(UserSetProvider.class)
+				.register(IdentifiableEntitySetProvider.class)
 				.register(binder);
 
 		return config;
