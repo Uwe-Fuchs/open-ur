@@ -26,6 +26,13 @@ public class MockSecurityDomainServicesFactory
 		Mockito.when(securityDomainServices.obtainPermissionsForApp(TestObjectContainer.APP_A.getApplicationName())).thenReturn(
 			new HashSet<>(Arrays.asList(TestObjectContainer.PERMISSION_1_A, TestObjectContainer.PERMISSION_2_A)));
 		
+		Mockito.when(securityDomainServices.findRoleById(TestObjectContainer.ROLE_X.getIdentifier())).thenReturn(
+			TestObjectContainer.ROLE_X);		
+		Mockito.when(securityDomainServices.findRoleByName(TestObjectContainer.ROLE_X.getRoleName())).thenReturn(
+				TestObjectContainer.ROLE_X);
+		Mockito.when(securityDomainServices.obtainAllRoles()).thenReturn(new HashSet<>(Arrays.asList(TestObjectContainer.ROLE_X, 
+			TestObjectContainer.ROLE_Y, TestObjectContainer.ROLE_Z)));
+		
 		return securityDomainServices;
 	}
 	
