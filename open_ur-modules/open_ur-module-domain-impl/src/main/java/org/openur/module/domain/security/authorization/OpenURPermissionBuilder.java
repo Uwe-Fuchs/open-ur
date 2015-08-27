@@ -10,28 +10,20 @@ public class OpenURPermissionBuilder
 {
 	// properties:
 	private OpenURApplication app = null;
-	private String permissionName = null;
-	private String description = null;
+	private String permissionText = null;
 	private PermissionScope permissionScope = DefaultsUtil.getDefaultPermissionScope();
 
-	public OpenURPermissionBuilder(String permissionName, OpenURApplication app)
+	public OpenURPermissionBuilder(String permissionText, OpenURApplication app)
 	{
 		super();
 
-		Validate.notEmpty(permissionName, "permission-name must not be empty!");
+		Validate.notEmpty(permissionText, "permission-text must not be empty!");
 		Validate.notNull(app, "app must not be null!");
 		
-		this.permissionName = permissionName;
+		this.permissionText = permissionText;
 		this.app = app;
 	}
 
-	// builder-methods:
-	public OpenURPermissionBuilder description(String description)
-	{
-		this.description = description;
-		return this;
-	}
-	
 	public OpenURPermissionBuilder permissionScope(PermissionScope permissionScope)
 	{
 		Validate.notNull(permissionScope, "permission-scope must not be null!");
@@ -51,14 +43,9 @@ public class OpenURPermissionBuilder
 		return app;
 	}
 
-	String getPermissionName()
+	String getPermissionText()
 	{
-		return permissionName;
-	}
-
-	String getDescription()
-	{
-		return description;
+		return permissionText;
 	}
 
 	PermissionScope getPermissionScope()

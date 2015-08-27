@@ -74,9 +74,9 @@ public class SecurityDomainResourceTest
 	}
 
 	@Test
-	public void testFindPermissionByName()
+	public void testFindPermissionByText()
 	{
-		String result = performRestCall("securitydomain/permission/name/" + TestObjectContainer.PERMISSION_1_A.getPermissionName());
+		String result = performRestCall("securitydomain/permission/text/" + TestObjectContainer.PERMISSION_1_A.getPermissionText());
 
 		OpenURPermission p = new Gson().fromJson(result, OpenURPermission.class);
 		assertTrue(EqualsBuilder.reflectionEquals(p, TestObjectContainer.PERMISSION_1_A));

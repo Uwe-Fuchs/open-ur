@@ -11,8 +11,7 @@ public class OpenURPermission
 	
 	// properties:
 	private final OpenURApplication application;
-	private final String permissionName;
-	private final String description;
+	private final String permissionText;
 	private final PermissionScope permissionScope;
 
 	// constructor:
@@ -21,8 +20,7 @@ public class OpenURPermission
 		super(b);
 
 		this.application = b.getApp();
-		this.permissionName = b.getPermissionName();
-		this.description = b.getDescription();
+		this.permissionText = b.getPermissionText();
 		this.permissionScope = b.getPermissionScope();
 	}
 
@@ -32,16 +30,10 @@ public class OpenURPermission
 		return permissionScope;
 	}
 
-	// accessors:
-	public String getDescription()
-	{
-		return description;
-	}
-
 	@Override
-	public String getPermissionName()
+	public String getPermissionText()
 	{
-		return permissionName;
+		return permissionText;
 	}
 
 	@Override

@@ -41,7 +41,8 @@ public class RepositorySpringConfig
 
 		EmbeddedDatabase edb = new EmbeddedDatabaseBuilder()
 			.setType(EmbeddedDatabaseType.H2)
-			.addScript("classpath:/db/ddl_open_ur.sql").build();
+			//.addScript("classpath:/db/ddl_open_ur.sql")
+			.build();
 
 		SimpleDriverDataSource simpleDs = new SimpleDriverDataSource();
 		simpleDs.setDriverClass(env.getPropertyAsClass("database.driver",

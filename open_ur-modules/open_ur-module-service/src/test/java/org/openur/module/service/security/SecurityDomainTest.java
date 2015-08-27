@@ -200,11 +200,11 @@ public class SecurityDomainTest
 		
 		resultPermission = securityDomainServices.findPermissionById(PERM_ID_1);
 		assertEquals(resultPermission.getIdentifier(), perm1.getIdentifier());
-		assertEquals(resultPermission.getPermissionName(), perm1.getPermissionName());
+		assertEquals(resultPermission.getPermissionText(), perm1.getPermissionText());
 		
 		resultPermission = securityDomainServices.findPermissionById(PERM_ID_2);
 		assertEquals(resultPermission.getIdentifier(), perm2.getIdentifier());
-		assertEquals(resultPermission.getPermissionName(), perm2.getPermissionName());
+		assertEquals(resultPermission.getPermissionText(), perm2.getPermissionText());
 		
 		otherId = UUID.randomUUID().toString();
 		resultPermission = securityDomainServices.findPermissionById(otherId);
@@ -215,23 +215,23 @@ public class SecurityDomainTest
 	public void testFindPermissionByName()
 	{
 		// test with open-ur-specific domain-objects:
-		Mockito.when(securityDao.findPermissionByName(TestObjectContainer.PERMISSION_1_A.getPermissionName())).thenReturn(TestObjectContainer.PERMISSION_1_A);
-		Mockito.when(securityDao.findPermissionByName(TestObjectContainer.PERMISSION_1_B.getPermissionName())).thenReturn(TestObjectContainer.PERMISSION_1_B);
+		Mockito.when(securityDao.findPermissionByText(TestObjectContainer.PERMISSION_1_A.getPermissionText())).thenReturn(TestObjectContainer.PERMISSION_1_A);
+		Mockito.when(securityDao.findPermissionByText(TestObjectContainer.PERMISSION_1_B.getPermissionText())).thenReturn(TestObjectContainer.PERMISSION_1_B);
 		
-		IPermission resultPermission = securityDomainServices.findPermissionByName(
-				TestObjectContainer.PERMISSION_1_A.getPermissionName());
+		IPermission resultPermission = securityDomainServices.findPermissionByText(
+				TestObjectContainer.PERMISSION_1_A.getPermissionText());
 		assertEquals(TestObjectContainer.PERMISSION_1_A, resultPermission);
 		
-		resultPermission = securityDomainServices.findPermissionByName(
-				TestObjectContainer.PERMISSION_1_B.getPermissionName());
+		resultPermission = securityDomainServices.findPermissionByText(
+				TestObjectContainer.PERMISSION_1_B.getPermissionText());
 		assertEquals(TestObjectContainer.PERMISSION_1_B, resultPermission);
 		
 		String otherId = UUID.randomUUID().toString();
-		resultPermission = securityDomainServices.findPermissionByName(otherId);
+		resultPermission = securityDomainServices.findPermissionByText(otherId);
 		assertTrue(resultPermission == null);
-		resultPermission = securityDomainServices.findPermissionByName(otherId);
+		resultPermission = securityDomainServices.findPermissionByText(otherId);
 		assertTrue(resultPermission == null);
-		resultPermission = securityDomainServices.findPermissionByName(otherId);
+		resultPermission = securityDomainServices.findPermissionByText(otherId);
 		assertTrue(resultPermission == null);
 
 		// test with arbitrary domain-objects:
@@ -247,22 +247,22 @@ public class SecurityDomainTest
 		final String PERM_2_NAME = "perm2Name";
 		IPermission perm2 = new MyPermissionImpl(PERM_ID_2, PERM_2_NAME, app);
 		
-		Mockito.when(securityDao.findPermissionByName(PERM_1_NAME)).thenReturn(perm1);
-		Mockito.when(securityDao.findPermissionByName(PERM_2_NAME)).thenReturn(perm2);
+		Mockito.when(securityDao.findPermissionByText(PERM_1_NAME)).thenReturn(perm1);
+		Mockito.when(securityDao.findPermissionByText(PERM_2_NAME)).thenReturn(perm2);
 		
-		resultPermission = securityDomainServices.findPermissionByName(PERM_1_NAME);
-		assertEquals(resultPermission.getPermissionName(), perm1.getPermissionName());
+		resultPermission = securityDomainServices.findPermissionByText(PERM_1_NAME);
+		assertEquals(resultPermission.getPermissionText(), perm1.getPermissionText());
 		assertEquals(resultPermission.getIdentifier(), perm1.getIdentifier());
 		
-		resultPermission = securityDomainServices.findPermissionByName(PERM_2_NAME);
-		assertEquals(resultPermission.getPermissionName(), perm2.getPermissionName());
+		resultPermission = securityDomainServices.findPermissionByText(PERM_2_NAME);
+		assertEquals(resultPermission.getPermissionText(), perm2.getPermissionText());
 		assertEquals(resultPermission.getIdentifier(), perm2.getIdentifier());
 		
-		resultPermission = securityDomainServices.findPermissionByName("abcdef");
+		resultPermission = securityDomainServices.findPermissionByText("abcdef");
 		assertEquals(resultPermission, null);
 		
 		final String OTHER_NAME = "otherName";
-		resultPermission = securityDomainServices.findPermissionByName(OTHER_NAME);
+		resultPermission = securityDomainServices.findPermissionByText(OTHER_NAME);
 		assertTrue(resultPermission == null);
 	}
 
@@ -306,7 +306,7 @@ public class SecurityDomainTest
 		for (IPermission p : resultSet)
 		{
 			assertTrue(PERM_ID_1.equals(p.getIdentifier()) || PERM_ID_2.equals(p.getIdentifier()));
-			assertTrue(PERM_1_NAME.equals(p.getPermissionName()) || PERM_2_NAME.equals(p.getPermissionName()));
+			assertTrue(PERM_1_NAME.equals(p.getPermissionText()) || PERM_2_NAME.equals(p.getPermissionText()));
 		}
 		
 		final String OTHER_ID = UUID.randomUUID().toString();

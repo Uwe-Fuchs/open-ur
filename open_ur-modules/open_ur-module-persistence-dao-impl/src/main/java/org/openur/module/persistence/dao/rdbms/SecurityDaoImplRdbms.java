@@ -65,9 +65,9 @@ public class SecurityDaoImplRdbms
 	}
 
 	@Override
-	public IPermission findPermissionByName(String permissionName)
+	public IPermission findPermissionByText(String permissionText)
 	{
-		PPermission persistable = permissionRepository.findPermissionByPermissionName(permissionName);
+		PPermission persistable = permissionRepository.findPermissionByPermissionText(permissionText);
 		
 		if (persistable == null)
 		{

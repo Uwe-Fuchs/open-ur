@@ -19,7 +19,7 @@ public interface IPermission
 	 * 
 	 * @return String.
 	 */
-	String getPermissionName();
+	String getPermissionText();
 	
 	/**
 	 * the scope (i.e. SELECTED, SUB or SELECTED_SUB)
@@ -32,7 +32,7 @@ public interface IPermission
 	default int compareTo(IPermission o)
 	{
 		int comparison = new CompareToBuilder()
-												.append(this.getPermissionName(), o.getPermissionName())
+												.append(this.getPermissionText(), o.getPermissionText())
 												.append(this.getApplication(), o.getApplication())
 												.toComparison();
 		
