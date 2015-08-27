@@ -43,9 +43,9 @@ public class SecurityDomainServicesImpl
 	}
 
 	@Override
-	public IPermission findPermissionByName(String permissionName)
+	public IPermission findPermissionByText(String permissionText)
 	{
-		return securityDao.findPermissionByName(permissionName);
+		return securityDao.findPermissionByText(permissionText);
 	}
 
 	@Override

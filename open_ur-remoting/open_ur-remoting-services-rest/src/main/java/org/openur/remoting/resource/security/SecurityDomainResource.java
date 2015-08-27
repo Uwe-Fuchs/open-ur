@@ -52,11 +52,11 @@ public class SecurityDomainResource
 
 	@Override
 	@GET
-	@Path("/permission/name/{name}")
+	@Path("/permission/text/{text}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public IPermission findPermissionByName(@PathParam("name") String permissionName)
+	public IPermission findPermissionByText(@PathParam("text") String permissionText)
 	{
-		return securityDomianServices.findPermissionByName(permissionName);
+		return securityDomianServices.findPermissionByText(permissionText);
 	}
 
 	@Override

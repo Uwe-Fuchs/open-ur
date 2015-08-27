@@ -18,7 +18,7 @@ public class MockSecurityDomainServicesFactory
 		
 		Mockito.when(securityDomainServices.findPermissionById(TestObjectContainer.PERMISSION_1_A.getIdentifier())).thenReturn(
 			TestObjectContainer.PERMISSION_1_A);
-		Mockito.when(securityDomainServices.findPermissionByName(TestObjectContainer.PERMISSION_1_A.getPermissionName())).thenReturn(
+		Mockito.when(securityDomainServices.findPermissionByText(TestObjectContainer.PERMISSION_1_A.getPermissionText())).thenReturn(
 			TestObjectContainer.PERMISSION_1_A);
 		Mockito.when(securityDomainServices.obtainAllPermissions()).thenReturn(new HashSet<>(Arrays.asList(
 			TestObjectContainer.PERMISSION_1_A, TestObjectContainer.PERMISSION_1_B, TestObjectContainer.PERMISSION_1_C,

@@ -18,10 +18,9 @@ public class PermissionMapper
 	public PPermission mapFromDomainObject(OpenURPermission domainObject)
 	{
 		PApplication pApp = applicationMapper.mapFromDomainObject(domainObject.getApplication());
-		PPermission persistable = new PPermission(domainObject.getPermissionName(), pApp);
+		PPermission persistable = new PPermission(domainObject.getPermissionText(), pApp);
 
 		persistable.setPermissionScope(domainObject.getPermissionScope());
-		persistable.setDescription(domainObject.getDescription());
 		
 		return persistable;
 	}
@@ -36,7 +35,6 @@ public class PermissionMapper
 		
 		return immutableBuilder
 				.permissionScope(entity.getPermissionScope())
-				.description(entity.getDescription())
 				.build();
 	}
 	
@@ -47,6 +45,6 @@ public class PermissionMapper
 			return false;
 		}
 		
-		return domainObject.getPermissionName().equals(entity.getPermissionName());
+		return domainObject.getPermissionText().equals(entity.getPermissionName());
 	}
 }

@@ -10,15 +10,15 @@ public class MyPermissionImpl
 	implements IPermission
 {
 	private String identifier;
-	private String permissionName;
+	private String permissionText;
 	private IApplication application;
 
-	public MyPermissionImpl(String identifier, String permissionName, IApplication application)
+	public MyPermissionImpl(String identifier, String permissionText, IApplication application)
 	{
 		super();
 		
 		this.identifier = identifier;
-		this.permissionName = permissionName;
+		this.permissionText = permissionText;
 		this.application = application;
 	}
 
@@ -35,9 +35,9 @@ public class MyPermissionImpl
 	}
 
 	@Override
-	public String getPermissionName()
+	public String getPermissionText()
 	{
-		return this.permissionName;
+		return this.permissionText;
 	}
 
 	@Override

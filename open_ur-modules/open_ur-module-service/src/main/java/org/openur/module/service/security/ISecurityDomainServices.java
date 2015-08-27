@@ -42,13 +42,13 @@ public interface ISecurityDomainServices
 	IPermission findPermissionById(String permissionId);
 	
 	/**
-	 * searches a permission-object with the given name and the given application.
+	 * searches a permission-object with the given text and the given application.
 	 * 
-	 * @param permissionName : name of the permission.
+	 * @param permissionText : text of the permission.
 	 * 
-	 * @return the permission with the given name or null, if no permission is found.
+	 * @return the permission with the given text or null, if no permission is found.
 	 */
-	IPermission findPermissionByName(String permissionName);
+	IPermission findPermissionByText(String permissionText);
 
 	/**
 	 * obtains all defined user-permissions for a given application.
