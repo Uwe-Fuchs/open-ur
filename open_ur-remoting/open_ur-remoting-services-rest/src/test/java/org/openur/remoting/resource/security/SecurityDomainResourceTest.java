@@ -1,6 +1,8 @@
 package org.openur.remoting.resource.security;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Type;
 import java.util.Set;
@@ -13,14 +15,19 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.Test;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.security.authorization.OpenURPermission;
+import org.openur.module.domain.security.authorization.OpenURRole;
 import org.openur.module.domain.utils.common.DomainObjectHelper;
 import org.openur.module.domain.utils.compare.PermissionComparer;
+import org.openur.module.domain.utils.compare.RoleComparer;
 import org.openur.module.service.security.ISecurityDomainServices;
 import org.openur.remoting.resource.AbstractResourceTest;
+import org.openur.remoting.xchange.marshalling.json.OpenURRoleSerializer;
 import org.openur.remoting.xchange.rest.providers.json.IdentifiableEntitySetProvider;
 import org.openur.remoting.xchange.rest.providers.json.PermissionProvider;
+import org.openur.remoting.xchange.rest.providers.json.RoleProvider;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 public class SecurityDomainResourceTest
@@ -40,29 +47,52 @@ public class SecurityDomainResourceTest
 
 		ResourceConfig config = new ResourceConfig(SecurityDomainResource.class)
 				.register(PermissionProvider.class)
+				.register(RoleProvider.class)
 				.register(IdentifiableEntitySetProvider.class)
 				.register(binder);
 
 		return config;
 	}
 	
-//	@Test
-//	public void testFindRoleById()
-//	{
-//		fail("Not yet implemented");
-//	}
+	@Test
+	public void testFindRoleById()
+	{
+		String result = performRestCall("securitydomain/role/id/" + TestObjectContainer.ROLE_X.getIdentifier());
 
-//	@Test
-//	public void testFindRoleByName()
-//	{
-//		fail("Not yet implemented");
-//	}
+		OpenURRole r = buildGson().fromJson(result, OpenURRole.class);
+		assertTrue(new RoleComparer().objectsAreEqual(r, TestObjectContainer.ROLE_X));
+	}
 
-//	@Test
-//	public void testObtainAllRoles()
-//	{
-//		fail("Not yet implemented");
-//	}
+	@Test
+	public void testFindRoleByName()
+	{
+		String result = performRestCall("securitydomain/role/name/" + TestObjectContainer.ROLE_X.getRoleName());
+
+		OpenURRole r = buildGson().fromJson(result, OpenURRole.class);
+		assertTrue(new RoleComparer().objectsAreEqual(r, TestObjectContainer.ROLE_X));
+	}
+
+	@Test
+	public void testObtainAllRoles()
+	{
+		String result = performRestCall("securitydomain/role/all");
+
+		Type resultType = new TypeToken<Set<OpenURRole>>()
+		{
+		}.getType();
+
+    Set<OpenURRole> resultSet = buildGson().fromJson(result, resultType);
+
+		assertFalse(resultSet.isEmpty());
+		assertEquals(3, resultSet.size());
+		
+		OpenURRole r = DomainObjectHelper.findIdentifiableEntityInCollection(resultSet, TestObjectContainer.ROLE_X.getIdentifier());
+		assertTrue(new RoleComparer().objectsAreEqual(TestObjectContainer.ROLE_X, r));
+		r = DomainObjectHelper.findIdentifiableEntityInCollection(resultSet, TestObjectContainer.ROLE_Y.getIdentifier());
+		assertTrue(new RoleComparer().objectsAreEqual(TestObjectContainer.ROLE_Y, r));
+		r = DomainObjectHelper.findIdentifiableEntityInCollection(resultSet, TestObjectContainer.ROLE_Z.getIdentifier());
+		assertTrue(new RoleComparer().objectsAreEqual(TestObjectContainer.ROLE_Z, r));
+	}
 
 	@Test
 	public void testFindPermissionById()
@@ -128,5 +158,13 @@ public class SecurityDomainResourceTest
 		assertTrue(new PermissionComparer().objectsAreEqual(TestObjectContainer.PERMISSION_1_C, p));
 		p = DomainObjectHelper.findIdentifiableEntityInCollection(resultSet, TestObjectContainer.PERMISSION_2_C.getIdentifier());
 		assertTrue(new PermissionComparer().objectsAreEqual(TestObjectContainer.PERMISSION_2_C, p));
+	}
+	
+	private Gson buildGson()
+	{
+		GsonBuilder gsonBuilder = new GsonBuilder();
+    gsonBuilder.registerTypeAdapter(OpenURRole.class, new OpenURRoleSerializer());
+    
+    return gsonBuilder.create();
 	}
 }

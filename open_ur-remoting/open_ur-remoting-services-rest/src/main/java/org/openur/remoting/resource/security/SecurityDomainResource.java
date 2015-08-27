@@ -21,24 +21,30 @@ public class SecurityDomainResource
 	private ISecurityDomainServices securityDomianServices;
 	
 	@Override
-	public IRole findRoleById(String roleId)
+	@GET
+	@Path("/role/id/{id}")
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	public IRole findRoleById(@PathParam("id") String roleId)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return securityDomianServices.findRoleById(roleId);
 	}
 
 	@Override
-	public IRole findRoleByName(String roleName)
+	@GET
+	@Path("/role/name/{name}")
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	public IRole findRoleByName(@PathParam("name") String roleName)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return securityDomianServices.findRoleByName(roleName);
 	}
 
 	@Override
+	@GET
+	@Path("/role/all")
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public Set<IRole> obtainAllRoles()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return securityDomianServices.obtainAllRoles();
 	}
 
 	@Override

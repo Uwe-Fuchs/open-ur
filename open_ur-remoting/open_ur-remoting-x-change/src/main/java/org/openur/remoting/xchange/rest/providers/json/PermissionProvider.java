@@ -30,7 +30,8 @@ public class PermissionProvider
 	}
 
 	@Override
-	public void writeTo(OpenURPermission t, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
+	public void writeTo(OpenURPermission t, Class<?> type, Type genericType, Annotation[] annotations, 
+			MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
 		throws IOException, WebApplicationException
 	{
 		entityStream.write(new Gson().toJson(t).getBytes());		
