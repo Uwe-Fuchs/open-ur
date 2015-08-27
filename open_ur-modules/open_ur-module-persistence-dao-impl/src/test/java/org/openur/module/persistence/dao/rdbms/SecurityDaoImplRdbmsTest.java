@@ -108,8 +108,8 @@ public class SecurityDaoImplRdbmsTest
 		Iterator<IPermission> iter = allPermissions.iterator();
 		OpenURPermission _p1 = (OpenURPermission) iter.next();
 		OpenURPermission _p2 = (OpenURPermission) iter.next();
-		OpenURPermission permission_1 = _p1.getPermissionText().equals(perm1.getPermissionName()) ? _p1 : _p2;
-		OpenURPermission permission_2 = _p1.getPermissionText().equals(perm1.getPermissionName()) ? _p2 : _p1;
+		OpenURPermission permission_1 = _p1.getPermissionText().equals(perm1.getPermissionText()) ? _p1 : _p2;
+		OpenURPermission permission_2 = _p1.getPermissionText().equals(perm1.getPermissionText()) ? _p2 : _p1;
 
 		assertTrue(PermissionMapper.domainObjectEqualsToEntity(permission_1, perm1));
 		assertTrue(PermissionMapper.domainObjectEqualsToEntity(permission_2, perm2));
@@ -140,8 +140,8 @@ public class SecurityDaoImplRdbmsTest
 		Iterator<IPermission> iter = permList.iterator();
 		OpenURPermission _p1 = (OpenURPermission) iter.next();
 		OpenURPermission _p2 = (OpenURPermission) iter.next();
-		OpenURPermission permission_1 = _p1.getPermissionText().equals(perm_1_A.getPermissionName()) ? _p1 : _p2;
-		OpenURPermission permission_2 = _p1.getPermissionText().equals(perm_1_A.getPermissionName()) ? _p2 : _p1;
+		OpenURPermission permission_1 = _p1.getPermissionText().equals(perm_1_A.getPermissionText()) ? _p1 : _p2;
+		OpenURPermission permission_2 = _p1.getPermissionText().equals(perm_1_A.getPermissionText()) ? _p2 : _p1;
 
 		assertTrue(PermissionMapper.domainObjectEqualsToEntity(permission_1, perm_1_A));
 		assertTrue(PermissionMapper.domainObjectEqualsToEntity(permission_2, perm_2_A));

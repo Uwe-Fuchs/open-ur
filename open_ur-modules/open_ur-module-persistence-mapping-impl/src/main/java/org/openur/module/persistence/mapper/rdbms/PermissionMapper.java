@@ -29,7 +29,7 @@ public class PermissionMapper
 	public OpenURPermission mapFromEntity(PPermission entity)
 	{
 		OpenURApplication app = applicationMapper.mapFromEntity(entity.getApplication());
-		OpenURPermissionBuilder immutableBuilder = new OpenURPermissionBuilder(entity.getPermissionName(), app);
+		OpenURPermissionBuilder immutableBuilder = new OpenURPermissionBuilder(entity.getPermissionText(), app);
 		
 		super.mapFromEntity(immutableBuilder, entity);
 		
@@ -45,6 +45,6 @@ public class PermissionMapper
 			return false;
 		}
 		
-		return domainObject.getPermissionText().equals(entity.getPermissionName());
+		return domainObject.getPermissionText().equals(entity.getPermissionText());
 	}
 }

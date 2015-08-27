@@ -17,7 +17,7 @@ import org.openur.module.domain.security.authorization.PermissionScope;
 import org.openur.module.domain.util.DefaultsUtil;
 
 @Entity(name="PERMISSION")
-@Table(uniqueConstraints={@UniqueConstraint(name="UNQ_PERMISSION_NAME", columnNames={"PERMISSION_NAME"})},
+@Table(uniqueConstraints={@UniqueConstraint(name="UNQ_PERMISSION_TEXT", columnNames={"PERMISSION_TEXT"})},
 		indexes = {@Index(columnList="APPLICATION_ID", name="IDX_PERMISSION_APPLICATION")})
 public class PPermission
 	extends AbstractOpenUrPersistable
@@ -25,11 +25,8 @@ public class PPermission
 	private static final long serialVersionUID = 15325108663313105L;
 
 	// properties:
-	@Column(name="PERMISSION_NAME", length=50, nullable=false)
-  private String permissionName;
-	
-	@Column(name="DESCRIPTION")
-	private String description;
+	@Column(name="PERMISSION_TEXT", length=50, nullable=false)
+  private String permissionText;
 	
 	@Column(name="PERMISSION_SCOPE", nullable=false)
 	@Enumerated(EnumType.STRING)
@@ -40,14 +37,9 @@ public class PPermission
   private PApplication application;
 
 	// accessors:
-	public String getPermissionName()
+	public String getPermissionText()
 	{
-		return permissionName;
-	}
-
-	public String getDescription()
-	{
-		return description;
+		return permissionText;
 	}
 
 	public PermissionScope getPermissionScope()
@@ -58,11 +50,6 @@ public class PPermission
 	public PApplication getApplication()
 	{
 		return application;
-	}
-
-	public void setDescription(String description)
-	{
-		this.description = description;
 	}
 
 	public void setPermissionScope(PermissionScope permissionScope)
@@ -78,14 +65,14 @@ public class PPermission
 	}
 
 	// constructors:
-	public PPermission(String permissionName, PApplication application)
+	public PPermission(String permissionText, PApplication application)
 	{
 		this();
 
-		Validate.notEmpty(permissionName, "permission-name must not be empty!");
+		Validate.notEmpty(permissionText, "permission-text must not be empty!");
 		Validate.notNull(application, "application must not be null!");		
 		
-		this.permissionName = permissionName;
+		this.permissionText = permissionText;
 		this.application = application;
 	}
 

@@ -10,5 +10,5 @@ public interface PermissionRepository
 {
 	List<PPermission> findPermissionsByApplicationApplicationName(String applicationName);
 
-	PPermission findPermissionByPermissionName(String permissionName);
+	PPermission findPermissionByPermissionText(String permissionText);
 }
