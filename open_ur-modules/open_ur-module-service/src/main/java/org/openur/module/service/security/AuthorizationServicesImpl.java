@@ -3,6 +3,7 @@ package org.openur.module.service.security;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IPermission;
@@ -22,8 +23,7 @@ public class AuthorizationServicesImpl
 	@Inject
 	private ISecurityDomainServices securityDomainServices;
 
-	@Override
-	public Boolean hasPermission(IPerson user, IAuthorizableOrgUnit orgUnit,
+	private boolean internalHasPermission(IPerson user, IAuthorizableOrgUnit orgUnit,
 		IPermission permission, IApplication app)
 	{
 		boolean hasPerm = false;
@@ -39,12 +39,29 @@ public class AuthorizationServicesImpl
 	}
 
 	@Override
-	public Boolean hasPermission(String userId, String orgUnitId, String perm, IApplication app)
+	public Boolean hasPermission(String userId, String orgUnitId, String permissionText, String applicationName)
 	{
-		IPerson person = userServices.findPersonById(userId);
-		IAuthorizableOrgUnit orgUnit = orgUnitServices.findOrgUnitById(orgUnitId);
-		IPermission permission = securityDomainServices.findPermissionByText(perm);
+		Validate.notEmpty(userId, "user-id must not be empty!");
+		Validate.notEmpty(orgUnitId, "org-unit-id must not be empty!");
+		Validate.notEmpty(permissionText, "permission-text must not be empty!");
+		Validate.notEmpty(applicationName, "application-name must not be empty!");
 		
-		return hasPermission(person, orgUnit, permission, app);
+		IPerson person = userServices.findPersonById(userId);
+		Validate.notNull(person, String.format("No person found for userId '%s'!", userId));
+		
+		IAuthorizableOrgUnit orgUnit = orgUnitServices.findOrgUnitById(orgUnitId);
+		Validate.notNull(orgUnit, String.format("No org-unit found for orgUnitId '%s'!", orgUnitId));
+		
+		IPermission permission = securityDomainServices.findPermissionByText(permissionText);
+		Validate.notNull(permission, String.format("No permission with matching text '%s' found!", permissionText));
+		Validate.notNull(permission.getApplication(), "application within permission must be set!");
+		
+		// check if name of application within permission matches given application-name:
+		if (!applicationName.equals(permission.getApplication().getApplicationName()))
+		{
+			return Boolean.FALSE;
+		}
+		
+		return internalHasPermission(person, orgUnit, permission, permission.getApplication());
 	}
 }

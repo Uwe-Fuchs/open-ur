@@ -1,10 +1,6 @@
 package org.openur.module.service.security;
 
 
-import org.openur.module.domain.application.IApplication;
-import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
-import org.openur.module.domain.security.authorization.IPermission;
-import org.openur.module.domain.userstructure.person.IPerson;
 
 public interface IAuthorizationServices
 {
@@ -13,23 +9,10 @@ public interface IAuthorizationServices
    * 
    * @param userId
    * @param orgUnitId
-   * @param permission
-   * @param app
+   * @param permissionText
+   * @param applicationName
    * 
    * @return the user has the permission.
    */
-  Boolean hasPermission(String userId, String orgUnitId, String permission, IApplication app);
-  
-  /**
-   * checks if a user has a certain (app-based) permission within an organizational-unit.
-   * 
-   * @param user
-   * @param orgUnit
-   * @param permission
-   * @param app
-   * 
-   * @return the user has the permission.
-   */
-  Boolean hasPermission(IPerson user, IAuthorizableOrgUnit orgUnit,
-		IPermission permission, IApplication app);
+  Boolean hasPermission(String userId, String orgUnitId, String permissionText, String applicationName);
 }
