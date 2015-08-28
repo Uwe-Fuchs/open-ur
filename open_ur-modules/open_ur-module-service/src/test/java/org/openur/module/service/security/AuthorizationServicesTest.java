@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import javax.inject.Inject;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -44,160 +45,138 @@ public class AuthorizationServicesTest
 	
 	@Inject
 	private ISecurityDao securityDaoMock;
-
-	@Test
-	public void testHasPermissionIPersonIOrganizationalUnitIPermissionIApplication()
+	
+	// fields for arbitrary domain-objects:
+	private final String APP_ID = UUID.randomUUID().toString();
+	private final String APP_NAME = "appName";
+	private MyApplicationImpl app;
+	private final String PERM_1_ID = UUID.randomUUID().toString();
+	private final String PERM_1_NAME = "perm1Name";
+	private MyPermissionImpl perm1;
+	private final String ROLE_ID = UUID.randomUUID().toString();
+	private final String ROLE_NAME = "roleName";
+	private MyRoleImpl role;
+	private final String PERSON_ID = UUID.randomUUID().toString();
+	private final String PERSON_NUMBER = "personNumber";
+	private MyPerson person;
+	private final String OU_ID = UUID.randomUUID().toString();
+	private MyAuthorizableMember member;
+	private final String OU_NAME = "ouName";
+	private MyAuthorizableOrgUnit ou;
+	private final String SUB_OU_ID = UUID.randomUUID().toString();
+	private final String SUB_OU_NAME = "subOuName";
+	private MyAuthorizableOrgUnit subOu;
+	
+	@Before
+	public void setUp()
 	{
-		// test with open-ur-specific domain-objects:
-		Mockito.when(orgUnitServicesMock.findOrgUnitById(TestObjectContainer.SUPER_OU_UUID_1)).thenReturn(TestObjectContainer.SUPER_OU_1);		
-		
-		// has permission in org-unit:
-		assertTrue(authorizationServices.hasPermission(
-				TestObjectContainer.PERSON_1, TestObjectContainer.ORG_UNIT_A, TestObjectContainer.PERMISSION_1_A, TestObjectContainer.APP_A));
-		
-		// doesn't have permission:
-		assertFalse(authorizationServices.hasPermission(
-				TestObjectContainer.PERSON_1, TestObjectContainer.ORG_UNIT_A, TestObjectContainer.PERMISSION_1_C, TestObjectContainer.APP_A));
-		
-		// has permission in super-org-unit:
-		assertTrue(authorizationServices.hasPermission(
-				TestObjectContainer.PERSON_3, TestObjectContainer.ORG_UNIT_A, TestObjectContainer.PERMISSION_2_C, TestObjectContainer.APP_C));
-		
-		// doesn't have permission in super-org-unit:
-		assertFalse(authorizationServices.hasPermission(
-				TestObjectContainer.PERSON_3, TestObjectContainer.ORG_UNIT_A, TestObjectContainer.PERMISSION_1_A, TestObjectContainer.APP_A));
-		
-		// test with arbitrary domain-objects:
-		final String APP_ID = UUID.randomUUID().toString();
-		final String APP_NAME = "appName";
-		MyApplicationImpl app = new MyApplicationImpl(APP_ID, APP_NAME);
-		
-		final String PERM_1_ID = UUID.randomUUID().toString();
-		final String PERM_1_NAME = "perm1Name";
-		MyPermissionImpl perm1 = new MyPermissionImpl(PERM_1_ID, PERM_1_NAME, app);
-		
-		final String ROLE_ID = UUID.randomUUID().toString();
-		final String ROLE_NAME = "roleName";
-		MyRoleImpl role = new MyRoleImpl(ROLE_ID, ROLE_NAME);
-		role.addPermissionSet(app, new HashSet<MyPermissionImpl>(Arrays.asList(perm1)));
-		
-		final String PERSON_ID = UUID.randomUUID().toString();
-		final String PERSON_NUMBER = "personNumber";
-		MyPerson person = new MyPerson(PERSON_ID, PERSON_NUMBER);
-		person.addApplication(app);
-		
-		final String OU_ID = UUID.randomUUID().toString();
-		MyAuthorizableMember member = new MyAuthorizableMember(person, OU_ID);
-		member.addRole(role);
-		
-		final String OU_NAME = "ouName";
-		MyAuthorizableOrgUnit ou = new MyAuthorizableOrgUnit(OU_ID, OU_NAME);
-		ou.addMember(member);
-		
-		// has permission in org-unit:
-		assertTrue(authorizationServices.hasPermission(person, ou, perm1, app));
-		
-		// doesn't have permission:
-		final String PERM_2_ID = UUID.randomUUID().toString();
-		final String PERM_2_NAME = "perm2Name";
-		IPermission perm2 = new MyPermissionImpl(PERM_2_ID, PERM_2_NAME, app);
-		
-		assertFalse(authorizationServices.hasPermission(person, ou, perm2, app));
-		
-		// has permission in super-org-unit:
-		final String SUB_OU_ID = UUID.randomUUID().toString();
-		final String SUB_OU_NAME = "subOuName";
-		MyAuthorizableOrgUnit subOu = new MyAuthorizableOrgUnit(SUB_OU_ID, SUB_OU_NAME);
-		subOu.setSuperOrgUnit(ou);
-		
-		Mockito.when(orgUnitServicesMock.findOrgUnitById(OU_ID)).thenReturn(ou);
-		
-		assertTrue(authorizationServices.hasPermission(person, subOu, perm1, app));
-	}
-
-	@Test
-	public void testHasPermissionStringStringStringIApplication()
-	{
-		// test with open-ur-specific domain-objects:
-		Mockito.when(securityDaoMock.findPermissionByText(TestObjectContainer.PERMISSION_1_A.getPermissionText()))
-				.thenReturn(TestObjectContainer.PERMISSION_1_A);
-		Mockito.when(orgUnitServicesMock.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_A)).thenReturn(TestObjectContainer.ORG_UNIT_A);
 		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
 		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_3)).thenReturn(TestObjectContainer.PERSON_3);
+		Mockito.when(orgUnitServicesMock.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_A)).thenReturn(TestObjectContainer.ORG_UNIT_A);
+		Mockito.when(orgUnitServicesMock.findOrgUnitById(TestObjectContainer.SUPER_OU_UUID_1)).thenReturn(TestObjectContainer.SUPER_OU_1);		
+		Mockito.when(securityDaoMock.findPermissionByText(TestObjectContainer.PERMISSION_1_A.getPermissionText()))
+				.thenReturn(TestObjectContainer.PERMISSION_1_A);
+		Mockito.when(securityDaoMock.findPermissionByText(TestObjectContainer.PERMISSION_1_C.getPermissionText()))
+				.thenReturn(TestObjectContainer.PERMISSION_1_C);
 		Mockito.when(securityDaoMock.findPermissionByText(TestObjectContainer.PERMISSION_2_C.getPermissionText()))
 				.thenReturn(TestObjectContainer.PERMISSION_2_C);
-		Mockito.when(orgUnitServicesMock.findOrgUnitById(TestObjectContainer.SUPER_OU_UUID_1)).thenReturn(TestObjectContainer.SUPER_OU_1);		
-		
-		// has permission in org-unit:
-		assertTrue(authorizationServices.hasPermission(
-				TestObjectContainer.PERSON_UUID_1, TestObjectContainer.ORG_UNIT_UUID_A, 
-				TestObjectContainer.PERMISSION_1_A.getPermissionText(), TestObjectContainer.APP_A));
-		
-		// doesn't have permission:
-		assertFalse(authorizationServices.hasPermission(
-				TestObjectContainer.PERSON_UUID_1, TestObjectContainer.ORG_UNIT_UUID_A, 
-				TestObjectContainer.PERMISSION_1_C.getPermissionText(), TestObjectContainer.APP_A));
-		
-		// has permission in super-org-unit:
-		assertTrue(authorizationServices.hasPermission(
-				TestObjectContainer.PERSON_UUID_3, TestObjectContainer.ORG_UNIT_UUID_A, 
-				TestObjectContainer.PERMISSION_2_C.getPermissionText(), TestObjectContainer.APP_C));
-		
-		// doesn't have permission in super-org-unit:
-		assertFalse(authorizationServices.hasPermission(
-				TestObjectContainer.PERSON_UUID_3, TestObjectContainer.ORG_UNIT_UUID_A, 
-				TestObjectContainer.PERMISSION_1_A.getPermissionText(), TestObjectContainer.APP_A));
-		
-		// test with arbitrary domain-objects:
-		final String APP_ID = UUID.randomUUID().toString();
-		final String APP_NAME = "appName";
-		MyApplicationImpl app = new MyApplicationImpl(APP_ID, APP_NAME);
-		
-		final String PERM_1_ID = UUID.randomUUID().toString();
-		final String PERM_1_NAME = "perm1Name";
-		MyPermissionImpl perm1 = new MyPermissionImpl(PERM_1_ID, PERM_1_NAME, app);
-		
-		final String ROLE_ID = UUID.randomUUID().toString();
-		final String ROLE_NAME = "roleName";
-		MyRoleImpl role = new MyRoleImpl(ROLE_ID, ROLE_NAME);
+
+		// init arbitrary domain-objects:
+		app = new MyApplicationImpl(APP_ID, APP_NAME);		
+		perm1 = new MyPermissionImpl(PERM_1_ID, PERM_1_NAME, app);
+		role = new MyRoleImpl(ROLE_ID, ROLE_NAME);
 		role.addPermissionSet(app, new HashSet<MyPermissionImpl>(Arrays.asList(perm1)));
-		
-		final String PERSON_ID = UUID.randomUUID().toString();
-		final String PERSON_NUMBER = "personNumber";
-		MyPerson person = new MyPerson(PERSON_ID, PERSON_NUMBER);
+		person = new MyPerson(PERSON_ID, PERSON_NUMBER);
 		person.addApplication(app);
-		
-		final String OU_ID = UUID.randomUUID().toString();
-		MyAuthorizableMember member = new MyAuthorizableMember(person, OU_ID);
+		member = new MyAuthorizableMember(person, OU_ID);
 		member.addRole(role);
-		
-		final String OU_NAME = "ouName";
-		MyAuthorizableOrgUnit ou = new MyAuthorizableOrgUnit(OU_ID, OU_NAME);
+		ou = new MyAuthorizableOrgUnit(OU_ID, OU_NAME);
 		ou.addMember(member);
+		subOu = new MyAuthorizableOrgUnit(SUB_OU_ID, SUB_OU_NAME);
+		subOu.setSuperOrgUnit(ou);
 		
 		Mockito.when(securityDaoMock.findPermissionByText(PERM_1_NAME)).thenReturn(perm1);
 		Mockito.when(orgUnitServicesMock.findOrgUnitById(OU_ID)).thenReturn(ou);
 		Mockito.when(userServicesMock.findPersonById(PERSON_ID)).thenReturn(person);
+		Mockito.when(orgUnitServicesMock.findOrgUnitById(SUB_OU_ID)).thenReturn(subOu);
+	}
+
+	@Test
+	public void testHasPermissionInOrgUnit()
+	{
+		// test with standard open-ur domain-objects:
+		assertTrue(authorizationServices.hasPermission(
+				TestObjectContainer.PERSON_UUID_1, TestObjectContainer.ORG_UNIT_UUID_A, 
+				TestObjectContainer.PERMISSION_1_A.getPermissionText(), TestObjectContainer.APP_A.getApplicationName()));
 		
-		// has permission in org-unit:
-		assertTrue(authorizationServices.hasPermission(PERSON_ID, OU_ID, PERM_1_NAME, app));
+		// test with arbitrary domain-objects:
+		assertTrue(authorizationServices.hasPermission(PERSON_ID, OU_ID, PERM_1_NAME, app.getApplicationName()));
+	}
+
+	@Test
+	public void testHasNotPermission()
+	{		
+		// test with standard open-ur domain-objects:
+		assertFalse(authorizationServices.hasPermission(
+				TestObjectContainer.PERSON_UUID_1, TestObjectContainer.ORG_UNIT_UUID_A, 
+				TestObjectContainer.PERMISSION_1_C.getPermissionText(), TestObjectContainer.APP_A.getApplicationName()));
 		
-		// doesn't have permission:
+		// test with arbitrary domain-objects:
 		final String PERM_2_ID = UUID.randomUUID().toString();
 		final String PERM_2_NAME = "perm2Name";
 		IPermission perm2 = new MyPermissionImpl(PERM_2_ID, PERM_2_NAME, app);
-		
 		Mockito.when(securityDaoMock.findPermissionByText(PERM_2_NAME)).thenReturn(perm2);
-		assertFalse(authorizationServices.hasPermission(PERSON_ID, OU_ID, PERM_2_NAME, app));
+		assertFalse(authorizationServices.hasPermission(PERSON_ID, OU_ID, PERM_2_NAME, app.getApplicationName()));
+	}
+
+	@Test
+	public void testHasPermissionInSuperOrgUnit()
+	{		
+		// test with standard open-ur domain-objects:
+		assertTrue(authorizationServices.hasPermission(
+				TestObjectContainer.PERSON_UUID_3, TestObjectContainer.ORG_UNIT_UUID_A, 
+				TestObjectContainer.PERMISSION_2_C.getPermissionText(), TestObjectContainer.APP_C.getApplicationName()));
 		
-		// has permission in super-org-unit:	
-		final String SUB_OU_ID = UUID.randomUUID().toString();
-		final String SUB_OU_NAME = "subOuName";
-		MyAuthorizableOrgUnit subOu = new MyAuthorizableOrgUnit(SUB_OU_ID, SUB_OU_NAME);
-		subOu.setSuperOrgUnit(ou);
+		// test with arbitrary domain-objects:
+		assertTrue(authorizationServices.hasPermission(PERSON_ID, SUB_OU_ID, PERM_1_NAME, app.getApplicationName()));
+	}
+
+	@Test
+	public void testHasNotPermissionInSuperOrgUnit()
+	{		
+		// test with standard open-ur domain-objects:
+		assertFalse(authorizationServices.hasPermission(
+				TestObjectContainer.PERSON_UUID_3, TestObjectContainer.ORG_UNIT_UUID_A, 
+				TestObjectContainer.PERMISSION_1_A.getPermissionText(), TestObjectContainer.APP_A.getApplicationName()));
+	}
+
+	@Test
+	public void testHasNotPermissionInApplication()
+	{		
+		// test with standard open-ur domain-objects:
+		assertFalse(authorizationServices.hasPermission(
+				TestObjectContainer.PERSON_UUID_1, TestObjectContainer.ORG_UNIT_UUID_A, 
+				TestObjectContainer.PERMISSION_1_A.getPermissionText(), "someApplicationName"));
 		
-		Mockito.when(orgUnitServicesMock.findOrgUnitById(SUB_OU_ID)).thenReturn(subOu);
-		
-		assertTrue(authorizationServices.hasPermission(PERSON_ID, SUB_OU_ID, PERM_1_NAME, app));
+		// test with arbitrary domain-objects:
+		assertFalse(authorizationServices.hasPermission(PERSON_ID, OU_ID, PERM_1_NAME, "someApplicationName"));
+	}
+
+	@Test(expected=NullPointerException.class)
+	public void testNoPersonFoundForId()
+	{		
+		authorizationServices.hasPermission("somePersonId", SUB_OU_ID, PERM_1_NAME, app.getApplicationName());
+	}
+
+	@Test(expected=NullPointerException.class)
+	public void testNoOrgUnitFoundForId()
+	{		
+		authorizationServices.hasPermission(PERSON_ID, "someOrgUnitId", PERM_1_NAME, app.getApplicationName());
+	}
+
+	@Test(expected=NullPointerException.class)
+	public void testNoPermissionFoundWithGivenText()
+	{		
+		authorizationServices.hasPermission(PERSON_ID, SUB_OU_ID, "somePermissionText", app.getApplicationName());
 	}
 }

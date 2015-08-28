@@ -2,7 +2,6 @@ package org.openur.module.domain.security.authorization;
 
 import java.util.Set;
 
-import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 import org.openur.module.domain.userstructure.person.IPerson;
 
@@ -72,12 +71,11 @@ public interface IAuthorizableOrgUnit
 	 * indicates if a person has a certain permission in an app.
 	 * 
 	 * @param person : the person for whom the permission is used.
-	 * @param app : the application for which the permission is used.
-	 * @param permission : the permission the person should have.
+	 * @param permission : the permission (incl. the app) the person should have.
 	 * 
 	 * @return the person has the permission.
 	 */
-	default boolean hasPermission(IPerson person, IApplication app, IPermission permission)
+	default boolean hasPermission(IPerson person, IPermission permission)
 	{
 		IAuthorizableMember member = findMemberByPersonId(person.getIdentifier());
 		
@@ -86,6 +84,6 @@ public interface IAuthorizableOrgUnit
 			return false;
 		}
 		
-		return member.hasPermission(app, permission);
+		return member.hasPermission(permission);
 	}
 }

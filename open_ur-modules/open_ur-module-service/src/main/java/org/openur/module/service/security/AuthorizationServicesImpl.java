@@ -3,7 +3,7 @@ package org.openur.module.service.security;
 
 import javax.inject.Inject;
 
-import org.openur.module.domain.application.IApplication;
+import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.userstructure.person.IPerson;
@@ -22,16 +22,14 @@ public class AuthorizationServicesImpl
 	@Inject
 	private ISecurityDomainServices securityDomainServices;
 
-	@Override
-	public Boolean hasPermission(IPerson user, IAuthorizableOrgUnit orgUnit,
-		IPermission permission, IApplication app)
+	private boolean internalHasPermission(IPerson user, IAuthorizableOrgUnit orgUnit,	IPermission permission)
 	{
 		boolean hasPerm = false;
 		IAuthorizableOrgUnit ouTmp = orgUnit;
 		
 		while (!hasPerm && ouTmp != null)
 		{
-			hasPerm = ouTmp.hasPermission(user, app, permission);
+			hasPerm = ouTmp.hasPermission(user, permission);
 			ouTmp = ouTmp.getSuperOrgUnit();
 		}
 		
@@ -39,12 +37,29 @@ public class AuthorizationServicesImpl
 	}
 
 	@Override
-	public Boolean hasPermission(String userId, String orgUnitId, String perm, IApplication app)
+	public Boolean hasPermission(String userId, String orgUnitId, String permissionText, String applicationName)
 	{
-		IPerson person = userServices.findPersonById(userId);
-		IAuthorizableOrgUnit orgUnit = orgUnitServices.findOrgUnitById(orgUnitId);
-		IPermission permission = securityDomainServices.findPermissionByText(perm);
+		Validate.notEmpty(userId, "user-id must not be empty!");
+		Validate.notEmpty(orgUnitId, "org-unit-id must not be empty!");
+		Validate.notEmpty(permissionText, "permission-text must not be empty!");
+		Validate.notEmpty(applicationName, "application-name must not be empty!");
 		
-		return hasPermission(person, orgUnit, permission, app);
+		IPerson person = userServices.findPersonById(userId);
+		Validate.notNull(person, String.format("No person found for userId '%s'!", userId));
+		
+		IAuthorizableOrgUnit orgUnit = orgUnitServices.findOrgUnitById(orgUnitId);
+		Validate.notNull(orgUnit, String.format("No org-unit found for orgUnitId '%s'!", orgUnitId));
+		
+		IPermission permission = securityDomainServices.findPermissionByText(permissionText);
+		Validate.notNull(permission, String.format("No permission found with matching text '%s'!", permissionText));
+		Validate.notNull(permission.getApplication(), "application within permission must be set!");
+		
+		// check if name of application within permission matches given application-name:
+		if (!applicationName.equals(permission.getApplication().getApplicationName()))
+		{
+			return Boolean.FALSE;
+		}
+		
+		return internalHasPermission(person, orgUnit, permission);
 	}
 }

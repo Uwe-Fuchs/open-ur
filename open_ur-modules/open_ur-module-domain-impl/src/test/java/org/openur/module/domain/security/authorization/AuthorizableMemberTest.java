@@ -68,8 +68,8 @@ public class AuthorizableMemberTest
 		AuthorizableMember member = new AuthorizableMemberBuilder(person, OU_ID_1)
 			.addRole(role1)
 			.build();		
-		assertTrue(member.hasPermission(app1, perm11));
-		assertTrue(member.hasPermission(app1, perm12));
+		assertTrue(member.hasPermission(perm11));
+		assertTrue(member.hasPermission(perm12));
 		
 		OpenURApplication app2 = new OpenURApplicationBuilder("app2")
 			.build();		
@@ -81,17 +81,17 @@ public class AuthorizableMemberTest
 			.permissions(new HashSet<OpenURPermission>(Arrays.asList(perm21, perm22)))
 			.build();
 		
-		assertFalse(member.hasPermission(app2, perm21));
-		assertFalse(member.hasPermission(app2, perm22));
+		assertFalse(member.hasPermission(perm21));
+		assertFalse(member.hasPermission(perm22));
 		
 		member = new AuthorizableMemberBuilder(person, OU_ID_1)
 			.addRole(role2)
 			.build();
 		
 		assertFalse("member should still not have permission because user is not registrated for app2!", 
-			member.hasPermission(app2, perm21));
+			member.hasPermission(perm21));
 		assertFalse("member should still not have permission because user is not registrated for app2!", 
-			member.hasPermission(app2, perm22));
+			member.hasPermission(perm22));
 		
 		person = new PersonBuilder("numberPers1", Name.create(Gender.MALE, "Barack", "Obama"))
 			.addApplication(app2)
@@ -100,7 +100,17 @@ public class AuthorizableMemberTest
 			.addRole(role2)
 			.build();
 		
-		assertTrue(member.hasPermission(app2, perm21));
-		assertTrue(member.hasPermission(app2, perm22));
+		assertTrue(member.hasPermission(perm21));
+		assertTrue(member.hasPermission(perm22));
+	}
+
+	@Test(expected=NullPointerException.class)
+	public void testHasPermissionEmptyPermission()
+	{
+		Person person = new PersonBuilder("somePersonNo", Name.create(Gender.MALE, "someFirstName", "someLastName"))
+			.build();				
+		AuthorizableMember member = new AuthorizableMemberBuilder(person, "someOuId")
+			.build();	
+		member.hasPermission(null);
 	}
 }
