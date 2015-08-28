@@ -2,7 +2,7 @@ package org.openur.module.domain.security.authorization;
 
 import java.util.Set;
 
-import org.openur.module.domain.application.IApplication;
+import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
 
 public interface IAuthorizableMember
@@ -11,21 +11,23 @@ public interface IAuthorizableMember
 	/**
 	 * indicates if a member has a certain permission (within his/her set of roles).
 	 * 
-	 * @param app : the application for which the permission is used.
 	 * @param permission : the permission the member should have.
 	 * 
 	 * @return the member has the permission.
 	 */
-	default boolean hasPermission(IApplication app, IPermission permission)
+	default boolean hasPermission(IPermission permission)
 	{
-		if (getPerson() == null || !getPerson().getApplications().contains(app))
+		Validate.notNull(permission, "permission must not be null!");
+		Validate.notNull(permission.getApplication(), "application must be set in permission!");
+		
+		if (getPerson() == null || !getPerson().getApplications().contains(permission.getApplication()))
 		{
 			return false;
 		}
 		
 		for (IRole role : getRoles())
 		{
-			if (role.containsPermission(app, permission))
+			if (role.containsPermission(permission.getApplication(), permission))
 			{
 				return true;
 			}
@@ -43,6 +45,8 @@ public interface IAuthorizableMember
 	 */
 	default boolean hasRole(IRole role)
 	{
+		Validate.notNull(getRoles(), "roles-list must be set!");
+		
 		return getRoles().contains(role);
 	}
 

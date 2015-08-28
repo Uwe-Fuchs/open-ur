@@ -4,7 +4,6 @@ package org.openur.module.service.security;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.Validate;
-import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.userstructure.person.IPerson;
@@ -23,15 +22,14 @@ public class AuthorizationServicesImpl
 	@Inject
 	private ISecurityDomainServices securityDomainServices;
 
-	private boolean internalHasPermission(IPerson user, IAuthorizableOrgUnit orgUnit,
-		IPermission permission, IApplication app)
+	private boolean internalHasPermission(IPerson user, IAuthorizableOrgUnit orgUnit,	IPermission permission)
 	{
 		boolean hasPerm = false;
 		IAuthorizableOrgUnit ouTmp = orgUnit;
 		
 		while (!hasPerm && ouTmp != null)
 		{
-			hasPerm = ouTmp.hasPermission(user, app, permission);
+			hasPerm = ouTmp.hasPermission(user, permission);
 			ouTmp = ouTmp.getSuperOrgUnit();
 		}
 		
@@ -53,7 +51,7 @@ public class AuthorizationServicesImpl
 		Validate.notNull(orgUnit, String.format("No org-unit found for orgUnitId '%s'!", orgUnitId));
 		
 		IPermission permission = securityDomainServices.findPermissionByText(permissionText);
-		Validate.notNull(permission, String.format("No permission with matching text '%s' found!", permissionText));
+		Validate.notNull(permission, String.format("No permission found with matching text '%s'!", permissionText));
 		Validate.notNull(permission.getApplication(), "application within permission must be set!");
 		
 		// check if name of application within permission matches given application-name:
@@ -62,6 +60,6 @@ public class AuthorizationServicesImpl
 			return Boolean.FALSE;
 		}
 		
-		return internalHasPermission(person, orgUnit, permission, permission.getApplication());
+		return internalHasPermission(person, orgUnit, permission);
 	}
 }

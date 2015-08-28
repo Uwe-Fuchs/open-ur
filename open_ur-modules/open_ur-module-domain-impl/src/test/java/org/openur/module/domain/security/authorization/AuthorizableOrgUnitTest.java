@@ -94,12 +94,12 @@ public class AuthorizableOrgUnitTest
 			.build();
 
 		// has permission:		
-		assertTrue(ou.hasPermission(person, app1, perm11));
+		assertTrue(ou.hasPermission(person, perm11));
 	
 		// doesn't have permission:
 		OpenURPermission perm12 = new OpenURPermissionBuilder("perm12", app1)
 			.build();
 		
-		assertFalse(ou.hasPermission(person, app1, perm12));
+		assertFalse(ou.hasPermission(person, perm12));
 	}
 }
