@@ -318,6 +318,7 @@ public class OrganizationalUnitTest
 		}
 	}
 	
+	// .. and corresponding builder:
 	static class MyOrgUnitBuilder
 		extends AbstractOrgUnitBuilder<MyOrgUnitBuilder>
 	{

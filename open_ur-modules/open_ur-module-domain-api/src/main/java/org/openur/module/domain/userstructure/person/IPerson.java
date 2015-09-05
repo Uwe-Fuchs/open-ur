@@ -2,7 +2,7 @@ package org.openur.module.domain.userstructure.person;
 
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.userstructure.IUserStructureBase;
@@ -23,19 +23,19 @@ public interface IPerson
 	 */
 	default String getPersonalNumber()
 	{
-		return getNumber();
+		String personalNumber = getNumber();		
+		Validate.notNull(personalNumber, "personal-number must not be null!");
+		
+		return personalNumber;
 	}
 	
 	default boolean isInApplication(String applicationName)
 	{
-		if (StringUtils.isEmpty(applicationName))
-		{
-			return false;
-		}
+		Validate.notNull(applicationName, "application-name must not be null!");
 		
 		for (IApplication app : getApplications())
 		{
-			if (app.getApplicationName().equals(applicationName))
+			if (applicationName.equals(app.getApplicationName()))
 			{
 				return true;
 			}
