@@ -17,7 +17,7 @@ import org.openur.module.domain.security.authorization.PermissionScope;
 import org.openur.module.domain.util.DefaultsUtil;
 
 @Entity(name="PERMISSION")
-@Table(uniqueConstraints={@UniqueConstraint(name="UNQ_PERMISSION_TEXT", columnNames={"PERMISSION_TEXT"})},
+@Table(uniqueConstraints={@UniqueConstraint(name="UNQ_PERM_TEXT_APP_ID", columnNames={"PERMISSION_TEXT", "APPLICATION_ID"})},
 		indexes = {@Index(columnList="APPLICATION_ID", name="IDX_PERMISSION_APPLICATION")})
 public class PPermission
 	extends AbstractOpenUrPersistable
