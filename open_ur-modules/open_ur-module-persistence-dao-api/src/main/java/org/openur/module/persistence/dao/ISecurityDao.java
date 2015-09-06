@@ -43,13 +43,14 @@ public interface ISecurityDao
 	IPermission findPermissionById(String permissionId);
 	
 	/**
-	 * searches a permission-object with the given text (should be unique).
+	 * searches a permission-object with the given text within a given application (text should be unique within an application).
 	 * 
-	 * @param permissionText : name of the permission.
+	 * @param permissionText : text of the permission.
+	 * @param applicationName : name of the application where the permssion is defined in.
 	 * 
 	 * @return the permission with the given text or null, if no permission is found.
 	 */
-	IPermission findPermissionByText(String permissionText);
+	IPermission findPermission(String permissionText, String applicationName);
 
 	/**
 	 * obtains all defined user-permissions for a given application.

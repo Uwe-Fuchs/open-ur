@@ -7,6 +7,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.openur.module.domain.security.authorization.IPermission;
@@ -58,11 +59,11 @@ public class SecurityDomainResource
 
 	@Override
 	@GET
-	@Path("/permission/text/{text}")
+	@Path("/permission/text")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public IPermission findPermissionByText(@PathParam("text") String permissionText)
+	public IPermission findPermission(@QueryParam("text") String permissionText, @QueryParam("appName") String applicationName)
 	{
-		return securityDomianServices.findPermissionByText(permissionText);
+		return securityDomianServices.findPermission(permissionText, applicationName);
 	}
 
 	@Override

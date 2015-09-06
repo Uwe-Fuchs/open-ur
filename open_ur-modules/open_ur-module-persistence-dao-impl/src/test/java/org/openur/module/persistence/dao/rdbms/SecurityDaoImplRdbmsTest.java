@@ -1,8 +1,6 @@
 package org.openur.module.persistence.dao.rdbms;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -74,15 +72,21 @@ public class SecurityDaoImplRdbmsTest
 	}
 
 	@Test
-	public void testFindPermissionByName()
+	public void testFindPermission()
 	{
 		PPermission persistable = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_1_A);	
 		persistable = savePermission(persistable);
 		
-		IPermission p = securityDao.findPermissionByText(TestObjectContainer.PERMISSION_1_A.getPermissionText());
+		IPermission p = securityDao.findPermission(
+			TestObjectContainer.PERMISSION_1_A.getPermissionText(), TestObjectContainer.APP_A.getApplicationName());
 		
 		assertNotNull(p);	
 		assertTrue(PermissionMapper.domainObjectEqualsToEntity((OpenURPermission) p, persistable));
+		
+		p = securityDao.findPermission(
+			TestObjectContainer.PERMISSION_1_A.getPermissionText(), "someApplicationName");
+		
+		assertNull(p);	
 	}
 	
 	@Test

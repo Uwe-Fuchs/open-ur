@@ -50,15 +50,9 @@ public class AuthorizationServicesImpl
 		IAuthorizableOrgUnit orgUnit = orgUnitServices.findOrgUnitById(orgUnitId);
 		Validate.notNull(orgUnit, String.format("No org-unit found for orgUnitId '%s'!", orgUnitId));
 		
-		IPermission permission = securityDomainServices.findPermissionByText(permissionText);
-		Validate.notNull(permission, String.format("No permission found with matching text '%s'!", permissionText));
-		Validate.notNull(permission.getApplication(), "application within permission must be set!");
-		
-		// check if name of application within permission matches given application-name:
-		if (!applicationName.equals(permission.getApplication().getApplicationName()))
-		{
-			return Boolean.FALSE;
-		}
+		IPermission permission = securityDomainServices.findPermission(permissionText, applicationName);
+		Validate.notNull(
+			permission, String.format("No permission found with permission-text '%s' and application-name '%s'!", permissionText, applicationName));
 		
 		return internalHasPermission(person, orgUnit, permission);
 	}

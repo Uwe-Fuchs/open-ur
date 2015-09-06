@@ -74,11 +74,11 @@ public class AuthorizationServicesTest
 		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_3)).thenReturn(TestObjectContainer.PERSON_3);
 		Mockito.when(orgUnitServicesMock.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_A)).thenReturn(TestObjectContainer.ORG_UNIT_A);
 		Mockito.when(orgUnitServicesMock.findOrgUnitById(TestObjectContainer.SUPER_OU_UUID_1)).thenReturn(TestObjectContainer.SUPER_OU_1);		
-		Mockito.when(securityDaoMock.findPermissionByText(TestObjectContainer.PERMISSION_1_A.getPermissionText()))
+		Mockito.when(securityDaoMock.findPermission(TestObjectContainer.PERMISSION_1_A.getPermissionText(), TestObjectContainer.APP_A.getApplicationName()))
 				.thenReturn(TestObjectContainer.PERMISSION_1_A);
-		Mockito.when(securityDaoMock.findPermissionByText(TestObjectContainer.PERMISSION_1_C.getPermissionText()))
+		Mockito.when(securityDaoMock.findPermission(TestObjectContainer.PERMISSION_1_C.getPermissionText(), TestObjectContainer.APP_C.getApplicationName()))
 				.thenReturn(TestObjectContainer.PERMISSION_1_C);
-		Mockito.when(securityDaoMock.findPermissionByText(TestObjectContainer.PERMISSION_2_C.getPermissionText()))
+		Mockito.when(securityDaoMock.findPermission(TestObjectContainer.PERMISSION_2_C.getPermissionText(), TestObjectContainer.APP_C.getApplicationName()))
 				.thenReturn(TestObjectContainer.PERMISSION_2_C);
 
 		// init arbitrary domain-objects:
@@ -95,7 +95,7 @@ public class AuthorizationServicesTest
 		subOu = new MyAuthorizableOrgUnit(SUB_OU_ID, SUB_OU_NAME);
 		subOu.setSuperOrgUnit(ou);
 		
-		Mockito.when(securityDaoMock.findPermissionByText(PERM_1_NAME)).thenReturn(perm1);
+		Mockito.when(securityDaoMock.findPermission(PERM_1_NAME, APP_NAME)).thenReturn(perm1);
 		Mockito.when(orgUnitServicesMock.findOrgUnitById(OU_ID)).thenReturn(ou);
 		Mockito.when(userServicesMock.findPersonById(PERSON_ID)).thenReturn(person);
 		Mockito.when(orgUnitServicesMock.findOrgUnitById(SUB_OU_ID)).thenReturn(subOu);
@@ -119,14 +119,14 @@ public class AuthorizationServicesTest
 		// test with standard open-ur domain-objects:
 		assertFalse(authorizationServices.hasPermission(
 				TestObjectContainer.PERSON_UUID_1, TestObjectContainer.ORG_UNIT_UUID_A, 
-				TestObjectContainer.PERMISSION_1_C.getPermissionText(), TestObjectContainer.APP_A.getApplicationName()));
+				TestObjectContainer.PERMISSION_1_C.getPermissionText(), TestObjectContainer.APP_C.getApplicationName()));
 		
 		// test with arbitrary domain-objects:
 		final String PERM_2_ID = UUID.randomUUID().toString();
 		final String PERM_2_NAME = "perm2Name";
 		IPermission perm2 = new MyPermissionImpl(PERM_2_ID, PERM_2_NAME, app);
-		Mockito.when(securityDaoMock.findPermissionByText(PERM_2_NAME)).thenReturn(perm2);
-		assertFalse(authorizationServices.hasPermission(PERSON_ID, OU_ID, PERM_2_NAME, app.getApplicationName()));
+		Mockito.when(securityDaoMock.findPermission(PERM_2_NAME, APP_NAME)).thenReturn(perm2);
+		assertFalse(authorizationServices.hasPermission(PERSON_ID, OU_ID, PERM_2_NAME, APP_NAME));
 	}
 
 	@Test
@@ -138,7 +138,7 @@ public class AuthorizationServicesTest
 				TestObjectContainer.PERMISSION_2_C.getPermissionText(), TestObjectContainer.APP_C.getApplicationName()));
 		
 		// test with arbitrary domain-objects:
-		assertTrue(authorizationServices.hasPermission(PERSON_ID, SUB_OU_ID, PERM_1_NAME, app.getApplicationName()));
+		assertTrue(authorizationServices.hasPermission(PERSON_ID, SUB_OU_ID, PERM_1_NAME, APP_NAME));
 	}
 
 	@Test
@@ -148,18 +148,13 @@ public class AuthorizationServicesTest
 		assertFalse(authorizationServices.hasPermission(
 				TestObjectContainer.PERSON_UUID_3, TestObjectContainer.ORG_UNIT_UUID_A, 
 				TestObjectContainer.PERMISSION_1_A.getPermissionText(), TestObjectContainer.APP_A.getApplicationName()));
-	}
-
-	@Test
-	public void testHasNotPermissionInApplication()
-	{		
-		// test with standard open-ur domain-objects:
-		assertFalse(authorizationServices.hasPermission(
-				TestObjectContainer.PERSON_UUID_1, TestObjectContainer.ORG_UNIT_UUID_A, 
-				TestObjectContainer.PERMISSION_1_A.getPermissionText(), "someApplicationName"));
 		
 		// test with arbitrary domain-objects:
-		assertFalse(authorizationServices.hasPermission(PERSON_ID, OU_ID, PERM_1_NAME, "someApplicationName"));
+		final String PERM_2_ID = UUID.randomUUID().toString();
+		final String PERM_2_NAME = "perm2Name";
+		IPermission perm2 = new MyPermissionImpl(PERM_2_ID, PERM_2_NAME, app);
+		Mockito.when(securityDaoMock.findPermission(PERM_2_NAME, APP_NAME)).thenReturn(perm2);
+		assertFalse(authorizationServices.hasPermission(PERSON_ID, SUB_OU_ID, PERM_2_NAME, APP_NAME));
 	}
 
 	@Test(expected=NullPointerException.class)
