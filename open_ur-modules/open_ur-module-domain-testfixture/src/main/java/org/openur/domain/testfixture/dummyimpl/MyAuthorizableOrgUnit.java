@@ -37,6 +37,28 @@ public class MyAuthorizableOrgUnit
 	}
 
 	@Override
+	public MyAuthorizableOrgUnit getSuperOrgUnit()
+	{
+		return this.superOrgUnit;
+	}
+
+	public void setSuperOrgUnit(MyAuthorizableOrgUnit superOrgUnit)
+	{
+		this.superOrgUnit = superOrgUnit;
+	}
+
+	@Override
+	public MyAuthorizableOrgUnit getRootOrgUnit()
+	{
+		return this.rootOrgUnit;
+	}
+
+	public void setRootOrgUnit(MyAuthorizableOrgUnit rootOrgUnit)
+	{
+		this.rootOrgUnit = rootOrgUnit;
+	}
+
+	@Override
 	public Set<MyAuthorizableMember> getMembers()
 	{
 		return this.members;
@@ -63,27 +85,5 @@ public class MyAuthorizableOrgUnit
 	public LocalDateTime getCreationDate()
 	{
 		return null;
-	}
-
-	@Override
-	public MyAuthorizableOrgUnit getSuperOrgUnit()
-	{
-		return this.superOrgUnit;
-	}
-
-	public void setSuperOrgUnit(MyAuthorizableOrgUnit superOrgUnit)
-	{
-		this.superOrgUnit = superOrgUnit;
-	}
-
-	@Override
-	public MyAuthorizableOrgUnit getRootOrgUnit()
-	{
-		return this.rootOrgUnit;
-	}
-
-	public void setRootOrgUnit(MyAuthorizableOrgUnit rootOrgUnit)
-	{
-		this.rootOrgUnit = rootOrgUnit;
 	}
 }
