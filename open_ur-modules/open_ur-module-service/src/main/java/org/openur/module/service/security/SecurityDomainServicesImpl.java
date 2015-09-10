@@ -53,6 +53,7 @@ public class SecurityDomainServicesImpl
 	public IPermission findPermission(String permissionText, String applicationName)
 	{
 		Validate.notEmpty(permissionText, "permission-text must not be empty!");		
+		Validate.notEmpty(applicationName, "application-name must not be empty!");		
 		
 		return securityDao.findPermission(permissionText, applicationName);
 	}
