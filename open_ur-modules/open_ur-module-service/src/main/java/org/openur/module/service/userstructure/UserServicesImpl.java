@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 import org.openur.module.persistence.dao.IPersonDao;
@@ -24,6 +25,8 @@ public class UserServicesImpl
 	@Override
 	public IPerson findPersonById(String personId)
 	{
+		Validate.notEmpty(personId, "person-id must not be empty!");
+		
 		IPerson person = personDao.findPersonById(personId);
 
 		return person;
@@ -32,6 +35,8 @@ public class UserServicesImpl
 	@Override
 	public IPerson findPersonByNumber(String personalNumber)
 	{
+		Validate.notEmpty(personalNumber, "person-number must not be empty!");
+		
 		IPerson person = personDao.findPersonByNumber(personalNumber);
 
 		return person;
@@ -55,6 +60,8 @@ public class UserServicesImpl
 	@Override
 	public ITechnicalUser findTechnicalUserById(String techUserId)
 	{
+		Validate.notEmpty(techUserId, "user-id must not be empty!");
+		
 		ITechnicalUser techUser = technicalUserDao.findTechnicalUserById(techUserId);
 
 		return techUser;
@@ -63,6 +70,8 @@ public class UserServicesImpl
 	@Override
 	public ITechnicalUser findTechnicalUserByNumber(String techUserNumber)
 	{
+		Validate.notEmpty(techUserNumber, "user-number must not be empty!");
+		
 		ITechnicalUser techUser = technicalUserDao.findTechnicalUserByNumber(techUserNumber);
 
 		return techUser;

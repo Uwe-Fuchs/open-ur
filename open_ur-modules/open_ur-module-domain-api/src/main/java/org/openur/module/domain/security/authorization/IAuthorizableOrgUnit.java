@@ -2,6 +2,7 @@ package org.openur.module.domain.security.authorization;
 
 import java.util.Set;
 
+import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 import org.openur.module.domain.userstructure.person.IPerson;
 
@@ -39,6 +40,8 @@ public interface IAuthorizableOrgUnit
    */
 	default IAuthorizableMember findMemberByPersonId(String personId)
 	{
+		Validate.notNull(personId, "person-id must not be null!");
+		
     for (IAuthorizableMember m : this.getMembers())
     {
       if (m.getPerson().getIdentifier().equals(personId))
@@ -59,10 +62,7 @@ public interface IAuthorizableOrgUnit
    */
 	default IAuthorizableMember findMemberByPerson(IPerson person)
 	{
-		if (person == null)
-    {
-      return null;
-    }
+		Validate.notNull(person, "person must not be null!");
 		
 		return findMemberByPersonId(person.getIdentifier());
 	}
@@ -77,7 +77,7 @@ public interface IAuthorizableOrgUnit
 	 */
 	default boolean hasPermission(IPerson person, IPermission permission)
 	{
-		IAuthorizableMember member = findMemberByPersonId(person.getIdentifier());
+		IAuthorizableMember member = findMemberByPerson(person);
 		
 		if (member == null)
 		{

@@ -1,5 +1,6 @@
 package org.openur.module.domain.userstructure.technicaluser;
 
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.openur.module.domain.userstructure.IUserStructureBase;
 
@@ -12,13 +13,16 @@ public interface ITechnicalUser
 	 */
 	default String getTechUserNumber()
 	{
-		return getNumber();
+		String number = getNumber();
+		Validate.notNull(number, "technical-user-number must not be null!");		
+		
+		return number;
 	}
 	
 	default int compareTo(ITechnicalUser other)
 	{
 		int comparison = new CompareToBuilder()
-				.append(this.getNumber(), other.getNumber())
+				.append(this.getTechUserNumber(), other.getTechUserNumber())
 				.append(this.getStatus(), other.getStatus())
 				.toComparison();
 

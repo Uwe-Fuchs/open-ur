@@ -1,30 +1,17 @@
 package org.openur.module.domain.userstructure.person;
 
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.openur.module.domain.application.OpenURApplication;
+import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.Status;
 
 public class PersonTest
 {
-	private final Name NAME_1= Name.create(Gender.MALE, "James T.", "Kirk");
-	private final Name NAME_2= Name.create(Gender.MALE, Title.DR, "Leonard", "McCoy");
-	
-	@Test(expected=NullPointerException.class)
-	public void checkEmptyNumber()
-	{
-		new PersonBuilder(null, this.NAME_1).build();
-	}
-	
-	@Test(expected=NullPointerException.class)
-	public void checkEmptyName()
-	{
-		new PersonBuilder("123abc", null).build();
-	}
+	private final Name NAME_1 = Name.create(Gender.MALE, "James T.", "Kirk");
+	private final Name NAME_2 = Name.create(Gender.MALE, Title.DR, "Leonard", "McCoy");
 
 	@Test
 	public void testCompareTo()
@@ -44,47 +31,46 @@ public class PersonTest
 		assertTrue("same names, different email-addresses", p1.compareTo(p2) < 0);
 		
 		p1 = new PersonBuilder("123abc", this.NAME_1)
-			.build();
+				.build();
 		p2 = new PersonBuilder("456xyz", this.NAME_2)
-			.build();
+				.build();
 		
 		assertTrue("different personal numbers", p1.compareTo(p2) < 0);
 		
 		p2 = new PersonBuilder("123abc", this.NAME_1)
-			.status(Status.INACTIVE)
-			.build();
+				.status(Status.INACTIVE)
+				.build();
 		assertTrue("same personal numbers, but different status", p1.compareTo(p2) < 0);
 	
 		p2 = new PersonBuilder("123abc", this.NAME_1)
-			.build();
+				.build();
 		assertTrue("same personal numbers, same status", p1.compareTo(p2) == 0);
 	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	public void testCreateWithEmptyAppsList()
+
+	@Test
+	public void testIsInApplication()
 	{
-		new PersonBuilder("123abc", this.NAME_1)
-			.applications(new ArrayList<OpenURApplication>(0))
+		OpenURApplication app1 = new OpenURApplicationBuilder("app1").build();
+		OpenURApplication app2 = new OpenURApplicationBuilder("app2").build();
+		
+		Person person = new PersonBuilder("123abc", this.NAME_1)
+			.addApplication(app1)
+			.addApplication(app2)
 			.build();
+		
+		assertTrue(person.isInApplication(app1.getApplicationName()));
+		assertTrue(person.isInApplication(app2.getApplicationName()));
+		
+		OpenURApplication app3 = new OpenURApplicationBuilder("app3").build();
+		
+		assertFalse(person.isInApplication(app3.getApplicationName()));
 	}
-	
+
 	@Test(expected=NullPointerException.class)
-	public void testCreateWithNullMembers()
+	public void testIsInApplicationEmptyApp()
 	{
-		new PersonBuilder("123abc", this.NAME_1)
-		.addApplication(null)
-		.build();
-	}
-	
-	@Test(expected=NullPointerException.class)
-	public void testCreateWithEmptyNumber()
-	{
-		new PersonBuilder().name(NAME_1).build();
-	}
-	
-	@Test(expected=NullPointerException.class)
-	public void testCreateWithEmptyName()
-	{
-		new PersonBuilder().number("someNumber").build();
+		Person p = new PersonBuilder("123abc", this.NAME_1)
+			.build();
+		p.isInApplication(null);
 	}
 }

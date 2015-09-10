@@ -44,8 +44,9 @@ public interface IRole
 	 */
 	default boolean containsPermission(IApplication application, IPermission permission)
 	{
-		return (this.getPermissions(application) != null 
-			&& this.getPermissions(application).contains(permission));
+		Set<? extends IPermission> perms = this.getPermissions(application);
+		
+		return (perms != null && perms.contains(permission));
 	}
 	
 	@Override

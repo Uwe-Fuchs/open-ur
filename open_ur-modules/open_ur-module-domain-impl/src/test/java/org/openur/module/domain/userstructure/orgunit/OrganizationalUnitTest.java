@@ -6,15 +6,19 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.junit.Test;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.InconsistentHierarchyException;
 import org.openur.module.domain.userstructure.Status;
-import org.openur.module.domain.userstructure.orgunit.MyOrgUnitMember.MyOrgUnitMemberBuilder;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitMemberTest.MyOrgUnitMember;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitMemberTest.MyOrgUnitMemberBuilder;
 import org.openur.module.domain.userstructure.person.Gender;
+import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.person.PersonBuilder;
@@ -246,5 +250,118 @@ public class OrganizationalUnitTest
 	public void checkEmptyName()
 	{
 		new MyOrgUnitBuilder("someNumber", null).build();
+	}
+	
+	///////////////////////////////////////////////////////////////////////////////
+	// internal implementation of AbstractOrgUnit:
+	static class MyOrgUnit
+		extends AbstractOrgUnit
+	{
+		private static final long serialVersionUID = -1856092517371886423L;
+	
+		// constructor:
+		protected MyOrgUnit(MyOrgUnitBuilder b)
+		{
+			super(b);
+		}
+		
+		// accessors:
+		@Override
+		public MyOrgUnit getSuperOrgUnit()
+		{
+			return (MyOrgUnit) super.getSuperOrgUnit();
+		}
+		
+		@Override
+		public Set<MyOrgUnitMember> getMembers()
+		{
+			return super.getMembers()
+				.stream()
+				.map(member -> (MyOrgUnitMember) member)
+				.collect(Collectors.toSet()); 
+		}
+	
+		@Override
+		public MyOrgUnit getRootOrgUnit()
+		{
+			return (MyOrgUnit) super.getRootOrgUnit();
+		}
+		
+		@Override
+		public MyOrgUnitMember findMemberByPersonId(String id)
+		{
+			if (id == null)
+	    {
+	      return null;
+	    }
+	
+	    for (MyOrgUnitMember m : this.getMembers())
+	    {
+	      if (id.equals(m.getPerson().getIdentifier()))
+	      {
+	        return m;
+	      }
+	    }
+	
+	    return null;
+		}
+	
+		@Override
+		public MyOrgUnitMember findMemberByPerson(IPerson person)
+		{
+			if (person == null)
+	    {
+	      return null;
+	    }
+	
+	    return findMemberByPersonId(person.getIdentifier());
+		}
+	}
+	
+	// .. and corresponding builder:
+	static class MyOrgUnitBuilder
+		extends AbstractOrgUnitBuilder<MyOrgUnitBuilder>
+	{
+		// constructors:
+		public MyOrgUnitBuilder(String orgUnitNumber, String name)
+		{
+			super(orgUnitNumber, name);
+		}
+		
+		public MyOrgUnitBuilder()
+		{
+			super();
+		}
+	
+		// builder-methods:
+		public MyOrgUnitBuilder superOrgUnit(MyOrgUnit superOrgUnit)
+		{
+			super.superOrgUnit(superOrgUnit);
+			
+			return this;
+		}
+	
+		public MyOrgUnitBuilder rootOrgUnit(MyOrgUnit rootOrgUnit)
+		{
+			super.rootOrgUnit(rootOrgUnit);
+			
+			return this;
+		}
+	
+		public MyOrgUnitBuilder myOrgUnitMembers(Collection<MyOrgUnitMember> members)
+		{
+			super.members(members);
+			
+			return this;
+		}	
+	
+		// builder:
+		@Override
+		public MyOrgUnit build()
+		{
+			super.build();
+			
+			return new MyOrgUnit(this);
+		}
 	}
 }
