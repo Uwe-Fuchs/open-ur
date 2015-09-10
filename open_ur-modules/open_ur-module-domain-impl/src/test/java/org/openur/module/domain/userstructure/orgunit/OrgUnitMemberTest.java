@@ -7,11 +7,10 @@ import java.time.Month;
 
 import org.junit.Test;
 import org.openur.module.domain.userstructure.Status;
+import org.openur.module.domain.userstructure.orgunit.AbstractOrgUnitMember.AbstractOrgUnitMemberBuilder;
 import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.person.PersonBuilder;
-
-import static org.openur.module.domain.userstructure.orgunit.MyOrgUnitMember.MyOrgUnitMemberBuilder;
 
 public class OrgUnitMemberTest
 {
@@ -52,5 +51,42 @@ public class OrgUnitMemberTest
 		assertTrue("m12 should be before m21 because of org-unit-id's", m12.compareTo(m21) < 0);
 		assertTrue("m12 should be before m22 because of org-unit-id's", m12.compareTo(m22) < 0);
 		assertTrue("m21 should be after m22 because of org-unit-id's", m21.compareTo(m22) > 0);
+	}
+	
+	///////////////////////////////////////////////////////////////////////////////
+	// internal implementation of AbstractOrgUnitMember plus builder-class:
+	static class MyOrgUnitMember
+		extends AbstractOrgUnitMember
+		implements IOrgUnitMember
+	{
+		private static final long serialVersionUID = -3347655382807063939L;
+	
+		// constructor:
+		public MyOrgUnitMember(MyOrgUnitMemberBuilder b)
+		{
+			super(b);
+		}
+	
+		// accessors:
+		@Override
+		public Person getPerson()
+		{
+			return (Person) super.getPerson();
+		}
+	}
+	
+	static class MyOrgUnitMemberBuilder
+		extends AbstractOrgUnitMemberBuilder<MyOrgUnitMemberBuilder>
+	{
+		public MyOrgUnitMemberBuilder(Person person, String orgUnitId)
+		{
+			super(person, orgUnitId);
+		}
+	
+		@Override
+		public MyOrgUnitMember build()
+		{
+			return new MyOrgUnitMember(this);
+		}
 	}
 }

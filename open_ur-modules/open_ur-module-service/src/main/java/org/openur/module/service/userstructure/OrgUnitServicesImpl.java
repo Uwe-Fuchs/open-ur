@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.persistence.dao.IOrgUnitDao;
 
@@ -18,12 +19,16 @@ public class OrgUnitServicesImpl
 	@Override
 	public IAuthorizableOrgUnit findOrgUnitById(String orgUnitId)
 	{
+		Validate.notEmpty(orgUnitId, "org-unit-id must not be empty!");		
+		
 		return orgUnitDao.findOrgUnitById(orgUnitId);
 	}
 
 	@Override
 	public IAuthorizableOrgUnit findOrgUnitByNumber(String orgUnitNumber)
 	{
+		Validate.notEmpty(orgUnitNumber, "org-unit-number must not be empty!");		
+		
 		return orgUnitDao.findOrgUnitByNumber(orgUnitNumber);
 	}
 
@@ -45,6 +50,8 @@ public class OrgUnitServicesImpl
 	public Set<IAuthorizableOrgUnit> obtainSubOrgUnitsForOrgUnit(String orgUnitId,
 		boolean inclMembers)
 	{
+		Validate.notEmpty(orgUnitId, "org-unit-id must not be empty!");		
+		
 		List<IAuthorizableOrgUnit> orgUnitList;
 		
 		if (inclMembers)

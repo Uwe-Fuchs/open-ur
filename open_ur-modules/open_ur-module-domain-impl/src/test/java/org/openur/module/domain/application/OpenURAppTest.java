@@ -3,11 +3,13 @@ package org.openur.module.domain.application;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.junit.Test;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
+import org.openur.module.domain.util.DefaultsUtil;
 
 public class OpenURAppTest
 {
@@ -39,5 +41,42 @@ public class OpenURAppTest
 				.identifier(uuid)
 				.build();
 		assertFalse("app1 and app2 should be on equal position", app1.compareTo(app2) == 0);
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void testCompareToNoApplicationName()
+	{
+		MyApplication app1 = new MyApplication();
+		MyApplication app2 = new MyApplication();
+		
+		app1.compareTo(app2);
+	}
+	
+	private class MyApplication
+		implements IApplication
+	{
+		@Override
+		public String getIdentifier()
+		{
+			return DefaultsUtil.getRandomIdentifierByDefaultMechanism();
+		}
+
+		@Override
+		public LocalDateTime getLastModifiedDate()
+		{
+			return null;
+		}
+
+		@Override
+		public LocalDateTime getCreationDate()
+		{
+			return null;
+		}
+
+		@Override
+		public String getApplicationName()
+		{
+			return null;
+		}		
 	}
 }

@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
 import org.openur.module.persistence.dao.ISecurityDao;
@@ -19,6 +20,8 @@ public class SecurityDomainServicesImpl
 	@Override
 	public IRole findRoleById(String roleId)
 	{
+		Validate.notEmpty(roleId, "role-id must not be empty!");		
+		
 		return securityDao.findRoleById(roleId);
 	}
 
@@ -33,24 +36,32 @@ public class SecurityDomainServicesImpl
 	@Override
 	public IRole findRoleByName(String roleName)
 	{
+		Validate.notEmpty(roleName, "role-name must not be empty!");		
+		
 		return securityDao.findRoleByName(roleName);
 	}
 
 	@Override
 	public IPermission findPermissionById(String permissionId)
 	{
+		Validate.notEmpty(permissionId, "permission-id must not be empty!");		
+		
 		return securityDao.findPermissionById(permissionId);
 	}
 
 	@Override
 	public IPermission findPermission(String permissionText, String applicationName)
 	{
+		Validate.notEmpty(permissionText, "permission-text must not be empty!");		
+		
 		return securityDao.findPermission(permissionText, applicationName);
 	}
 
 	@Override
 	public Set<IPermission> obtainPermissionsForApp(String applicationName)
 	{
+		Validate.notEmpty(applicationName, "application-name must not be empty!");		
+		
 		List<IPermission> permissionList = securityDao.obtainPermissionsForApp(applicationName);
 		
 		return new HashSet<>(permissionList);
