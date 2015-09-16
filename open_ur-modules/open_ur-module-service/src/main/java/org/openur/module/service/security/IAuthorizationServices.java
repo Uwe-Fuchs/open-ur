@@ -3,9 +3,8 @@ package org.openur.module.service.security;
 public interface IAuthorizationServices
 {
 	/**
-	 * checks if a person has a certain (app-based) permission within an
-	 * organizational-unit. Hint: Use this if work with permission-based,
-	 * org-unit-related authorization.
+	 * checks if a person has a certain permission in an application and an
+	 * organizational-unit. Hint: Use this if you work with org-unit-related authorization.
 	 * 
 	 * @param personId
 	 * @param orgUnitId
@@ -17,8 +16,8 @@ public interface IAuthorizationServices
 	Boolean hasPermission(String personId, String orgUnitId, String permissionText, String applicationName);
 
 	/**
-	 * checks if a person has a certain (app-based) permission. Hint: use this if
-	 * you work with permission-based, but NOT org-unit-related authorization.
+	 * checks if a person has a certain permission in an application. Hint: use this if
+	 * you work with system-wide authorization.
 	 * 
 	 * @param personId
 	 * @param permissionText

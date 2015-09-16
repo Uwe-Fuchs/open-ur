@@ -34,11 +34,11 @@ public class AbstractResourceTest
 		client.close();
 	}
 	
-	protected String performRestCall(String url)
+	protected String performRestCall(String url, String mediaType)
 	{
 		Response response = client
 				.target("http://localhost:9998/" + url)
-				.request(MediaType.APPLICATION_JSON)
+				.request(mediaType)
 				.get();
 		
 		assertEquals(200, response.getStatus());
@@ -48,5 +48,10 @@ public class AbstractResourceTest
 		System.out.println("Result: " + result);		
 		
 		return result;
+	}
+	
+	protected String performRestCall(String url)
+	{
+		return performRestCall(url, MediaType.APPLICATION_JSON);
 	}
 }
