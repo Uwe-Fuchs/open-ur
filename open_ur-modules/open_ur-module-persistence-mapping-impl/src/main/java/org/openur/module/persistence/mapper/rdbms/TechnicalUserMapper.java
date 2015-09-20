@@ -21,7 +21,7 @@ public class TechnicalUserMapper
 	public TechnicalUser mapFromEntity(PTechnicalUser entity)
 	{
 		TechnicalUserBuilder immutableBuilder = new TechnicalUserBuilder(entity.getTechUserNumber());		
-		immutableBuilder = super.buildImmutable(immutableBuilder, entity);
+		immutableBuilder = super.mapFromEntity(immutableBuilder, entity);
 		
 		return immutableBuilder.build();
 	}

@@ -19,7 +19,7 @@ public class UserStructureBaseMapper
 	}
 
 	protected <UB extends UserStructureBaseBuilder<UB>, P extends PUserStructureBase>
-			UB buildImmutable(UB immutableBuilder, P persistable)
+			UB mapFromEntity(UB immutableBuilder, P persistable)
 	{
 		immutableBuilder.status(persistable.getStatus());
 

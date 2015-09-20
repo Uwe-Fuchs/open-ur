@@ -100,10 +100,11 @@ public class OrganizationalUnitMapper
 	AuthorizableOrgUnit mapFromEntity(
 		POrganizationalUnit persistable, AuthorizableOrgUnit rootOu, AuthorizableOrgUnit superOu, boolean inclMembers, boolean inclRoles)
 	{		
-		final String IDENTIFIER = DefaultsUtil.getRandomIdentifierByDefaultMechanism();
+		final String IDENTIFIER = persistable.getIdentifier() != null ? 
+			persistable.getIdentifier() : DefaultsUtil.getRandomIdentifierByDefaultMechanism();
 
 		AuthorizableOrgUnitBuilder immutableBuilder = new AuthorizableOrgUnitBuilder(persistable.getOrgUnitNumber(), persistable.getName());		
-		immutableBuilder = super.buildImmutable(immutableBuilder, persistable);
+		immutableBuilder = super.mapFromEntity(immutableBuilder, persistable);
 
 		if (rootOu != null)
 		{
