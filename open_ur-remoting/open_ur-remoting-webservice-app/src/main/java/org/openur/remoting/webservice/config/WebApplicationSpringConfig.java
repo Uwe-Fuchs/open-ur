@@ -13,11 +13,15 @@ import org.openur.module.persistence.dao.rdbms.TechnicalUserDaoImplRdbms;
 import org.openur.module.persistence.mapper.rdbms.AddressMapper;
 import org.openur.module.persistence.mapper.rdbms.ApplicationMapper;
 import org.openur.module.persistence.mapper.rdbms.OrganizationalUnitMapper;
+import org.openur.module.persistence.mapper.rdbms.OrganizationalUnitMapper.OrgUnitMemberMapper;
 import org.openur.module.persistence.mapper.rdbms.PermissionMapper;
 import org.openur.module.persistence.mapper.rdbms.PersonMapper;
 import org.openur.module.persistence.mapper.rdbms.RoleMapper;
 import org.openur.module.persistence.mapper.rdbms.TechnicalUserMapper;
-import org.openur.module.persistence.mapper.rdbms.OrganizationalUnitMapper.OrgUnitMemberMapper;
+import org.openur.module.service.security.AuthorizationServicesImpl;
+import org.openur.module.service.security.IAuthorizationServices;
+import org.openur.module.service.security.ISecurityDomainServices;
+import org.openur.module.service.security.SecurityDomainServicesImpl;
 import org.openur.module.service.userstructure.IOrgUnitServices;
 import org.openur.module.service.userstructure.IUserServices;
 import org.openur.module.service.userstructure.OrgUnitServicesImpl;
@@ -39,6 +43,18 @@ public class WebApplicationSpringConfig
 	public IOrgUnitServices orgUnitServices()
 	{
 		return new OrgUnitServicesImpl();
+	}
+
+	@Bean(name = "securityDomianServices")
+	public ISecurityDomainServices securityDomianServices()
+	{
+		return new SecurityDomainServicesImpl();
+	}
+
+	@Bean(name = "authorizationServices")
+	public IAuthorizationServices authorizationServices()
+	{
+		return new AuthorizationServicesImpl();
 	}
 
 	// dao's:
