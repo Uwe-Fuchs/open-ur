@@ -60,7 +60,7 @@ public class AuthorizationServicesImpl
 	{
 		Validate.notEmpty(orgUnitId, "org-unit-id must not be empty!");
 		
-		IAuthorizableOrgUnit orgUnit = orgUnitServices.findOrgUnitById(orgUnitId);
+		IAuthorizableOrgUnit orgUnit = orgUnitServices.findOrgUnitById(orgUnitId, Boolean.TRUE);
 		Validate.notNull(orgUnit, String.format("No org-unit found for orgUnitId '%s'!", orgUnitId));
 		
 		return lookupDomainObjectsAndCheckIfUserHasPermission(personId, permissionText, applicationName, orgUnit);

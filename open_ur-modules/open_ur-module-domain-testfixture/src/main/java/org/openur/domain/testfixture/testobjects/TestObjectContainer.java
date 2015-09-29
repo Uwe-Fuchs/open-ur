@@ -82,6 +82,7 @@ public class TestObjectContainer
 	public static final AuthorizableOrgUnit SUPER_OU_1;
 	public static final AuthorizableOrgUnit SUPER_OU_2;
 	public static final AuthorizableOrgUnit ORG_UNIT_A;
+	public static final AuthorizableOrgUnit ORG_UNIT_A_WITHOUT_MEMBERS;
 	public static final AuthorizableOrgUnit ORG_UNIT_B;
 	public static final AuthorizableOrgUnit ORG_UNIT_C;
 	
@@ -292,6 +293,17 @@ public class TestObjectContainer
 				.superOrgUnit(SUPER_OU_1)
 				.authorizableMembers(Arrays.asList(MEMBER_1_A, MEMBER_2_A))
 				.emailAddress(EMailAddress.create("org_unit_A@company.com"))
+				.build();
+		
+		ORG_UNIT_A_WITHOUT_MEMBERS = new AuthorizableOrgUnitBuilder(ORG_UNIT_NUMBER_A, "name_org_unit_A_wm")
+				.identifier(ORG_UNIT_UUID_A)
+				.creationDate(LocalDateTime.now())
+				.status(Status.ACTIVE)
+				.shortName("short_name_ou_A_wm")
+				.description("description_ou_A_wm")
+				.rootOrgUnit(ROOT_OU)
+				.superOrgUnit(SUPER_OU_1)
+				.emailAddress(EMailAddress.create("org_unit_A_wm@company.com"))
 				.build();
 		
 		// org-unit 2:

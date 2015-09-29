@@ -14,7 +14,7 @@ import javax.ws.rs.core.MediaType;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.service.userstructure.IOrgUnitServices;
 
-@Path("/userstructure")
+@Path("userstructure/orgunit/")
 public class OrgUnitResource
 	implements IOrgUnitServices
 {
@@ -23,25 +23,27 @@ public class OrgUnitResource
 
 	@Override
 	@GET
-	@Path("/orgunit/id/{id}")
+	@Path("id/{id}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public IAuthorizableOrgUnit findOrgUnitById(@PathParam("id") String orgUnitId)
+	public IAuthorizableOrgUnit findOrgUnitById(@PathParam("id") String orgUnitId, 
+		@DefaultValue("false") @QueryParam("inclMembers") Boolean inclMembersRoles)
 	{
-		return orgUnitServices.findOrgUnitById(orgUnitId);
+		return orgUnitServices.findOrgUnitById(orgUnitId, inclMembersRoles);
 	}
 
 	@Override
 	@GET
-	@Path("/orgunit/number/{number}")
+	@Path("number/{number}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public IAuthorizableOrgUnit findOrgUnitByNumber(@PathParam("number") String orgUnitNumber)
+	public IAuthorizableOrgUnit findOrgUnitByNumber(@PathParam("number") String orgUnitNumber, 
+		@DefaultValue("false") @QueryParam("inclMembers") Boolean inclMembersRoles)
 	{
-		return orgUnitServices.findOrgUnitByNumber(orgUnitNumber);
+		return orgUnitServices.findOrgUnitByNumber(orgUnitNumber, inclMembersRoles);
 	}
 
 	@Override
 	@GET
-	@Path("/orgunit/all")
+	@Path("all")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public Set<IAuthorizableOrgUnit> obtainAllOrgUnits()
 	{
@@ -50,17 +52,17 @@ public class OrgUnitResource
 
 	@Override
 	@GET
-	@Path("/orgunit/sub/{id}")
+	@Path("sub/{id}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public Set<IAuthorizableOrgUnit> obtainSubOrgUnitsForOrgUnit(@PathParam("id") String orgUnitId, 
-		@DefaultValue("false") @QueryParam("inclMembers") boolean inclMembers)
+		@DefaultValue("false") @QueryParam("inclMembers") Boolean inclMembersRoles)
 	{
-		return orgUnitServices.obtainSubOrgUnitsForOrgUnit(orgUnitId, inclMembers);
+		return orgUnitServices.obtainSubOrgUnitsForOrgUnit(orgUnitId, inclMembersRoles);
 	}
 
 	@Override
 	@GET
-	@Path("/orgunit/root")
+	@Path("root")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public Set<IAuthorizableOrgUnit> obtainRootOrgUnits()
 	{
