@@ -56,7 +56,8 @@ public class UserResourceTest
 	@Test
 	public void testGetPersonByIdResource()
 	{
-		String result = performRestCall("userstructure/person/id/" + TestObjectContainer.PERSON_UUID_1);
+		String result = performRestCall(
+				UserResource.USER_RESOURCE_PATH + UserResource.PERSON_PER_ID_RESOURCE_PATH + TestObjectContainer.PERSON_UUID_1);
 
     Gson gson = new GsonBuilder()
     		.registerTypeAdapter(Person.class, new PersonSerializer())
@@ -69,7 +70,8 @@ public class UserResourceTest
 	@Test
 	public void testGetPersonByNumberResource()
 	{
-		String result = performRestCall("userstructure/person/number/" + TestObjectContainer.PERSON_NUMBER_1);
+		String result = performRestCall(
+			UserResource.USER_RESOURCE_PATH + UserResource.PERSON_PER_NUMBER_RESOURCE_PATH + TestObjectContainer.PERSON_NUMBER_1);
 
     Gson gson = new GsonBuilder()
     		.registerTypeAdapter(Person.class, new PersonSerializer())
@@ -82,7 +84,7 @@ public class UserResourceTest
 	@Test
 	public void testObtainAllPersonsResource()
 	{
-		String result = performRestCall("userstructure/person/all");
+		String result = performRestCall(UserResource.USER_RESOURCE_PATH + UserResource.ALL_PERSONS_RESOURCE_PATH);
 
 		Type resultType = new TypeToken<Set<Person>>()
 		{
@@ -107,7 +109,8 @@ public class UserResourceTest
 	@Test
 	public void testGetTechUserByIdResource()
 	{
-		String result = performRestCall("userstructure/techuser/id/" + TestObjectContainer.TECH_USER_UUID_1);
+		String result = performRestCall(
+			UserResource.USER_RESOURCE_PATH + UserResource.TECHUSER_PER_ID_RESOURCE_PATH + TestObjectContainer.TECH_USER_UUID_1);
 
 		TechnicalUser tu = new Gson().fromJson(result, TechnicalUser.class);
 		assertTrue(EqualsBuilder.reflectionEquals(TestObjectContainer.TECH_USER_1, tu));
@@ -116,7 +119,8 @@ public class UserResourceTest
 	@Test
 	public void testGetTechUserByNumberResource()
 	{
-		String result = performRestCall("userstructure/techuser/number/" + TestObjectContainer.TECH_USER_NUMBER_1);
+		String result = performRestCall(
+			UserResource.USER_RESOURCE_PATH + UserResource.TECHUSER_PER_NUMBER_RESOURCE_PATH + TestObjectContainer.TECH_USER_NUMBER_1);
 
 		TechnicalUser tu = new Gson().fromJson(result, TechnicalUser.class);
 		assertTrue(EqualsBuilder.reflectionEquals(TestObjectContainer.TECH_USER_1, tu));
@@ -125,7 +129,7 @@ public class UserResourceTest
 	@Test
 	public void testObtainAllTechUsersResource()
 	{
-		String result = performRestCall("userstructure/techuser/all");
+		String result = performRestCall(UserResource.USER_RESOURCE_PATH + UserResource.ALL_TECHUSERS_RESOURCE_PATH);
 
 		Type resultType = new TypeToken<Set<TechnicalUser>>()
 		{
