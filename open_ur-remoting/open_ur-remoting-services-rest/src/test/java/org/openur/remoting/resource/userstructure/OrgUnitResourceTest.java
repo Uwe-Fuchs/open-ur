@@ -58,7 +58,7 @@ public class OrgUnitResourceTest
 	@Test
 	public void testFindOrgUnitAndMembersById()
 	{
-		String result = performRestCall("userstructure/orgunit/id/" + TestObjectContainer.ORG_UNIT_UUID_A + "?inclMembers=true");
+		String result = performRestCall("userstructure/orgunit/id/" + TestObjectContainer.ORG_UNIT_UUID_A + "?inclMembers=true", String.class);
 
 		AuthorizableOrgUnit o = buildGson().fromJson(result, AuthorizableOrgUnit.class);
 		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A, o));
@@ -68,7 +68,7 @@ public class OrgUnitResourceTest
 	@Test
 	public void testFindOrgUnitWithoutMembersById()
 	{		
-		String result = performRestCall("userstructure/orgunit/id/" + TestObjectContainer.ORG_UNIT_UUID_A);
+		String result = performRestCall("userstructure/orgunit/id/" + TestObjectContainer.ORG_UNIT_UUID_A, String.class);
 
 		AuthorizableOrgUnit o = buildGson().fromJson(result, AuthorizableOrgUnit.class);
 		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, o));
@@ -78,7 +78,7 @@ public class OrgUnitResourceTest
 	@Test
 	public void testFindOrgUnitAndMembersByNumber()
 	{
-		String result = performRestCall("userstructure/orgunit/number/" + TestObjectContainer.ORG_UNIT_NUMBER_A + "?inclMembers=true");
+		String result = performRestCall("userstructure/orgunit/number/" + TestObjectContainer.ORG_UNIT_NUMBER_A + "?inclMembers=true", String.class);
 
 		AuthorizableOrgUnit o = buildGson().fromJson(result, AuthorizableOrgUnit.class);
 		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A, o));
@@ -88,7 +88,7 @@ public class OrgUnitResourceTest
 	@Test
 	public void testFindOrgUnitWithoutMembersByNumber()
 	{
-		String result = performRestCall("userstructure/orgunit/number/" + TestObjectContainer.ORG_UNIT_NUMBER_A);
+		String result = performRestCall("userstructure/orgunit/number/" + TestObjectContainer.ORG_UNIT_NUMBER_A, String.class);
 
 		AuthorizableOrgUnit o = buildGson().fromJson(result, AuthorizableOrgUnit.class);
 		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, o));
@@ -98,7 +98,7 @@ public class OrgUnitResourceTest
 	@Test
 	public void testObtainAllOrgUnits()
 	{
-		String result = performRestCall("userstructure/orgunit/all");
+		String result = performRestCall("userstructure/orgunit/all", String.class);
 
 		Type resultType = new TypeToken<Set<AuthorizableOrgUnit>>()
 		{
@@ -120,7 +120,7 @@ public class OrgUnitResourceTest
 	@Test
 	public void testObtainSubOrgUnitsForOrgUnit_inclMembers()
 	{
-		String result = performRestCall("userstructure/orgunit/sub/" + TestObjectContainer.SUPER_OU_UUID_1 + "?inclMembers=true");
+		String result = performRestCall("userstructure/orgunit/sub/" + TestObjectContainer.SUPER_OU_UUID_1 + "?inclMembers=true", String.class);
 
 		Type resultType = new TypeToken<Set<AuthorizableOrgUnit>>()
 		{
@@ -142,7 +142,7 @@ public class OrgUnitResourceTest
 	@Test
 	public void testObtainSubOrgUnitsForOrgUnit_exclMembers()
 	{
-		String result = performRestCall("userstructure/orgunit/sub/" + TestObjectContainer.SUPER_OU_UUID_1 + "?inclMembers=false");
+		String result = performRestCall("userstructure/orgunit/sub/" + TestObjectContainer.SUPER_OU_UUID_1 + "?inclMembers=false", String.class);
 
 		Type resultType = new TypeToken<Set<AuthorizableOrgUnit>>()
 		{
@@ -158,7 +158,7 @@ public class OrgUnitResourceTest
 		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, p));
 		
 		// default value for query-param => without members:
-		result = performRestCall("userstructure/orgunit/sub/" + TestObjectContainer.SUPER_OU_UUID_1);
+		result = performRestCall("userstructure/orgunit/sub/" + TestObjectContainer.SUPER_OU_UUID_1, String.class);
     resultSet = buildGson().fromJson(result, resultType);
 
 		assertFalse(resultSet.isEmpty());
@@ -172,7 +172,7 @@ public class OrgUnitResourceTest
 	@Test
 	public void testObtainRootOrgUnits()
 	{
-		String result = performRestCall("userstructure/orgunit/root");
+		String result = performRestCall("userstructure/orgunit/root", String.class);
 
 		Type resultType = new TypeToken<Set<AuthorizableOrgUnit>>()
 		{

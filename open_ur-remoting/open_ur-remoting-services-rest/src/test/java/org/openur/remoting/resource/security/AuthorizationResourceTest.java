@@ -37,7 +37,7 @@ public class AuthorizationResourceTest
 	{
 		String result = performRestCall("authorization/ou" + "?personId=" + MockAuthorizationServicesFactory.PERSON_ID + "&ouId="
 			+ MockAuthorizationServicesFactory.OU_ID + "&text=" + MockAuthorizationServicesFactory.PERMISSION_TEXT
-			+ "&appName=" + MockAuthorizationServicesFactory.APP_NAME, MediaType.TEXT_PLAIN);
+			+ "&appName=" + MockAuthorizationServicesFactory.APP_NAME, MediaType.TEXT_PLAIN, String.class);
 		
 		Boolean b = Boolean.valueOf(result);
 		
@@ -49,7 +49,7 @@ public class AuthorizationResourceTest
 	{
 		String result = performRestCall("authorization/ou" + "?personId=" + MockAuthorizationServicesFactory.PERSON_ID + "&ouId="
 			+ MockAuthorizationServicesFactory.OU_ID + "&text=" + MockAuthorizationServicesFactory.OTHER_PERMISSION_TEXT
-			+ "&appName=" + MockAuthorizationServicesFactory.APP_NAME, MediaType.TEXT_PLAIN);
+			+ "&appName=" + MockAuthorizationServicesFactory.APP_NAME, MediaType.TEXT_PLAIN, String.class);
 		
 		Boolean b = Boolean.valueOf(result);
 		
@@ -61,7 +61,7 @@ public class AuthorizationResourceTest
 	{
 		String result = performRestCall("authorization/system" + "?personId=" + MockAuthorizationServicesFactory.PERSON_ID 
 			+ "&text=" + MockAuthorizationServicesFactory.PERMISSION_TEXT
-			+ "&appName=" + MockAuthorizationServicesFactory.APP_NAME, MediaType.TEXT_PLAIN);
+			+ "&appName=" + MockAuthorizationServicesFactory.APP_NAME, MediaType.TEXT_PLAIN, String.class);
 		
 		Boolean b = Boolean.valueOf(result);
 		
@@ -73,7 +73,7 @@ public class AuthorizationResourceTest
 	{
 		String result = performRestCall("authorization/system" + "?personId=" + MockAuthorizationServicesFactory.PERSON_ID 
 			+ "&text=" + MockAuthorizationServicesFactory.OTHER_PERMISSION_TEXT
-			+ "&appName=" + MockAuthorizationServicesFactory.APP_NAME, MediaType.TEXT_PLAIN);
+			+ "&appName=" + MockAuthorizationServicesFactory.APP_NAME, MediaType.TEXT_PLAIN, String.class);
 		
 		Boolean b = Boolean.valueOf(result);
 		
