@@ -35,11 +35,9 @@ public class AuthorizationResourceTest
 	@Test
 	public void testHasPermissionInOrgUnit()
 	{
-		String result = performRestCall("authorization/ou" + "?personId=" + MockAuthorizationServicesFactory.PERSON_ID + "&ouId="
+		Boolean b = performRestCall("authorization/ou" + "?personId=" + MockAuthorizationServicesFactory.PERSON_ID + "&ouId="
 			+ MockAuthorizationServicesFactory.OU_ID + "&text=" + MockAuthorizationServicesFactory.PERMISSION_TEXT
-			+ "&appName=" + MockAuthorizationServicesFactory.APP_NAME, MediaType.TEXT_PLAIN, String.class);
-		
-		Boolean b = Boolean.valueOf(result);
+			+ "&appName=" + MockAuthorizationServicesFactory.APP_NAME, MediaType.TEXT_PLAIN, Boolean.class);
 		
 		assertTrue(b);
 	}
@@ -47,11 +45,9 @@ public class AuthorizationResourceTest
 	@Test
 	public void testHasNoPermissionInOrgUnit()
 	{
-		String result = performRestCall("authorization/ou" + "?personId=" + MockAuthorizationServicesFactory.PERSON_ID + "&ouId="
+		Boolean b = performRestCall("authorization/ou" + "?personId=" + MockAuthorizationServicesFactory.PERSON_ID + "&ouId="
 			+ MockAuthorizationServicesFactory.OU_ID + "&text=" + MockAuthorizationServicesFactory.OTHER_PERMISSION_TEXT
-			+ "&appName=" + MockAuthorizationServicesFactory.APP_NAME, MediaType.TEXT_PLAIN, String.class);
-		
-		Boolean b = Boolean.valueOf(result);
+			+ "&appName=" + MockAuthorizationServicesFactory.APP_NAME, MediaType.TEXT_PLAIN, Boolean.class);
 		
 		assertFalse(b);
 	}
@@ -59,11 +55,9 @@ public class AuthorizationResourceTest
 	@Test
 	public void testHasPermissionInSystem()
 	{
-		String result = performRestCall("authorization/system" + "?personId=" + MockAuthorizationServicesFactory.PERSON_ID 
+		Boolean b = performRestCall("authorization/system" + "?personId=" + MockAuthorizationServicesFactory.PERSON_ID 
 			+ "&text=" + MockAuthorizationServicesFactory.PERMISSION_TEXT
-			+ "&appName=" + MockAuthorizationServicesFactory.APP_NAME, MediaType.TEXT_PLAIN, String.class);
-		
-		Boolean b = Boolean.valueOf(result);
+			+ "&appName=" + MockAuthorizationServicesFactory.APP_NAME, MediaType.TEXT_PLAIN, Boolean.class);
 		
 		assertTrue(b);
 	}
@@ -71,11 +65,9 @@ public class AuthorizationResourceTest
 	@Test
 	public void testHasNotPermissionInSystem()
 	{
-		String result = performRestCall("authorization/system" + "?personId=" + MockAuthorizationServicesFactory.PERSON_ID 
+		Boolean b = performRestCall("authorization/system" + "?personId=" + MockAuthorizationServicesFactory.PERSON_ID 
 			+ "&text=" + MockAuthorizationServicesFactory.OTHER_PERMISSION_TEXT
-			+ "&appName=" + MockAuthorizationServicesFactory.APP_NAME, MediaType.TEXT_PLAIN, String.class);
-		
-		Boolean b = Boolean.valueOf(result);
+			+ "&appName=" + MockAuthorizationServicesFactory.APP_NAME, MediaType.TEXT_PLAIN, Boolean.class);
 		
 		assertFalse(b);
 	}
