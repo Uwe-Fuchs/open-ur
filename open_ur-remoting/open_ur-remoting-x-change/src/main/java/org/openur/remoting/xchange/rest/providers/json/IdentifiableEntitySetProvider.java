@@ -31,7 +31,6 @@ import com.google.gson.GsonBuilder;
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
 public class IdentifiableEntitySetProvider<I extends IdentifiableEntityImpl>
-	extends AbstractProvider
 	implements MessageBodyWriter<Set<I>>, MessageBodyReader<Set<I>>
 {
 	@Override
@@ -43,13 +42,13 @@ public class IdentifiableEntitySetProvider<I extends IdentifiableEntityImpl>
 	@Override
 	public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType)
 	{
-		return isProvided(type, Set.class);
+		return Set.class.isAssignableFrom(type);
 	}
 
 	@Override
 	public boolean isReadable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType)
 	{
-		return isProvided(type, Set.class);
+		return Set.class.isAssignableFrom(type);
 	}
 
 	@Override
@@ -57,13 +56,10 @@ public class IdentifiableEntitySetProvider<I extends IdentifiableEntityImpl>
 			MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
 		throws IOException, WebApplicationException
 	{
-		String result = readFromInputStream(entityStream);
+		String result = AbstractProvider.readFromInputStream(entityStream);
 
-    Gson gson = new GsonBuilder()
+    Gson gson = createGsonBuilder()
     		.registerTypeAdapter(Person.class, new PersonSerializer())
-		    .registerTypeAdapter(AuthorizableOrgUnit.class, new AuthorizableOrgUnitSerializer())
-		    .registerTypeAdapter(AuthorizableMember.class, new AuthorizableMemberSerializer())
-		    .registerTypeAdapter(OpenURRole.class, new OpenURRoleSerializer())
 		    .create();
     
     Set<I> resultSet = gson.fromJson(result, genericType);
@@ -76,12 +72,15 @@ public class IdentifiableEntitySetProvider<I extends IdentifiableEntityImpl>
 			MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
 		throws IOException, WebApplicationException
 	{
-		Gson gson = new GsonBuilder()
+		Gson gson = createGsonBuilder().create();    
+		entityStream.write(gson.toJson(userSet, type).getBytes());
+	}
+
+	private GsonBuilder createGsonBuilder()
+	{
+		return new GsonBuilder()
 		    .registerTypeAdapter(AuthorizableOrgUnit.class, new AuthorizableOrgUnitSerializer())
 		    .registerTypeAdapter(AuthorizableMember.class, new AuthorizableMemberSerializer())
-		    .registerTypeAdapter(OpenURRole.class, new OpenURRoleSerializer())
-		    .create();
-    
-		entityStream.write(gson.toJson(userSet, type).getBytes());
+		    .registerTypeAdapter(OpenURRole.class, new OpenURRoleSerializer());
 	}	
 }
