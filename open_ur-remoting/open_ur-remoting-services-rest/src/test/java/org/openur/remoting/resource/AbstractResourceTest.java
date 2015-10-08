@@ -12,7 +12,7 @@ import org.glassfish.jersey.test.JerseyTest;
 import org.junit.After;
 import org.junit.Before;
 
-public class AbstractResourceTest
+public abstract class AbstractResourceTest
 	extends JerseyTest
 {
 	private Client client;
