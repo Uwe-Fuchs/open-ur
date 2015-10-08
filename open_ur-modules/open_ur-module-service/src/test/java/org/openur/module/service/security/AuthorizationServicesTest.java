@@ -84,9 +84,9 @@ public class AuthorizationServicesTest
 	{
 		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
 		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_3)).thenReturn(TestObjectContainer.PERSON_3);
-		Mockito.when(orgUnitServicesMock.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_A)).thenReturn(TestObjectContainer.ORG_UNIT_A);
-		Mockito.when(orgUnitServicesMock.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_C)).thenReturn(TestObjectContainer.ORG_UNIT_C);
-		Mockito.when(orgUnitServicesMock.findOrgUnitById(TestObjectContainer.SUPER_OU_UUID_1)).thenReturn(TestObjectContainer.SUPER_OU_1);		
+		Mockito.when(orgUnitServicesMock.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_A, Boolean.TRUE)).thenReturn(TestObjectContainer.ORG_UNIT_A);
+		Mockito.when(orgUnitServicesMock.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_C, Boolean.TRUE)).thenReturn(TestObjectContainer.ORG_UNIT_C);
+		Mockito.when(orgUnitServicesMock.findOrgUnitById(TestObjectContainer.SUPER_OU_UUID_1, Boolean.TRUE)).thenReturn(TestObjectContainer.SUPER_OU_1);		
 		Mockito.when(securityDaoMock.findPermission(TestObjectContainer.PERMISSION_1_A.getPermissionText(), TestObjectContainer.APP_A.getApplicationName()))
 				.thenReturn(TestObjectContainer.PERMISSION_1_A);
 		Mockito.when(securityDaoMock.findPermission(TestObjectContainer.PERMISSION_1_C.getPermissionText(), TestObjectContainer.APP_C.getApplicationName()))
@@ -142,9 +142,9 @@ public class AuthorizationServicesTest
 		Mockito.when(securityDaoMock.findPermission(PERMISSION_IN_ROOT_OU_TEXT, APP_NAME)).thenReturn(permissionInRootOu);
 		Mockito.when(userServicesMock.findPersonById(PERSON_ID)).thenReturn(person);
 		Mockito.when(userServicesMock.findPersonById(PERSON_IN_ROOT_ID)).thenReturn(personInRoot);
-		Mockito.when(orgUnitServicesMock.findOrgUnitById(SUPER_OU_ID)).thenReturn(superOu);
-		Mockito.when(orgUnitServicesMock.findOrgUnitById(OU_ID)).thenReturn(ou);
-		Mockito.when(orgUnitServicesMock.findOrgUnitById(OTHER_OU_ID)).thenReturn(otherOu);
+		Mockito.when(orgUnitServicesMock.findOrgUnitById(SUPER_OU_ID, Boolean.TRUE)).thenReturn(superOu);
+		Mockito.when(orgUnitServicesMock.findOrgUnitById(OU_ID, Boolean.TRUE)).thenReturn(ou);
+		Mockito.when(orgUnitServicesMock.findOrgUnitById(OTHER_OU_ID, Boolean.TRUE)).thenReturn(otherOu);
 		Mockito.when(orgUnitServicesMock.obtainRootOrgUnits()).thenReturn(new HashSet<IAuthorizableOrgUnit>(Arrays.asList(rootOu)));
 	}
 

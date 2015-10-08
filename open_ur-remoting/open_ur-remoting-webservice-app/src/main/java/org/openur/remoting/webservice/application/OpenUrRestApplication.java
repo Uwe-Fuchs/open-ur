@@ -1,7 +1,10 @@
 package org.openur.remoting.webservice.application;
 
 import org.glassfish.jersey.server.ResourceConfig;
+import org.openur.remoting.xchange.rest.providers.json.OrgUnitProvider;
+import org.openur.remoting.xchange.rest.providers.json.PermissionProvider;
 import org.openur.remoting.xchange.rest.providers.json.PersonProvider;
+import org.openur.remoting.xchange.rest.providers.json.RoleProvider;
 import org.openur.remoting.xchange.rest.providers.json.TechnicalUserProvider;
 import org.openur.remoting.xchange.rest.providers.json.IdentifiableEntitySetProvider;
 
@@ -24,6 +27,9 @@ public class OpenUrRestApplication
 		// register providers:
 		register(PersonProvider.class);
 		register(TechnicalUserProvider.class);
+		register(OrgUnitProvider.class);
+		register(PermissionProvider.class);
+		register(RoleProvider.class);
 		register(IdentifiableEntitySetProvider.class);
 	}
 }

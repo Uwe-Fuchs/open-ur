@@ -66,75 +66,103 @@ public class OrgUnitServicesTest
 	}
 
 	@Test
-	public void testFindOrgUnitById()
+	public void testFindOrgUnitAndMembersById()
 	{		
 		// test with open-ur-specific domain-objects:
-		Mockito.when(orgUnitDaoMock.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_A)).thenReturn(TestObjectContainer.ORG_UNIT_A);
-		Mockito.when(orgUnitDaoMock.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_B)).thenReturn(TestObjectContainer.ORG_UNIT_B);	
+		Mockito.when(orgUnitDaoMock.findOrgUnitAndMembersById(TestObjectContainer.ORG_UNIT_UUID_A)).thenReturn(TestObjectContainer.ORG_UNIT_A);	
+		Mockito.when(orgUnitDaoMock.findOrgUnitAndMembersById(TestObjectContainer.ORG_UNIT_UUID_B)).thenReturn(TestObjectContainer.ORG_UNIT_B);	
 		
-		IOrganizationalUnit o = orgUnitServices.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_A);		
+		IOrganizationalUnit o = orgUnitServices.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_A, Boolean.TRUE);		
 		assertNotNull(o);
 		assertEquals(TestObjectContainer.ORG_UNIT_A, o);
+		assertFalse(o.getMembers().isEmpty());
 		
-		o = orgUnitServices.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_B);		
+		o = orgUnitServices.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_B, Boolean.TRUE);		
 		assertNotNull(o);
 		assertEquals(TestObjectContainer.ORG_UNIT_B, o);
+		assertFalse(o.getMembers().isEmpty());
 		
-		o = orgUnitServices.findOrgUnitById(OTHER_UUID);
+		o = orgUnitServices.findOrgUnitById(OTHER_UUID, Boolean.TRUE);
 		assertTrue(o == null);
 
 		// test with arbitrary domain-objects:
-		Mockito.when(orgUnitDaoMock.findOrgUnitById(UUID_1)).thenReturn(ORG_UNIT_1);
-		Mockito.when(orgUnitDaoMock.findOrgUnitById(UUID_2)).thenReturn(ORG_UNIT_2);	
+		Mockito.when(orgUnitDaoMock.findOrgUnitAndMembersById(UUID_1)).thenReturn(ORG_UNIT_1);
+		Mockito.when(orgUnitDaoMock.findOrgUnitAndMembersById(UUID_2)).thenReturn(ORG_UNIT_2);	
 		
-		o = orgUnitServices.findOrgUnitById(UUID_1);		
+		o = orgUnitServices.findOrgUnitById(UUID_1, Boolean.TRUE);		
 		assertNotNull(o);
 		assertEquals("identifier", o.getIdentifier(), UUID_1);
 		assertEquals("orgunit-number", o.getNumber(), NO_123);
 		
-		o = orgUnitServices.findOrgUnitById(UUID_2);		
+		o = orgUnitServices.findOrgUnitById(UUID_2, Boolean.TRUE);		
 		assertNotNull(o);
 		assertEquals("identifier", o.getIdentifier(), UUID_2);
 		assertEquals("orgunit-number", o.getNumber(), NO_456);
 		
-		o = orgUnitServices.findOrgUnitById(OTHER_UUID);
+		o = orgUnitServices.findOrgUnitById(OTHER_UUID, Boolean.TRUE);
 		assertTrue(o == null);
 	}
 
 	@Test
-	public void testFindOrgUnitByNumber()
+	public void testFindOrgUnitWithoutMembersById()
+	{		
+		// test with open-ur-specific domain-objects:
+		Mockito.when(orgUnitDaoMock.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_A)).thenReturn(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS);	
+		
+		IOrganizationalUnit o = orgUnitServices.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_A, Boolean.FALSE);		
+		assertNotNull(o);
+		assertEquals(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, o);
+		assertTrue(o.getMembers().isEmpty());
+	}
+
+	@Test
+	public void testFindOrgUnitAndMembersByNumber()
 	{
 		// test with open-ur-specific domain-objects:
-		Mockito.when(orgUnitDaoMock.findOrgUnitByNumber(TestObjectContainer.ORG_UNIT_NUMBER_A)).thenReturn(TestObjectContainer.ORG_UNIT_A);
-		Mockito.when(orgUnitDaoMock.findOrgUnitByNumber(TestObjectContainer.ORG_UNIT_NUMBER_B)).thenReturn(TestObjectContainer.ORG_UNIT_B);
+		Mockito.when(orgUnitDaoMock.findOrgUnitAndMembersByNumber(TestObjectContainer.ORG_UNIT_NUMBER_A)).thenReturn(TestObjectContainer.ORG_UNIT_A);
+		Mockito.when(orgUnitDaoMock.findOrgUnitAndMembersByNumber(TestObjectContainer.ORG_UNIT_NUMBER_B)).thenReturn(TestObjectContainer.ORG_UNIT_B);
 		
-		IOrganizationalUnit o = orgUnitServices.findOrgUnitByNumber(TestObjectContainer.ORG_UNIT_NUMBER_A);		
+		IOrganizationalUnit o = orgUnitServices.findOrgUnitByNumber(TestObjectContainer.ORG_UNIT_NUMBER_A, Boolean.TRUE);		
 		assertNotNull(o);
 		assertEquals(TestObjectContainer.ORG_UNIT_A, o);
+		assertFalse(o.getMembers().isEmpty());
 		
-		o = orgUnitServices.findOrgUnitByNumber(TestObjectContainer.ORG_UNIT_NUMBER_B);		
+		o = orgUnitServices.findOrgUnitByNumber(TestObjectContainer.ORG_UNIT_NUMBER_B, Boolean.TRUE);		
 		assertNotNull(o);
 		assertEquals(TestObjectContainer.ORG_UNIT_B, o);
+		assertFalse(o.getMembers().isEmpty());
 		
-		o = orgUnitServices.findOrgUnitById(NUMBER_DIFFERENT_FROM_ALL_OTHERS);
+		o = orgUnitServices.findOrgUnitByNumber(NUMBER_DIFFERENT_FROM_ALL_OTHERS, Boolean.TRUE);
 		assertTrue(o == null);
 
 		// test with arbitrary domain-objects:
-		Mockito.when(orgUnitDaoMock.findOrgUnitByNumber(NO_123)).thenReturn(ORG_UNIT_1);
-		Mockito.when(orgUnitDaoMock.findOrgUnitByNumber(NO_456)).thenReturn(ORG_UNIT_2);
+		Mockito.when(orgUnitDaoMock.findOrgUnitAndMembersByNumber(NO_123)).thenReturn(ORG_UNIT_1);
+		Mockito.when(orgUnitDaoMock.findOrgUnitAndMembersByNumber(NO_456)).thenReturn(ORG_UNIT_2);
 		
-		o = orgUnitServices.findOrgUnitByNumber(NO_123);		
+		o = orgUnitServices.findOrgUnitByNumber(NO_123, Boolean.TRUE);		
 		assertNotNull(o);
 		assertEquals("orgunit-number", o.getNumber(), NO_123);
 		assertEquals("identifier", o.getIdentifier(), UUID_1);
 		
-		o = orgUnitServices.findOrgUnitByNumber(NO_456);		
+		o = orgUnitServices.findOrgUnitByNumber(NO_456, Boolean.TRUE);		
 		assertNotNull(o);
 		assertEquals("orgunit-number", o.getNumber(), NO_456);
 		assertEquals("identifier", o.getIdentifier(), UUID_2);
 		
-		o = orgUnitServices.findOrgUnitById(NUMBER_DIFFERENT_FROM_ALL_OTHERS);
+		o = orgUnitServices.findOrgUnitById(NUMBER_DIFFERENT_FROM_ALL_OTHERS, Boolean.TRUE);
 		assertTrue(o == null);
+	}
+
+	@Test
+	public void testFindOrgUnitWithoutMembersByNumber()
+	{
+		// test with open-ur-specific domain-objects:
+		Mockito.when(orgUnitDaoMock.findOrgUnitByNumber(TestObjectContainer.ORG_UNIT_NUMBER_A)).thenReturn(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS);
+		
+		IOrganizationalUnit o = orgUnitServices.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_A, Boolean.FALSE);		
+		assertNotNull(o);
+		assertEquals(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, o);
+		assertTrue(o.getMembers().isEmpty());
 	}
 
 	@Test
@@ -181,7 +209,7 @@ public class OrgUnitServicesTest
 		Mockito.when(orgUnitDaoMock.obtainSubOrgUnitsForOrgUnitInclMembers(TestObjectContainer.SUPER_OU_NUMBER_1))
 				.thenReturn(Arrays.asList(TestObjectContainer.ORG_UNIT_A, TestObjectContainer.ORG_UNIT_B));
 		
-		Set<? extends IOrganizationalUnit> orgUnitSet = orgUnitServices.obtainSubOrgUnitsForOrgUnit(TestObjectContainer.SUPER_OU_NUMBER_1, true);
+		Set<? extends IOrganizationalUnit> orgUnitSet = orgUnitServices.obtainSubOrgUnitsForOrgUnit(TestObjectContainer.SUPER_OU_NUMBER_1, Boolean.TRUE);
 		
 		assertNotNull(orgUnitSet);
 		assertEquals(2, orgUnitSet.size());
@@ -226,7 +254,7 @@ public class OrgUnitServicesTest
 		
 		Mockito.when(orgUnitDaoMock.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID)).thenReturn(Arrays.asList(orgUnit1, orgUnit2));
 		
-		orgUnitSet = orgUnitServices.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID, false);
+		orgUnitSet = orgUnitServices.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID, Boolean.FALSE);
 		
 		assertNotNull(orgUnitSet);
 		assertEquals(2, orgUnitSet.size());
@@ -262,7 +290,7 @@ public class OrgUnitServicesTest
 		
 		Mockito.when(orgUnitDaoMock.obtainSubOrgUnitsForOrgUnitInclMembers(SUPER_OU_ID)).thenReturn(Arrays.asList(orgUnit1, orgUnit2_m));
 		
-		orgUnitSet = orgUnitServices.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID, true);
+		orgUnitSet = orgUnitServices.obtainSubOrgUnitsForOrgUnit(SUPER_OU_ID, Boolean.TRUE);
 		
 		assertNotNull(orgUnitSet);
 		assertEquals(2, orgUnitSet.size());

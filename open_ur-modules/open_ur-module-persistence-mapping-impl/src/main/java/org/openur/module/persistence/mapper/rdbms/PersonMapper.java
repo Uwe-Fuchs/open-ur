@@ -68,7 +68,7 @@ public class PersonMapper
 		}
 		
 		PersonBuilder immutableBuilder = new PersonBuilder(entity.getPersonalNumber(), name);		
-		immutableBuilder = super.buildImmutable(immutableBuilder, entity);
+		immutableBuilder = super.mapFromEntity(immutableBuilder, entity);
 		
 		immutableBuilder
 				.emailAddress(StringUtils.isNotEmpty(entity.getEmailAddress()) ? EMailAddress.create(entity.getEmailAddress()) : null)

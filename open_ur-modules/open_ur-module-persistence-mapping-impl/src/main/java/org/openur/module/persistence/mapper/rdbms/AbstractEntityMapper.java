@@ -35,6 +35,11 @@ public class AbstractEntityMapper
 		immutableBuilder
 				.creationDate(entity.getCreationDate())
 				.lastModifiedDate(entity.getLastModifiedDate());
+		
+		if (entity.getIdentifier() != null)
+		{
+			immutableBuilder.identifier(entity.getIdentifier());
+		}
 
 		return immutableBuilder;
 	}

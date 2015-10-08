@@ -4,14 +4,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.lang.reflect.Type;
 import java.util.Set;
 
 import javax.ws.rs.core.Application;
+import javax.ws.rs.core.GenericType;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
+import org.glassfish.hk2.utilities.reflection.ParameterizedTypeImpl;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.junit.Before;
 import org.junit.Test;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.userstructure.person.Person;
@@ -20,14 +22,9 @@ import org.openur.module.domain.utils.common.DomainObjectHelper;
 import org.openur.module.domain.utils.compare.PersonComparer;
 import org.openur.module.service.userstructure.IUserServices;
 import org.openur.remoting.resource.AbstractResourceTest;
-import org.openur.remoting.xchange.marshalling.json.PersonSerializer;
+import org.openur.remoting.xchange.rest.providers.json.IdentifiableEntitySetProvider;
 import org.openur.remoting.xchange.rest.providers.json.PersonProvider;
 import org.openur.remoting.xchange.rest.providers.json.TechnicalUserProvider;
-import org.openur.remoting.xchange.rest.providers.json.IdentifiableEntitySetProvider;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
 public class UserResourceTest
 	extends AbstractResourceTest
@@ -52,17 +49,23 @@ public class UserResourceTest
 
 		return config;
 	}
+	
+	@Before
+	public void setUp()
+		throws Exception
+	{
+		super.setUp();
+		
+		getMyClient().register(PersonProvider.class);
+		getMyClient().register(TechnicalUserProvider.class);
+		getMyClient().register(IdentifiableEntitySetProvider.class);
+	}
 
 	@Test
 	public void testGetPersonByIdResource()
 	{
-		String result = performRestCall(
-				UserResource.USER_RESOURCE_PATH + UserResource.PERSON_PER_ID_RESOURCE_PATH + TestObjectContainer.PERSON_UUID_1);
-
-    Gson gson = new GsonBuilder()
-    		.registerTypeAdapter(Person.class, new PersonSerializer())
-    		.create();
-		Person p = gson.fromJson(result, Person.class);
+		Person p = performRestCall(
+				UserResource.USER_RESOURCE_PATH + UserResource.PERSON_PER_ID_RESOURCE_PATH + TestObjectContainer.PERSON_UUID_1, Person.class);
 		
 		assertTrue(new PersonComparer().objectsAreEqual(TestObjectContainer.PERSON_1, p));
 	}
@@ -70,13 +73,8 @@ public class UserResourceTest
 	@Test
 	public void testGetPersonByNumberResource()
 	{
-		String result = performRestCall(
-			UserResource.USER_RESOURCE_PATH + UserResource.PERSON_PER_NUMBER_RESOURCE_PATH + TestObjectContainer.PERSON_NUMBER_1);
-
-    Gson gson = new GsonBuilder()
-    		.registerTypeAdapter(Person.class, new PersonSerializer())
-    		.create();
-		Person p = gson.fromJson(result, Person.class);
+		Person p = performRestCall(
+			UserResource.USER_RESOURCE_PATH + UserResource.PERSON_PER_NUMBER_RESOURCE_PATH + TestObjectContainer.PERSON_NUMBER_1, Person.class);
 		
 		assertTrue(new PersonComparer().objectsAreEqual(TestObjectContainer.PERSON_1, p));
 	}
@@ -84,16 +82,8 @@ public class UserResourceTest
 	@Test
 	public void testObtainAllPersonsResource()
 	{
-		String result = performRestCall(UserResource.USER_RESOURCE_PATH + UserResource.ALL_PERSONS_RESOURCE_PATH);
-
-		Type resultType = new TypeToken<Set<Person>>()
-		{
-		}.getType();
-
-    Gson gson = new GsonBuilder()
-    		.registerTypeAdapter(Person.class, new PersonSerializer())
-    		.create();
-		Set<Person> resultSet = gson.fromJson(result, resultType);
+		Set<Person> resultSet = performRestCall(UserResource.USER_RESOURCE_PATH + UserResource.ALL_PERSONS_RESOURCE_PATH, 
+				new GenericType<Set<Person>>(new ParameterizedTypeImpl(Set.class, Person.class)));
 
 		assertFalse(resultSet.isEmpty());
 		assertEquals(3, resultSet.size());
@@ -109,32 +99,26 @@ public class UserResourceTest
 	@Test
 	public void testGetTechUserByIdResource()
 	{
-		String result = performRestCall(
-			UserResource.USER_RESOURCE_PATH + UserResource.TECHUSER_PER_ID_RESOURCE_PATH + TestObjectContainer.TECH_USER_UUID_1);
+		TechnicalUser tu = performRestCall(
+				UserResource.USER_RESOURCE_PATH + UserResource.TECHUSER_PER_ID_RESOURCE_PATH + TestObjectContainer.TECH_USER_UUID_1, TechnicalUser.class);
 
-		TechnicalUser tu = new Gson().fromJson(result, TechnicalUser.class);
 		assertTrue(EqualsBuilder.reflectionEquals(TestObjectContainer.TECH_USER_1, tu));
 	}
 
 	@Test
 	public void testGetTechUserByNumberResource()
 	{
-		String result = performRestCall(
-			UserResource.USER_RESOURCE_PATH + UserResource.TECHUSER_PER_NUMBER_RESOURCE_PATH + TestObjectContainer.TECH_USER_NUMBER_1);
+		TechnicalUser tu = performRestCall(
+			UserResource.USER_RESOURCE_PATH + UserResource.TECHUSER_PER_NUMBER_RESOURCE_PATH + TestObjectContainer.TECH_USER_NUMBER_1, TechnicalUser.class);
 
-		TechnicalUser tu = new Gson().fromJson(result, TechnicalUser.class);
 		assertTrue(EqualsBuilder.reflectionEquals(TestObjectContainer.TECH_USER_1, tu));
 	}
 
 	@Test
 	public void testObtainAllTechUsersResource()
 	{
-		String result = performRestCall(UserResource.USER_RESOURCE_PATH + UserResource.ALL_TECHUSERS_RESOURCE_PATH);
-
-		Type resultType = new TypeToken<Set<TechnicalUser>>()
-		{
-		}.getType();
-		Set<TechnicalUser> resultSet = new Gson().fromJson(result, resultType);
+		Set<TechnicalUser> resultSet = performRestCall(UserResource.USER_RESOURCE_PATH + UserResource.ALL_TECHUSERS_RESOURCE_PATH, 
+			new GenericType<Set<TechnicalUser>>(new ParameterizedTypeImpl(Set.class, TechnicalUser.class)));
 
 		assertFalse(resultSet.isEmpty());
 		assertEquals(3, resultSet.size());

@@ -56,27 +56,49 @@ public class OrgUnitResourceTest
 	}
 
 	@Test
-	public void testFindOrgUnitById()
+	public void testFindOrgUnitAndMembersById()
 	{
-		String result = performRestCall("userstructure/orgunit/id/" + TestObjectContainer.ORG_UNIT_UUID_A);
+		String result = performRestCall("userstructure/orgunit/id/" + TestObjectContainer.ORG_UNIT_UUID_A + "?inclMembers=true", String.class);
 
 		AuthorizableOrgUnit o = buildGson().fromJson(result, AuthorizableOrgUnit.class);
 		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A, o));
+		assertFalse(o.getMembers().isEmpty());
 	}
 
 	@Test
-	public void testFindOrgUnitByNumber()
+	public void testFindOrgUnitWithoutMembersById()
+	{		
+		String result = performRestCall("userstructure/orgunit/id/" + TestObjectContainer.ORG_UNIT_UUID_A, String.class);
+
+		AuthorizableOrgUnit o = buildGson().fromJson(result, AuthorizableOrgUnit.class);
+		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, o));
+		assertTrue(o.getMembers().isEmpty());		
+	}
+
+	@Test
+	public void testFindOrgUnitAndMembersByNumber()
 	{
-		String result = performRestCall("userstructure/orgunit/number/" + TestObjectContainer.ORG_UNIT_NUMBER_A);
+		String result = performRestCall("userstructure/orgunit/number/" + TestObjectContainer.ORG_UNIT_NUMBER_A + "?inclMembers=true", String.class);
 
 		AuthorizableOrgUnit o = buildGson().fromJson(result, AuthorizableOrgUnit.class);
 		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A, o));
+		assertFalse(o.getMembers().isEmpty());
+	}
+
+	@Test
+	public void testFindOrgUnitWithoutMembersByNumber()
+	{
+		String result = performRestCall("userstructure/orgunit/number/" + TestObjectContainer.ORG_UNIT_NUMBER_A, String.class);
+
+		AuthorizableOrgUnit o = buildGson().fromJson(result, AuthorizableOrgUnit.class);
+		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, o));
+		assertTrue(o.getMembers().isEmpty());						
 	}
 
 	@Test
 	public void testObtainAllOrgUnits()
 	{
-		String result = performRestCall("userstructure/orgunit/all");
+		String result = performRestCall("userstructure/orgunit/all", String.class);
 
 		Type resultType = new TypeToken<Set<AuthorizableOrgUnit>>()
 		{
@@ -96,10 +118,9 @@ public class OrgUnitResourceTest
 	}
 
 	@Test
-	public void testObtainSubOrgUnitsForOrgUnit()
+	public void testObtainSubOrgUnitsForOrgUnit_inclMembers()
 	{
-		// including members:
-		String result = performRestCall("userstructure/orgunit/sub/" + TestObjectContainer.SUPER_OU_UUID_1 + "?inclMembers=true");
+		String result = performRestCall("userstructure/orgunit/sub/" + TestObjectContainer.SUPER_OU_UUID_1 + "?inclMembers=true", String.class);
 
 		Type resultType = new TypeToken<Set<AuthorizableOrgUnit>>()
 		{
@@ -116,38 +137,42 @@ public class OrgUnitResourceTest
 		p = DomainObjectHelper.findIdentifiableEntityInCollection(resultSet, TestObjectContainer.ORG_UNIT_UUID_B);
 		assertFalse(p.getMembers().isEmpty());
 		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_B, p));
+	}
 
-		// without members:
-		result = performRestCall("userstructure/orgunit/sub/" + MockOrgUnitServicesFactory.MY_SUPER_OU.getIdentifier() + "?inclMembers=false");
-    resultSet = buildGson().fromJson(result, resultType);
+	@Test
+	public void testObtainSubOrgUnitsForOrgUnit_exclMembers()
+	{
+		String result = performRestCall("userstructure/orgunit/sub/" + TestObjectContainer.SUPER_OU_UUID_1 + "?inclMembers=false", String.class);
+
+		Type resultType = new TypeToken<Set<AuthorizableOrgUnit>>()
+		{
+		}.getType();
+
+    Set<AuthorizableOrgUnit> resultSet = buildGson().fromJson(result, resultType);
 
 		assertFalse(resultSet.isEmpty());
-		assertEquals(2, resultSet.size());
+		assertEquals(1, resultSet.size());
 		
-		p = DomainObjectHelper.findIdentifiableEntityInCollection(resultSet, MockOrgUnitServicesFactory.MY_OU_1.getIdentifier());
+		AuthorizableOrgUnit p = DomainObjectHelper.findIdentifiableEntityInCollection(resultSet, TestObjectContainer.ORG_UNIT_UUID_A);
 		assertTrue(p.getMembers().isEmpty());
-		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(MockOrgUnitServicesFactory.MY_OU_1, p));
-		
-		p = DomainObjectHelper.findIdentifiableEntityInCollection(resultSet, MockOrgUnitServicesFactory.MY_OU_2.getIdentifier());
-		assertTrue(p.getMembers().isEmpty());
-		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(MockOrgUnitServicesFactory.MY_OU_2, p));
+		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, p));
 		
 		// default value for query-param => without members:
-		result = performRestCall("userstructure/orgunit/sub/" + MockOrgUnitServicesFactory.MY_SUPER_OU.getIdentifier());
+		result = performRestCall("userstructure/orgunit/sub/" + TestObjectContainer.SUPER_OU_UUID_1, String.class);
     resultSet = buildGson().fromJson(result, resultType);
 
 		assertFalse(resultSet.isEmpty());
-		assertEquals(2, resultSet.size());
+		assertEquals(1, resultSet.size());
 		
-		p = DomainObjectHelper.findIdentifiableEntityInCollection(resultSet, MockOrgUnitServicesFactory.MY_OU_1.getIdentifier());
+		p = DomainObjectHelper.findIdentifiableEntityInCollection(resultSet, TestObjectContainer.ORG_UNIT_UUID_A);
 		assertTrue(p.getMembers().isEmpty());
-		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(MockOrgUnitServicesFactory.MY_OU_1, p));		
+		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, p));		
 	}
 
 	@Test
 	public void testObtainRootOrgUnits()
 	{
-		String result = performRestCall("userstructure/orgunit/root");
+		String result = performRestCall("userstructure/orgunit/root", String.class);
 
 		Type resultType = new TypeToken<Set<AuthorizableOrgUnit>>()
 		{

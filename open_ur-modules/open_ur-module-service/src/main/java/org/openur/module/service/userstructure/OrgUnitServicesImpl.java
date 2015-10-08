@@ -17,19 +17,39 @@ public class OrgUnitServicesImpl
 	private IOrgUnitDao orgUnitDao;
 	
 	@Override
-	public IAuthorizableOrgUnit findOrgUnitById(String orgUnitId)
+	public IAuthorizableOrgUnit findOrgUnitById(String orgUnitId, Boolean inclMembersRoles)
 	{
-		Validate.notEmpty(orgUnitId, "org-unit-id must not be empty!");		
+		Validate.notEmpty(orgUnitId, "org-unit-id must not be empty!");
 		
-		return orgUnitDao.findOrgUnitById(orgUnitId);
+		IAuthorizableOrgUnit ou = null;
+		
+		if (inclMembersRoles)
+		{
+			ou = orgUnitDao.findOrgUnitAndMembersById(orgUnitId);
+		} else
+		{
+			ou = orgUnitDao.findOrgUnitById(orgUnitId);
+		}
+		
+		return ou;
 	}
 
 	@Override
-	public IAuthorizableOrgUnit findOrgUnitByNumber(String orgUnitNumber)
+	public IAuthorizableOrgUnit findOrgUnitByNumber(String orgUnitNumber, Boolean inclMembersRoles)
 	{
 		Validate.notEmpty(orgUnitNumber, "org-unit-number must not be empty!");		
 		
-		return orgUnitDao.findOrgUnitByNumber(orgUnitNumber);
+		IAuthorizableOrgUnit ou = null;
+		
+		if (inclMembersRoles)
+		{
+			ou = orgUnitDao.findOrgUnitAndMembersByNumber(orgUnitNumber);
+		} else
+		{
+			ou = orgUnitDao.findOrgUnitByNumber(orgUnitNumber);
+		}
+		
+		return ou;
 	}
 
 	@Override
@@ -48,13 +68,13 @@ public class OrgUnitServicesImpl
 
 	@Override
 	public Set<IAuthorizableOrgUnit> obtainSubOrgUnitsForOrgUnit(String orgUnitId,
-		boolean inclMembers)
+		Boolean inclMembersRoles)
 	{
 		Validate.notEmpty(orgUnitId, "org-unit-id must not be empty!");		
 		
 		List<IAuthorizableOrgUnit> orgUnitList;
 		
-		if (inclMembers)
+		if (inclMembersRoles)
 		{
 			orgUnitList = orgUnitDao.obtainSubOrgUnitsForOrgUnitInclMembers(orgUnitId);
 		} else
