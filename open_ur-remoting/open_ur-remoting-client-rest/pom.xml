@@ -31,13 +31,17 @@
 			<groupId>org.open-ur.module</groupId>
 			<artifactId>open_ur-module-domain-impl</artifactId>
 			<version>${project.version}</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.open-ur.module</groupId>
 			<artifactId>open_ur-module-domain-testfixture</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.open-ur.remoting</groupId>
+			<artifactId>open_ur-remoting-services-rest</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.open-ur.remoting</groupId>
