@@ -1,7 +1,5 @@
 package org.openur.remoting.resource;
 
-import static org.junit.Assert.assertEquals;
-
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.GenericType;
@@ -42,43 +40,33 @@ public abstract class AbstractResourceTest
 
 	protected <T> T performRestCall(String url, String mediaType, Class<T> resultType)
 	{
-		Response response = internalRestCall(url, mediaType);
-		T result = response.readEntity(resultType);
-
-		System.out.println("Result: " + result);
-
-		return result;
+		return internalRestCall(url, mediaType, resultType, null);
 	}
 
 	protected <T> T performRestCall(String url, Class<T> resultType)
 	{
-		return performRestCall(url, MediaType.APPLICATION_JSON, resultType);
+		return internalRestCall(url, MediaType.APPLICATION_JSON, resultType, null);
 	}
 
 	protected <T> T performRestCall(String url, String mediaType, GenericType<T> resultType)
 	{
-		Response response = internalRestCall(url, mediaType);
-		T result = response.readEntity(resultType);
-
-		System.out.println("Result: " + result);
-
-		return result;
+		return internalRestCall(url, mediaType, null, resultType);
 	}
 
 	protected <T> T performRestCall(String url, GenericType<T> resultType)
 	{
-		return performRestCall(url, MediaType.APPLICATION_JSON, resultType);
+		return internalRestCall(url, MediaType.APPLICATION_JSON, null, resultType);
 	}
-	
-	private Response internalRestCall(String url, String mediaType)
+
+	private <T> T internalRestCall(String url, String mediaType, Class<T> resultClassType, GenericType<T> genericResultType)
 	{
 		Response response = client
-				.target("http://localhost:9998/" + url)
-				.request(mediaType)
-				.get();
-	
-		assertEquals(200, response.getStatus());
+			.target("http://localhost:9998/" + url)
+			.request(mediaType)
+			.get();
 		
-		return response;
+		T result = resultClassType != null ? response.readEntity(resultClassType) : response.readEntity(genericResultType);
+	
+		return result;		
 	}
 }
