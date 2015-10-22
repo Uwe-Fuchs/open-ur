@@ -29,9 +29,9 @@ public abstract class AbstractResourceClient
 	{
 		ClientConfig clientConfig = new ClientConfig();
 		
-		for (Class<?> c: this.providers)
+		for (Class<?> clazz : this.providers)
 		{
-			clientConfig.register(c);
+			clientConfig.register(clazz);
 		}
 		
 		return ClientBuilder.newClient(clientConfig);
