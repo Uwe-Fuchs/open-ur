@@ -10,19 +10,29 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang3.Validate;
 import org.glassfish.jersey.client.ClientConfig;
 
 public abstract class AbstractResourceClient
 {
 	private final List<Class<?>> providers;
+	private final String baseUrl;
 	
-	public AbstractResourceClient(Class<?>... newProviders)
+	public AbstractResourceClient(String baseUrl, Class<?>... newProviders)
 	{
 		super();
+		
+		Validate.notEmpty(baseUrl, "Base-URL must not be empty!");
+		this.baseUrl = baseUrl;
 
 		newProviders = newProviders != null ? newProviders : new Class<?>[] {};
 		List<Class<?>> providersTmp = Arrays.asList(newProviders);
 		this.providers = Collections.unmodifiableList(providersTmp);
+	}
+
+	protected String getBaseUrl()
+	{
+		return baseUrl;
 	}
 
 	private Client createJerseyClient()
