@@ -66,6 +66,7 @@ public abstract class AbstractResourceTest
 			.get();
 		
 		T result = resultClassType != null ? response.readEntity(resultClassType) : response.readEntity(genericResultType);
+		System.out.println("Result: " + result);
 	
 		return result;		
 	}
