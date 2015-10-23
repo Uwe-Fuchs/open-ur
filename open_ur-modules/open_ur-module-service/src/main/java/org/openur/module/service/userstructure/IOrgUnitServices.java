@@ -46,9 +46,8 @@ public interface IOrgUnitServices
   Set<IAuthorizableOrgUnit> obtainSubOrgUnitsForOrgUnit(String orgUnitId, Boolean inclMembersRoles);
 	
   /**
-   * returns all organizational-units, which are roots (i.e. the highest in
-   * an organization) in a set. If no org-units can be found, 
-   * the result-set will be empty (not null).
+   * returns all organizational-units (without their members!!!), which are roots (i.e. the highest in
+   * an organization) in a set. If no org-units can be found, the result-set will be empty (not null).
    * 
    * @return Set with all (authorizable) root-org-units.
    */
