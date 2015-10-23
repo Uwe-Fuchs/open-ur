@@ -30,7 +30,12 @@ public class UserResourceClient
 	@Override
 	public IPerson findPersonById(String personId)
 	{
-		String url = getBaseUrl() + UserResource.USER_RESOURCE_PATH + UserResource.PERSON_PER_ID_RESOURCE_PATH + personId;
+		String url = new StringBuilder()
+				.append(getBaseUrl())
+				.append(UserResource.USER_RESOURCE_PATH)
+				.append(UserResource.PERSON_PER_ID_RESOURCE_PATH)
+				.append(personId)
+				.toString();
 		
 		return performRestCall(url, Person.class);
 	}
@@ -38,7 +43,12 @@ public class UserResourceClient
 	@Override
 	public IPerson findPersonByNumber(String personalNumber)
 	{
-		String url = getBaseUrl() + UserResource.USER_RESOURCE_PATH + UserResource.PERSON_PER_NUMBER_RESOURCE_PATH + personalNumber;
+		String url = new StringBuilder()
+				.append(getBaseUrl())
+				.append(UserResource.USER_RESOURCE_PATH)
+				.append(UserResource.PERSON_PER_NUMBER_RESOURCE_PATH)
+				.append(personalNumber)
+				.toString();
 		
 		return performRestCall(url, Person.class);
 	}
@@ -46,7 +56,11 @@ public class UserResourceClient
 	@Override
 	public Set<IPerson> obtainAllPersons()
 	{
-		String url = getBaseUrl() + UserResource.USER_RESOURCE_PATH + UserResource.ALL_PERSONS_RESOURCE_PATH;
+		String url = new StringBuilder()
+				.append(getBaseUrl())
+				.append(UserResource.USER_RESOURCE_PATH)
+				.append(UserResource.ALL_PERSONS_RESOURCE_PATH)
+				.toString();
 		
 		return performRestCall(url, new GenericType<Set<IPerson>>(new ParameterizedTypeImpl(Set.class, Person.class)));
 	}
@@ -54,7 +68,12 @@ public class UserResourceClient
 	@Override
 	public ITechnicalUser findTechnicalUserById(String techUserId)
 	{
-		String url = getBaseUrl() + UserResource.USER_RESOURCE_PATH + UserResource.TECHUSER_PER_ID_RESOURCE_PATH + techUserId;
+		String url = new StringBuilder()
+				.append(getBaseUrl())
+				.append(UserResource.USER_RESOURCE_PATH)
+				.append(UserResource.TECHUSER_PER_ID_RESOURCE_PATH)
+				.append(techUserId)
+				.toString();
 		
 		return performRestCall(url, TechnicalUser.class);
 	}
@@ -62,7 +81,12 @@ public class UserResourceClient
 	@Override
 	public ITechnicalUser findTechnicalUserByNumber(String techUserNumber)
 	{
-		String url = getBaseUrl() + UserResource.USER_RESOURCE_PATH + UserResource.TECHUSER_PER_NUMBER_RESOURCE_PATH + techUserNumber;
+		String url = new StringBuilder()
+				.append(getBaseUrl())
+				.append(UserResource.USER_RESOURCE_PATH)
+				.append(UserResource.TECHUSER_PER_NUMBER_RESOURCE_PATH)
+				.append(techUserNumber)
+				.toString();
 		
 		return performRestCall(url, TechnicalUser.class);
 	}
@@ -70,7 +94,11 @@ public class UserResourceClient
 	@Override
 	public Set<ITechnicalUser> obtainAllTechnicalUsers()
 	{
-		String url = getBaseUrl() + UserResource.USER_RESOURCE_PATH + UserResource.ALL_TECHUSERS_RESOURCE_PATH;
+		String url = new StringBuilder()
+				.append(getBaseUrl())
+				.append(UserResource.USER_RESOURCE_PATH)
+				.append(UserResource.ALL_TECHUSERS_RESOURCE_PATH)
+				.toString();
 		
 		return performRestCall(url, new GenericType<Set<ITechnicalUser>>(new ParameterizedTypeImpl(Set.class, TechnicalUser.class)));
 	}
