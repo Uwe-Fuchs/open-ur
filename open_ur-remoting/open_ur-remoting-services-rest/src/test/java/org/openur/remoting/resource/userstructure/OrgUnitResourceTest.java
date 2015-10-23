@@ -60,7 +60,8 @@ public class OrgUnitResourceTest
 	public void testFindOrgUnitAndMembersById()
 	{
 		AuthorizableOrgUnit o = performRestCall(
-			"userstructure/orgunit/id/" + TestObjectContainer.ORG_UNIT_UUID_A + "?inclMembers=true", AuthorizableOrgUnit.class);
+			OrgUnitResource.ORGUNIT_RESOURCE_PATH + OrgUnitResource.ORGUNIT_PER_ID_RESOURCE_PATH + TestObjectContainer.ORG_UNIT_UUID_A 
+			+ "?inclMembers=true", AuthorizableOrgUnit.class);
 
 		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A, o));
 		assertFalse(o.getMembers().isEmpty());
@@ -69,7 +70,9 @@ public class OrgUnitResourceTest
 	@Test
 	public void testFindOrgUnitWithoutMembersById()
 	{		
-		AuthorizableOrgUnit o = performRestCall("userstructure/orgunit/id/" + TestObjectContainer.ORG_UNIT_UUID_A, AuthorizableOrgUnit.class);
+		AuthorizableOrgUnit o = performRestCall(
+			OrgUnitResource.ORGUNIT_RESOURCE_PATH + OrgUnitResource.ORGUNIT_PER_ID_RESOURCE_PATH + TestObjectContainer.ORG_UNIT_UUID_A, 
+			AuthorizableOrgUnit.class);
 
 		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, o));
 		assertTrue(o.getMembers().isEmpty());		
@@ -79,7 +82,8 @@ public class OrgUnitResourceTest
 	public void testFindOrgUnitAndMembersByNumber()
 	{
 		AuthorizableOrgUnit o = performRestCall(
-			"userstructure/orgunit/number/" + TestObjectContainer.ORG_UNIT_NUMBER_A + "?inclMembers=true", AuthorizableOrgUnit.class);
+			OrgUnitResource.ORGUNIT_RESOURCE_PATH + OrgUnitResource.ORGUNIT_PER_NUMBER_RESOURCE_PATH + TestObjectContainer.ORG_UNIT_NUMBER_A 
+			+ "?inclMembers=true", AuthorizableOrgUnit.class);
 
 		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A, o));
 		assertFalse(o.getMembers().isEmpty());
@@ -88,7 +92,9 @@ public class OrgUnitResourceTest
 	@Test
 	public void testFindOrgUnitWithoutMembersByNumber()
 	{
-		AuthorizableOrgUnit o = performRestCall("userstructure/orgunit/number/" + TestObjectContainer.ORG_UNIT_NUMBER_A, AuthorizableOrgUnit.class);
+		AuthorizableOrgUnit o = performRestCall(
+			OrgUnitResource.ORGUNIT_RESOURCE_PATH + OrgUnitResource.ORGUNIT_PER_NUMBER_RESOURCE_PATH + TestObjectContainer.ORG_UNIT_NUMBER_A, 
+			AuthorizableOrgUnit.class);
 
 		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, o));
 		assertTrue(o.getMembers().isEmpty());						
@@ -97,7 +103,7 @@ public class OrgUnitResourceTest
 	@Test
 	public void testObtainAllOrgUnits()
 	{
-		Set<AuthorizableOrgUnit> resultSet = performRestCall("userstructure/orgunit/all", 
+		Set<AuthorizableOrgUnit> resultSet = performRestCall(OrgUnitResource.ORGUNIT_RESOURCE_PATH + OrgUnitResource.ALL_ORGUNITS_RESOURCE_PATH, 
 			new GenericType<Set<AuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
 
 		assertFalse(resultSet.isEmpty());
@@ -114,7 +120,8 @@ public class OrgUnitResourceTest
 	@Test
 	public void testObtainSubOrgUnitsForOrgUnit_inclMembers()
 	{
-		Set<AuthorizableOrgUnit> resultSet = performRestCall("userstructure/orgunit/sub/" + TestObjectContainer.SUPER_OU_UUID_1 + "?inclMembers=true", 
+		Set<AuthorizableOrgUnit> resultSet = performRestCall(
+			OrgUnitResource.ORGUNIT_RESOURCE_PATH + OrgUnitResource.SUB_ORGUNITS_RESOURCE_PATH + TestObjectContainer.SUPER_OU_UUID_1 + "?inclMembers=true", 
 			new GenericType<Set<AuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
 
 		assertFalse(resultSet.isEmpty());
@@ -131,7 +138,8 @@ public class OrgUnitResourceTest
 	@Test
 	public void testObtainSubOrgUnitsForOrgUnit_exclMembers()
 	{
-		Set<AuthorizableOrgUnit> resultSet = performRestCall("userstructure/orgunit/sub/" + TestObjectContainer.SUPER_OU_UUID_1 + "?inclMembers=false", 
+		Set<AuthorizableOrgUnit> resultSet = performRestCall(
+			OrgUnitResource.ORGUNIT_RESOURCE_PATH + OrgUnitResource.SUB_ORGUNITS_RESOURCE_PATH + TestObjectContainer.SUPER_OU_UUID_1 + "?inclMembers=false", 
 			new GenericType<Set<AuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
 
 		assertFalse(resultSet.isEmpty());
@@ -142,7 +150,8 @@ public class OrgUnitResourceTest
 		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, p));
 		
 		// default value for query-param => without members:
-		resultSet = performRestCall("userstructure/orgunit/sub/" + TestObjectContainer.SUPER_OU_UUID_1, 
+		resultSet = performRestCall(
+			OrgUnitResource.ORGUNIT_RESOURCE_PATH + OrgUnitResource.SUB_ORGUNITS_RESOURCE_PATH + TestObjectContainer.SUPER_OU_UUID_1, 
 			new GenericType<Set<AuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
 
 		assertFalse(resultSet.isEmpty());
@@ -156,7 +165,7 @@ public class OrgUnitResourceTest
 	@Test
 	public void testObtainRootOrgUnits()
 	{
-		Set<AuthorizableOrgUnit> resultSet = performRestCall("userstructure/orgunit/root",
+		Set<AuthorizableOrgUnit> resultSet = performRestCall(OrgUnitResource.ORGUNIT_RESOURCE_PATH + OrgUnitResource.ALL_ROOT_ORGUNITS_RESOURCE_PATH,
 			new GenericType<Set<AuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
 
 		assertFalse(resultSet.isEmpty());
