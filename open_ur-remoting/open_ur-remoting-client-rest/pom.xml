@@ -40,7 +40,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.open-ur.remoting</groupId>
-			<artifactId>open_ur-remoting-services-rest</artifactId>
+			<artifactId>open_ur-remoting-services-rest-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.open-ur.remoting</groupId>
+			<artifactId>open_ur-remoting-services-rest-impl</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
