@@ -12,10 +12,14 @@
 		<version>0.1-SNAPSHOT</version>
 	</parent>
 
-  	<artifactId>open_ur-remoting-services-rest-api</artifactId>
+	<artifactId>open_ur-remoting-services-rest-api</artifactId>
 	<packaging>jar</packaging>
 
-  	<dependencies>
+	<dependencies>
+		<dependency>
+	      <groupId>org.glassfish.jersey.containers</groupId>
+	      <artifactId>jersey-container-grizzly2-http</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.open-ur.module</groupId>
 			<artifactId>open_ur-module-service</artifactId>
@@ -26,6 +30,6 @@
 			<artifactId>open_ur-module-domain-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-  	</dependencies>
+	</dependencies>
 
 </project>

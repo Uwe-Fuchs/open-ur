@@ -18,7 +18,7 @@ import org.openur.module.service.userstructure.IOrgUnitServices;
 public class OrgUnitResource
 	implements IOrgUnitServices
 {
-	public static final String ORGUNIT_RESOURCE_PATH = UserResource.USER_RESOURCE_PATH + "orgunit/";
+	public static final String ORGUNIT_RESOURCE_PATH = IUserResource.USER_RESOURCE_PATH + "orgunit/";
 	public static final String ORGUNIT_PER_ID_RESOURCE_PATH = "id/";
 	public static final String ORGUNIT_PER_NUMBER_RESOURCE_PATH = "number/";
 	public static final String ALL_ORGUNITS_RESOURCE_PATH = "all";
