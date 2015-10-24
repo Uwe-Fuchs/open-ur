@@ -7,7 +7,7 @@
 	</properties>
 
 	<parent>
-		<groupId>org.open-ur.remoting</groupId>
+		<groupId>org.openur.remoting</groupId>
 		<artifactId>open_ur-remoting</artifactId>
 		<version>0.1-SNAPSHOT</version>
 	</parent>

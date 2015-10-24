@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.open-ur.module</groupId>
+		<groupId>org.openur.module</groupId>
 		<version>0.1-SNAPSHOT</version>
 		<artifactId>open_ur-modules</artifactId>
 	</parent>
@@ -18,7 +18,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.open-ur.pom</groupId>
+			<groupId>org.openur.pom.commons</groupId>
 			<artifactId>open_ur-pom-commons-component</artifactId>
 			<type>pom</type>
 		</dependency>

@@ -9,7 +9,7 @@
 		<version>0.1-SNAPSHOT</version>
 	</parent>
 
-	<groupId>org.open-ur.pom</groupId>
+	<groupId>org.openur.pom</groupId>
 	<artifactId>open_ur-poms</artifactId>
 	<packaging>pom</packaging>
 
@@ -101,31 +101,31 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>org.open-ur.pom</groupId>
+				<groupId>org.openur.pom.testing</groupId>
 				<artifactId>open_ur-pom-testbase-component</artifactId>
 				<version>${project.version}</version>
 				<type>pom</type>
 			</dependency>
 			<dependency>
-				<groupId>org.open-ur.pom</groupId>
+				<groupId>org.openur.pom.persistence</groupId>
 				<artifactId>open_ur-pom-persistence-component</artifactId>
 				<version>${project.version}</version>
 				<type>pom</type>
 			</dependency>
 			<dependency>
-				<groupId>org.open-ur.pom</groupId>
+				<groupId>org.openur.pom.logging</groupId>
 				<artifactId>open_ur-pom-logging-component</artifactId>
 				<version>${project.version}</version>
 				<type>pom</type>
 			</dependency>
 			<dependency>
-				<groupId>org.open-ur.pom</groupId>
+				<groupId>org.openur.pom.spring</groupId>
 				<artifactId>open_ur-pom-spring-component</artifactId>
 				<version>${project.version}</version>
 				<type>pom</type>
 			</dependency>
 			<dependency>
-				<groupId>org.open-ur.pom</groupId>
+				<groupId>org.openur.pom.commons</groupId>
 				<artifactId>open_ur-pom-commons-component</artifactId>
 				<version>${project.version}</version>
 				<type>pom</type>

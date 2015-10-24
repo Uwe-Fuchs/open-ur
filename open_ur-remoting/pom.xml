@@ -6,14 +6,14 @@
 	</properties>
 
 	<parent>
-		<groupId>org.open-ur.pom</groupId>
+		<groupId>org.openur.pom</groupId>
 		<artifactId>open_ur-poms</artifactId>
 		<version>0.1-SNAPSHOT</version>
 		<relativePath>../open_ur-poms/pom.xml</relativePath>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.open-ur.remoting</groupId>
+	<groupId>org.openur.remoting</groupId>
 	<artifactId>open_ur-remoting</artifactId>
 	<packaging>pom</packaging>
 

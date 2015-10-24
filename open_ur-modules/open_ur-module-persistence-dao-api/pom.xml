@@ -8,7 +8,7 @@
 	</properties>
 
 	<parent>
-		<groupId>org.open-ur.module</groupId>
+		<groupId>org.openur.module</groupId>
 		<artifactId>open_ur-modules</artifactId>
 		<version>0.1-SNAPSHOT</version>
 	</parent>
