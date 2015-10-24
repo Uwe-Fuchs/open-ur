@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<properties>
@@ -12,7 +12,7 @@
 		<version>0.1-SNAPSHOT</version>
 	</parent>
 
-  	<artifactId>open_ur-remoting-client-rest</artifactId>
+  	<artifactId>open_ur-remoting-services-rest</artifactId>
 	<packaging>jar</packaging>
 
 	<dependencies>
@@ -31,17 +31,13 @@
 			<groupId>org.open-ur.module</groupId>
 			<artifactId>open_ur-module-domain-impl</artifactId>
 			<version>${project.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.open-ur.module</groupId>
 			<artifactId>open_ur-module-domain-testfixture</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.open-ur.remoting</groupId>
-			<artifactId>open_ur-remoting-services-rest</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.open-ur.remoting</groupId>
