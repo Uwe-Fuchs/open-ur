@@ -12,6 +12,7 @@
 		<version>0.1-SNAPSHOT</version>
 	</parent>
 
+	<groupId>org.openur.remoting.xchange</groupId>
 	<artifactId>open_ur-remoting-x-change</artifactId>
 	<packaging>jar</packaging>
 

@@ -12,6 +12,7 @@
 		<version>0.1-SNAPSHOT</version>
 	</parent>
 
+	<groupId>org.openur.remoting.resource</groupId>
 	<artifactId>open_ur-remoting-services-rest</artifactId>
 	<packaging>jar</packaging>
 
@@ -28,7 +29,7 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.open-ur.remoting</groupId>
+			<groupId>org.openur.remoting.xchange</groupId>
 			<artifactId>open_ur-remoting-x-change</artifactId>
 		</dependency>
 		<dependency>

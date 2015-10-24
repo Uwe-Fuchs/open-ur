@@ -48,9 +48,8 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.open-ur.remoting</groupId>
+			<groupId>org.openur.remoting.resource</groupId>
 			<artifactId>open_ur-remoting-services-rest</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jersey.ext</groupId>
