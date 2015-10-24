@@ -12,10 +12,15 @@
 		<version>0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>open_ur-remoting-services-rest</artifactId>
+  	<artifactId>open_ur-remoting-services-rest-testing</artifactId>
 	<packaging>jar</packaging>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.open-ur.pom</groupId>
+			<artifactId>open_ur-pom-testbase-component</artifactId>
+			<type>pom</type>
+		</dependency>
 		<dependency>
 			<groupId>org.open-ur.module</groupId>
 			<artifactId>open_ur-module-service</artifactId>
@@ -25,15 +30,29 @@
 			<groupId>org.open-ur.module</groupId>
 			<artifactId>open_ur-module-domain-impl</artifactId>
 			<version>${project.version}</version>
-			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.open-ur.module</groupId>
+			<artifactId>open_ur-module-domain-testfixture</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.open-ur.remoting</groupId>
+			<artifactId>open_ur-remoting-services-rest</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.open-ur.remoting</groupId>
 			<artifactId>open_ur-remoting-x-change</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.glassfish.jersey.containers</groupId>
-			<artifactId>jersey-container-grizzly2-http</artifactId>
+			<groupId>org.glassfish.jersey.test-framework.providers</groupId>
+			<artifactId>jersey-test-framework-provider-grizzly2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 

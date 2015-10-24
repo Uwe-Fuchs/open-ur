@@ -18,6 +18,7 @@
   
   <modules>
     <module>open_ur-remoting-services-rest</module>
+    <module>open_ur-remoting-services-rest-testing</module>
     <module>open_ur-remoting-x-change</module>
     <module>open_ur-remoting-webservice-app</module>
     <module>open_ur-remoting-client-rest</module>
