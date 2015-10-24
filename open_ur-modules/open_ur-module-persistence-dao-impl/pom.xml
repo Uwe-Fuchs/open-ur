@@ -1,63 +1,65 @@
-<?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
-  
-  <properties>
-  </properties>
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>org.open-ur.module</groupId>
-    <artifactId>open_ur-modules</artifactId>
-    <version>0.1-SNAPSHOT</version>
-  </parent>
+	<properties>
+	</properties>
 
-  <artifactId>open_ur-module-persistence-dao-impl</artifactId>
-  <packaging>jar</packaging>
-  
-  <dependencies>
-    <dependency>
-      <groupId>org.open-ur.pom</groupId>
-      <artifactId>open_ur-pom-testbase-component</artifactId>
-      <type>pom</type>
-    </dependency>
-    <dependency>
-      <groupId>org.open-ur.pom</groupId>
-      <artifactId>open_ur-pom-spring-component</artifactId>
-      <type>pom</type>
-    </dependency>
-    <dependency>
-      <groupId>org.open-ur.pom</groupId>
-      <artifactId>open_ur-pom-logging-component</artifactId>
-      <type>pom</type>
-    </dependency>
-    <dependency>
-      <groupId>org.open-ur.module</groupId>
-      <artifactId>open_ur-module-domain-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.open-ur.module</groupId>
-      <artifactId>open_ur-module-domain-impl</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.open-ur.module</groupId>
-      <artifactId>open_ur-module-domain-testfixture</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.open-ur.module</groupId>
-      <artifactId>open_ur-module-persistence-dao-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.open-ur.module</groupId>
-      <artifactId>open_ur-module-persistence-mapping-api-entity</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.open-ur.module</groupId>
-      <artifactId>open_ur-module-persistence-mapping-impl</artifactId>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+	<parent>
+		<groupId>org.open-ur.module</groupId>
+		<artifactId>open_ur-modules</artifactId>
+		<version>0.1-SNAPSHOT</version>
+	</parent>
+
+	<groupId>org.openur.module.persistence</groupId>
+	<artifactId>open_ur-module-persistence-dao-impl</artifactId>
+	<packaging>jar</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.open-ur.pom</groupId>
+			<artifactId>open_ur-pom-testbase-component</artifactId>
+			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>org.open-ur.pom</groupId>
+			<artifactId>open_ur-pom-spring-component</artifactId>
+			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>org.open-ur.pom</groupId>
+			<artifactId>open_ur-pom-logging-component</artifactId>
+			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>org.openur.module.domain</groupId>
+			<artifactId>open_ur-module-domain-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openur.module.domain</groupId>
+			<artifactId>open_ur-module-domain-impl</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.openur.module.domain</groupId>
+			<artifactId>open_ur-module-domain-testfixture</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.openur.module.persistence</groupId>
+			<artifactId>open_ur-module-persistence-dao-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openur.module.persistence</groupId>
+			<artifactId>open_ur-module-persistence-mapping-api-entity</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openur.module.persistence</groupId>
+			<artifactId>open_ur-module-persistence-mapping-impl</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
 </project>

@@ -1,42 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  
-  <parent>
-    <groupId>org.open-ur.module</groupId>
-    <version>0.1-SNAPSHOT</version>
-    <artifactId>open_ur-modules</artifactId>
-  </parent>
-  
-  <artifactId>open_ur-module-domain-impl</artifactId>
-  <packaging>jar</packaging>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <properties>
-  </properties>
-  
-  <dependencies>
-    <dependency>
-      <groupId>org.open-ur.pom</groupId>
-      <artifactId>open_ur-pom-testbase-component</artifactId>
-      <type>pom</type>
-    </dependency>
-    <dependency>
-      <groupId>org.open-ur.pom</groupId>
-      <artifactId>open_ur-pom-commons-component</artifactId>
-      <type>pom</type>
-    </dependency>
-    <dependency>
-      <groupId>org.open-ur.module</groupId>
-      <artifactId>open_ur-module-util</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.open-ur.module</groupId>
-      <artifactId>open_ur-module-domain-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>javax.mail</groupId>
-      <artifactId>mail</artifactId>
-    </dependency>
-  </dependencies>
+	<parent>
+		<groupId>org.open-ur.module</groupId>
+		<version>0.1-SNAPSHOT</version>
+		<artifactId>open_ur-modules</artifactId>
+	</parent>
+
+	<groupId>org.openur.module.domain</groupId>
+	<artifactId>open_ur-module-domain-impl</artifactId>
+	<packaging>jar</packaging>
+
+	<properties>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.open-ur.pom</groupId>
+			<artifactId>open_ur-pom-testbase-component</artifactId>
+			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>org.open-ur.pom</groupId>
+			<artifactId>open_ur-pom-commons-component</artifactId>
+			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>org.openur.module.util</groupId>
+			<artifactId>open_ur-module-util</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openur.module.domain</groupId>
+			<artifactId>open_ur-module-domain-api</artifactId>
+		</dependency>
+	</dependencies>
 
 </project>

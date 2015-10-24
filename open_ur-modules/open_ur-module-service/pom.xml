@@ -1,9 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
-	<properties>
-	</properties>
 
 	<parent>
 		<groupId>org.open-ur.module</groupId>
@@ -11,8 +9,12 @@
 		<artifactId>open_ur-modules</artifactId>
 	</parent>
 
+	<groupId>org.openur.module.service</groupId>
 	<artifactId>open_ur-module-service</artifactId>
 	<packaging>jar</packaging>
+
+	<properties>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -36,25 +38,25 @@
 			<type>pom</type>
 		</dependency>
 		<dependency>
-			<groupId>org.open-ur.module</groupId>
+			<groupId>org.openur.module.util</groupId>
 			<artifactId>open_ur-module-util</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.open-ur.module</groupId>
+			<groupId>org.openur.module.domain</groupId>
 			<artifactId>open_ur-module-domain-api</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.open-ur.module</groupId>
+			<groupId>org.openur.module.domain</groupId>
 			<artifactId>open_ur-module-domain-impl</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.open-ur.module</groupId>
+			<groupId>org.openur.module.domain</groupId>
 			<artifactId>open_ur-module-domain-testfixture</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.open-ur.module</groupId>
+			<groupId>org.openur.module.persistence</groupId>
 			<artifactId>open_ur-module-persistence-dao-api</artifactId>
 		</dependency>
 		<dependency>

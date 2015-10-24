@@ -1,63 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  
-  <properties>
-  </properties>
-  
-  <parent>
-    <groupId>org.open-ur.pom</groupId>
-    <artifactId>open_ur-poms</artifactId>
-    <version>0.1-SNAPSHOT</version>
-    <relativePath>../open_ur-poms/pom.xml</relativePath>
-  </parent>
-  
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.open-ur.remoting</groupId>
-  <artifactId>open_ur-remoting</artifactId>
-  <packaging>pom</packaging>
-  
-  <modules>
-    <module>open_ur-remoting-services-rest</module>
-    <module>open_ur-remoting-services-rest-testing</module>
-    <module>open_ur-remoting-x-change</module>
-    <module>open_ur-remoting-webservice-app</module>
-    <module>open_ur-remoting-client-rest</module>
-    <!--module>open_ur-remoting-client-soap</module-->
-  </modules>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-  <build>
-    <pluginManagement>
-      <plugins>
-      </plugins>
-    </pluginManagement> 
-    <plugins>
-    </plugins>
-  </build>
+	<properties>
+	</properties>
 
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.openur.remoting.resource</groupId>
-        <artifactId>open_ur-remoting-services-rest</artifactId>
-        <version>${project.version}</version>
-        <type>jar</type>
-      </dependency>
-      <dependency>
-        <groupId>org.openur.remoting.resource</groupId>
-        <artifactId>open_ur-remoting-services-rest-testing</artifactId>
-        <version>${project.version}</version>
-        <type>jar</type>
-      </dependency>
-      <dependency>
-        <groupId>org.openur.remoting.xchange</groupId>
-        <artifactId>open_ur-remoting-x-change</artifactId>
-        <version>${project.version}</version>
-        <type>jar</type>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
+	<parent>
+		<groupId>org.open-ur.pom</groupId>
+		<artifactId>open_ur-poms</artifactId>
+		<version>0.1-SNAPSHOT</version>
+		<relativePath>../open_ur-poms/pom.xml</relativePath>
+	</parent>
 
-  <dependencies>
-  </dependencies>
-  
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.open-ur.remoting</groupId>
+	<artifactId>open_ur-remoting</artifactId>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>open_ur-remoting-services-rest</module>
+		<module>open_ur-remoting-services-rest-testing</module>
+		<module>open_ur-remoting-x-change</module>
+		<module>open_ur-remoting-webservice-app</module>
+		<module>open_ur-remoting-client-rest</module>
+		<!--module>open_ur-remoting-client-soap</module -->
+	</modules>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+		</plugins>
+	</build>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.openur.remoting.resource</groupId>
+				<artifactId>open_ur-remoting-services-rest</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>org.openur.remoting.resource</groupId>
+				<artifactId>open_ur-remoting-services-rest-testing</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>org.openur.remoting.xchange</groupId>
+				<artifactId>open_ur-remoting-x-change</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+	</dependencies>
+
 </project>

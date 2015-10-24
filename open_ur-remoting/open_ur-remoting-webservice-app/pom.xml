@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -23,29 +23,24 @@
 			<type>pom</type>
 		</dependency>
 		<dependency>
-			<groupId>org.open-ur.module</groupId>
+			<groupId>org.openur.module.persistence</groupId>
 			<artifactId>open_ur-module-persistence-dao-api</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.open-ur.module</groupId>
+			<groupId>org.openur.module.persistence</groupId>
 			<artifactId>open_ur-module-persistence-dao-impl</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.open-ur.module</groupId>
+			<groupId>org.openur.module.persistence</groupId>
 			<artifactId>open_ur-module-persistence-mapping-api-entity</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.open-ur.module</groupId>
+			<groupId>org.openur.module.persistence</groupId>
 			<artifactId>open_ur-module-persistence-mapping-impl</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.open-ur.module</groupId>
+			<groupId>org.openur.module.service</groupId>
 			<artifactId>open_ur-module-service</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openur.remoting.resource</groupId>
@@ -88,7 +83,6 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
-			<version>3.1.0</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
