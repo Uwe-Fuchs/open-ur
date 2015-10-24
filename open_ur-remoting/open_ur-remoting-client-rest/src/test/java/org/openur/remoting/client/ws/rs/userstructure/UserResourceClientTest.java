@@ -23,6 +23,7 @@ import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 import org.openur.module.domain.utils.common.DomainObjectHelper;
 import org.openur.module.domain.utils.compare.PersonComparer;
 import org.openur.module.service.userstructure.IUserServices;
+import org.openur.remoting.resource.userstructure.MockUserServicesFactory;
 import org.openur.remoting.resource.userstructure.UserResource;
 
 public class UserResourceClientTest
