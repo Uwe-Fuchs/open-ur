@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.open-ur</groupId>
+		<groupId>org.openur</groupId>
 		<artifactId>open_ur-builder_pom</artifactId>
 		<version>0.1-SNAPSHOT</version>
 	</parent>
