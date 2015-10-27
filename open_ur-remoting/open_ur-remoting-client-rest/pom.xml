@@ -24,19 +24,16 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.open-ur.module</groupId>
+			<groupId>org.openur.module.service</groupId>
 			<artifactId>open_ur-module-service</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.open-ur.module</groupId>
+			<groupId>org.openur.module.domain</groupId>
 			<artifactId>open_ur-module-domain-impl</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.open-ur.module</groupId>
+			<groupId>org.openur.module.domain</groupId>
 			<artifactId>open_ur-module-domain-testfixture</artifactId>
-			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

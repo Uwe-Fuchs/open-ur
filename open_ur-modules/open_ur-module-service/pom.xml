@@ -21,6 +21,7 @@
 			<groupId>org.openur.pom.testing</groupId>
 			<artifactId>open_ur-pom-testbase-component</artifactId>
 			<type>pom</type>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.openur.pom.spring</groupId>
