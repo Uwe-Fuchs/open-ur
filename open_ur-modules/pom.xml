@@ -24,7 +24,6 @@
 	    <module>open_ur-module-persistence-entity</module>
     	<module>open_ur-module-persistence-mapping-api</module>
 		<module>open_ur-module-persistence-mapping-impl</module>
-		<module>open_ur-module-persistence-mapping-api-entity</module>
 		<module>open_ur-module-persistence-dao-api</module>
 		<module>open_ur-module-persistence-dao-impl</module>
 		<module>open_ur-module-service</module>
@@ -69,11 +68,6 @@
 			<dependency>
 				<groupId>org.openur.module.persistence</groupId>
 				<artifactId>open_ur-module-persistence-mapping-api</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.openur.module.persistence</groupId>
-				<artifactId>open_ur-module-persistence-mapping-api-entity</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
