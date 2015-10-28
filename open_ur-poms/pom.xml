@@ -162,6 +162,16 @@
 			</dependency>
 			<dependency>
 				<groupId>org.openur.module.persistence</groupId>
+				<artifactId>open_ur-module-persistence-entity</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.openur.module.persistence</groupId>
+				<artifactId>open_ur-module-persistence-mapping-api</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.openur.module.persistence</groupId>
 				<artifactId>open_ur-module-persistence-mapping-api-entity</artifactId>
 				<version>${project.version}</version>
 			</dependency>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -22,12 +21,14 @@
 		<module>open_ur-module-domain-api</module>
 		<module>open_ur-module-domain-impl</module>
 		<module>open_ur-module-domain-testfixture</module>
+	    <module>open_ur-module-persistence-entity</module>
+    	<module>open_ur-module-persistence-mapping-api</module>
+		<module>open_ur-module-persistence-mapping-impl</module>
 		<module>open_ur-module-persistence-mapping-api-entity</module>
 		<module>open_ur-module-persistence-dao-api</module>
-		<module>open_ur-module-persistence-mapping-impl</module>
 		<module>open_ur-module-persistence-dao-impl</module>
 		<module>open_ur-module-service</module>
-	</modules>
+  </modules>
 
 	<build>
 		<pluginManagement>
@@ -58,6 +59,16 @@
 			<dependency>
 				<groupId>org.openur.module.domain</groupId>
 				<artifactId>open_ur-module-domain-testfixture</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.openur.module.persistence</groupId>
+				<artifactId>open_ur-module-persistence-entity</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.openur.module.persistence</groupId>
+				<artifactId>open_ur-module-persistence-mapping-api</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
