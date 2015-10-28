@@ -1,23 +1,42 @@
-<?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.openur.module</groupId>
-    <artifactId>open_ur-modules</artifactId>
-    <version>0.1-SNAPSHOT</version>
-  </parent>
-  <groupId>org.openur.persistence</groupId>
-  <artifactId>open_ur-module-persistence-entity</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <name>open_ur-module-persistence-entity</name>
-  <url>http://maven.apache.org</url>
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.openur.module</groupId>
+		<artifactId>open_ur-modules</artifactId>
+		<version>0.1-SNAPSHOT</version>
+	</parent>
+
+	<groupId>org.openur.module.persistence</groupId>
+	<artifactId>open_ur-module-persistence-entity</artifactId>
+	<packaging>jar</packaging>
+
+	<properties>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.openur.pom.persistence</groupId>
+			<artifactId>open_ur-pom-persistence-component</artifactId>
+			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>org.openur.pom.spring</groupId>
+			<artifactId>open_ur-pom-spring-component</artifactId>
+			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>org.openur.pom.logging</groupId>
+			<artifactId>open_ur-pom-logging-component</artifactId>
+			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>org.openur.module.domain</groupId>
+			<artifactId>open_ur-module-domain-api</artifactId>
+		</dependency>
+	</dependencies>
+
 </project>
