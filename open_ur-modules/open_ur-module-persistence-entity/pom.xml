@@ -29,11 +29,6 @@
 			<type>pom</type>
 		</dependency>
 		<dependency>
-			<groupId>org.openur.pom.logging</groupId>
-			<artifactId>open_ur-pom-logging-component</artifactId>
-			<type>pom</type>
-		</dependency>
-		<dependency>
 			<groupId>org.openur.module.domain</groupId>
 			<artifactId>open_ur-module-domain-api</artifactId>
 		</dependency>
