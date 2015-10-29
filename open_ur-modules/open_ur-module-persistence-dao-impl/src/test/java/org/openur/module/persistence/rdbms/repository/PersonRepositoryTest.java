@@ -14,6 +14,8 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openur.module.domain.userstructure.Status;
+import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
+import org.openur.module.persistence.rdbms.config.MapperSpringConfig;
 import org.openur.module.persistence.rdbms.config.RepositorySpringConfig;
 import org.openur.module.persistence.rdbms.entity.PAddress;
 import org.openur.module.persistence.rdbms.entity.PApplication;
@@ -24,8 +26,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-@ContextConfiguration(classes = { RepositorySpringConfig.class })
-@ActiveProfiles(profiles = { "testRepository" })
+@ContextConfiguration(classes = { RepositorySpringConfig.class, DaoSpringConfig.class, MapperSpringConfig.class })
+@ActiveProfiles(profiles = { "testRepository", "testDao", "testMappers" })
 @RunWith(SpringJUnit4ClassRunner.class)
 public class PersonRepositoryTest
 {
