@@ -1,8 +1,8 @@
 package org.openur.remoting.resource.userstructure;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+
+import static org.openur.remoting.resource.userstructure.OrgUnitResource.*;
 
 import java.util.Set;
 
@@ -60,8 +60,8 @@ public class OrgUnitResourceTest
 	public void testFindOrgUnitAndMembersById()
 	{
 		AuthorizableOrgUnit o = performRestCall(
-			OrgUnitResource.ORGUNIT_RESOURCE_PATH + OrgUnitResource.ORGUNIT_PER_ID_RESOURCE_PATH + TestObjectContainer.ORG_UNIT_UUID_A 
-			+ "?inclMembers=true", AuthorizableOrgUnit.class);
+				ORGUNIT_RESOURCE_PATH + ORGUNIT_PER_ID_RESOURCE_PATH + TestObjectContainer.ORG_UNIT_UUID_A 
+				+ "?inclMembers=true", AuthorizableOrgUnit.class);
 
 		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A, o));
 		assertFalse(o.getMembers().isEmpty());
@@ -71,8 +71,7 @@ public class OrgUnitResourceTest
 	public void testFindOrgUnitWithoutMembersById()
 	{		
 		AuthorizableOrgUnit o = performRestCall(
-			OrgUnitResource.ORGUNIT_RESOURCE_PATH + OrgUnitResource.ORGUNIT_PER_ID_RESOURCE_PATH + TestObjectContainer.ORG_UNIT_UUID_A, 
-			AuthorizableOrgUnit.class);
+				ORGUNIT_RESOURCE_PATH + ORGUNIT_PER_ID_RESOURCE_PATH + TestObjectContainer.ORG_UNIT_UUID_A, AuthorizableOrgUnit.class);
 
 		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, o));
 		assertTrue(o.getMembers().isEmpty());		
@@ -82,8 +81,8 @@ public class OrgUnitResourceTest
 	public void testFindOrgUnitAndMembersByNumber()
 	{
 		AuthorizableOrgUnit o = performRestCall(
-			OrgUnitResource.ORGUNIT_RESOURCE_PATH + OrgUnitResource.ORGUNIT_PER_NUMBER_RESOURCE_PATH + TestObjectContainer.ORG_UNIT_NUMBER_A 
-			+ "?inclMembers=true", AuthorizableOrgUnit.class);
+				ORGUNIT_RESOURCE_PATH + ORGUNIT_PER_NUMBER_RESOURCE_PATH + TestObjectContainer.ORG_UNIT_NUMBER_A 
+				+ "?inclMembers=true", AuthorizableOrgUnit.class);
 
 		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A, o));
 		assertFalse(o.getMembers().isEmpty());
@@ -93,8 +92,7 @@ public class OrgUnitResourceTest
 	public void testFindOrgUnitWithoutMembersByNumber()
 	{
 		AuthorizableOrgUnit o = performRestCall(
-			OrgUnitResource.ORGUNIT_RESOURCE_PATH + OrgUnitResource.ORGUNIT_PER_NUMBER_RESOURCE_PATH + TestObjectContainer.ORG_UNIT_NUMBER_A, 
-			AuthorizableOrgUnit.class);
+				ORGUNIT_RESOURCE_PATH + ORGUNIT_PER_NUMBER_RESOURCE_PATH + TestObjectContainer.ORG_UNIT_NUMBER_A, AuthorizableOrgUnit.class);
 
 		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, o));
 		assertTrue(o.getMembers().isEmpty());						
@@ -103,8 +101,8 @@ public class OrgUnitResourceTest
 	@Test
 	public void testObtainAllOrgUnits()
 	{
-		Set<AuthorizableOrgUnit> resultSet = performRestCall(OrgUnitResource.ORGUNIT_RESOURCE_PATH + OrgUnitResource.ALL_ORGUNITS_RESOURCE_PATH, 
-			new GenericType<Set<AuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
+		Set<AuthorizableOrgUnit> resultSet = performRestCall(ORGUNIT_RESOURCE_PATH + ALL_ORGUNITS_RESOURCE_PATH, 
+				new GenericType<Set<AuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
 
 		assertFalse(resultSet.isEmpty());
 		assertEquals(3, resultSet.size());
@@ -121,8 +119,8 @@ public class OrgUnitResourceTest
 	public void testObtainSubOrgUnitsForOrgUnit_inclMembers()
 	{
 		Set<AuthorizableOrgUnit> resultSet = performRestCall(
-			OrgUnitResource.ORGUNIT_RESOURCE_PATH + OrgUnitResource.SUB_ORGUNITS_RESOURCE_PATH + TestObjectContainer.SUPER_OU_UUID_1 + "?inclMembers=true", 
-			new GenericType<Set<AuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
+				ORGUNIT_RESOURCE_PATH + SUB_ORGUNITS_RESOURCE_PATH + TestObjectContainer.SUPER_OU_UUID_1 + "?inclMembers=true", 
+				new GenericType<Set<AuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
 
 		assertFalse(resultSet.isEmpty());
 		assertEquals(2, resultSet.size());
@@ -139,8 +137,8 @@ public class OrgUnitResourceTest
 	public void testObtainSubOrgUnitsForOrgUnit_exclMembers()
 	{
 		Set<AuthorizableOrgUnit> resultSet = performRestCall(
-			OrgUnitResource.ORGUNIT_RESOURCE_PATH + OrgUnitResource.SUB_ORGUNITS_RESOURCE_PATH + TestObjectContainer.SUPER_OU_UUID_1 + "?inclMembers=false", 
-			new GenericType<Set<AuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
+				ORGUNIT_RESOURCE_PATH + SUB_ORGUNITS_RESOURCE_PATH + TestObjectContainer.SUPER_OU_UUID_1 + "?inclMembers=false", 
+				new GenericType<Set<AuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
 
 		assertFalse(resultSet.isEmpty());
 		assertEquals(1, resultSet.size());
@@ -151,8 +149,8 @@ public class OrgUnitResourceTest
 		
 		// default value for query-param => without members:
 		resultSet = performRestCall(
-			OrgUnitResource.ORGUNIT_RESOURCE_PATH + OrgUnitResource.SUB_ORGUNITS_RESOURCE_PATH + TestObjectContainer.SUPER_OU_UUID_1, 
-			new GenericType<Set<AuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
+				ORGUNIT_RESOURCE_PATH + SUB_ORGUNITS_RESOURCE_PATH + TestObjectContainer.SUPER_OU_UUID_1, 
+				new GenericType<Set<AuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
 
 		assertFalse(resultSet.isEmpty());
 		assertEquals(1, resultSet.size());
@@ -165,8 +163,8 @@ public class OrgUnitResourceTest
 	@Test
 	public void testObtainRootOrgUnits()
 	{
-		Set<AuthorizableOrgUnit> resultSet = performRestCall(OrgUnitResource.ORGUNIT_RESOURCE_PATH + OrgUnitResource.ALL_ROOT_ORGUNITS_RESOURCE_PATH,
-			new GenericType<Set<AuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
+		Set<AuthorizableOrgUnit> resultSet = performRestCall(ORGUNIT_RESOURCE_PATH + ALL_ROOT_ORGUNITS_RESOURCE_PATH,
+				new GenericType<Set<AuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
 
 		assertFalse(resultSet.isEmpty());
 		assertEquals(1, resultSet.size());

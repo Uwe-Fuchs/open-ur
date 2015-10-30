@@ -1,5 +1,12 @@
 package org.openur.remoting.client.ws.rs.userstructure;
 
+import static org.openur.remoting.resource.userstructure.OrgUnitResource.ALL_ORGUNITS_RESOURCE_PATH;
+import static org.openur.remoting.resource.userstructure.OrgUnitResource.ALL_ROOT_ORGUNITS_RESOURCE_PATH;
+import static org.openur.remoting.resource.userstructure.OrgUnitResource.ORGUNIT_PER_ID_RESOURCE_PATH;
+import static org.openur.remoting.resource.userstructure.OrgUnitResource.ORGUNIT_PER_NUMBER_RESOURCE_PATH;
+import static org.openur.remoting.resource.userstructure.OrgUnitResource.ORGUNIT_RESOURCE_PATH;
+import static org.openur.remoting.resource.userstructure.OrgUnitResource.SUB_ORGUNITS_RESOURCE_PATH;
+
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -10,7 +17,6 @@ import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.service.userstructure.IOrgUnitServices;
 import org.openur.remoting.client.ws.rs.AbstractResourceClient;
-import org.openur.remoting.resource.userstructure.OrgUnitResource;
 import org.openur.remoting.xchange.rest.providers.json.IdentifiableEntitySetProvider;
 import org.openur.remoting.xchange.rest.providers.json.OrgUnitProvider;
 
@@ -29,8 +35,8 @@ public class OrgUnitResourceClient
 	{
 		String url = new StringBuilder()
 				.append(getBaseUrl())
-				.append(OrgUnitResource.ORGUNIT_RESOURCE_PATH)
-				.append(OrgUnitResource.ORGUNIT_PER_ID_RESOURCE_PATH)
+				.append(ORGUNIT_RESOURCE_PATH)
+				.append(ORGUNIT_PER_ID_RESOURCE_PATH)
 				.append(orgUnitId)
 				.append("?inclMembers=")
 				.append(inclMembersRoles.toString())
@@ -44,8 +50,8 @@ public class OrgUnitResourceClient
 	{
 		String url = new StringBuilder()
 				.append(getBaseUrl())
-				.append(OrgUnitResource.ORGUNIT_RESOURCE_PATH)
-				.append(OrgUnitResource.ORGUNIT_PER_NUMBER_RESOURCE_PATH)
+				.append(ORGUNIT_RESOURCE_PATH)
+				.append(ORGUNIT_PER_NUMBER_RESOURCE_PATH)
 				.append(orgUnitNumber)
 				.append("?inclMembers=")
 				.append(inclMembersRoles.toString())
@@ -59,8 +65,8 @@ public class OrgUnitResourceClient
 	{
 		String url = new StringBuilder()
 				.append(getBaseUrl())
-				.append(OrgUnitResource.ORGUNIT_RESOURCE_PATH)
-				.append(OrgUnitResource.ALL_ORGUNITS_RESOURCE_PATH)
+				.append(ORGUNIT_RESOURCE_PATH)
+				.append(ALL_ORGUNITS_RESOURCE_PATH)
 				.toString();
 		
 		return performRestCall(
@@ -72,8 +78,8 @@ public class OrgUnitResourceClient
 	{
 		String url = new StringBuilder()
 				.append(getBaseUrl())
-				.append(OrgUnitResource.ORGUNIT_RESOURCE_PATH)
-				.append(OrgUnitResource.SUB_ORGUNITS_RESOURCE_PATH)
+				.append(ORGUNIT_RESOURCE_PATH)
+				.append(SUB_ORGUNITS_RESOURCE_PATH)
 				.append(orgUnitId)
 				.append("?inclMembers=")
 				.append(inclMembersRoles.toString())
@@ -88,8 +94,8 @@ public class OrgUnitResourceClient
 	{
 		String url = new StringBuilder()
 				.append(getBaseUrl())
-				.append(OrgUnitResource.ORGUNIT_RESOURCE_PATH)
-				.append(OrgUnitResource.ALL_ROOT_ORGUNITS_RESOURCE_PATH)
+				.append(ORGUNIT_RESOURCE_PATH)
+				.append(ALL_ROOT_ORGUNITS_RESOURCE_PATH)
 				.toString();
 		
 		return performRestCall(
