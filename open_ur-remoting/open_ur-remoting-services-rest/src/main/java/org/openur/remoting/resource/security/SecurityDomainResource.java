@@ -14,73 +14,82 @@ import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
 import org.openur.module.service.security.ISecurityDomainServices;
 
-@Path("/securitydomain")
+@Path(SecurityDomainResource.SECURITY_DOMAIN_RESOURCE_PATH)
 public class SecurityDomainResource
 	implements ISecurityDomainServices
 {
+	public static final String SECURITY_DOMAIN_RESOURCE_PATH = "securitydomain/";
+	public static final String PERMISSION_PER_ID_RESOURCE_PATH = "permission/id/";
+	public static final String PERMISSION_PER_TEXT_RESOURCE_PATH = "permission/text/";
+	public static final String ALL_PERMISSIONS_RESOURCE_PATH = "permission/all";
+	public static final String PERMISSIONS_PER_APP_RESOURCE_PATH = "permission/app/";
+	public static final String ROLE_PER_ID_RESOURCE_PATH = "role/id/";
+	public static final String ROLE_PER_NAME_RESOURCE_PATH = "role/name/";
+	public static final String ALL_ROLES_RESOURCE_PATH = "role/all";
+	
 	@Inject
-	private ISecurityDomainServices securityDomianServices;
+	private ISecurityDomainServices securityDomainServices;
 	
 	@Override
 	@GET
-	@Path("/role/id/{id}")
+	@Path(ROLE_PER_ID_RESOURCE_PATH + "{id}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public IRole findRoleById(@PathParam("id") String roleId)
 	{
-		return securityDomianServices.findRoleById(roleId);
+		return securityDomainServices.findRoleById(roleId);
 	}
 
 	@Override
 	@GET
-	@Path("/role/name/{name}")
+	@Path(ROLE_PER_NAME_RESOURCE_PATH + "{name}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public IRole findRoleByName(@PathParam("name") String roleName)
 	{
-		return securityDomianServices.findRoleByName(roleName);
+		return securityDomainServices.findRoleByName(roleName);
 	}
 
 	@Override
 	@GET
-	@Path("/role/all")
+	@Path(ALL_ROLES_RESOURCE_PATH)
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public Set<IRole> obtainAllRoles()
 	{
-		return securityDomianServices.obtainAllRoles();
+		return securityDomainServices.obtainAllRoles();
 	}
 
 	@Override
 	@GET
-	@Path("/permission/id/{id}")
+	@Path(PERMISSION_PER_ID_RESOURCE_PATH + "{id}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public IPermission findPermissionById(@PathParam("id") String permissionId)
 	{
-		return securityDomianServices.findPermissionById(permissionId);
+		return securityDomainServices.findPermissionById(permissionId);
 	}
 
 	@Override
 	@GET
-	@Path("/permission/text")
+	@Path(PERMISSION_PER_TEXT_RESOURCE_PATH)
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public IPermission findPermission(@QueryParam("text") String permissionText, @QueryParam("appName") String applicationName)
 	{
-		return securityDomianServices.findPermission(permissionText, applicationName);
+		return securityDomainServices.findPermission(permissionText, applicationName);
 	}
 
 	@Override
 	@GET
-	@Path("/permission/app/{app}")
+	@Path(PERMISSIONS_PER_APP_RESOURCE_PATH + "{app}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public Set<IPermission> obtainPermissionsForApp(@PathParam("app") String applicationName)
 	{
-		return securityDomianServices.obtainPermissionsForApp(applicationName);
+		return securityDomainServices.obtainPermissionsForApp(applicationName);
 	}
 
 	@Override
 	@GET
-	@Path("/permission/all")
+	@Path(ALL_PERMISSIONS_RESOURCE_PATH)
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public Set<IPermission> obtainAllPermissions()
 	{
-		return securityDomianServices.obtainAllPermissions();
+		return securityDomainServices.obtainAllPermissions();
 	}
 }
