@@ -9,11 +9,11 @@ import org.openur.module.service.security.IAuthorizationServices;
 public class MockAuthorizationServicesFactory
 	implements Factory<IAuthorizationServices>
 {
-	static final String APP_NAME = "appName";
-	static final String PERMISSION_TEXT = "permissionText";
-	static final String OTHER_PERMISSION_TEXT = "otherPermissionText";
-	static final String PERSON_ID = UUID.randomUUID().toString();
-	static final String OU_ID = UUID.randomUUID().toString();
+	public static final String APP_NAME = "appName";
+	public static final String PERMISSION_TEXT = "permissionText";
+	public static final String OTHER_PERMISSION_TEXT = "otherPermissionText";
+	public static final String PERSON_ID = UUID.randomUUID().toString();
+	public static final String OU_ID = UUID.randomUUID().toString();
 	
 	@Override
 	public IAuthorizationServices provide()
