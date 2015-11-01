@@ -9,16 +9,20 @@ import javax.ws.rs.core.MediaType;
 
 import org.openur.module.service.security.IAuthorizationServices;
 
-@Path("/authorization")
+@Path(AuthorizationResource.AUTHORIZATION_RESOURCE_PATH)
 public class AuthorizationResource
 	implements IAuthorizationServices
 {
+	public static final String AUTHORIZATION_RESOURCE_PATH = "authorization/";
+	public static final String HAS_OU_PERMISSION_RESOURCE_PATH = "ou";
+	public static final String HAS_SYSTEM_PERMISSION_RESOURCE_PATH = "system";
+	
 	@Inject
 	IAuthorizationServices authorizationServices;
 
 	@Override
 	@GET
-	@Path("/ou")
+	@Path(HAS_OU_PERMISSION_RESOURCE_PATH)
 	@Produces( MediaType.TEXT_PLAIN )
 	public Boolean hasPermission(@QueryParam("personId") String personId, @QueryParam("ouId") String orgUnitId, 
 		@QueryParam("text") String permissionText, @QueryParam("appName") String applicationName)
@@ -28,7 +32,7 @@ public class AuthorizationResource
 
 	@Override
 	@GET
-	@Path("/system")
+	@Path(HAS_SYSTEM_PERMISSION_RESOURCE_PATH)
 	@Produces( MediaType.TEXT_PLAIN )
 	public Boolean hasPermission(@QueryParam("personId") String personId, @QueryParam("text") String permissionText, 
 		@QueryParam("appName") String applicationName)
