@@ -30,8 +30,7 @@ public class OrgUnitResourceClientTest
 	@Override
 	protected Application configure()
 	{
-		orgUnitServices = new OrgUnitResourceClient("http://localhost:9998/");
-		
+		// Http-Testserver:
 		AbstractBinder binder = new AbstractBinder()
 		{
 			@Override
@@ -43,6 +42,9 @@ public class OrgUnitResourceClientTest
 
 		ResourceConfig config = new ResourceConfig(OrgUnitResource.class)
 				.register(binder);
+
+		// Client:
+		orgUnitServices = new OrgUnitResourceClient("http://localhost:9998/");		
 		
 		for (Class<?> provider : ((OrgUnitResourceClient) orgUnitServices).getProviders())
 		{

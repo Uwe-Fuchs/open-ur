@@ -34,8 +34,7 @@ public class UserResourceClientTest
 	@Override
 	protected Application configure()
 	{
-		userServices = new UserResourceClient("http://localhost:9998/");	
-		
+		// Http-Testserver:
 		AbstractBinder binder = new AbstractBinder()
 		{
 			@Override
@@ -47,6 +46,9 @@ public class UserResourceClientTest
 
 		ResourceConfig config = new ResourceConfig(UserResource.class)
 				.register(binder);
+		
+		// Client:
+		userServices = new UserResourceClient("http://localhost:9998/");		
 		
 		for (Class<?> provider : ((UserResourceClient) userServices).getProviders())
 		{
