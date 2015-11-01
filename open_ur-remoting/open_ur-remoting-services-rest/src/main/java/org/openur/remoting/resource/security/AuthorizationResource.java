@@ -18,7 +18,7 @@ public class AuthorizationResource
 	public static final String HAS_SYSTEM_PERMISSION_RESOURCE_PATH = "system";
 	
 	@Inject
-	IAuthorizationServices authorizationServices;
+	private IAuthorizationServices authorizationServices;
 
 	@Override
 	@GET
