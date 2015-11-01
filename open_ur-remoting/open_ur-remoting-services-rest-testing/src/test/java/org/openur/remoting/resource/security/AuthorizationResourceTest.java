@@ -50,7 +50,7 @@ public class AuthorizationResourceTest
 	{
 		Boolean b = performRestCall(AUTHORIZATION_RESOURCE_PATH + HAS_OU_PERMISSION_RESOURCE_PATH 
 				+ "?personId=" + MockAuthorizationServicesFactory.PERSON_ID + "&ouId=" + MockAuthorizationServicesFactory.OU_ID 
-				+ "&text=" + MockAuthorizationServicesFactory.OTHER_PERMISSION_TEXT 	+ "&appName=" + MockAuthorizationServicesFactory.APP_NAME, 
+				+ "&text=" + MockAuthorizationServicesFactory.OTHER_PERMISSION_TEXT + "&appName=" + MockAuthorizationServicesFactory.APP_NAME, 
 				MediaType.TEXT_PLAIN, Boolean.class);
 		
 		assertFalse(b);
