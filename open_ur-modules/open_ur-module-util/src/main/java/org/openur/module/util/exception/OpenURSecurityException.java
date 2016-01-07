@@ -7,7 +7,7 @@ package org.openur.module.util.exception;
  * @author uwe@uwefuchs.com
  */
 public class OpenURSecurityException 
-	extends OpenURException
+	extends OpenURRuntimeException
 {
 	private static final long serialVersionUID = 1892827173004108483L;
 

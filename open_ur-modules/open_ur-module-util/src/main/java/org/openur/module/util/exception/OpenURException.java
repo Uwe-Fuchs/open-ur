@@ -8,6 +8,7 @@ public class OpenURException
 
 	public OpenURException()
 	{
+		super();
 	}
 
 	public OpenURException(String message)

@@ -7,6 +7,7 @@ public class OpenURRuntimeException
 
 	public OpenURRuntimeException()
 	{
+		super();
 	}
 
 	public OpenURRuntimeException(String message)
