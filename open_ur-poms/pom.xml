@@ -28,6 +28,7 @@
 		<module>open_ur-pom-spring-component</module>
 		<module>open_ur-pom-logging-component</module>
 		<module>open_ur-pom-commons-component</module>
+		<module>open_ur-pom-security-component</module>
 	</modules>
 
 	<build>
@@ -127,6 +128,12 @@
 			<dependency>
 				<groupId>org.openur.pom.commons</groupId>
 				<artifactId>open_ur-pom-commons-component</artifactId>
+				<version>${project.version}</version>
+				<type>pom</type>
+			</dependency>
+			<dependency>
+				<groupId>org.openur.pom.security</groupId>
+				<artifactId>open_ur-pom-security-component</artifactId>
 				<version>${project.version}</version>
 				<type>pom</type>
 			</dependency>
