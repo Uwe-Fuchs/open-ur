@@ -24,6 +24,11 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.openur.pom.security</groupId>
+			<artifactId>open_ur-pom-security-component</artifactId>
+			<type>pom</type>
+		</dependency>
+		<dependency>
 			<groupId>org.openur.pom.commons</groupId>
 			<artifactId>open_ur-pom-commons-component</artifactId>
 			<type>pom</type>
