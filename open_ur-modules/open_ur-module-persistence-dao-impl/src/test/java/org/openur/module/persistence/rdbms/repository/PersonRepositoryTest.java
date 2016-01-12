@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class PersonRepositoryTest
 {
-	private final String EMPLOYEE_NUMBER = "123abc";
+	private static final String EMPLOYEE_NUMBER = "123abc";
 	
 	@Inject
 	private PersonRepository personRepository;
