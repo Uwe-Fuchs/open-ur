@@ -1,0 +1,65 @@
+package org.openur.module.persistence.rdbms.entity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+import org.apache.commons.lang3.Validate;
+
+@Entity(name="USER_ACCOUNT")
+@Table(uniqueConstraints={@UniqueConstraint(name="UNQ_USERNAME", columnNames={"USERNAME"})})
+public class PUserAccount
+	extends AbstractOpenUrPersistable
+{
+	private static final long serialVersionUID = -2236145073084159919L;
+
+	// properties:
+	@Column(name="USERNAME", length=50, nullable=false)
+  private String userName;
+
+	@Column(name="PASSWORD", length=50, nullable=false)
+  private String passWord;
+	
+	@Column(name="SALT")
+	private String salt;
+
+	// accessors:	
+	public String getSalt()
+	{
+		return salt;
+	}
+
+	public void setSalt(String salt)
+	{
+		this.salt = salt;
+	}
+
+	public String getUserName()
+	{
+		return userName;
+	}
+
+	public String getPassWord()
+	{
+		return passWord;
+	}
+
+	// constructors:
+	public PUserAccount(String userName, String passWord)
+	{
+		this();
+
+		Validate.notBlank(userName, "user_name must not be empty!");
+		Validate.notBlank(passWord, "password must not be empty!");
+		
+		this.userName = userName;
+		this.passWord = passWord;
+	}
+
+	private PUserAccount()
+	{
+		// JPA
+		super();
+	}
+}
