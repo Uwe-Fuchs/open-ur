@@ -89,13 +89,15 @@ public class PUserAccount
 	}
 
 	// constructors:
-	public PUserAccount(String userName, String passWord)
+	public PUserAccount(PUserStructureBase userStructureBase, String userName, String passWord)
 	{
 		this();
 
+		Validate.notNull(userStructureBase, "ID must not be null!");
 		Validate.notBlank(userName, "user_name must not be empty!");
 		Validate.notBlank(passWord, "password must not be empty!");
 		
+		this.userStructureBase = userStructureBase;
 		this.userName = userName;
 		this.passWord = passWord;
 	}
