@@ -1,6 +1,7 @@
 package org.openur.module.persistence.rdbms.repository;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import javax.inject.Inject;
 
@@ -39,6 +40,7 @@ public class UserAccountRepositoryTest
 
 	@Test
 	@Transactional(readOnly=false)
+	//@Rollback(value=false)
 	public void testFindUserAccountByUserName()
 	{
 		PPerson pPerson = new PPerson(EMPLOYEE_NUMBER, "Name of Employee");

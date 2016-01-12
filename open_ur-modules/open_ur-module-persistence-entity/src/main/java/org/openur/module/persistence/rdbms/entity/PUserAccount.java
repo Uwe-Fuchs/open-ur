@@ -14,7 +14,7 @@ import org.apache.commons.lang3.Validate;
 @Entity(name="USER_ACCOUNT")
 @Table(uniqueConstraints={@UniqueConstraint(name="UNQ_USERNAME", columnNames={"USERNAME"})})
 public class PUserAccount
-extends AbstractOpenUrPersistable
+	extends AbstractOpenUrPersistable
 {
 	private static final long serialVersionUID = -2236145073084159919L;
 
