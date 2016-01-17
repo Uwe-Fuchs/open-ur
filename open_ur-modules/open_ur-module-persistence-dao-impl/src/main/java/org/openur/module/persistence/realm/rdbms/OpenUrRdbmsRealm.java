@@ -1,5 +1,8 @@
 package org.openur.module.persistence.realm.rdbms;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
@@ -27,6 +30,7 @@ public class OpenUrRdbmsRealm
 	extends AuthorizingRealm
 {
 	private SaltStyle saltStyle = SaltStyle.NO_SALT;
+	private Map<String, String> userSalts = new ConcurrentHashMap<>();
 
 	@Inject
 	private UserAccountRepository userAccountRepository;
@@ -86,6 +90,12 @@ public class OpenUrRdbmsRealm
 
 	private String getSaltForUser(String username)
 	{
-		return username;
+		return this.userSalts.get(username);
+	}
+	
+	public void addSaltForUser(String username, String salt)
+	{
+		this.userSalts.put(username, salt);
+		this.saltStyle = SaltStyle.EXTERNAL;
 	}
 }
