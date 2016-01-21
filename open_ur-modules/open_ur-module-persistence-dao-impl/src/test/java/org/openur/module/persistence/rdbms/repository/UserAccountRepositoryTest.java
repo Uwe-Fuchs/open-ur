@@ -1,18 +1,18 @@
 package org.openur.module.persistence.rdbms.repository;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import javax.inject.Inject;
 
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openur.domain.testfixture.testobjects.TestObjectContainer;
+import org.openur.module.domain.userstructure.person.Person;
+import org.openur.module.persistence.mapper.rdbms.IPersonMapper;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
 import org.openur.module.persistence.rdbms.config.MapperSpringConfig;
 import org.openur.module.persistence.rdbms.config.RepositorySpringConfig;
-import org.openur.module.persistence.rdbms.entity.PAddress;
-import org.openur.module.persistence.rdbms.entity.PApplication;
 import org.openur.module.persistence.rdbms.entity.PPerson;
 import org.openur.module.persistence.rdbms.entity.PUserAccount;
 import org.springframework.test.context.ActiveProfiles;
@@ -25,9 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UserAccountRepositoryTest
 {
-	private static final String EMPLOYEE_NUMBER = "123abc";
-	private static final String USER_NAME = "testUser";
-	private static final String PASSWORD = "secret";
+	@Inject
+	private IPersonMapper<Person> personMapper;
 	
 	@Inject
 	private UserAccountRepository userAccountRepository;
@@ -43,23 +42,18 @@ public class UserAccountRepositoryTest
 	//@Rollback(value=false)
 	public void testFindUserAccountByUserName()
 	{
-		PPerson pPerson = new PPerson(EMPLOYEE_NUMBER, "Name of Employee");
+		PPerson pPerson = personMapper.mapFromDomainObject(TestObjectContainer.PERSON_1);
 		
-		PAddress pAddress = new PAddress("11");	
-		pPerson.setHomeAddress(pAddress);
-		
-		PApplication pApp = new PApplication("applicationName");
-		pPerson.addApplication(pApp);
-		
-		pPerson = savePerson(pPerson);
-		
-		PUserAccount pUserAccount = new PUserAccount(pPerson, USER_NAME, PASSWORD);
+		PUserAccount pUserAccount = new PUserAccount(pPerson, TestObjectContainer.USER_NAME, TestObjectContainer.PASSWORD);
 		pUserAccount = saveUserAccount(pUserAccount);
 		
-		pUserAccount = userAccountRepository.findUserAccountByUserName(USER_NAME);
+		pUserAccount = userAccountRepository.findUserAccountByUserName(TestObjectContainer.USER_NAME);
 		
 		assertNotNull(pUserAccount);
-		assertEquals(PASSWORD, pUserAccount.getPassWord());
+		assertEquals(TestObjectContainer.PASSWORD, pUserAccount.getPassWord());
+		
+		pUserAccount = userAccountRepository.findUserAccountByUserName("someUnknownUserName");
+		assertNull(pUserAccount);
 	}
 	
 	@Transactional(readOnly = false)

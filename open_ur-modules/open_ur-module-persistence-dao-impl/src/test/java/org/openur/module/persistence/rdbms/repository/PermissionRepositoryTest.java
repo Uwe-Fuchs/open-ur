@@ -9,6 +9,9 @@ import javax.inject.Inject;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openur.domain.testfixture.testobjects.TestObjectContainer;
+import org.openur.module.domain.security.authorization.OpenURPermission;
+import org.openur.module.persistence.mapper.rdbms.IPermissionMapper;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
 import org.openur.module.persistence.rdbms.config.MapperSpringConfig;
 import org.openur.module.persistence.rdbms.config.RepositorySpringConfig;
@@ -25,6 +28,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class PermissionRepositoryTest
 {
 	@Inject
+	private IPermissionMapper<OpenURPermission> permissionMapper;
+	
+	@Inject
 	private PermissionRepository permissionRepository;
 
 	@Inject
@@ -34,15 +40,15 @@ public class PermissionRepositoryTest
 	@Transactional(readOnly=false)
 	public void testFindPermissionsByApplicationApplicationName()
 	{
-		PApplication pApp = new PApplication("applicationName");	
-		
-		PPermission perm1 = new PPermission("permText1", pApp);
+		PPermission perm1 = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_1_A);
 		savePermission(perm1);		
 
-		PPermission perm2 = new PPermission("permText2", pApp);
+		PApplication pApp = perm1.getApplication();
+		PPermission perm2 = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_2_A);
+		perm2.setApplication(pApp);
 		savePermission(perm2);
 		
-		List<PPermission> resultList = permissionRepository.findPermissionsByApplicationApplicationName(pApp.getApplicationName());
+		List<PPermission> resultList = permissionRepository.findPermissionsByApplicationApplicationName(TestObjectContainer.APP_A.getApplicationName());
 		assertNotNull(resultList);
 		assertEquals(resultList.size(), 2);
 		assertTrue(resultList.contains(perm1));
@@ -56,12 +62,12 @@ public class PermissionRepositoryTest
 	@Transactional(readOnly=false)
 	public void testFindPermission()
 	{
-		PApplication pApp = new PApplication("applicationName");	
-		
-		PPermission perm1 = new PPermission("permText1", pApp);
+		PPermission perm1 = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_1_A);
 		savePermission(perm1);		
 
-		PPermission perm2 = new PPermission("permText2", pApp);
+		PApplication pApp = perm1.getApplication();
+		PPermission perm2 = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_2_A);
+		perm2.setApplication(pApp);
 		savePermission(perm2);
 		
 		PPermission result = permissionRepository.findPermission(perm1.getPermissionText(), pApp.getApplicationName());
