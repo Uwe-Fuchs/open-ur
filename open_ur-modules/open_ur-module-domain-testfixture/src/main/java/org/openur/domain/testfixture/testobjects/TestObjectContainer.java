@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
+import org.openur.module.domain.security.authentication.UsernamePasswordToken;
 import org.openur.module.domain.security.authorization.AuthorizableMember;
 import org.openur.module.domain.security.authorization.AuthorizableMember.AuthorizableMemberBuilder;
 import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
@@ -100,6 +101,10 @@ public class TestObjectContainer
 	public static final TechnicalUser TECH_USER_1;
 	public static final TechnicalUser TECH_USER_2;
 	public static final TechnicalUser TECH_USER_3;
+	
+	public static final String USER_NAME = "testUser";
+	public static final String PASSWORD = "secret";	
+	public static final UsernamePasswordToken USERNAME_PW_TOKEN = new UsernamePasswordToken(USER_NAME, PASSWORD);
 	
 	static
 	{
