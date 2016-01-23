@@ -22,6 +22,7 @@ public class UsernamePasswordToken
 
 	public UsernamePasswordToken(final String username, final String password)
 	{
+		super();
 		Validate.notBlank(username, "user-name must not be empty!");
 		Validate.notBlank(password, "password must not be empty!");
 		delegate = new org.apache.shiro.authc.UsernamePasswordToken(username, password);
@@ -45,6 +46,13 @@ public class UsernamePasswordToken
 		this(username, password);
 		Validate.notBlank(host, "host must not be empty!");
 		delegate.setHost(host);
+	}
+
+	public UsernamePasswordToken(org.apache.shiro.authc.UsernamePasswordToken delegate)
+	{
+		super();
+		Validate.notNull(delegate, "delagate-object must not be null!");
+		this.delegate = delegate;
 	}
 
 	@Override
