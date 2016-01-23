@@ -5,6 +5,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -12,6 +14,11 @@ import javax.inject.Inject;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openur.domain.testfixture.testobjects.TestObjectContainer;
+import org.openur.module.domain.security.authorization.OpenURPermission;
+import org.openur.module.domain.security.authorization.OpenURRole;
+import org.openur.module.persistence.mapper.rdbms.IPermissionMapper;
+import org.openur.module.persistence.mapper.rdbms.IRoleMapper;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
 import org.openur.module.persistence.rdbms.config.MapperSpringConfig;
 import org.openur.module.persistence.rdbms.config.RepositorySpringConfig;
@@ -29,6 +36,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class RoleRepositoryTest
 {
 	@Inject
+	private IPermissionMapper<OpenURPermission> permissionMapper;
+	
+	@Inject
+	private IRoleMapper<OpenURRole> roleMapper;
+	
+	@Inject
 	private RoleRepository roleRepository;
 	
 	@Inject
@@ -41,12 +54,12 @@ public class RoleRepositoryTest
 	@Transactional(readOnly=false)
 	public void testFindRoleById()
 	{
-		PApplication pApp = new PApplication("applicationName");		
-		PPermission perm1 = new PPermission("permName1", pApp);
-		PPermission perm2 = new PPermission("permName2", pApp);		
-		PRole pRole = new PRole("roleName");
-		pRole.addPermssion(perm1);
-		pRole.addPermssion(perm2);		
+		PPermission perm1 = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_1_A);	
+		PApplication pApp = perm1.getApplication();
+		PPermission perm2 = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_2_A);	
+		perm2.setApplication(pApp);
+		PRole pRole = roleMapper.mapFromDomainObject(TestObjectContainer.ROLE_X);
+		pRole.setPermissions(new HashSet<>(Arrays.asList(perm1, perm2)));
 		saveRole(pRole);
 		
 		PRole resultRole = roleRepository.findOne(pRole.getId());	
@@ -66,12 +79,12 @@ public class RoleRepositoryTest
 	@Transactional(readOnly=false)
 	public void testFindRoleByName()
 	{
-		PApplication pApp = new PApplication("applicationName");		
-		PPermission perm1 = new PPermission("permName1", pApp);
-		PPermission perm2 = new PPermission("permName2", pApp);		
-		PRole pRole = new PRole("roleName");
-		pRole.addPermssion(perm1);
-		pRole.addPermssion(perm2);		
+		PPermission perm1 = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_1_A);	
+		PApplication pApp = perm1.getApplication();
+		PPermission perm2 = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_2_A);	
+		perm2.setApplication(pApp);
+		PRole pRole = roleMapper.mapFromDomainObject(TestObjectContainer.ROLE_X);
+		pRole.setPermissions(new HashSet<>(Arrays.asList(perm1, perm2)));
 		saveRole(pRole);
 		
 		PRole resultRole = roleRepository.findRoleByRoleName(pRole.getRoleName());	
@@ -91,22 +104,21 @@ public class RoleRepositoryTest
 	@Transactional(readOnly=false)
 	public void testObtainAllRoles()
 	{
-		PApplication pApp = new PApplication("appName");		
-		PPermission perm1_A = new PPermission("permName1_A", pApp);
-		PPermission perm2_A = new PPermission("permName2_A", pApp);		
-		PRole pRoleA = new PRole("roleNameA");
-		pRoleA.addPermssion(perm1_A);
-		pRoleA.addPermssion(perm2_A);		
-		saveRole(pRoleA);
+		PPermission perm_1_A = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_1_A);	
+		PApplication app_A = perm_1_A.getApplication();
+		PPermission perm_2_A = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_2_A);	
+		perm_2_A.setApplication(app_A);
+		PRole pRole_X = roleMapper.mapFromDomainObject(TestObjectContainer.ROLE_X);
+		pRole_X.setPermissions(new HashSet<>(Arrays.asList(perm_1_A, perm_2_A)));
+		saveRole(pRole_X);
 
-		PPermission perm1_B = new PPermission("permName1_B", pApp);
-		PPermission perm2_B = new PPermission("permName2_B", pApp);		
-		PRole pRoleB = new PRole("roleNameB");
-		pRoleB.addPermssion(perm1_B);
-		pRoleB.addPermssion(perm2_B);		
-		saveRole(pRoleB);
-		
-		//List<IRole> securityDao.obtainAllRoles();
+		PPermission perm_1_B = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_1_B);	
+		PApplication app_B = perm_1_B.getApplication();
+		PPermission perm_2_B = permissionMapper.mapFromDomainObject(TestObjectContainer.PERMISSION_2_B);	
+		perm_2_B.setApplication(app_B);
+		PRole pRole_Y = roleMapper.mapFromDomainObject(TestObjectContainer.ROLE_Y);
+		pRole_Y.setPermissions(new HashSet<>(Arrays.asList(perm_1_B, perm_2_B)));
+		saveRole(pRole_Y);
 		
 		List<PRole> allRoles = roleRepository.findAll();
 		
@@ -114,8 +126,8 @@ public class RoleRepositoryTest
 		assertEquals(allRoles.size(), 2);
 		// put roles into standard List-Object, for Hibernate's PersistentBag seems not to call equals() in its contains-method (???)
 		allRoles = new ArrayList<PRole>(allRoles);
-		assertTrue(allRoles.contains(pRoleA));
-		assertTrue(allRoles.contains(pRoleB));
+		assertTrue(allRoles.contains(pRole_X));
+		assertTrue(allRoles.contains(pRole_Y));
 	}
 
 	@After
