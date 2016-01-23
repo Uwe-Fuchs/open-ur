@@ -6,6 +6,7 @@ import org.apache.shiro.realm.Realm;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.security.authentication.UsernamePasswordToken;
 import org.openur.module.service.config.SecurityTestSpringConfig;
 import org.springframework.test.context.ActiveProfiles;
@@ -17,9 +18,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {SecurityTestSpringConfig.class})
 public class AuthenticationServicesTest
 {
-	private static final String USER_NAME = "testUser";
-	private static final String PASSWORD = "secret";
-	
 	@Inject
 	private IAuthenticationServices authenticationServices;
 	
@@ -29,14 +27,13 @@ public class AuthenticationServicesTest
 	@Test
 	public void testAuthenticate()
 	{
-		UsernamePasswordToken openUrToken = new UsernamePasswordToken(USER_NAME, PASSWORD);
-		authenticationServices.authenticate(openUrToken);
+		authenticationServices.authenticate(TestObjectContainer.USERNAME_PW_TOKEN);
 	}
 	
 	@Test(expected=org.openur.module.util.exception.AuthenticationException.class)
 	public void testAuthenticate_Failure()
 	{
-		UsernamePasswordToken openUrToken = new UsernamePasswordToken(USER_NAME, "someWrongPw");
+		UsernamePasswordToken openUrToken = new UsernamePasswordToken(TestObjectContainer.USER_NAME, "someWrongPw");
 		Mockito.when(realm.getAuthenticationInfo(openUrToken.getDelegate())).thenThrow(
 				new org.apache.shiro.authc.AuthenticationException("wrong credentials"));
 		authenticationServices.authenticate(openUrToken);		
