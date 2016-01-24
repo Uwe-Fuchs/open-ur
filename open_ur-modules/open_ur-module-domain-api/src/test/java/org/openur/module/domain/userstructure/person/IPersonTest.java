@@ -24,6 +24,8 @@ public class IPersonTest
 	
 	static class MyPerson implements IPerson
 	{
+		private static final long serialVersionUID = 1L;
+		
 		private String number = null;
 		
 		@Override

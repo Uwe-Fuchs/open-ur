@@ -1,5 +1,6 @@
 package org.openur.module.domain;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -8,6 +9,7 @@ import java.time.LocalDateTime;
  * @author info@uwefuchs.com
  */
 public interface IIdentifiableEntity
+	extends Serializable
 {
 	/**
 	 * the literal which uniquely identifies the entity.
