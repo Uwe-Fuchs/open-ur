@@ -1,17 +1,18 @@
 package org.openur.module.persistence.mapper.rdbms;
 
 import org.openur.module.domain.security.authorization.IAuthorizableMember;
-import org.openur.module.persistence.rdbms.entity.POrgUnitMember;
-import org.openur.module.persistence.rdbms.entity.POrganizationalUnit;
+import org.springframework.data.domain.Persistable;
 
 /**
  * maps entity-data from and to domain-object.
  * 
  * @author info@uwefuchs.com
  *
- * @param <M> placeholder for member-domain-object.
+ * @param <PO>
+ * @param <PM>
+ * @param <M>
  */
-public interface IOrgUnitMemberMapper<M extends IAuthorizableMember>
+public interface IOrgUnitMemberMapper<PO extends Persistable<Long>, PM extends Persistable<Long>, M extends IAuthorizableMember>
 {
 	/**
 	 * map entity on corresponding domain-object-class plus corresponding org-unit-entity.
@@ -21,7 +22,7 @@ public interface IOrgUnitMemberMapper<M extends IAuthorizableMember>
 	 * 
 	 * @return entity-instance.
 	 */
-	POrgUnitMember mapFromDomainObject(M domainObject, POrganizationalUnit pOrgUnit);
+	PM mapFromDomainObject(M domainObject, PO pOrgUnit);
 
 	/**
 	 * map entity on corresponding domain-object-class plus ID of corresponding org-unit,
@@ -33,5 +34,5 @@ public interface IOrgUnitMemberMapper<M extends IAuthorizableMember>
 	 * 
 	 * @return (immutable) domain-object.
 	 */
-	M mapFromEntity(POrgUnitMember entity, String orgUnitId, boolean inclRoles);
+	M mapFromEntity(PM entity, String orgUnitId, boolean inclRoles);
 }
