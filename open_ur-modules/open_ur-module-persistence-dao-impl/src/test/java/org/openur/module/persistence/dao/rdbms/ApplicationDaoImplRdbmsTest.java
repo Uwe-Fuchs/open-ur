@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(classes = { RepositorySpringConfig.class, DaoSpringConfig.class, MapperSpringConfig.class })
 @ActiveProfiles(profiles = { "testRepository", "testDao", "testMappers" })
 @RunWith(SpringJUnit4ClassRunner.class)
-public class ApplicationDaoImplTest
+public class ApplicationDaoImplRdbmsTest
 {
 	@Inject
 	private IApplicationMapper<OpenURApplication> applicationMapper;
