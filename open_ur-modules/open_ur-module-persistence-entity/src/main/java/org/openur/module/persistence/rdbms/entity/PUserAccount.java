@@ -59,7 +59,7 @@ public class PUserAccount
 		this();
 
 		Validate.notNull(userStructureBase, "ID must not be null!");
-		Validate.notBlank(userName, "user_name must not be empty!");
+		Validate.notBlank(userName, "username must not be empty!");
 		Validate.notBlank(passWord, "password must not be empty!");
 		
 		this.userStructureBase = userStructureBase;
