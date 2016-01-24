@@ -13,7 +13,25 @@ import org.openur.module.persistence.rdbms.entity.POrganizationalUnit;
  */
 public interface IOrgUnitMemberMapper<M extends IAuthorizableMember>
 {
+	/**
+	 * map entity on corresponding domain-object-class plus corresponding org-unit-entity.
+	 * 
+	 * @param domainObject
+	 * @param pOrgUnit
+	 * 
+	 * @return entity-instance.
+	 */
 	POrgUnitMember mapFromDomainObject(M domainObject, POrganizationalUnit pOrgUnit);
 
+	/**
+	 * map entity on corresponding domain-object-class plus ID of corresponding org-unit,
+	 * indicate if including members and roles.
+	 * 
+	 * @param entity
+	 * @param orgUnitId
+	 * @param inclRoles
+	 * 
+	 * @return (immutable) domain-object.
+	 */
 	M mapFromEntity(POrgUnitMember entity, String orgUnitId, boolean inclRoles);
 }

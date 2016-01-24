@@ -17,7 +17,7 @@ import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.persistence.dao.IApplicationDao;
 import org.openur.module.persistence.mapper.rdbms.ApplicationMapper;
-import org.openur.module.persistence.mapper.rdbms.IApplicationMapper;
+import org.openur.module.persistence.mapper.rdbms.IEntityDomainObjectMapper;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
 import org.openur.module.persistence.rdbms.config.MapperSpringConfig;
 import org.openur.module.persistence.rdbms.config.RepositorySpringConfig;
@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ApplicationDaoImplRdbmsTest
 {
 	@Inject
-	private IApplicationMapper<OpenURApplication> applicationMapper;
+	private IEntityDomainObjectMapper<PApplication, OpenURApplication> applicationMapper;
 	
 	@Inject
 	private ApplicationRepository applicationRepository;

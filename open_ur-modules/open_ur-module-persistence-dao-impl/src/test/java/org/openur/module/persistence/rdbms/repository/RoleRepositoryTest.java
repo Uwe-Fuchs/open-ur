@@ -17,8 +17,7 @@ import org.junit.runner.RunWith;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.domain.security.authorization.OpenURRole;
-import org.openur.module.persistence.mapper.rdbms.IPermissionMapper;
-import org.openur.module.persistence.mapper.rdbms.IRoleMapper;
+import org.openur.module.persistence.mapper.rdbms.IEntityDomainObjectMapper;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
 import org.openur.module.persistence.rdbms.config.MapperSpringConfig;
 import org.openur.module.persistence.rdbms.config.RepositorySpringConfig;
@@ -36,10 +35,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class RoleRepositoryTest
 {
 	@Inject
-	private IPermissionMapper<OpenURPermission> permissionMapper;
+	private IEntityDomainObjectMapper<PPermission, OpenURPermission> permissionMapper;
 	
 	@Inject
-	private IRoleMapper<OpenURRole> roleMapper;
+	private IEntityDomainObjectMapper<PRole, OpenURRole> roleMapper;
 	
 	@Inject
 	private RoleRepository roleRepository;

@@ -16,7 +16,7 @@ import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
 import org.openur.module.persistence.dao.ITechnicalUserDao;
-import org.openur.module.persistence.mapper.rdbms.ITechnicalUserMapper;
+import org.openur.module.persistence.mapper.rdbms.IEntityDomainObjectMapper;
 import org.openur.module.persistence.mapper.rdbms.TechnicalUserMapper;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
 import org.openur.module.persistence.rdbms.config.MapperSpringConfig;
@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TechnicalUserDaoImplRdbmsTest
 {
 	@Inject
-	private ITechnicalUserMapper<TechnicalUser> technicalUserMapper;
+	private IEntityDomainObjectMapper<PTechnicalUser, TechnicalUser> technicalUserMapper;
 	
 	@Inject
 	private TechnicalUserRepository technicalUserRepository;

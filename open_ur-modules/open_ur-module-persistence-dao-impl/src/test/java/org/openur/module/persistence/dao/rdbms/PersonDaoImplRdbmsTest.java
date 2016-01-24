@@ -19,8 +19,7 @@ import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.persistence.dao.IPersonDao;
-import org.openur.module.persistence.mapper.rdbms.IApplicationMapper;
-import org.openur.module.persistence.mapper.rdbms.IPersonMapper;
+import org.openur.module.persistence.mapper.rdbms.IEntityDomainObjectMapper;
 import org.openur.module.persistence.mapper.rdbms.PersonMapper;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
 import org.openur.module.persistence.rdbms.config.MapperSpringConfig;
@@ -40,10 +39,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class PersonDaoImplRdbmsTest
 {
 	@Inject
-	private IApplicationMapper<OpenURApplication> applicationMapper;
+	private IEntityDomainObjectMapper<PApplication, OpenURApplication> applicationMapper;
 	
 	@Inject
-	private IPersonMapper<Person> personMapper;
+	private IEntityDomainObjectMapper<PPerson, Person> personMapper;
 	
 	@Inject
 	private PersonRepository personRepository;

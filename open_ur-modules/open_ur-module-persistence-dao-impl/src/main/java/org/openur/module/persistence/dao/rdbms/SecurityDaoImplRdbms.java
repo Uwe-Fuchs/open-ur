@@ -8,8 +8,7 @@ import javax.inject.Inject;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
 import org.openur.module.persistence.dao.ISecurityDao;
-import org.openur.module.persistence.mapper.rdbms.IPermissionMapper;
-import org.openur.module.persistence.mapper.rdbms.IRoleMapper;
+import org.openur.module.persistence.mapper.rdbms.IEntityDomainObjectMapper;
 import org.openur.module.persistence.rdbms.entity.PPermission;
 import org.openur.module.persistence.rdbms.entity.PRole;
 import org.openur.module.persistence.rdbms.repository.PermissionRepository;
@@ -23,10 +22,10 @@ public class SecurityDaoImplRdbms
 	implements ISecurityDao
 {
 	@Inject
-	private IPermissionMapper<? extends IPermission> permissionMapper;
+	private IEntityDomainObjectMapper<PPermission, ? extends IPermission> permissionMapper;
 	
 	@Inject
-	private IRoleMapper<? extends IRole> roleMapper;
+	private IEntityDomainObjectMapper<PRole, ? extends IRole> roleMapper;
 	
 	@Inject
 	private PermissionRepository permissionRepository;

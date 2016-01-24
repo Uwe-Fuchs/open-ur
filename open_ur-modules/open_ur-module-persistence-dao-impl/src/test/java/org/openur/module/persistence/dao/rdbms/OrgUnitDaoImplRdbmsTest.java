@@ -27,12 +27,9 @@ import org.openur.module.domain.security.authorization.OpenURRole;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.persistence.dao.IOrgUnitDao;
-import org.openur.module.persistence.mapper.rdbms.IApplicationMapper;
+import org.openur.module.persistence.mapper.rdbms.IEntityDomainObjectMapper;
 import org.openur.module.persistence.mapper.rdbms.IOrgUnitMemberMapper;
 import org.openur.module.persistence.mapper.rdbms.IOrganizationalUnitMapper;
-import org.openur.module.persistence.mapper.rdbms.IPermissionMapper;
-import org.openur.module.persistence.mapper.rdbms.IPersonMapper;
-import org.openur.module.persistence.mapper.rdbms.IRoleMapper;
 import org.openur.module.persistence.mapper.rdbms.OrganizationalUnitMapper;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
 import org.openur.module.persistence.rdbms.config.MapperSpringConfig;
@@ -80,16 +77,16 @@ public class OrgUnitDaoImplRdbmsTest
 	private IOrgUnitMemberMapper<AuthorizableMember> orgUnitMemberMapper;
 	
 	@Inject
-	private IApplicationMapper<OpenURApplication> applicationMapper;
+	private IEntityDomainObjectMapper<PApplication, OpenURApplication> applicationMapper;
 	
 	@Inject
-	private IPersonMapper<Person> personMapper;
+	private IEntityDomainObjectMapper<PPerson, Person> personMapper;
 	
 	@Inject
-	private IPermissionMapper<OpenURPermission> permissionMapper;
+	private IEntityDomainObjectMapper<PPermission, OpenURPermission> permissionMapper;
 	
 	@Inject
-	private IRoleMapper<OpenURRole> roleMapper;
+	private IEntityDomainObjectMapper<PRole, OpenURRole> roleMapper;
 	
 	@Inject
 	private ApplicationRepository applicationRepository;

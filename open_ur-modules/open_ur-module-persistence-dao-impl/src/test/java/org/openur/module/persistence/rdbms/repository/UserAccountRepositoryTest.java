@@ -1,6 +1,8 @@
 package org.openur.module.persistence.rdbms.repository;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import javax.inject.Inject;
 
@@ -9,7 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.userstructure.person.Person;
-import org.openur.module.persistence.mapper.rdbms.IPersonMapper;
+import org.openur.module.persistence.mapper.rdbms.IEntityDomainObjectMapper;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
 import org.openur.module.persistence.rdbms.config.MapperSpringConfig;
 import org.openur.module.persistence.rdbms.config.RepositorySpringConfig;
@@ -26,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserAccountRepositoryTest
 {
 	@Inject
-	private IPersonMapper<Person> personMapper;
+	private IEntityDomainObjectMapper<PPerson, Person> personMapper;
 	
 	@Inject
 	private UserAccountRepository userAccountRepository;

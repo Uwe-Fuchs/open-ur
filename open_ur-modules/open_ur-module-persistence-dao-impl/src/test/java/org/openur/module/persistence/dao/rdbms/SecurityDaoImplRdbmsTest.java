@@ -1,6 +1,9 @@
 package org.openur.module.persistence.dao.rdbms;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -18,8 +21,7 @@ import org.openur.module.domain.security.authorization.IRole;
 import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.domain.security.authorization.OpenURRole;
 import org.openur.module.persistence.dao.ISecurityDao;
-import org.openur.module.persistence.mapper.rdbms.IPermissionMapper;
-import org.openur.module.persistence.mapper.rdbms.IRoleMapper;
+import org.openur.module.persistence.mapper.rdbms.IEntityDomainObjectMapper;
 import org.openur.module.persistence.mapper.rdbms.PermissionMapper;
 import org.openur.module.persistence.mapper.rdbms.RoleMapper;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
@@ -42,10 +44,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class SecurityDaoImplRdbmsTest
 {	
 	@Inject
-	private IPermissionMapper<OpenURPermission> permissionMapper;
+	private IEntityDomainObjectMapper<PPermission, OpenURPermission> permissionMapper;
 	
 	@Inject
-	private IRoleMapper<OpenURRole> roleMapper;
+	private IEntityDomainObjectMapper<PRole, OpenURRole> roleMapper;
 	
 	@Inject
 	private RoleRepository roleRepository;

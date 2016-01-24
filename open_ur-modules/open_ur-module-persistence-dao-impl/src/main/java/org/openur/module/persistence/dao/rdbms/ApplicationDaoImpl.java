@@ -7,7 +7,7 @@ import javax.inject.Inject;
 
 import org.openur.module.domain.application.IApplication;
 import org.openur.module.persistence.dao.IApplicationDao;
-import org.openur.module.persistence.mapper.rdbms.IApplicationMapper;
+import org.openur.module.persistence.mapper.rdbms.IEntityDomainObjectMapper;
 import org.openur.module.persistence.rdbms.entity.PApplication;
 import org.openur.module.persistence.rdbms.repository.ApplicationRepository;
 import org.springframework.stereotype.Repository;
@@ -19,7 +19,7 @@ public class ApplicationDaoImpl
 	implements IApplicationDao
 {
 	@Inject
-	private IApplicationMapper<? extends IApplication> applicationMapper;
+	private IEntityDomainObjectMapper<PApplication, ? extends IApplication> applicationMapper;
 	
 	@Inject
 	private ApplicationRepository applicationRepository;
