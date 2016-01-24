@@ -4,6 +4,9 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 
+	<properties>
+	</properties>
+
 	<parent>
 		<groupId>org.openur.module</groupId>
 		<artifactId>open_ur-modules</artifactId>
@@ -11,18 +14,14 @@
 	</parent>
 
 	<groupId>org.openur.module.persistence</groupId>
-	<artifactId>open_ur-module-persistence-mapping-impl</artifactId>
+	<artifactId>open_ur-module-persistence-mapping-dao-api</artifactId>
 	<packaging>jar</packaging>
-
-	<properties>
-	</properties>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.openur.pom.testing</groupId>
-			<artifactId>open_ur-pom-testbase-component</artifactId>
+			<groupId>org.openur.pom.persistence</groupId>
+			<artifactId>open_ur-pom-persistence-component</artifactId>
 			<type>pom</type>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.openur.pom.spring</groupId>
@@ -30,26 +29,12 @@
 			<type>pom</type>
 		</dependency>
 		<dependency>
-			<groupId>org.openur.pom.logging</groupId>
-			<artifactId>open_ur-pom-logging-component</artifactId>
-			<type>pom</type>
-		</dependency>
-		<dependency>
 			<groupId>org.openur.module.domain</groupId>
-			<artifactId>open_ur-module-domain-impl</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.openur.module.domain</groupId>
-			<artifactId>open_ur-module-domain-testfixture</artifactId>
-			<scope>test</scope>
+			<artifactId>open_ur-module-domain-api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.openur.module.persistence</groupId>
 			<artifactId>open_ur-module-persistence-entity</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.openur.module.persistence</groupId>
-			<artifactId>open_ur-module-persistence-mapping-dao-api</artifactId>
 		</dependency>
 	</dependencies>
 

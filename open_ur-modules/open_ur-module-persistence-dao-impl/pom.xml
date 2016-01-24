@@ -50,15 +50,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.openur.module.persistence</groupId>
-			<artifactId>open_ur-module-persistence-dao-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.openur.module.persistence</groupId>
 			<artifactId>open_ur-module-persistence-entity</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.openur.module.persistence</groupId>
-			<artifactId>open_ur-module-persistence-mapping-api</artifactId>
+			<artifactId>open_ur-module-persistence-mapping-dao-api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.openur.module.persistence</groupId>
