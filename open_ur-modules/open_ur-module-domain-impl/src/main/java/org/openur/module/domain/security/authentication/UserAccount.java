@@ -1,6 +1,5 @@
 package org.openur.module.domain.security.authentication;
 
-import org.openur.module.domain.IdentifiableEntityBuilder;
 import org.openur.module.domain.IdentifiableEntityImpl;
 
 public class UserAccount
@@ -8,38 +7,36 @@ public class UserAccount
 	implements IUserAccount
 {
 	private static final long serialVersionUID = -7714147589038639771L;
+	
+	// properties:
+	private final String userName;
+	private final String passWord;
+	private final String salt;
 
-	public UserAccount(IdentifiableEntityBuilder<? extends IdentifiableEntityBuilder<?>> b)
+	UserAccount(UserAccountBuilder b)
 	{
 		super(b);
-		// TODO Auto-generated constructor stub
-	}
 
-	@Override
-	public int compareTo(IUserAccount o)
-	{
-		// TODO Auto-generated method stub
-		return 0;
+		this.userName = b.getUserName();
+		this.passWord = b.getPassWord();
+		this.salt = b.getSalt();
 	}
 
 	@Override
 	public String getUserName()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return userName;
 	}
 
 	@Override
 	public String getPassWord()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return passWord;
 	}
 
 	@Override
 	public String getSalt()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return salt;
 	}
 }
