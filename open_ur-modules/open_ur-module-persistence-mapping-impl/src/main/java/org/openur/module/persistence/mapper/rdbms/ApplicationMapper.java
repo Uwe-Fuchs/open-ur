@@ -5,7 +5,8 @@ import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.persistence.rdbms.entity.PApplication;
 
 public class ApplicationMapper
-	extends AbstractEntityMapper implements IEntityDomainObjectMapper<PApplication, OpenURApplication>
+	extends AbstractEntityMapper
+	implements IEntityDomainObjectMapper<PApplication, OpenURApplication>
 {
 	@Override
 	public PApplication mapFromDomainObject(OpenURApplication domainObject)
@@ -17,9 +18,8 @@ public class ApplicationMapper
 	public OpenURApplication mapFromEntity(PApplication entity)
 	{
 		OpenURApplicationBuilder immutableBuilder = new OpenURApplicationBuilder(entity.getApplicationName());
-		
-		return super.mapFromEntity(immutableBuilder, entity)
-					.build();
+
+		return super.mapFromEntity(immutableBuilder, entity).build();
 	}
 
 	public static boolean domainObjectEqualsToEntity(OpenURApplication domainObject, PApplication entity)
@@ -28,7 +28,7 @@ public class ApplicationMapper
 		{
 			return false;
 		}
-		
+
 		return domainObject.getApplicationName().equals(entity.getApplicationName());
 	}
 }
