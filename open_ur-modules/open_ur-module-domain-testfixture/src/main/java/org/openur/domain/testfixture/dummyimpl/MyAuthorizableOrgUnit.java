@@ -10,6 +10,8 @@ import org.openur.module.domain.userstructure.Status;
 public class MyAuthorizableOrgUnit
 	implements IAuthorizableOrgUnit
 {
+	private static final long serialVersionUID = 1L;
+	
 	private String identifier;
 	private String number;
 	private MyAuthorizableOrgUnit superOrgUnit;

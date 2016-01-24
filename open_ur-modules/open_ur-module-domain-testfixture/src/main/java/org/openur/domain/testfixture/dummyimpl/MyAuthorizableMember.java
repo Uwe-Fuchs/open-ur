@@ -10,6 +10,8 @@ import org.openur.module.domain.userstructure.person.IPerson;
 public class MyAuthorizableMember
 	implements IAuthorizableMember
 {
+	private static final long serialVersionUID = 1L;
+	
 	private IPerson person;
 	private String orgUnitId;
 	private Set<MyRoleImpl> roles = new HashSet<>();

@@ -9,6 +9,8 @@ import org.openur.module.domain.security.authorization.PermissionScope;
 public class MyPermissionImpl
 	implements IPermission
 {
+	private static final long serialVersionUID = 1L;
+	
 	private String identifier;
 	private String permissionText;
 	private IApplication application;

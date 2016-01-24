@@ -7,6 +7,8 @@ import org.openur.module.domain.application.IApplication;
 public class MyApplicationImpl
 	implements IApplication
 {
+	private static final long serialVersionUID = 1L;
+	
 	private String identifier;
 	private String applicationName;	
 

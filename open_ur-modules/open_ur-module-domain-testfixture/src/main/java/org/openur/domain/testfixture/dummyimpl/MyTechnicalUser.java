@@ -13,6 +13,8 @@ import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 public class MyTechnicalUser
 	implements ITechnicalUser
 {
+	private static final long serialVersionUID = 1L;
+	
 	private String identifier;
 	private String number;	
 	

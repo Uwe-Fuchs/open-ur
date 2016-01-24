@@ -12,6 +12,8 @@ import org.openur.module.domain.security.authorization.IRole;
 public class MyRoleImpl
 	implements IRole
 {
+	private static final long serialVersionUID = 1L;
+	
 	private String identifier;
 	private String role;
 	private Map<MyApplicationImpl, Set<MyPermissionImpl>> permissions = new HashMap<>();	

@@ -15,6 +15,8 @@ import org.openur.module.domain.userstructure.person.IPerson;
 public class MyPerson
 	implements IPerson
 {
+	private static final long serialVersionUID = 1L;
+	
 	private String identifier;
 	private String number;
 	private Set<MyApplicationImpl> applications = new HashSet<>();

@@ -55,6 +55,8 @@ public class OpenURAppTest
 	private class MyApplication
 		implements IApplication
 	{
+		private static final long serialVersionUID = 1L;
+		
 		@Override
 		public String getIdentifier()
 		{
