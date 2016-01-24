@@ -1,7 +1,7 @@
 package org.openur.module.persistence.mapper.rdbms;
 
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
-import org.openur.module.persistence.rdbms.entity.POrganizationalUnit;
+import org.springframework.data.domain.Persistable;
 
 /**
  * maps entity-data from and to domain-object.
@@ -10,8 +10,8 @@ import org.openur.module.persistence.rdbms.entity.POrganizationalUnit;
  *
  * @param <O> placeholder for orgUnit-domain-object.
  */
-public interface IOrganizationalUnitMapper<O extends IAuthorizableOrgUnit>
-	extends IEntityDomainObjectMapper<POrganizationalUnit, O>
+public interface IOrganizationalUnitMapper<P extends Persistable<Long>, O extends IAuthorizableOrgUnit>
+	extends IEntityDomainObjectMapper<P, O>
 {
 	/**
 	 * map entity on corresponding domain-object-class, indicate if including members and roles.
@@ -22,5 +22,5 @@ public interface IOrganizationalUnitMapper<O extends IAuthorizableOrgUnit>
 	 * 
 	 * @return (immutable) domain-object.
 	 */
-	O mapFromEntity(POrganizationalUnit entity, boolean inclMembers, boolean inclRoles);
+	O mapFromEntity(P entity, boolean inclMembers, boolean inclRoles);
 }

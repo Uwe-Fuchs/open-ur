@@ -19,7 +19,7 @@ import org.openur.module.persistence.rdbms.entity.PPerson;
 import org.openur.module.persistence.rdbms.entity.PRole;
 
 public class OrganizationalUnitMapper
-	extends UserStructureBaseMapper implements IOrganizationalUnitMapper<AuthorizableOrgUnit>
+	extends UserStructureBaseMapper implements IOrganizationalUnitMapper<POrganizationalUnit, AuthorizableOrgUnit>
 {
 	@Inject
 	private AddressMapper addressMapper;
@@ -150,7 +150,7 @@ public class OrganizationalUnitMapper
 		return mapFromEntity(pSuperOu, rootOu, rootOu, true, true);
 	}
 	
-	public static class OrgUnitMemberMapper implements IOrgUnitMemberMapper<AuthorizableMember>
+	public static class OrgUnitMemberMapper implements IOrgUnitMemberMapper<POrganizationalUnit, POrgUnitMember, AuthorizableMember>
 	{		
 		@Inject
 		private PersonMapper personMapper;

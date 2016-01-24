@@ -71,10 +71,10 @@ public class OrgUnitDaoImplRdbmsTest
 	private POrgUnitMember member_3_B;
 	
 	@Inject
-	private IOrganizationalUnitMapper<AuthorizableOrgUnit> organizationalUnitMapper;
+	private IOrganizationalUnitMapper<POrganizationalUnit, AuthorizableOrgUnit> organizationalUnitMapper;
 	
 	@Inject
-	private IOrgUnitMemberMapper<AuthorizableMember> orgUnitMemberMapper;
+	private IOrgUnitMemberMapper<POrganizationalUnit, POrgUnitMember, AuthorizableMember> orgUnitMemberMapper;
 	
 	@Inject
 	private IEntityDomainObjectMapper<PApplication, OpenURApplication> applicationMapper;
