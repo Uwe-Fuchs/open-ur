@@ -5,7 +5,7 @@ import org.openur.module.domain.userstructure.technicaluser.TechnicalUser.Techni
 import org.openur.module.persistence.rdbms.entity.PTechnicalUser;
 
 public class TechnicalUserMapper
-	extends UserStructureBaseMapper implements ITechnicalUserMapper<TechnicalUser>
+	extends UserStructureBaseMapper implements IEntityDomainObjectMapper<PTechnicalUser, TechnicalUser>
 {
 	@Override
 	public PTechnicalUser mapFromDomainObject(TechnicalUser domainObject)

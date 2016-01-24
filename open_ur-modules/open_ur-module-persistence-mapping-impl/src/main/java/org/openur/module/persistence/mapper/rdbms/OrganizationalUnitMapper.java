@@ -97,6 +97,12 @@ public class OrganizationalUnitMapper
 		return mapFromEntity(entity, rootOu, superOu, inclMembers, inclRoles);
 	}
 
+	@Override
+	public AuthorizableOrgUnit mapFromEntity(POrganizationalUnit entity)
+	{
+		return mapFromEntity(entity, true, true);
+	}
+
 	AuthorizableOrgUnit mapFromEntity(
 		POrganizationalUnit persistable, AuthorizableOrgUnit rootOu, AuthorizableOrgUnit superOu, boolean inclMembers, boolean inclRoles)
 	{		

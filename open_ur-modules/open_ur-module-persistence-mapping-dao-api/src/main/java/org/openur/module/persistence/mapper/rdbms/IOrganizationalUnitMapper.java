@@ -11,8 +11,16 @@ import org.openur.module.persistence.rdbms.entity.POrganizationalUnit;
  * @param <O> placeholder for orgUnit-domain-object.
  */
 public interface IOrganizationalUnitMapper<O extends IAuthorizableOrgUnit>
+	extends IEntityDomainObjectMapper<POrganizationalUnit, O>
 {
-	POrganizationalUnit mapFromDomainObject(O domainObject);
-
+	/**
+	 * map entity on corresponding domain-object-class, indicate if including members and roles.
+	 * 
+	 * @param entity
+	 * @param inclMembers
+	 * @param inclRoles
+	 * 
+	 * @return (immutable) domain-object.
+	 */
 	O mapFromEntity(POrganizationalUnit entity, boolean inclMembers, boolean inclRoles);
 }

@@ -12,7 +12,7 @@ import org.openur.module.persistence.rdbms.entity.PApplication;
 import org.openur.module.persistence.rdbms.entity.PPerson;
 
 public class PersonMapper
-	extends UserStructureBaseMapper implements IPersonMapper<Person>
+	extends UserStructureBaseMapper implements IEntityDomainObjectMapper<PPerson, Person>
 {
 	@Inject
 	private AddressMapper addressMapper;

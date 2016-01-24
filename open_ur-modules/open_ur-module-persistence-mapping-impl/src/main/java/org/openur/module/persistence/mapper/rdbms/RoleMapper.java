@@ -13,7 +13,7 @@ import org.openur.module.persistence.rdbms.entity.PPermission;
 import org.openur.module.persistence.rdbms.entity.PRole;
 
 public class RoleMapper
-	extends AbstractEntityMapper implements IRoleMapper<OpenURRole>
+	extends AbstractEntityMapper implements IEntityDomainObjectMapper<PRole, OpenURRole>
 {
 	@Inject
 	private PermissionMapper permissionMapper;

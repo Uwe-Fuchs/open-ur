@@ -59,7 +59,7 @@ public class OrgUnitMapperTest
 			assertTrue(member.getRoles().isEmpty());
 		}
 		
-		orgUnit = organizationalUnitMapper.mapFromEntity(pOrgUnit, true, true);		
+		orgUnit = organizationalUnitMapper.mapFromEntity(pOrgUnit);		
 		assertFalse(orgUnit.getMembers().isEmpty());
 		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity(orgUnit, pOrgUnit));
 	}

@@ -8,7 +8,7 @@ import org.openur.module.domain.userstructure.Country;
 import org.openur.module.persistence.rdbms.entity.PAddress;
 
 public class AddressMapper
-	extends AbstractEntityMapper implements IAddressMapper<Address>
+	extends AbstractEntityMapper implements IEntityDomainObjectMapper<PAddress, Address>
 {	
 	@Override
 	public PAddress mapFromDomainObject(Address domainObject)

@@ -9,7 +9,7 @@ import org.openur.module.persistence.rdbms.entity.PApplication;
 import org.openur.module.persistence.rdbms.entity.PPermission;
 
 public class PermissionMapper
-	extends AbstractEntityMapper implements IPermissionMapper<OpenURPermission>
+	extends AbstractEntityMapper implements IEntityDomainObjectMapper<PPermission, OpenURPermission>
 {
 	@Inject
 	private ApplicationMapper applicationMapper;

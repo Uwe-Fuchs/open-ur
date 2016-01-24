@@ -5,7 +5,7 @@ import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.persistence.rdbms.entity.PApplication;
 
 public class ApplicationMapper
-	extends AbstractEntityMapper implements IApplicationMapper<OpenURApplication>
+	extends AbstractEntityMapper implements IEntityDomainObjectMapper<PApplication, OpenURApplication>
 {
 	@Override
 	public PApplication mapFromDomainObject(OpenURApplication domainObject)
