@@ -47,4 +47,9 @@ public class UserAccountBuilder
 		
 		return this;
 	}
+	
+	public UserAccount build()
+	{
+		return new UserAccount(this);
+	}
 }
