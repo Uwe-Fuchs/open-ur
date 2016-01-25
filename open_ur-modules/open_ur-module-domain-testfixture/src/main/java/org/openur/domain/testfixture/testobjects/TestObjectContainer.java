@@ -8,6 +8,8 @@ import java.util.UUID;
 
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
+import org.openur.module.domain.security.authentication.UserAccount;
+import org.openur.module.domain.security.authentication.UserAccountBuilder;
 import org.openur.module.domain.security.authentication.UsernamePasswordToken;
 import org.openur.module.domain.security.authorization.AuthorizableMember;
 import org.openur.module.domain.security.authorization.AuthorizableMember.AuthorizableMemberBuilder;
@@ -105,6 +107,7 @@ public class TestObjectContainer
 	public static final String USER_NAME = "testUser";
 	public static final String PASSWORD = "secret";	
 	public static final UsernamePasswordToken USERNAME_PW_TOKEN = new UsernamePasswordToken(USER_NAME, PASSWORD);
+	public static final UserAccount PERSON_1_ACCOUNT;
 	
 	static
 	{
@@ -190,6 +193,11 @@ public class TestObjectContainer
 				.homePhoneNumber("0049111111114")
 				.homeEmailAddress(EMailAddress.create("home@name_1.de"))
 				.applications(applications)
+				.build();
+		
+		PERSON_1_ACCOUNT = new UserAccountBuilder(USER_NAME, PASSWORD)
+				.identifier(PERSON_UUID_1)
+				.creationDate(LocalDateTime.now())
 				.build();
 		
 		// person 2:
