@@ -8,14 +8,14 @@ import org.springframework.data.domain.Persistable;
  * 
  * @author info@uwefuchs.com
  *
- * @param <PO>
- * @param <PM>
- * @param <M>
+ * @param <PO> generic placeholder for org-unit-entity.
+ * @param <PM> generic placeholder for org-unit-member-entity.
+ * @param <M> generic palceholder for domain-object-type.
  */
 public interface IOrgUnitMemberMapper<PO extends Persistable<Long>, PM extends Persistable<Long>, M extends IAuthorizableMember>
 {
 	/**
-	 * map entity on corresponding domain-object-class plus corresponding org-unit-entity.
+	 * map domain-object plus corresponding org-unit-entity on corresponding org-unit-member-entity.
 	 * 
 	 * @param domainObject
 	 * @param pOrgUnit
