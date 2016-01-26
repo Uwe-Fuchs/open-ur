@@ -3,6 +3,7 @@ package org.openur.module.domain.security.authorization;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.openur.module.domain.IIdentifiableEntity;
 import org.openur.module.domain.application.IApplication;
+import org.openur.module.util.data.PermissionScope;
 
 public interface IPermission
 	extends IIdentifiableEntity, Comparable<IPermission>

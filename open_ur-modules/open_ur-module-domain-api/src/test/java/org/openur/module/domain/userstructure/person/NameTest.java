@@ -6,9 +6,9 @@ import static org.junit.Assert.assertTrue;
 import java.util.Locale;
 
 import org.junit.Test;
-import org.openur.module.domain.userstructure.person.Gender;
 import org.openur.module.domain.userstructure.person.Name;
-import org.openur.module.domain.userstructure.person.Title;
+import org.openur.module.util.data.Gender;
+import org.openur.module.util.data.Title;
 
 public class NameTest
 {

@@ -2,6 +2,7 @@ package org.openur.module.domain.security.authorization;
 
 import org.openur.module.domain.IdentifiableEntityImpl;
 import org.openur.module.domain.application.OpenURApplication;
+import org.openur.module.util.data.PermissionScope;
 
 public class OpenURPermission
 	extends IdentifiableEntityImpl

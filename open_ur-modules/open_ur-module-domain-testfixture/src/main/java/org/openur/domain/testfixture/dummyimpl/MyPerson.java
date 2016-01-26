@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.userstructure.person.IPerson;
+import org.openur.module.util.data.Status;
 
 /**
  * Simple implementation of {@link IPerson} for test-purposes.

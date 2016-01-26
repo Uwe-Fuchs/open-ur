@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
-import org.openur.module.domain.userstructure.Status;
+import org.openur.module.util.data.Status;
 
 public class MyAuthorizableOrgUnit
 	implements IAuthorizableOrgUnit

@@ -2,8 +2,8 @@ package org.openur.domain.testfixture.dummyimpl;
 
 import java.time.LocalDateTime;
 
-import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
+import org.openur.module.util.data.Status;
 
 /**
  * Simple implementation of {@link ITechnicalUser} for test-purposes.

@@ -1,6 +1,7 @@
 package org.openur.module.domain.userstructure;
 
 import org.openur.module.domain.IIdentifiableEntity;
+import org.openur.module.util.data.Status;
 
 /**
  * @author uwe@uwefuchs.com

@@ -1,4 +1,4 @@
-package org.openur.module.domain.userstructure;
+package org.openur.module.util.data;
 
 /**
  * The status a user (person, technical-user, org-unit) can have.

@@ -6,11 +6,11 @@ import java.time.LocalDateTime;
 import java.time.Month;
 
 import org.junit.Test;
-import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.userstructure.orgunit.AbstractOrgUnitMember.AbstractOrgUnitMemberBuilder;
 import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.person.PersonBuilder;
+import org.openur.module.util.data.Status;
 
 public class OrgUnitMemberTest
 {

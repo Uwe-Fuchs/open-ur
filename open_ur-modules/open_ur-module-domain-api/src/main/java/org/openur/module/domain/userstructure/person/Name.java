@@ -7,6 +7,8 @@ import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.openur.module.domain.GraphNode;
+import org.openur.module.util.data.Gender;
+import org.openur.module.util.data.Title;
 
 public class Name
 	extends GraphNode

@@ -8,8 +8,8 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.Validate;
-import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.util.DefaultsUtil;
+import org.openur.module.util.data.Status;
 
 @Entity(name="USER_STRUCTURE_BASE")
 @Table(uniqueConstraints={@UniqueConstraint(name="UNQ_NUMBER", columnNames={"NUMBER"})})

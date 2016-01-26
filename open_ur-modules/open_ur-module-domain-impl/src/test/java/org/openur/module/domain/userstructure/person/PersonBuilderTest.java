@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 import org.openur.module.domain.application.OpenURApplication;
+import org.openur.module.util.data.Gender;
 
 public class PersonBuilderTest
 {

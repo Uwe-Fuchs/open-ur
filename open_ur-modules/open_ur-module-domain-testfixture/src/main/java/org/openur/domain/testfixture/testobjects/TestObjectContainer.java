@@ -19,19 +19,19 @@ import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.domain.security.authorization.OpenURPermissionBuilder;
 import org.openur.module.domain.security.authorization.OpenURRole;
 import org.openur.module.domain.security.authorization.OpenURRoleBuilder;
-import org.openur.module.domain.security.authorization.PermissionScope;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.Address.AddressBuilder;
 import org.openur.module.domain.userstructure.Country;
 import org.openur.module.domain.userstructure.EMailAddress;
-import org.openur.module.domain.userstructure.Status;
-import org.openur.module.domain.userstructure.person.Gender;
 import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.person.PersonBuilder;
-import org.openur.module.domain.userstructure.person.Title;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUser.TechnicalUserBuilder;
+import org.openur.module.util.data.Gender;
+import org.openur.module.util.data.PermissionScope;
+import org.openur.module.util.data.Status;
+import org.openur.module.util.data.Title;
 
 /**
  * 

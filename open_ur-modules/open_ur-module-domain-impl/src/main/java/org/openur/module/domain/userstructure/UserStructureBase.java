@@ -1,6 +1,7 @@
 package org.openur.module.domain.userstructure;
 
 import org.openur.module.domain.IdentifiableEntityImpl;
+import org.openur.module.util.data.Status;
 
 public abstract class UserStructureBase
 	extends IdentifiableEntityImpl

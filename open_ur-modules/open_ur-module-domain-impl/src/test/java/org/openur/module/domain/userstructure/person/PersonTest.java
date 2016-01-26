@@ -6,7 +6,9 @@ import org.junit.Test;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.domain.userstructure.EMailAddress;
-import org.openur.module.domain.userstructure.Status;
+import org.openur.module.util.data.Gender;
+import org.openur.module.util.data.Status;
+import org.openur.module.util.data.Title;
 
 public class PersonTest
 {

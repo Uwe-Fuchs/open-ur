@@ -14,15 +14,15 @@ import java.util.stream.Collectors;
 import org.junit.Test;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.InconsistentHierarchyException;
-import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitMemberTest.MyOrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.OrgUnitMemberTest.MyOrgUnitMemberBuilder;
-import org.openur.module.domain.userstructure.person.Gender;
 import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.person.PersonBuilder;
-import org.openur.module.domain.userstructure.person.Title;
+import org.openur.module.util.data.Gender;
+import org.openur.module.util.data.Status;
+import org.openur.module.util.data.Title;
 import org.openur.module.util.exception.OpenURRuntimeException;
 
 public class OrganizationalUnitTest

@@ -13,11 +13,11 @@ import org.junit.Test;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.domain.security.authorization.AuthorizableMember.AuthorizableMemberBuilder;
-import org.openur.module.domain.userstructure.Status;
-import org.openur.module.domain.userstructure.person.Gender;
 import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.person.PersonBuilder;
+import org.openur.module.util.data.Gender;
+import org.openur.module.util.data.Status;
 
 public class AuthorizableMemberTest
 {

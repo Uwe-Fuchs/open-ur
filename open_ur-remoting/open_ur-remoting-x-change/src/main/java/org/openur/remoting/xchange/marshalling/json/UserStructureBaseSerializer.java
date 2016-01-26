@@ -1,8 +1,8 @@
 package org.openur.remoting.xchange.marshalling.json;
 
-import org.openur.module.domain.userstructure.Status;
 import org.openur.module.domain.userstructure.UserStructureBase;
 import org.openur.module.domain.userstructure.UserStructureBaseBuilder;
+import org.openur.module.util.data.Status;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;

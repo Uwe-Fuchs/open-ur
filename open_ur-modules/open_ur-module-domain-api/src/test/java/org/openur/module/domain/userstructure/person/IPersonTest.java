@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.junit.Test;
 import org.openur.module.domain.application.IApplication;
-import org.openur.module.domain.userstructure.Status;
+import org.openur.module.util.data.Status;
 
 /**
  * @author info@uwefuchs.com

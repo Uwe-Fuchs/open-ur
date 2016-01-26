@@ -18,8 +18,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang3.Validate;
-import org.openur.module.domain.userstructure.person.Gender;
-import org.openur.module.domain.userstructure.person.Title;
+import org.openur.module.util.data.Gender;
+import org.openur.module.util.data.Title;
 
 @Entity(name="PERSON")
 @Table(indexes = {@Index(columnList="HOME_ADDRESS_ID", name="IDX_PERSON_ADDRESS")})

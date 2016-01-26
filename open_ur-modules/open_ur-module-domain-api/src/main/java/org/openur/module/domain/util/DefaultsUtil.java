@@ -3,9 +3,9 @@ package org.openur.module.domain.util;
 import java.util.Locale;
 import java.util.UUID;
 
-import org.openur.module.domain.security.authorization.PermissionScope;
 import org.openur.module.domain.userstructure.Country;
-import org.openur.module.domain.userstructure.Status;
+import org.openur.module.util.data.PermissionScope;
+import org.openur.module.util.data.Status;
 
 /**
  * delivers all open-ur-defaults like country, status, permission-scope etc.

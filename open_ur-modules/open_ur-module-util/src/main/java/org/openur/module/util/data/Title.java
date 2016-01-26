@@ -1,4 +1,4 @@
-package org.openur.module.domain.userstructure.person;
+package org.openur.module.util.data;
 
 public enum Title
 {

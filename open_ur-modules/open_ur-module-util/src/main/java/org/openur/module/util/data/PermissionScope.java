@@ -1,4 +1,4 @@
-package org.openur.module.domain.security.authorization;
+package org.openur.module.util.data;
 
 public enum PermissionScope
 {

@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.security.authorization.IPermission;
-import org.openur.module.domain.security.authorization.PermissionScope;
+import org.openur.module.util.data.PermissionScope;
 
 public class MyPermissionImpl
 	implements IPermission
