@@ -46,13 +46,13 @@ public class UserAccountRepositoryTest
 	{
 		PPerson pPerson = personMapper.mapFromDomainObject(TestObjectContainer.PERSON_1);
 		
-		PUserAccount pUserAccount = new PUserAccount(pPerson, TestObjectContainer.USER_NAME, TestObjectContainer.PASSWORD);
+		PUserAccount pUserAccount = new PUserAccount(pPerson, TestObjectContainer.USER_NAME_1, TestObjectContainer.PASSWORD_1);
 		pUserAccount = saveUserAccount(pUserAccount);
 		
-		pUserAccount = userAccountRepository.findUserAccountByUserName(TestObjectContainer.USER_NAME);
+		pUserAccount = userAccountRepository.findUserAccountByUserName(TestObjectContainer.USER_NAME_1);
 		
 		assertNotNull(pUserAccount);
-		assertEquals(TestObjectContainer.PASSWORD, pUserAccount.getPassWord());
+		assertEquals(TestObjectContainer.PASSWORD_1, pUserAccount.getPassWord());
 		
 		pUserAccount = userAccountRepository.findUserAccountByUserName("someUnknownUserName");
 		assertNull(pUserAccount);

@@ -33,7 +33,7 @@ public class AuthenticationServicesTest
 	@Test(expected=org.openur.module.util.exception.AuthenticationException.class)
 	public void testAuthenticate_Failure()
 	{
-		UsernamePasswordToken openUrToken = new UsernamePasswordToken(TestObjectContainer.USER_NAME, "someWrongPw");
+		UsernamePasswordToken openUrToken = new UsernamePasswordToken(TestObjectContainer.USER_NAME_1, "someWrongPw");
 		Mockito.when(realm.getAuthenticationInfo(openUrToken.getDelegate())).thenThrow(
 				new org.apache.shiro.authc.AuthenticationException("wrong credentials"));
 		authenticationServices.authenticate(openUrToken);		

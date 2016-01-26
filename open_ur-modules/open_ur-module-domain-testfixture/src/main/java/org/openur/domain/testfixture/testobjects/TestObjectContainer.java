@@ -103,11 +103,17 @@ public class TestObjectContainer
 	public static final TechnicalUser TECH_USER_1;
 	public static final TechnicalUser TECH_USER_2;
 	public static final TechnicalUser TECH_USER_3;
+
+	public static final String SALT_BASE = "MyVerySecretPersonalSalt";
 	
-	public static final String USER_NAME = "testUser";
-	public static final String PASSWORD = "secret";	
-	public static final UsernamePasswordToken USERNAME_PW_TOKEN = new UsernamePasswordToken(USER_NAME, PASSWORD);
+	public static final String USER_NAME_1 = "userName_1";
+	public static final String PASSWORD_1 = "password_1";	
+	public static final UsernamePasswordToken USERNAME_PW_TOKEN = new UsernamePasswordToken(USER_NAME_1, PASSWORD_1);
 	public static final UserAccount PERSON_1_ACCOUNT;
+	
+	public static final String USER_NAME_2 = "userName_2";
+	public static final String PASSWORD_2 = "password_2";	
+	public static final UserAccount TECH_USER_2_ACCOUNT;
 	
 	static
 	{
@@ -195,9 +201,9 @@ public class TestObjectContainer
 				.applications(applications)
 				.build();
 		
-		PERSON_1_ACCOUNT = new UserAccountBuilder(USER_NAME, PASSWORD)
+		PERSON_1_ACCOUNT = new UserAccountBuilder(USER_NAME_1, PASSWORD_1)
 				.identifier(PERSON_UUID_1)
-				.creationDate(LocalDateTime.now())
+				.salt(SALT_BASE)
 				.build();
 		
 		// person 2:
@@ -361,6 +367,11 @@ public class TestObjectContainer
 				.identifier(TECH_USER_UUID_2)
 				.status(Status.ACTIVE)
 				.creationDate(LocalDateTime.of(2012, 06, 20, 0, 0))
+				.build();
+		
+		TECH_USER_2_ACCOUNT = new UserAccountBuilder(USER_NAME_2, PASSWORD_2)
+				.identifier(TECH_USER_UUID_2)
+				.salt(SALT_BASE)
 				.build();
 		
 		TECH_USER_3 = new TechnicalUserBuilder(TECH_USER_NUMBER_3)
