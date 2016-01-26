@@ -3,8 +3,8 @@ package org.openur.module.persistence.mapper.rdbms;
 import org.openur.module.domain.IdentifiableEntityBuilder;
 import org.openur.module.domain.IdentifiableEntityImpl;
 import org.openur.module.persistence.rdbms.entity.AbstractOpenUrPersistable;
-import org.openur.module.util.ObjectsComparator;
 import org.openur.module.util.exception.OpenURRuntimeException;
+import org.openur.module.util.processing.ObjectsComparator;
 
 public class AbstractEntityMapper
 {
