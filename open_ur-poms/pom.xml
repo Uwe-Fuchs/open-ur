@@ -164,6 +164,16 @@
 			</dependency>
 			<dependency>
 				<groupId>org.openur.module.persistence</groupId>
+				<artifactId>open_ur-module-persistence-mapping-api</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.openur.module.persistence</groupId>
+				<artifactId>open_ur-module-persistence-dao-api</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.openur.module.persistence</groupId>
 				<artifactId>open_ur-module-persistence-mapping-dao-api</artifactId>
 				<version>${project.version}</version>
 			</dependency>

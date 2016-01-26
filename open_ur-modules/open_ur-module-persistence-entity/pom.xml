@@ -19,6 +19,11 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.openur.pom.commons</groupId>
+			<artifactId>open_ur-pom-commons-component</artifactId>
+			<type>pom</type>
+		</dependency>
+		<dependency>
 			<groupId>org.openur.pom.persistence</groupId>
 			<artifactId>open_ur-pom-persistence-component</artifactId>
 			<type>pom</type>
@@ -28,10 +33,15 @@
 			<artifactId>open_ur-pom-spring-component</artifactId>
 			<type>pom</type>
 		</dependency>
+		<!-- TODO: delete this dependency, move helper-classes from domain- to utils-module -->
 		<dependency>
 			<groupId>org.openur.module.domain</groupId>
 			<artifactId>open_ur-module-domain-api</artifactId>
 		</dependency>
+		<!--dependency>
+			<groupId>org.openur.module.util</groupId>
+			<artifactId>open_ur-module-util</artifactId>
+		</dependency-->
 	</dependencies>
 
 </project>
