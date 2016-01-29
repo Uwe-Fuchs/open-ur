@@ -11,6 +11,7 @@ import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.domain.security.authentication.UserAccount;
 import org.openur.module.domain.security.authentication.UserAccountBuilder;
 import org.openur.module.domain.security.authentication.UsernamePasswordToken;
+import org.openur.module.domain.security.authentication.UsernamePasswordTokenBuilder;
 import org.openur.module.domain.security.authorization.AuthorizableMember;
 import org.openur.module.domain.security.authorization.AuthorizableMember.AuthorizableMemberBuilder;
 import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
@@ -108,7 +109,7 @@ public class TestObjectContainer
 	
 	public static final String USER_NAME_1 = "userName_1";
 	public static final String PASSWORD_1 = "password_1";	
-	public static final UsernamePasswordToken USERNAME_PW_TOKEN = new UsernamePasswordToken(USER_NAME_1, PASSWORD_1);
+	public static final UsernamePasswordToken USERNAME_PW_TOKEN;
 	public static final UserAccount PERSON_1_ACCOUNT;
 	
 	public static final String USER_NAME_2 = "userName_2";
@@ -204,6 +205,11 @@ public class TestObjectContainer
 		PERSON_1_ACCOUNT = new UserAccountBuilder(USER_NAME_1, PASSWORD_1)
 				.identifier(PERSON_UUID_1)
 				.salt(SALT_BASE)
+				.build();
+		
+		USERNAME_PW_TOKEN = new UsernamePasswordTokenBuilder()
+				.userName(USER_NAME_1)
+				.passWord(PASSWORD_1)
 				.build();
 		
 		// person 2:

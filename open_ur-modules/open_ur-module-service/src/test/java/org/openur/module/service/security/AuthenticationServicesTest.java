@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
-import org.openur.module.domain.security.authentication.UsernamePasswordToken;
 import org.openur.module.service.config.SecurityTestSpringConfig;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -27,15 +26,14 @@ public class AuthenticationServicesTest
 	@Test
 	public void testAuthenticate()
 	{
-		authenticationServices.authenticate(TestObjectContainer.USERNAME_PW_TOKEN);
+		authenticationServices.authenticate(TestObjectContainer.USER_NAME_1, TestObjectContainer.PASSWORD_1);
 	}
 	
 	@Test(expected=org.openur.module.util.exception.AuthenticationException.class)
 	public void testAuthenticate_Failure()
 	{
-		UsernamePasswordToken openUrToken = new UsernamePasswordToken(TestObjectContainer.USER_NAME_1, "someWrongPw");
-		Mockito.when(realm.getAuthenticationInfo(openUrToken.getDelegate())).thenThrow(
+		Mockito.when(realm.getAuthenticationInfo(Mockito.any(org.apache.shiro.authc.UsernamePasswordToken.class))).thenThrow(
 				new org.apache.shiro.authc.AuthenticationException("wrong credentials"));
-		authenticationServices.authenticate(openUrToken);		
+		authenticationServices.authenticate(TestObjectContainer.USER_NAME_1, "someWrongPw");
 	}
 }

@@ -8,7 +8,7 @@ import org.apache.commons.lang3.Validate;
  * @author info@uwefuchs.com
  */
 public class UsernamePasswordToken
-	implements IAuthenticationToken<org.apache.shiro.authc.UsernamePasswordToken>
+	implements IUsernamePasswordToken
 {
 	private static final long serialVersionUID = -378932735227894282L;
 	
@@ -20,35 +20,7 @@ public class UsernamePasswordToken
 		return delegate;
 	}
 
-	public UsernamePasswordToken(final String username, final String password)
-	{
-		super();
-		Validate.notBlank(username, "user-name must not be empty!");
-		Validate.notBlank(password, "password must not be empty!");
-		delegate = new org.apache.shiro.authc.UsernamePasswordToken(username, password);
-	}
-
-	public UsernamePasswordToken(final String username, final String password, final boolean rememberMe)
-	{
-		this(username, password);
-		delegate.setRememberMe(rememberMe);
-	}
-
-	public UsernamePasswordToken(final String username, final String password,
-    final boolean rememberMe, final String host)
-	{
-		this(username, password, host);
-		delegate.setRememberMe(rememberMe);
-	}
-
-	public UsernamePasswordToken(final String username, final String password, final String host)
-	{
-		this(username, password);
-		Validate.notBlank(host, "host must not be empty!");
-		delegate.setHost(host);
-	}
-
-	public UsernamePasswordToken(org.apache.shiro.authc.UsernamePasswordToken delegate)
+	UsernamePasswordToken(org.apache.shiro.authc.UsernamePasswordToken delegate)
 	{
 		super();
 		Validate.notNull(delegate, "delagate-object must not be null!");
@@ -73,11 +45,13 @@ public class UsernamePasswordToken
 		return delegate.getHost();
 	}
 	
-  public String getUsername()
+	@Override
+  public String getUserName()
   {
   	return delegate.getUsername();
   }
 	
+	@Override
 	public String getPassword()
 	{
 		return delegate.getPassword().toString();

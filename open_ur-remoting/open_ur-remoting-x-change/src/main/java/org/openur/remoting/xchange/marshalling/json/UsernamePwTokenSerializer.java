@@ -3,6 +3,7 @@ package org.openur.remoting.xchange.marshalling.json;
 import java.lang.reflect.Type;
 
 import org.openur.module.domain.security.authentication.UsernamePasswordToken;
+import org.openur.module.domain.security.authentication.UsernamePasswordTokenBuilder;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -33,6 +34,6 @@ public class UsernamePwTokenSerializer
 		org.apache.shiro.authc.UsernamePasswordToken shiroToken = 
 				context.deserialize(element.getAsJsonObject(), org.apache.shiro.authc.UsernamePasswordToken.class);
 		
-		return new UsernamePasswordToken(shiroToken);
+		return new UsernamePasswordTokenBuilder(shiroToken).build();
 	}
 }

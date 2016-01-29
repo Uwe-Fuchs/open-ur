@@ -1,7 +1,5 @@
 package org.openur.module.service.security;
 
-import org.apache.shiro.authc.HostAuthenticationToken;
-import org.openur.module.domain.security.authentication.IAuthenticationToken;
 import org.openur.module.util.exception.AuthenticationException;
 
 /**
@@ -12,11 +10,14 @@ import org.openur.module.util.exception.AuthenticationException;
 public interface IAuthenticationServices
 {
 	/**
-	 * Performs a login attempt with a given {@link IAuthenticationToken}. If
+	 * Performs a login attempt via given userName/passWord-combination. If
 	 * unsuccessful, an {@link AuthenticationException} is thrown.
 	 * 
-	 * @throws AuthenticationException
+	 * @param userName
+	 * @param passWord
+	 * 
+	 * @throws {@link AuthenticationException}
 	 */
-	void authenticate(IAuthenticationToken<? extends HostAuthenticationToken> authenticationToken)
+	void authenticate(String userName, String passWord)
 		throws AuthenticationException;
 }
