@@ -23,10 +23,10 @@ public class OrgUnitDaoImplRdbms
 	implements IOrgUnitDao
 {
 	@Inject
-	private IOrganizationalUnitMapper<POrganizationalUnit, ? extends IAuthorizableOrgUnit> organizationalUnitMapper;
+	private IOrganizationalUnitMapper<? extends IAuthorizableOrgUnit> organizationalUnitMapper;
 	
 	@Inject
-	private IOrgUnitMemberMapper<POrganizationalUnit, POrgUnitMember, ? extends IAuthorizableMember> orgUnitMemberMapper;
+	private IOrgUnitMemberMapper<? extends IAuthorizableMember> orgUnitMemberMapper;
 	
 	@Inject
 	private OrgUnitRepository orgUnitRepository;
