@@ -1,7 +1,7 @@
 package org.openur.module.persistence.mapper.rdbms;
 
 import org.openur.module.domain.IIdentifiableEntity;
-import org.springframework.data.domain.Persistable;
+import org.openur.module.persistence.rdbms.entity.AbstractOpenUrPersistable;
 
 /**
  * mapping data between PA-Entities and (immutable) Open-UR-Domain-Objects.
@@ -11,7 +11,7 @@ import org.springframework.data.domain.Persistable;
  * @param <P> generic placeholder for entity-type.
  * @param <I> generic palceholder for domain-object-type.
  */
-public interface IEntityDomainObjectMapper<P extends Persistable<Long>, I extends IIdentifiableEntity>
+public interface IEntityDomainObjectMapper<P extends AbstractOpenUrPersistable, I extends IIdentifiableEntity>
 {
 	/**
 	 * map domain-object on corresponding entity-class.

@@ -14,7 +14,7 @@ import org.openur.module.persistence.rdbms.entity.PUserStructureBase;
 
 public class UserAccountMapper
 	extends AbstractEntityMapper
-	implements IUserAccountMapper<PUserAccount, UserAccount, UserStructureBase>
+	implements IUserAccountMapper<UserAccount, UserStructureBase>
 {
 	@Inject
 	private PersonMapper personMapper;	
