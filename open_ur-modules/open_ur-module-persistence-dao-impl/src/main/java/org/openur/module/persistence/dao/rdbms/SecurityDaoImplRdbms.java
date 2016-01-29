@@ -5,14 +5,19 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import org.openur.module.domain.security.authentication.IUserAccount;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
+import org.openur.module.domain.userstructure.IUserStructureBase;
 import org.openur.module.persistence.dao.ISecurityDao;
 import org.openur.module.persistence.mapper.rdbms.IEntityDomainObjectMapper;
+import org.openur.module.persistence.mapper.rdbms.IUserAccountMapper;
 import org.openur.module.persistence.rdbms.entity.PPermission;
 import org.openur.module.persistence.rdbms.entity.PRole;
+import org.openur.module.persistence.rdbms.entity.PUserAccount;
 import org.openur.module.persistence.rdbms.repository.PermissionRepository;
 import org.openur.module.persistence.rdbms.repository.RoleRepository;
+import org.openur.module.persistence.rdbms.repository.UserAccountRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,10 +33,16 @@ public class SecurityDaoImplRdbms
 	private IEntityDomainObjectMapper<PRole, ? extends IRole> roleMapper;
 	
 	@Inject
+	private IUserAccountMapper<? extends IUserAccount, ? extends IUserStructureBase> userAccountMapper;
+	
+	@Inject
 	private PermissionRepository permissionRepository;
 	
 	@Inject
 	private RoleRepository roleRepository;
+
+	@Inject
+	private UserAccountRepository userAccountRepository;
 
 	public SecurityDaoImplRdbms()
 	{
@@ -145,5 +156,18 @@ public class SecurityDaoImplRdbms
 				.stream()
 				.map(roleMapper::mapFromEntity)
 				.collect(Collectors.toList());
+	}
+
+	@Override
+	public IUserAccount findUserAccountByUserName(String userName)
+	{
+		PUserAccount pUserAccount = userAccountRepository.findUserAccountByUserName(userName);
+		
+		if (pUserAccount == null)
+		{
+			return null;
+		}
+		
+		return userAccountMapper.mapFromEntity(pUserAccount);
 	}
 }

@@ -2,6 +2,7 @@ package org.openur.module.persistence.dao;
 
 import java.util.List;
 
+import org.openur.module.domain.security.authentication.IUserAccount;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
 
@@ -67,4 +68,13 @@ public interface ISecurityDao
 	 * @return List with user-permissions (empty if no permissions are defined).
 	 */
 	List<IPermission> obtainAllPermissions();
+	
+	/**
+	 * searches a userAccount-object with given userName.
+	 * 
+	 * @param userName
+	 * 
+	 * @return the userAccount with given userName or null if no userAccount is found.
+	 */
+	IUserAccount findUserAccountByUserName(String userName);
 }

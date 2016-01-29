@@ -16,23 +16,30 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
+import org.openur.module.domain.security.authentication.IUserAccount;
+import org.openur.module.domain.security.authentication.UserAccount;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
 import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.domain.security.authorization.OpenURRole;
+import org.openur.module.domain.userstructure.UserStructureBase;
 import org.openur.module.persistence.dao.ISecurityDao;
 import org.openur.module.persistence.mapper.rdbms.IEntityDomainObjectMapper;
+import org.openur.module.persistence.mapper.rdbms.IUserAccountMapper;
 import org.openur.module.persistence.mapper.rdbms.PermissionMapper;
 import org.openur.module.persistence.mapper.rdbms.RoleMapper;
+import org.openur.module.persistence.mapper.rdbms.UserAccountMapper;
 import org.openur.module.persistence.rdbms.config.DaoSpringConfig;
 import org.openur.module.persistence.rdbms.config.MapperSpringConfig;
 import org.openur.module.persistence.rdbms.config.RepositorySpringConfig;
 import org.openur.module.persistence.rdbms.entity.PApplication;
 import org.openur.module.persistence.rdbms.entity.PPermission;
 import org.openur.module.persistence.rdbms.entity.PRole;
+import org.openur.module.persistence.rdbms.entity.PUserAccount;
 import org.openur.module.persistence.rdbms.repository.ApplicationRepository;
 import org.openur.module.persistence.rdbms.repository.PermissionRepository;
 import org.openur.module.persistence.rdbms.repository.RoleRepository;
+import org.openur.module.persistence.rdbms.repository.UserAccountRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -50,6 +57,9 @@ public class SecurityDaoImplRdbmsTest
 	private IEntityDomainObjectMapper<PRole, OpenURRole> roleMapper;
 	
 	@Inject
+	private IUserAccountMapper<UserAccount, UserStructureBase> userAccountMapper;
+	
+	@Inject
 	private RoleRepository roleRepository;
 	
 	@Inject
@@ -57,6 +67,9 @@ public class SecurityDaoImplRdbmsTest
 	
 	@Inject
 	private ApplicationRepository applicationRepository;
+	
+	@Inject
+	private UserAccountRepository userAccountRepository;
 	
 	@Inject
 	private ISecurityDao securityDao;
@@ -189,7 +202,6 @@ public class SecurityDaoImplRdbmsTest
 		assertTrue(RoleMapper.domainObjectEqualsToEntity((OpenURRole) p, pRole));
 	}
 
-
 	@Test
 	@Transactional(readOnly=false)
 	public void testObtainAllRoles()
@@ -224,6 +236,22 @@ public class SecurityDaoImplRdbmsTest
 		assertTrue(RoleMapper.domainObjectEqualsToEntity(role_Y, pRole_Y));
 	}
 
+	@Test
+	@Transactional(readOnly=false)
+	public void testFindUserAccount()
+	{
+		PUserAccount persistable = userAccountMapper.mapFromDomainObject(TestObjectContainer.PERSON_1_ACCOUNT, TestObjectContainer.PERSON_1);
+		persistable = saveUserAccount(persistable);
+		
+		IUserAccount u = securityDao.findUserAccountByUserName(TestObjectContainer.USER_NAME_1);
+		
+		assertNotNull(u);
+		assertTrue(UserAccountMapper.domainObjectEqualsToEntity((UserAccount) u, persistable));
+		
+		u = securityDao.findUserAccountByUserName("someUnknownUserName");
+		assertNull(u);
+	}
+
 	@After
 	@Transactional(readOnly = false)
 	public void tearDown()
@@ -231,6 +259,7 @@ public class SecurityDaoImplRdbmsTest
 	{
 		roleRepository.deleteAll();
 		permissionRepository.deleteAll();
+		userAccountRepository.deleteAll();
 		applicationRepository.deleteAll();
 	}
 	
@@ -244,5 +273,11 @@ public class SecurityDaoImplRdbmsTest
 	private PRole saveRole(PRole role)
 	{
 		return roleRepository.saveAndFlush(role);
+	}
+	
+	@Transactional(readOnly = false)
+	private PUserAccount saveUserAccount(PUserAccount userAccount)
+	{
+		return userAccountRepository.saveAndFlush(userAccount);
 	}
 }

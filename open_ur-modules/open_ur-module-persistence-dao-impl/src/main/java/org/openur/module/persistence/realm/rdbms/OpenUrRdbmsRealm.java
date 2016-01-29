@@ -18,11 +18,11 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.realm.jdbc.JdbcRealm.SaltStyle;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
-import org.openur.module.persistence.rdbms.entity.PUserAccount;
-import org.openur.module.persistence.rdbms.repository.UserAccountRepository;
+import org.openur.module.domain.security.authentication.IUserAccount;
+import org.openur.module.persistence.dao.ISecurityDao;
 
 /**
- * 
+ * OpenUR-specific, Username-PW-based implementation of {@link AuthorizingRealm}-class.
  * 
  * @author info@uwefuchs.com
  */
@@ -33,7 +33,7 @@ public class OpenUrRdbmsRealm
 	private Map<String, String> userSalts = new ConcurrentHashMap<>();
 
 	@Inject
-	private UserAccountRepository userAccountRepository;
+	private ISecurityDao securityDao;
 
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token)
@@ -48,7 +48,7 @@ public class OpenUrRdbmsRealm
 			throw new AccountException("Null usernames are not allowed by this realm.");
 		}
 
-		PUserAccount userAccount = userAccountRepository.findUserAccountByUserName(username);
+		IUserAccount userAccount = securityDao.findUserAccountByUserName(username);
 
 		if (userAccount == null || StringUtils.isBlank(userAccount.getPassWord()))
 		{
@@ -65,7 +65,6 @@ public class OpenUrRdbmsRealm
 		} else 	if (saltStyle == SaltStyle.EXTERNAL)
 		{
 			salt = getSaltForUser(username);
-			userAccount.setSalt(salt);
 		}
 		
 		if (salt != null)

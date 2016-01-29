@@ -20,10 +20,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.openur.domain.testfixture.testobjects.TestObjectContainer;
+import org.openur.module.domain.security.authentication.UserAccount;
+import org.openur.module.domain.security.authentication.UserAccountBuilder;
+import org.openur.module.persistence.dao.ISecurityDao;
 import org.openur.module.persistence.rdbms.config.RealmSpringConfig;
-import org.openur.module.persistence.rdbms.entity.PPerson;
-import org.openur.module.persistence.rdbms.entity.PUserAccount;
-import org.openur.module.persistence.rdbms.repository.UserAccountRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -33,19 +34,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class OpenUrRdbmsRealmTest
 {
-	private static final String USER_NAME = "testUser";
-	private static final String PASSWORD = "secret";
 	private static final String SALT_LITERAL = "myVERYSECRETBase64EncodedSalt";
 	private static final int HASH_ITERATIONS = 1024;
 
-	private AuthenticationToken authToken;
-	private PPerson pPerson;
-	private PUserAccount pUserAccount;
 	private ByteSource salt;
 	private String hashedSaltBase64;
 
 	@Inject
-	private UserAccountRepository userAccountRepository;
+	private ISecurityDao securityDao;
 
 	@Inject
 	private OpenUrRdbmsRealm realm;
@@ -53,8 +49,6 @@ public class OpenUrRdbmsRealmTest
 	@Before
 	public void setUp()
 	{
-		pPerson = new PPerson("123abc", "Name of Employee");
-		authToken = new UsernamePasswordToken(USER_NAME, PASSWORD);
 		hashedSaltBase64 = new Sha256Hash(SALT_LITERAL).toBase64();
 		salt = ByteSource.Util.bytes(hashedSaltBase64);
 	}
@@ -62,37 +56,38 @@ public class OpenUrRdbmsRealmTest
 	@Test
 	public void testDoGetAuthenticationInfo_PlainPW()
 	{
-		pUserAccount = new PUserAccount(pPerson, USER_NAME, PASSWORD);
-		Mockito.when(userAccountRepository.findUserAccountByUserName(USER_NAME)).thenReturn(pUserAccount);
+		Mockito.when(securityDao.findUserAccountByUserName(TestObjectContainer.USER_NAME_1)).thenReturn(TestObjectContainer.PERSON_1_ACCOUNT);
 
 		realm.setCredentialsMatcher(new SimpleCredentialsMatcher());
 
-		AuthenticationInfo authInfo = realm.getAuthenticationInfo(authToken);
+		AuthenticationInfo authInfo = realm.getAuthenticationInfo(TestObjectContainer.USERNAME_PW_TOKEN.getDelegate());
 
 		assertEquals(1, authInfo.getPrincipals().asList().size());
 		String userName = authInfo.getPrincipals().getPrimaryPrincipal().toString();
-		assertEquals(USER_NAME, userName);
+		assertEquals(TestObjectContainer.USER_NAME_1, userName);
 		String passWord = new String((char[]) authInfo.getCredentials());
-		assertEquals(PASSWORD, passWord);
+		assertEquals(TestObjectContainer.PASSWORD_1, passWord);
 	}
 
 	@Test
 	public void testDoGetAuthenticationInfo_HashedPW()
 	{
 		HashingPasswordService passwordService = createHashedPasswordService();		
-		String encryptedPassword = passwordService.encryptPassword(PASSWORD);
-		pUserAccount = new PUserAccount(pPerson, USER_NAME, encryptedPassword);
-		Mockito.when(userAccountRepository.findUserAccountByUserName(USER_NAME)).thenReturn(pUserAccount);
+		String encryptedPassword = passwordService.encryptPassword(TestObjectContainer.PASSWORD_1);
+		UserAccount userAccount = new UserAccountBuilder(TestObjectContainer.USER_NAME_1, encryptedPassword)
+				.identifier(TestObjectContainer.PERSON_UUID_1)
+				.build();
+		Mockito.when(securityDao.findUserAccountByUserName(TestObjectContainer.USER_NAME_1)).thenReturn(userAccount);
 		
 		PasswordMatcher credentialsMatcher = new PasswordMatcher();
 		credentialsMatcher.setPasswordService(passwordService);
 		realm.setCredentialsMatcher(credentialsMatcher);
 
-		AuthenticationInfo authInfo = realm.getAuthenticationInfo(authToken);
+		AuthenticationInfo authInfo = realm.getAuthenticationInfo(TestObjectContainer.USERNAME_PW_TOKEN.getDelegate());
 
 		assertEquals(1, authInfo.getPrincipals().asList().size());
 		String userName = authInfo.getPrincipals().getPrimaryPrincipal().toString();
-		assertEquals(USER_NAME, userName);
+		assertEquals(TestObjectContainer.USER_NAME_1, userName);
 		String passWord = new String((char[]) authInfo.getCredentials());
 		assertEquals(encryptedPassword, passWord);
 	}
@@ -101,21 +96,23 @@ public class OpenUrRdbmsRealmTest
 	public void testDoGetAuthenticationInfo_HashedPW_Salted()
 	{
 		HashingPasswordService passwordService = createSaltedPasswordService();		
-		String encryptedAndSaltedPassword = passwordService.encryptPassword(PASSWORD);
-		pUserAccount = new PUserAccount(pPerson, USER_NAME, encryptedAndSaltedPassword);
-		pUserAccount.setSalt(hashedSaltBase64);
-		Mockito.when(userAccountRepository.findUserAccountByUserName(USER_NAME)).thenReturn(pUserAccount);
+		String encryptedAndSaltedPassword = passwordService.encryptPassword(TestObjectContainer.PASSWORD_1);
+		UserAccount userAccount = new UserAccountBuilder(TestObjectContainer.USER_NAME_1, encryptedAndSaltedPassword)
+				.identifier(TestObjectContainer.PERSON_UUID_1)
+				.salt(hashedSaltBase64)
+				.build();
+		Mockito.when(securityDao.findUserAccountByUserName(TestObjectContainer.USER_NAME_1)).thenReturn(userAccount);
 		
 		PasswordMatcher credentialsMatcher = new PasswordMatcher();
 		credentialsMatcher.setPasswordService(passwordService);
 		realm.setCredentialsMatcher(credentialsMatcher);
 		realm.setSaltStyle(SaltStyle.COLUMN);
 
-		AuthenticationInfo authInfo = realm.getAuthenticationInfo(authToken);
+		AuthenticationInfo authInfo = realm.getAuthenticationInfo(TestObjectContainer.USERNAME_PW_TOKEN.getDelegate());
 
 		assertEquals(1, authInfo.getPrincipals().asList().size());
 		String userName = authInfo.getPrincipals().getPrimaryPrincipal().toString();
-		assertEquals(USER_NAME, userName);
+		assertEquals(TestObjectContainer.USER_NAME_1, userName);
 		String passWord = new String((char[]) authInfo.getCredentials());
 		assertEquals(encryptedAndSaltedPassword, passWord);
 	}
@@ -124,21 +121,24 @@ public class OpenUrRdbmsRealmTest
 	public void testDoGetAuthenticationInfo_HashedPW_Salted_External()
 	{		
 		HashingPasswordService passwordService = createSaltedPasswordService();		
-		String encryptedAndSaltedPassword = passwordService.encryptPassword(PASSWORD);
-		pUserAccount = new PUserAccount(pPerson, USER_NAME, encryptedAndSaltedPassword);
-		Mockito.when(userAccountRepository.findUserAccountByUserName(USER_NAME)).thenReturn(pUserAccount);
+		String encryptedAndSaltedPassword = passwordService.encryptPassword(TestObjectContainer.PASSWORD_1);
+		UserAccount userAccount = new UserAccountBuilder(TestObjectContainer.USER_NAME_1, encryptedAndSaltedPassword)
+				.identifier(TestObjectContainer.PERSON_UUID_1)
+				.salt(hashedSaltBase64)
+				.build();
+		Mockito.when(securityDao.findUserAccountByUserName(TestObjectContainer.USER_NAME_1)).thenReturn(userAccount);
 		
 		PasswordMatcher credentialsMatcher = new PasswordMatcher();
 		credentialsMatcher.setPasswordService(passwordService);
 		realm.setCredentialsMatcher(credentialsMatcher);		
-		realm.addSaltForUser(USER_NAME, hashedSaltBase64);
+		realm.addSaltForUser(TestObjectContainer.USER_NAME_1, hashedSaltBase64);
 		realm.setSaltStyle(SaltStyle.EXTERNAL);	// is set automatically when adding external salt, only set here for demonstrating-purposes!
 
-		AuthenticationInfo authInfo = realm.getAuthenticationInfo(authToken);
+		AuthenticationInfo authInfo = realm.getAuthenticationInfo(TestObjectContainer.USERNAME_PW_TOKEN.getDelegate());
 
 		assertEquals(1, authInfo.getPrincipals().asList().size());
 		String userName = authInfo.getPrincipals().getPrimaryPrincipal().toString();
-		assertEquals(USER_NAME, userName);
+		assertEquals(TestObjectContainer.USER_NAME_1, userName);
 		String passWord = new String((char[]) authInfo.getCredentials());
 		assertEquals(encryptedAndSaltedPassword, passWord);
 	}
@@ -146,13 +146,12 @@ public class OpenUrRdbmsRealmTest
 	@Test(expected=AuthenticationException.class)
 	public void testDoGetAuthenticationInfo_Wrong_PW()
 	{
-		pUserAccount = new PUserAccount(pPerson, USER_NAME, PASSWORD);
-		Mockito.when(userAccountRepository.findUserAccountByUserName(USER_NAME)).thenReturn(pUserAccount);
+		Mockito.when(securityDao.findUserAccountByUserName(TestObjectContainer.USER_NAME_1)).thenReturn(TestObjectContainer.PERSON_1_ACCOUNT);
 
 		realm.setCredentialsMatcher(new SimpleCredentialsMatcher());
 
 		// authenticate user with wrong credentials:
-		AuthenticationToken authToken = new UsernamePasswordToken(USER_NAME, "someWrongPassword");
+		AuthenticationToken authToken = new UsernamePasswordToken(TestObjectContainer.USER_NAME_1, "someWrongPassword");
 		realm.getAuthenticationInfo(authToken);
 	}
 

@@ -1,8 +1,9 @@
 package org.openur.module.persistence.rdbms.config;
 
+import static org.mockito.Mockito.mock;
+
 import org.apache.shiro.realm.Realm;
-import org.mockito.Mockito;
-import org.openur.module.persistence.rdbms.repository.UserAccountRepository;
+import org.openur.module.persistence.dao.ISecurityDao;
 import org.openur.module.persistence.realm.rdbms.OpenUrRdbmsRealm;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,9 +19,9 @@ public class RealmSpringConfig
 		return new OpenUrRdbmsRealm();
 	}
 
-	@Bean(name = "userAccountRepositoryMock")
-	public UserAccountRepository userAccountRepository()
-	{
-		return Mockito.mock(UserAccountRepository.class);
+	@Bean(name = "securityDaoMock")
+	public ISecurityDao securityDao()
+	{		
+		return mock(ISecurityDao.class);
 	}
 }

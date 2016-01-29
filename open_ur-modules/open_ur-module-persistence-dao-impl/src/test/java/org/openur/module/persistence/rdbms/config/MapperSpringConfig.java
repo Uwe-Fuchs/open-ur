@@ -8,6 +8,7 @@ import org.openur.module.persistence.mapper.rdbms.PermissionMapper;
 import org.openur.module.persistence.mapper.rdbms.PersonMapper;
 import org.openur.module.persistence.mapper.rdbms.RoleMapper;
 import org.openur.module.persistence.mapper.rdbms.TechnicalUserMapper;
+import org.openur.module.persistence.mapper.rdbms.UserAccountMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -55,6 +56,12 @@ public class MapperSpringConfig
 	public OrgUnitMemberMapper orgUnitMemberMapper()
 	{		
 		return new OrgUnitMemberMapper();
+	}
+
+	@Bean(name = "userAccountMapper")
+	public UserAccountMapper userAccountMapper()
+	{		
+		return new UserAccountMapper();
 	}
 
 	@Bean(name = "permissionMapper")
