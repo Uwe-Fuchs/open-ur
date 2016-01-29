@@ -33,15 +33,10 @@
 			<artifactId>open_ur-pom-spring-component</artifactId>
 			<type>pom</type>
 		</dependency>
-		<!-- TODO: delete this dependency, move helper-classes from domain- to utils-module -->
 		<dependency>
-			<groupId>org.openur.module.domain</groupId>
-			<artifactId>open_ur-module-domain-api</artifactId>
-		</dependency>
-		<!--dependency>
 			<groupId>org.openur.module.util</groupId>
 			<artifactId>open_ur-module-util</artifactId>
-		</dependency-->
+		</dependency>
 	</dependencies>
 
 </project>
