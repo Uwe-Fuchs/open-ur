@@ -4,7 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import org.apache.commons.lang3.Validate;
-import org.openur.module.domain.util.DefaultsUtil;
+import org.openur.module.util.processing.DefaultsUtil;
 
 @Entity(name="ADDRESS")
 public class PAddress

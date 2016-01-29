@@ -3,8 +3,8 @@ package org.openur.module.domain.security.authorization;
 import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.IdentifiableEntityBuilder;
 import org.openur.module.domain.application.OpenURApplication;
-import org.openur.module.domain.util.DefaultsUtil;
 import org.openur.module.util.data.PermissionScope;
+import org.openur.module.util.processing.DefaultsUtil;
 
 public class OpenURPermissionBuilder
 	extends IdentifiableEntityBuilder<OpenURPermissionBuilder>

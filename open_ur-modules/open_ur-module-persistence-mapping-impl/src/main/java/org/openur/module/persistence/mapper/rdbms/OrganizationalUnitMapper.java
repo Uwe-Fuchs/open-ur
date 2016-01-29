@@ -12,11 +12,11 @@ import org.openur.module.domain.security.authorization.AuthorizableOrgUnit.Autho
 import org.openur.module.domain.security.authorization.OpenURRole;
 import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.person.Person;
-import org.openur.module.domain.util.DefaultsUtil;
 import org.openur.module.persistence.rdbms.entity.POrgUnitMember;
 import org.openur.module.persistence.rdbms.entity.POrganizationalUnit;
 import org.openur.module.persistence.rdbms.entity.PPerson;
 import org.openur.module.persistence.rdbms.entity.PRole;
+import org.openur.module.util.processing.DefaultsUtil;
 
 public class OrganizationalUnitMapper
 	extends UserStructureBaseMapper implements IOrganizationalUnitMapper<POrganizationalUnit, AuthorizableOrgUnit>

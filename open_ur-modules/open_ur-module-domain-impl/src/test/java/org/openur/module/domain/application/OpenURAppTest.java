@@ -9,7 +9,7 @@ import java.util.UUID;
 import org.junit.Test;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
-import org.openur.module.domain.util.DefaultsUtil;
+import org.openur.module.util.processing.DefaultsUtil;
 
 public class OpenURAppTest
 {

@@ -1,4 +1,4 @@
-package org.openur.module.domain.util;
+package org.openur.module.util.processing;
 
 import java.util.Locale;
 import java.util.UUID;

@@ -13,8 +13,8 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.Validate;
-import org.openur.module.domain.util.DefaultsUtil;
 import org.openur.module.util.data.PermissionScope;
+import org.openur.module.util.processing.DefaultsUtil;
 
 @Entity(name="PERMISSION")
 @Table(uniqueConstraints={@UniqueConstraint(name="UNQ_PERM_TEXT_APP_ID", columnNames={"PERMISSION_TEXT", "APPLICATION_ID"})},

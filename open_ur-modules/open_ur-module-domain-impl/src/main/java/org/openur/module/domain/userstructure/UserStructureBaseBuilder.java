@@ -2,8 +2,8 @@ package org.openur.module.domain.userstructure;
 
 import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.IdentifiableEntityBuilder;
-import org.openur.module.domain.util.DefaultsUtil;
 import org.openur.module.util.data.Status;
+import org.openur.module.util.processing.DefaultsUtil;
 
 public abstract class UserStructureBaseBuilder<T extends UserStructureBaseBuilder<T>>
 	extends IdentifiableEntityBuilder<T>

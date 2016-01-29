@@ -3,7 +3,7 @@ package org.openur.module.domain;
 import java.time.LocalDateTime;
 
 import org.apache.commons.lang3.Validate;
-import org.openur.module.domain.util.DefaultsUtil;
+import org.openur.module.util.processing.DefaultsUtil;
 
 @SuppressWarnings("unchecked")
 public abstract class IdentifiableEntityBuilder<T extends IdentifiableEntityBuilder<T>>
