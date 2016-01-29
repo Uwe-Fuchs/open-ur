@@ -88,7 +88,7 @@ public class Address
 		private String streetNo = null;
 		private String city = null;
 		private String postcode = null;
-		private Country country = DefaultsUtil.getDefaultCountry();
+		private Country country = Country.byCode(DefaultsUtil.getDefaultCountryCode());
 		
 		// constructors:
 		public AddressBuilder(String postcode)

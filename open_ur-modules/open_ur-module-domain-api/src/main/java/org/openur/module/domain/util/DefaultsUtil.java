@@ -3,7 +3,6 @@ package org.openur.module.domain.util;
 import java.util.Locale;
 import java.util.UUID;
 
-import org.openur.module.domain.userstructure.Country;
 import org.openur.module.util.data.PermissionScope;
 import org.openur.module.util.data.Status;
 
@@ -14,14 +13,9 @@ import org.openur.module.util.data.Status;
  */
 public class DefaultsUtil
 {
-	public static Country getDefaultCountry()
-	{
-		return Country.byLocale(Locale.getDefault());
-	}
-	
 	public static String getDefaultCountryCode()
 	{
-		return getDefaultCountry().getCountryCode();
+		return Locale.getDefault().getCountry();
 	}
 	
 	public static Status getDefaultStatus()
