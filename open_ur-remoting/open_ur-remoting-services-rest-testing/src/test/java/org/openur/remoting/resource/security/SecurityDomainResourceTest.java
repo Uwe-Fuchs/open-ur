@@ -65,7 +65,7 @@ public class SecurityDomainResourceTest
 	@Test
 	public void testFindRoleById()
 	{
-		OpenURRole r = performRestCall(SECURITY_DOMAIN_RESOURCE_PATH + ROLE_PER_ID_RESOURCE_PATH 
+		OpenURRole r = performRestCall_Get(SECURITY_DOMAIN_RESOURCE_PATH + ROLE_PER_ID_RESOURCE_PATH 
 				+ TestObjectContainer.ROLE_X.getIdentifier(), OpenURRole.class);
 		
 		assertTrue(new RoleComparer().objectsAreEqual(r, TestObjectContainer.ROLE_X));
@@ -74,7 +74,7 @@ public class SecurityDomainResourceTest
 	@Test
 	public void testFindRoleByName()
 	{
-		OpenURRole r = performRestCall(SECURITY_DOMAIN_RESOURCE_PATH + ROLE_PER_NAME_RESOURCE_PATH 
+		OpenURRole r = performRestCall_Get(SECURITY_DOMAIN_RESOURCE_PATH + ROLE_PER_NAME_RESOURCE_PATH 
 					+ TestObjectContainer.ROLE_X.getRoleName(), OpenURRole.class);
 		
 		assertTrue(new RoleComparer().objectsAreEqual(r, TestObjectContainer.ROLE_X));
@@ -83,7 +83,7 @@ public class SecurityDomainResourceTest
 	@Test
 	public void testObtainAllRoles()
 	{
-		Set<OpenURRole> resultSet = performRestCall(SECURITY_DOMAIN_RESOURCE_PATH + ALL_ROLES_RESOURCE_PATH, 
+		Set<OpenURRole> resultSet = performRestCall_Get(SECURITY_DOMAIN_RESOURCE_PATH + ALL_ROLES_RESOURCE_PATH, 
 					new GenericType<Set<OpenURRole>>(new ParameterizedTypeImpl(Set.class, OpenURRole.class)));
 
 		assertFalse(resultSet.isEmpty());
@@ -100,7 +100,7 @@ public class SecurityDomainResourceTest
 	@Test
 	public void testFindPermissionById()
 	{
-		OpenURPermission p = performRestCall(SECURITY_DOMAIN_RESOURCE_PATH + PERMISSION_PER_ID_RESOURCE_PATH 
+		OpenURPermission p = performRestCall_Get(SECURITY_DOMAIN_RESOURCE_PATH + PERMISSION_PER_ID_RESOURCE_PATH 
 					+ TestObjectContainer.PERMISSION_1_A.getIdentifier(), OpenURPermission.class);
 		
 		assertTrue(EqualsBuilder.reflectionEquals(p, TestObjectContainer.PERMISSION_1_A));
@@ -109,7 +109,7 @@ public class SecurityDomainResourceTest
 	@Test
 	public void testFindPermissionByText()
 	{
-		OpenURPermission p = performRestCall(SECURITY_DOMAIN_RESOURCE_PATH + PERMISSION_PER_TEXT_RESOURCE_PATH 
+		OpenURPermission p = performRestCall_Get(SECURITY_DOMAIN_RESOURCE_PATH + PERMISSION_PER_TEXT_RESOURCE_PATH 
 					+ "?text=" + TestObjectContainer.PERMISSION_1_A.getPermissionText() 
 					+ "&appName=" + TestObjectContainer.APP_A.getApplicationName(), OpenURPermission.class);
 		
@@ -119,7 +119,7 @@ public class SecurityDomainResourceTest
 	@Test
 	public void testObtainPermissionsForApp()
 	{
-		Set<OpenURPermission> resultSet = performRestCall(SECURITY_DOMAIN_RESOURCE_PATH + PERMISSIONS_PER_APP_RESOURCE_PATH 
+		Set<OpenURPermission> resultSet = performRestCall_Get(SECURITY_DOMAIN_RESOURCE_PATH + PERMISSIONS_PER_APP_RESOURCE_PATH 
 					+ TestObjectContainer.APP_A.getApplicationName(), 
 					new GenericType<Set<OpenURPermission>>(new ParameterizedTypeImpl(Set.class, OpenURPermission.class)));
 
@@ -135,7 +135,7 @@ public class SecurityDomainResourceTest
 	@Test
 	public void testObtainAllPermissions()
 	{
-		Set<OpenURPermission> resultSet = performRestCall(SECURITY_DOMAIN_RESOURCE_PATH + ALL_PERMISSIONS_RESOURCE_PATH, 
+		Set<OpenURPermission> resultSet = performRestCall_Get(SECURITY_DOMAIN_RESOURCE_PATH + ALL_PERMISSIONS_RESOURCE_PATH, 
 				new GenericType<Set<OpenURPermission>>(new ParameterizedTypeImpl(Set.class, OpenURPermission.class)));
 
 		assertFalse(resultSet.isEmpty());
