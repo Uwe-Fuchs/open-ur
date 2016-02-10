@@ -12,47 +12,50 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.UsernamePasswordToken;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class UsernamePwTokenProvider
-	implements MessageBodyWriter<UsernamePwTokenProvider>, MessageBodyReader<UsernamePwTokenProvider>
+	implements MessageBodyWriter<AuthenticationToken>, MessageBodyReader<AuthenticationToken>
 {
 	@Override
 	public boolean isReadable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType)
 	{
-		return UsernamePwTokenProvider.class.isAssignableFrom(type);
+		return UsernamePasswordToken.class.isAssignableFrom(type);
 	}
 
 	@Override
 	public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType)
 	{
-		return UsernamePwTokenProvider.class.isAssignableFrom(type);
+		return UsernamePasswordToken.class.isAssignableFrom(type);
 	}
 
 	@Override
-	public long getSize(UsernamePwTokenProvider t, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType)
+	public long getSize(AuthenticationToken token, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType)
 	{
 		return -1;
 	}
 
 	@Override
-	public UsernamePwTokenProvider readFrom(Class<UsernamePwTokenProvider> type, Type genericType, Annotation[] annotations, MediaType mediaType, 
+	public UsernamePasswordToken readFrom(Class<AuthenticationToken> type, Type genericType, Annotation[] annotations, MediaType mediaType, 
 			MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
 		throws IOException, WebApplicationException
 	{
 		String result = AbstractProvider.readFromInputStream(entityStream);
 		
-		return buildGson().fromJson(result, type);
+		return buildGson().fromJson(result, UsernamePasswordToken.class);
 	}
 
 	@Override
-	public void writeTo(UsernamePwTokenProvider t, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType, 
+	public void writeTo(AuthenticationToken token, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType, 
 			MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
 		throws IOException, WebApplicationException
 	{
 		Gson gson = buildGson();		
-		entityStream.write(gson.toJson(t).getBytes());
+		entityStream.write(gson.toJson(token).getBytes());
 	}
 	
 	private Gson buildGson()
