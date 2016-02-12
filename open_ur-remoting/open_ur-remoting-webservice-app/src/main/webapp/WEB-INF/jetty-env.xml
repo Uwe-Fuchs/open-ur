@@ -1,0 +1,16 @@
+<?xml version="1.0"  encoding="UTF-8"?>
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
+
+<Configure id="open_ur" class="org.eclipse.jetty.webapp.WebAppContext">
+	<New id="open_ur_db" class="org.eclipse.jetty.plus.jndi.Resource">
+		<Arg>jdbc/open_ur</Arg>
+		<Arg>
+			<New class="org.apache.commons.dbcp2.BasicDataSource">
+				<Set name="driverClassName">com.mysql.jdbc.Driver</Set>
+				<Set name="url">jdbc:mysql://localhost:3306/open_ur</Set>
+				<Set name="username">open_ur</Set>
+				<Set name="password">open_ur</Set>
+			</New>
+		</Arg>
+	</New>
+</Configure>

@@ -18,6 +18,7 @@ import org.openur.module.persistence.mapper.rdbms.PermissionMapper;
 import org.openur.module.persistence.mapper.rdbms.PersonMapper;
 import org.openur.module.persistence.mapper.rdbms.RoleMapper;
 import org.openur.module.persistence.mapper.rdbms.TechnicalUserMapper;
+import org.openur.module.persistence.mapper.rdbms.UserAccountMapper;
 import org.openur.module.service.security.AuthorizationServicesImpl;
 import org.openur.module.service.security.IAuthorizationServices;
 import org.openur.module.service.security.ISecurityDomainServices;
@@ -111,6 +112,12 @@ public class WebApplicationSpringConfig
 	public TechnicalUserMapper technicalUserMapper()
 	{		
 		return new TechnicalUserMapper();
+	}
+
+	@Bean(name = "userAccountMapper")
+	public UserAccountMapper userAccountMapper()
+	{		
+		return new UserAccountMapper();
 	}
 
 	@Bean(name = "orgUnitMapper")

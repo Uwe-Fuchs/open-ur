@@ -89,6 +89,36 @@
 			<artifactId>javax.servlet-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-server</artifactId>
+		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<configuration>
+					<jettyXml>src/main/webapp/WEB-INF/jetty-env.xml</jettyXml>
+					<httpConnector>
+						<port>9080</port>
+					</httpConnector>
+					<stopPort>9005</stopPort>
+					<webApp>
+						<contextPath>/open_ur-remoting-webservice-app</contextPath>
+					</webApp>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.openur.module.persistence</groupId>
+						<artifactId>open_ur-module-persistence-entity</artifactId>
+						<version>${project.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>

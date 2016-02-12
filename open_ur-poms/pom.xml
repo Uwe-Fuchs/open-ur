@@ -19,7 +19,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<build.dir>target</build.dir>
 		<build.outputDir>target/classes</build.outputDir>
-		<build.testOutputDir>target/test-classes</build.testOutputDir>
+		<build.testOutputDir>target/test-classes</build.testOutputDir>		
+		<jetty.version>9.3.7.v20160115</jetty.version>
 	</properties>
 
 	<modules>
@@ -82,6 +83,11 @@
 							</goals>
 						</execution>
 					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.jetty</groupId>
+					<artifactId>jetty-maven-plugin</artifactId>
+					<version>${jetty.version}</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -187,6 +193,11 @@
 				<artifactId>open_ur-module-service</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+		    <dependency>
+			    <groupId>org.eclipse.jetty</groupId>
+			    <artifactId>jetty-server</artifactId>
+			    <version>${jetty.version}</version>
+		    </dependency>
 			<dependency>
 				<groupId>javax.inject</groupId>
 				<artifactId>javax.inject</artifactId>
