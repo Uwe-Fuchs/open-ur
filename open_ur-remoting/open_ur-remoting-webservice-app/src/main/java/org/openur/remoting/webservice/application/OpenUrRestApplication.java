@@ -7,6 +7,7 @@ import org.openur.remoting.xchange.rest.providers.json.PersonProvider;
 import org.openur.remoting.xchange.rest.providers.json.RoleProvider;
 import org.openur.remoting.xchange.rest.providers.json.TechnicalUserProvider;
 import org.openur.remoting.xchange.rest.providers.json.IdentifiableEntitySetProvider;
+import org.openur.remoting.xchange.rest.providers.json.UsernamePwTokenProvider;
 
 /**
  * Registers the components to be used by the JAX-RS application
@@ -27,6 +28,7 @@ public class OpenUrRestApplication
 		// register providers:
 		register(PersonProvider.class);
 		register(TechnicalUserProvider.class);
+		register(UsernamePwTokenProvider.class);
 		register(OrgUnitProvider.class);
 		register(PermissionProvider.class);
 		register(RoleProvider.class);
