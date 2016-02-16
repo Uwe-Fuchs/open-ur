@@ -12,14 +12,13 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 
-import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class UsernamePwTokenProvider
-	implements MessageBodyWriter<AuthenticationToken>, MessageBodyReader<AuthenticationToken>
+	implements MessageBodyWriter<UsernamePasswordToken>, MessageBodyReader<UsernamePasswordToken>
 {
 	@Override
 	public boolean isReadable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType)
@@ -34,13 +33,13 @@ public class UsernamePwTokenProvider
 	}
 
 	@Override
-	public long getSize(AuthenticationToken token, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType)
+	public long getSize(UsernamePasswordToken token, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType)
 	{
 		return -1;
 	}
 
 	@Override
-	public UsernamePasswordToken readFrom(Class<AuthenticationToken> type, Type genericType, Annotation[] annotations, MediaType mediaType, 
+	public UsernamePasswordToken readFrom(Class<UsernamePasswordToken> type, Type genericType, Annotation[] annotations, MediaType mediaType, 
 			MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
 		throws IOException, WebApplicationException
 	{
@@ -50,7 +49,7 @@ public class UsernamePwTokenProvider
 	}
 
 	@Override
-	public void writeTo(AuthenticationToken token, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType, 
+	public void writeTo(UsernamePasswordToken token, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType, 
 			MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
 		throws IOException, WebApplicationException
 	{

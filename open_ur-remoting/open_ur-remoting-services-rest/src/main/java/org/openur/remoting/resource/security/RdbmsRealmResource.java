@@ -3,24 +3,21 @@ package org.openur.remoting.resource.security;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.realm.Realm;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 @Path(RdbmsRealmResource.RDBMS_REALM_RESOURCE_PATH)
 public class RdbmsRealmResource
-// implements Realm
+	implements Realm
 {
 	public static final String RDBMS_REALM_RESOURCE_PATH = "rdbmsRealm/";
 	public static final String AUTHENTICATE_RESOURCE_PATH = "getAuthenticationInfo";
@@ -30,45 +27,44 @@ public class RdbmsRealmResource
 	@Inject
 	private Realm realm;
 
-	// @Override
+	@Override
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	@Path(GET_NAME_RESOURCE_PATH)
-	public String getName(@QueryParam("name") String name)
+	public String getName()
 	{
-		// return realm.getName();
-		return name;
+		return realm.getName();
 	}
 
-	// @Override
-	// @POST
-	// @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	// @Produces( MediaType.TEXT_PLAIN )
-	// @Path(RDBMS_REALM_RESOURCE_PATH + SUPPORTS_RESOURCE_PATH)
-	// public boolean supports(AuthenticationToken token)
-	// {
-	// return realm.supports(token);
-	// }
+	@Override
+	public boolean supports(AuthenticationToken token)
+	{
+		return realm.supports(token);
+	}
 
-	// @Override
-	@POST
-	@Consumes({ MediaType.APPLICATION_JSON })
-	@Produces({ MediaType.APPLICATION_JSON })
-	@Path(AUTHENTICATE_RESOURCE_PATH)
+	@PUT
+	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@Produces(MediaType.TEXT_PLAIN)
+	@Path(SUPPORTS_RESOURCE_PATH)
+	public boolean supports_Resource(AuthenticationToken token)
+	{
+		return this.supports(token);
+	}
+
+	@Override
 	public AuthenticationInfo getAuthenticationInfo(AuthenticationToken token)
 		throws AuthenticationException
 	{
 		return realm.getAuthenticationInfo(token);
 	}
 
-//	@POST
-//	@Consumes(MediaType.TEXT_PLAIN)
-//	@Produces(MediaType.APPLICATION_JSON)
-//	@Path(AUTHENTICATE_RESOURCE_PATH)
-//	public UsernamePasswordToken getAuthenticationInfo(String token)
-//		throws AuthenticationException
-//	{
-//		Gson gson = new GsonBuilder().create();
-//		return gson.fromJson(token, UsernamePasswordToken.class);
-//	}
+	@PUT
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Path(AUTHENTICATE_RESOURCE_PATH)
+	public SimpleAuthenticationInfo getAuthenticationInfo_Resource(UsernamePasswordToken token)
+		throws AuthenticationException
+	{
+		return (SimpleAuthenticationInfo) this.getAuthenticationInfo(token);
+	}
 }
