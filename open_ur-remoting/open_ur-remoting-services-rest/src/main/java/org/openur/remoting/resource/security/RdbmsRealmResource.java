@@ -46,7 +46,7 @@ public class RdbmsRealmResource
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Produces(MediaType.TEXT_PLAIN)
 	@Path(SUPPORTS_RESOURCE_PATH)
-	public boolean supports_Resource(AuthenticationToken token)
+	public boolean supports_Resource(UsernamePasswordToken token)
 	{
 		return this.supports(token);
 	}
