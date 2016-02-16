@@ -11,8 +11,6 @@ import javax.ws.rs.core.MediaType;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.realm.Realm;
 
 @Path(RdbmsRealmResource.RDBMS_REALM_RESOURCE_PATH)
@@ -37,34 +35,23 @@ public class RdbmsRealmResource
 	}
 
 	@Override
+	@PUT
+	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@Produces(MediaType.TEXT_PLAIN)
+	@Path(SUPPORTS_RESOURCE_PATH)
 	public boolean supports(AuthenticationToken token)
 	{
 		return realm.supports(token);
 	}
 
-	@PUT
-	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	@Produces(MediaType.TEXT_PLAIN)
-	@Path(SUPPORTS_RESOURCE_PATH)
-	public boolean supports_Resource(UsernamePasswordToken token)
-	{
-		return this.supports(token);
-	}
-
 	@Override
-	public AuthenticationInfo getAuthenticationInfo(AuthenticationToken token)
-		throws AuthenticationException
-	{
-		return realm.getAuthenticationInfo(token);
-	}
-
 	@PUT
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
 	@Path(AUTHENTICATE_RESOURCE_PATH)
-	public SimpleAuthenticationInfo getAuthenticationInfo_Resource(UsernamePasswordToken token)
+	public AuthenticationInfo getAuthenticationInfo(AuthenticationToken token)
 		throws AuthenticationException
 	{
-		return (SimpleAuthenticationInfo) this.getAuthenticationInfo(token);
+		return realm.getAuthenticationInfo(token);
 	}
 }

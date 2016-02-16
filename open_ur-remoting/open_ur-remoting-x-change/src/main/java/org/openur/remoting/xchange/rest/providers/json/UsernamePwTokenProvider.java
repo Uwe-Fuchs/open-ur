@@ -23,13 +23,18 @@ public class UsernamePwTokenProvider
 	@Override
 	public boolean isReadable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType)
 	{
-		return UsernamePasswordToken.class.isAssignableFrom(type);
+		return isProvided(type);
 	}
 
 	@Override
 	public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType)
 	{
-		return UsernamePasswordToken.class.isAssignableFrom(type);
+		return isProvided(type);
+	}
+	
+	protected boolean isProvided(Class<?> type)
+	{
+		return UsernamePasswordToken.class.getSuperclass().isAssignableFrom(type);
 	}
 
 	@Override
@@ -44,8 +49,9 @@ public class UsernamePwTokenProvider
 		throws IOException, WebApplicationException
 	{
 		String result = AbstractProvider.readFromInputStream(entityStream);
+		Gson gson = buildGson();		
 		
-		return buildGson().fromJson(result, UsernamePasswordToken.class);
+		return gson.fromJson(result, UsernamePasswordToken.class);
 	}
 
 	@Override
