@@ -1,5 +1,7 @@
 package org.openur.remoting.resource;
 
+import java.net.URI;
+
 import javax.ws.rs.HttpMethod;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -8,6 +10,7 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
 
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.After;
@@ -24,7 +27,7 @@ public abstract class AbstractResourceTest
 	{
 		super.setUp();
 
-		client = ClientBuilder.newClient();
+		client = ClientBuilder.newClient();		
 	}
 
 	@After
@@ -112,5 +115,10 @@ public abstract class AbstractResourceTest
 		System.out.println("Result: " + result);
 	
 		return result;	
+	}
+
+	protected URI getBaseURI()
+	{
+		return UriBuilder.fromUri("http://localhost:9998/").build();
 	}
 }
