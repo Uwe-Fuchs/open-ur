@@ -1,10 +1,10 @@
-package org.openur.module.persistence.rdbms.config;
+package org.openur.module.service.config;
 
 import static org.mockito.Mockito.mock;
 
 import org.apache.shiro.realm.Realm;
 import org.openur.module.persistence.dao.ISecurityDao;
-import org.openur.module.persistence.realm.rdbms.OpenUrRdbmsRealm;
+import org.openur.module.service.security.realm.rdbms.OpenUrRdbmsRealm;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;

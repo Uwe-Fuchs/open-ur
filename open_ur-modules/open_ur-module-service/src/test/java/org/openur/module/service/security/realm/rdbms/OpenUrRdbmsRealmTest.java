@@ -1,4 +1,4 @@
-package org.openur.module.persistence.realm.rdbms;
+package org.openur.module.service.security.realm.rdbms;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -28,7 +28,7 @@ import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.security.authentication.UserAccount;
 import org.openur.module.domain.security.authentication.UserAccountBuilder;
 import org.openur.module.persistence.dao.ISecurityDao;
-import org.openur.module.persistence.rdbms.config.RealmSpringConfig;
+import org.openur.module.service.config.RealmSpringConfig;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;

@@ -1,4 +1,4 @@
-package org.openur.module.persistence.realm.rdbms;
+package org.openur.module.service.security.realm.rdbms;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
