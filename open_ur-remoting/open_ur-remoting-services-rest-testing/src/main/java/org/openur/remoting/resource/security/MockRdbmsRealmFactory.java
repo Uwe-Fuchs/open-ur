@@ -4,6 +4,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.glassfish.hk2.api.Factory;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.service.security.realm.rdbms.OpenUrRdbmsRealm;
+import org.openur.module.service.security.realm.rdbms.mock.OpenUrRdbmsRealmMock;
 
 public class MockRdbmsRealmFactory
 	implements Factory<OpenUrRdbmsRealm>

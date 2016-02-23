@@ -1,4 +1,4 @@
-package org.openur.remoting.resource.security;
+package org.openur.module.service.security.realm.rdbms.mock;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.shiro.authc.AuthenticationException;
