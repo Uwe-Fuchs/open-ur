@@ -1,4 +1,4 @@
-package org.openur.module.service.security.realm.rdbms.mock;
+package org.openur.module.service.security.realm.rdbms;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -33,18 +33,6 @@ public class OpenUrRdbmsRealmMock
 		}
 
 		throw new AuthenticationException();
-	}
-
-	@Override
-	public boolean supports(AuthenticationToken token)
-	{
-		return areTokensEqual(TestObjectContainer.USERNAME_PW_TOKEN.getDelegate(), (UsernamePasswordToken) token);
-	}
-
-	@Override
-	public String getName()
-	{
-		return REALM_NAME;
 	}
 	
 	private boolean areTokensEqual(UsernamePasswordToken thisToken, UsernamePasswordToken otherToken)
