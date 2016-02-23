@@ -1,6 +1,9 @@
 package org.openur.module.persistence.realm.rdbms;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -15,6 +18,7 @@ import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
 import org.apache.shiro.crypto.hash.DefaultHashService;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.realm.jdbc.JdbcRealm.SaltStyle;
+import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.junit.Before;
 import org.junit.Test;
@@ -62,8 +66,11 @@ public class OpenUrRdbmsRealmTest
 
 		AuthenticationInfo authInfo = realm.getAuthenticationInfo(TestObjectContainer.USERNAME_PW_TOKEN.getDelegate());
 
-		assertEquals(1, authInfo.getPrincipals().asList().size());
-		String userName = authInfo.getPrincipals().getPrimaryPrincipal().toString();
+		PrincipalCollection principalCollection = authInfo.getPrincipals();
+		List<?> principals = principalCollection.asList();
+		assertEquals(1, principals.size());
+		assertTrue(principals.contains(TestObjectContainer.USER_NAME_1));
+		String userName = principalCollection.getPrimaryPrincipal().toString();
 		assertEquals(TestObjectContainer.USER_NAME_1, userName);
 		String passWord = new String((char[]) authInfo.getCredentials());
 		assertEquals(TestObjectContainer.PASSWORD_1, passWord);
@@ -85,7 +92,10 @@ public class OpenUrRdbmsRealmTest
 
 		AuthenticationInfo authInfo = realm.getAuthenticationInfo(TestObjectContainer.USERNAME_PW_TOKEN.getDelegate());
 
-		assertEquals(1, authInfo.getPrincipals().asList().size());
+		PrincipalCollection principalCollection = authInfo.getPrincipals();
+		List<?> principals = principalCollection.asList();
+		assertEquals(1, principals.size());
+		assertTrue(principals.contains(TestObjectContainer.USER_NAME_1));
 		String userName = authInfo.getPrincipals().getPrimaryPrincipal().toString();
 		assertEquals(TestObjectContainer.USER_NAME_1, userName);
 		String passWord = new String((char[]) authInfo.getCredentials());
@@ -110,7 +120,10 @@ public class OpenUrRdbmsRealmTest
 
 		AuthenticationInfo authInfo = realm.getAuthenticationInfo(TestObjectContainer.USERNAME_PW_TOKEN.getDelegate());
 
-		assertEquals(1, authInfo.getPrincipals().asList().size());
+		PrincipalCollection principalCollection = authInfo.getPrincipals();
+		List<?> principals = principalCollection.asList();
+		assertEquals(1, principals.size());
+		assertTrue(principals.contains(TestObjectContainer.USER_NAME_1));
 		String userName = authInfo.getPrincipals().getPrimaryPrincipal().toString();
 		assertEquals(TestObjectContainer.USER_NAME_1, userName);
 		String passWord = new String((char[]) authInfo.getCredentials());

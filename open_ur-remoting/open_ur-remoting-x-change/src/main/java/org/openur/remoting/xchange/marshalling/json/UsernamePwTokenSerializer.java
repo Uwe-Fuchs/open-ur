@@ -21,6 +21,7 @@ public class UsernamePwTokenSerializer
 	{
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.add("delegate", context.serialize(src.getDelegate()));
+		
 		return jsonObject;
 	}
 

@@ -65,9 +65,6 @@ public class UsernamePwTokenProvider
 	
 	private Gson buildGson()
 	{
-		// GsonBuilder gsonBuilder = new GsonBuilder();
-		// gsonBuilder.registerTypeAdapter(UsernamePasswordToken.class, new UserNamePwSerializer());
-		// return gsonBuilder;
 		return new GsonBuilder().create();
 	}
 }
