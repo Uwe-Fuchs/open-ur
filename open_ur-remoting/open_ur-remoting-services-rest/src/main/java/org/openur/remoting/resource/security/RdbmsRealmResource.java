@@ -12,6 +12,7 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.realm.Realm;
+import org.openur.module.service.security.realm.rdbms.OpenUrRdbmsRealm;
 
 @Path(RdbmsRealmResource.RDBMS_REALM_RESOURCE_PATH)
 public class RdbmsRealmResource
@@ -23,7 +24,7 @@ public class RdbmsRealmResource
 	public static final String GET_NAME_RESOURCE_PATH = "getName";
 
 	@Inject
-	private Realm realm;
+	private OpenUrRdbmsRealm realm;
 
 	@Override
 	@GET

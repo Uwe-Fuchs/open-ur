@@ -18,17 +18,16 @@ import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 
-import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
-import org.apache.shiro.realm.Realm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
+import org.openur.module.service.security.realm.rdbms.OpenUrRdbmsRealm;
 import org.openur.remoting.resource.AbstractResourceTest;
 import org.openur.remoting.xchange.rest.providers.json.SimpleAuthenticationInfoProvider;
 import org.openur.remoting.xchange.rest.providers.json.UsernamePwTokenProvider;
@@ -46,7 +45,7 @@ public class RdbmsRealmResourceTest
 			@Override
 			protected void configure()
 			{
-				bindFactory(MockRdbmsRealmFactory.class).to(Realm.class);
+				bindFactory(MockRdbmsRealmFactory.class).to(OpenUrRdbmsRealm.class);
 			}
 		};
 
@@ -77,7 +76,7 @@ public class RdbmsRealmResourceTest
 					.request()
 					.get(String.class);
 
-		assertEquals(MockRdbmsRealmFactory.REALM_NAME, result);
+		assertEquals(OpenUrRdbmsRealmMock.REALM_NAME, result);
 	}
 
 	@Test
@@ -123,7 +122,7 @@ public class RdbmsRealmResourceTest
 		assertEquals(TestObjectContainer.PASSWORD_1, passWord);
 		
 		PrincipalCollection principalCollection = info.getPrincipals();
-		Collection<?> coll = principalCollection.fromRealm(MockRdbmsRealmFactory.REALM_NAME);
+		Collection<?> coll = principalCollection.fromRealm(OpenUrRdbmsRealmMock.REALM_NAME);
 		assertEquals(1, coll.size());
 		List<?> principals = principalCollection.asList();
 		assertEquals(1, principals.size());
@@ -137,7 +136,7 @@ public class RdbmsRealmResourceTest
 		{
 			chars[i] = (char) saltBytes[i];
 		}
-		assertEquals(MockRdbmsRealmFactory.SALT_VALUE, new String(chars));
+		assertEquals(OpenUrRdbmsRealmMock.SALT_VALUE, new String(chars));
 	}
 
 //	@Test(expected=AuthenticationException.class)
