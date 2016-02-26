@@ -1,6 +1,7 @@
 package org.openur.remoting.webservice.config;
 
 import org.apache.shiro.realm.Realm;
+import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
 import org.openur.module.persistence.dao.IApplicationDao;
 import org.openur.module.persistence.dao.IOrgUnitDao;
 import org.openur.module.persistence.dao.IPersonDao;
@@ -24,7 +25,6 @@ import org.openur.module.service.security.AuthorizationServicesImpl;
 import org.openur.module.service.security.IAuthorizationServices;
 import org.openur.module.service.security.ISecurityDomainServices;
 import org.openur.module.service.security.SecurityDomainServicesImpl;
-import org.openur.module.service.security.realm.rdbms.OpenUrRdbmsRealm;
 import org.openur.module.service.userstructure.IOrgUnitServices;
 import org.openur.module.service.userstructure.IUserServices;
 import org.openur.module.service.userstructure.OrgUnitServicesImpl;

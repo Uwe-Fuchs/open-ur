@@ -2,6 +2,7 @@ package org.openur.module.service.config;
 
 import static org.mockito.Mockito.mock;
 
+import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
 import org.openur.module.persistence.dao.ISecurityDao;
 import org.openur.module.service.security.AuthenticationServicesImpl;
 import org.openur.module.service.security.AuthorizationServicesImpl;
@@ -9,7 +10,6 @@ import org.openur.module.service.security.IAuthenticationServices;
 import org.openur.module.service.security.IAuthorizationServices;
 import org.openur.module.service.security.ISecurityDomainServices;
 import org.openur.module.service.security.SecurityDomainServicesImpl;
-import org.openur.module.service.security.realm.rdbms.OpenUrRdbmsRealm;
 import org.openur.module.service.userstructure.IOrgUnitServices;
 import org.openur.module.service.userstructure.IUserServices;
 import org.springframework.context.annotation.Bean;

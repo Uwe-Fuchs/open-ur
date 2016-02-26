@@ -12,7 +12,7 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.realm.Realm;
-import org.openur.module.service.security.realm.rdbms.OpenUrRdbmsRealm;
+import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
 
 @Path(RdbmsRealmResource.RDBMS_REALM_RESOURCE_PATH)
 public class RdbmsRealmResource

@@ -3,7 +3,7 @@ package org.openur.module.service.security;
 import javax.inject.Inject;
 
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.openur.module.service.security.realm.rdbms.OpenUrRdbmsRealm;
+import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
 import org.openur.module.util.exception.AuthenticationException;
 
 public class AuthenticationServicesImpl

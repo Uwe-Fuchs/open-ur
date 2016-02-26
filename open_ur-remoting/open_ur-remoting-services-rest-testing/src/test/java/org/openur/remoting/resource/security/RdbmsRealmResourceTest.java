@@ -28,7 +28,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
-import org.openur.module.service.security.realm.rdbms.OpenUrRdbmsRealm;
+import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
 import org.openur.remoting.resource.AbstractResourceTest;
 import org.openur.remoting.xchange.rest.providers.json.SimpleAuthenticationInfoProvider;
 import org.openur.remoting.xchange.rest.providers.json.UsernamePwTokenProvider;

@@ -8,7 +8,7 @@ import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.util.ByteSource;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
-import org.openur.module.service.security.realm.rdbms.OpenUrRdbmsRealm;
+import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
 
 public class OpenUrRdbmsRealmMock
 	extends OpenUrRdbmsRealm
