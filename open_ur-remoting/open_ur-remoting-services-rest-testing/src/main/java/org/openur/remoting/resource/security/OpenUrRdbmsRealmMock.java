@@ -15,9 +15,11 @@ public class OpenUrRdbmsRealmMock
 {
 	public static final String REALM_NAME = "realmName";
 	public static final SimpleAuthenticationInfo AUTH_INFO;
+	public static final UsernamePasswordToken USERNAME_PW_TOKEN;
 	
 	static
 	{
+		USERNAME_PW_TOKEN = new UsernamePasswordToken(TestObjectContainer.USER_NAME_1, TestObjectContainer.PASSWORD_1);
 		AUTH_INFO = new SimpleAuthenticationInfo(TestObjectContainer.USER_NAME_1, TestObjectContainer.PASSWORD_1.toCharArray(), REALM_NAME);
 		AUTH_INFO.setCredentialsSalt(ByteSource.Util.bytes(TestObjectContainer.SALT_BASE));
 	}
@@ -26,7 +28,7 @@ public class OpenUrRdbmsRealmMock
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token)
 		throws AuthenticationException
 	{
-		if (areTokensEqual(TestObjectContainer.USERNAME_PW_TOKEN.getDelegate(), (UsernamePasswordToken) token))
+		if (areTokensEqual(USERNAME_PW_TOKEN, (UsernamePasswordToken) token))
 		{
 			return AUTH_INFO;
 		}
@@ -37,7 +39,7 @@ public class OpenUrRdbmsRealmMock
 	@Override
 	public boolean supports(AuthenticationToken token)
 	{
-		return areTokensEqual(TestObjectContainer.USERNAME_PW_TOKEN.getDelegate(), (UsernamePasswordToken) token);
+		return areTokensEqual(USERNAME_PW_TOKEN, (UsernamePasswordToken) token);
 	}
 
 	@Override

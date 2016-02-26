@@ -2,8 +2,6 @@ package org.openur.module.service.config;
 
 import static org.mockito.Mockito.mock;
 
-import org.openur.module.domain.security.authentication.IUsernamePasswordTokenBuilder;
-import org.openur.module.domain.security.authentication.UsernamePasswordTokenBuilder;
 import org.openur.module.persistence.dao.ISecurityDao;
 import org.openur.module.service.security.AuthenticationServicesImpl;
 import org.openur.module.service.security.AuthorizationServicesImpl;
@@ -12,7 +10,6 @@ import org.openur.module.service.security.IAuthorizationServices;
 import org.openur.module.service.security.ISecurityDomainServices;
 import org.openur.module.service.security.SecurityDomainServicesImpl;
 import org.openur.module.service.security.realm.rdbms.OpenUrRdbmsRealm;
-import org.openur.module.service.security.realm.rdbms.OpenUrRdbmsRealmMock;
 import org.openur.module.service.userstructure.IOrgUnitServices;
 import org.openur.module.service.userstructure.IUserServices;
 import org.springframework.context.annotation.Bean;
@@ -23,12 +20,6 @@ import org.springframework.context.annotation.Profile;
 @Profile(value="testSecurityServices")
 public class SecurityTestSpringConfig
 {
-	@Bean(name = "usernamePasswordTokenBuilder")
-	public IUsernamePasswordTokenBuilder usernamePasswordTokenBuilder()
-	{
-		return new UsernamePasswordTokenBuilder();
-	}
-	
 	@Bean(name = "authenticationServices")
 	public IAuthenticationServices authenticationServices()
 	{

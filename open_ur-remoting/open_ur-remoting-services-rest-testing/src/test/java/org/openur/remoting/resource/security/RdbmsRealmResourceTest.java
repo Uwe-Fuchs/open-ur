@@ -86,7 +86,7 @@ public class RdbmsRealmResourceTest
 	@Test
 	public void testSupports()
 	{
-		AuthenticationToken token = TestObjectContainer.USERNAME_PW_TOKEN.getDelegate();
+		AuthenticationToken token = OpenUrRdbmsRealmMock.USERNAME_PW_TOKEN;
 
 		Boolean b = service
 					.path(SUPPORTS_RESOURCE_PATH)
@@ -113,7 +113,7 @@ public class RdbmsRealmResourceTest
 	@Test
 	public void testGetAuthenticationInfo()
 	{
-		AuthenticationToken token = TestObjectContainer.USERNAME_PW_TOKEN.getDelegate();
+		AuthenticationToken token = OpenUrRdbmsRealmMock.USERNAME_PW_TOKEN;
 
 		AuthenticationInfo info = service
 					.path(AUTHENTICATE_RESOURCE_PATH)

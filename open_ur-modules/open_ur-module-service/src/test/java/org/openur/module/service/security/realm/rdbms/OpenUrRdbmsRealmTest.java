@@ -38,8 +38,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class OpenUrRdbmsRealmTest
 {
-	private static final String SALT_LITERAL = "myVERYSECRETBase64EncodedSalt";
 	private static final int HASH_ITERATIONS = 1024;
+	private static final UsernamePasswordToken USERNAME_PW_TOKEN;
 
 	private ByteSource salt;
 	private String hashedSaltBase64;
@@ -49,11 +49,16 @@ public class OpenUrRdbmsRealmTest
 
 	@Inject
 	private OpenUrRdbmsRealm realm;
+	
+	static
+	{
+		USERNAME_PW_TOKEN = new UsernamePasswordToken(TestObjectContainer.USER_NAME_1, TestObjectContainer.PASSWORD_1);		
+	}
 
 	@Before
 	public void setUp()
 	{
-		hashedSaltBase64 = new Sha256Hash(SALT_LITERAL).toBase64();
+		hashedSaltBase64 = new Sha256Hash(TestObjectContainer.SALT_BASE).toBase64();
 		salt = ByteSource.Util.bytes(hashedSaltBase64);
 	}
 
@@ -64,7 +69,7 @@ public class OpenUrRdbmsRealmTest
 
 		realm.setCredentialsMatcher(new SimpleCredentialsMatcher());
 
-		AuthenticationInfo authInfo = realm.getAuthenticationInfo(TestObjectContainer.USERNAME_PW_TOKEN.getDelegate());
+		AuthenticationInfo authInfo = realm.getAuthenticationInfo(USERNAME_PW_TOKEN);
 
 		PrincipalCollection principalCollection = authInfo.getPrincipals();
 		List<?> principals = principalCollection.asList();
@@ -90,7 +95,7 @@ public class OpenUrRdbmsRealmTest
 		credentialsMatcher.setPasswordService(passwordService);
 		realm.setCredentialsMatcher(credentialsMatcher);
 
-		AuthenticationInfo authInfo = realm.getAuthenticationInfo(TestObjectContainer.USERNAME_PW_TOKEN.getDelegate());
+		AuthenticationInfo authInfo = realm.getAuthenticationInfo(USERNAME_PW_TOKEN);
 
 		PrincipalCollection principalCollection = authInfo.getPrincipals();
 		List<?> principals = principalCollection.asList();
@@ -118,7 +123,7 @@ public class OpenUrRdbmsRealmTest
 		realm.setCredentialsMatcher(credentialsMatcher);
 		realm.setSaltStyle(SaltStyle.COLUMN);
 
-		AuthenticationInfo authInfo = realm.getAuthenticationInfo(TestObjectContainer.USERNAME_PW_TOKEN.getDelegate());
+		AuthenticationInfo authInfo = realm.getAuthenticationInfo(USERNAME_PW_TOKEN);
 
 		PrincipalCollection principalCollection = authInfo.getPrincipals();
 		List<?> principals = principalCollection.asList();
@@ -147,7 +152,7 @@ public class OpenUrRdbmsRealmTest
 		realm.addSaltForUser(TestObjectContainer.USER_NAME_1, hashedSaltBase64);
 		realm.setSaltStyle(SaltStyle.EXTERNAL);	// is set automatically when adding external salt, only set here for demonstrating-purposes!
 
-		AuthenticationInfo authInfo = realm.getAuthenticationInfo(TestObjectContainer.USERNAME_PW_TOKEN.getDelegate());
+		AuthenticationInfo authInfo = realm.getAuthenticationInfo(USERNAME_PW_TOKEN);
 
 		assertEquals(1, authInfo.getPrincipals().asList().size());
 		String userName = authInfo.getPrincipals().getPrimaryPrincipal().toString();
@@ -167,64 +172,6 @@ public class OpenUrRdbmsRealmTest
 		AuthenticationToken authToken = new UsernamePasswordToken(TestObjectContainer.USER_NAME_1, "someWrongPassword");
 		realm.getAuthenticationInfo(authToken);
 	}
-
-//	@Test
-//	public void testDoGetAuthenticationInfo_HashedPW()
-//	{
-//		String hashedPasswordBase64 = new Sha256Hash(PASSWORD).toBase64();
-//		pUserAccount = new PUserAccount(pPerson, USER_NAME, hashedPasswordBase64);
-//		Mockito.when(userAccountRepository.findUserAccountByUserName(USER_NAME)).thenReturn(pUserAccount);
-//
-//		HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
-//		credentialsMatcher.setHashAlgorithmName("SHA-256");
-//		credentialsMatcher.setStoredCredentialsHexEncoded(false);
-//		realm.setCredentialsMatcher(credentialsMatcher);
-//
-//		AuthenticationInfo authInfo = realm.getAuthenticationInfo(authToken);
-//
-//		assertEquals(1, authInfo.getPrincipals().asList().size());
-//		String userName = authInfo.getPrincipals().getPrimaryPrincipal().toString();
-//		assertEquals(USER_NAME, userName);
-//		String passWord = new String((char[]) authInfo.getCredentials());
-//		assertEquals(hashedPasswordBase64, passWord);
-//	}
-
-//	@Test
-//	public void testDoGetAuthenticationInfo_HashedPW_Salted()
-//	{
-//		RandomNumberGenerator rng = new SecureRandomNumberGenerator();
-//		ByteSource salt = rng.nextBytes();
-//		String saltStr = salt.toString();
-//		
-//		saltStr = "myVERYSECRETBase64EncodedSalt";		
-//		salt = ByteSource.Util.bytes(saltStr);
-//		
-//		String hashedPasswordBase64 = new Sha256Hash(PASSWORD, salt, 1024).toBase64();
-//		pUserAccount = new PUserAccount(pPerson, USER_NAME, hashedPasswordBase64);
-//		pUserAccount.setSalt(saltStr);
-//		Mockito.when(userAccountRepository.findUserAccountByUserName(USER_NAME)).thenReturn(pUserAccount);
-//
-//		HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
-//		credentialsMatcher.setHashAlgorithmName(Sha256Hash.ALGORITHM_NAME);
-//		credentialsMatcher.setStoredCredentialsHexEncoded(false);
-//		credentialsMatcher.setHashIterations(1024);
-//		realm.setCredentialsMatcher(credentialsMatcher);
-//		realm.setSaltStyle(SaltStyle.COLUMN);
-//
-//		AuthenticationInfo authInfo = realm.getAuthenticationInfo(authToken);
-//
-//		assertEquals(1, authInfo.getPrincipals().asList().size());
-//		String userName = authInfo.getPrincipals().getPrimaryPrincipal().toString();
-//		assertEquals(USER_NAME, userName);
-//		String passWord = new String((char[]) authInfo.getCredentials());
-//		assertEquals(hashedPasswordBase64, passWord);
-//	}
-
-	// @Test
-	// public void testDoGetAuthorizationInfoPrincipalCollection()
-	// {
-	// fail("Not yet implemented");
-	// }
 	
 	private HashingPasswordService createHashedPasswordService()
 	{

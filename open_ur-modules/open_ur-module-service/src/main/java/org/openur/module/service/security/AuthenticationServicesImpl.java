@@ -2,17 +2,13 @@ package org.openur.module.service.security;
 
 import javax.inject.Inject;
 
-import org.openur.module.domain.security.authentication.IUsernamePasswordToken;
-import org.openur.module.domain.security.authentication.IUsernamePasswordTokenBuilder;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.openur.module.service.security.realm.rdbms.OpenUrRdbmsRealm;
 import org.openur.module.util.exception.AuthenticationException;
 
 public class AuthenticationServicesImpl
 	implements IAuthenticationServices
 {
-	@Inject
-	private IUsernamePasswordTokenBuilder usernamePasswordTokenBuilder;
-	
 	@Inject
 	private OpenUrRdbmsRealm rdbmsRealm;
 	
@@ -22,14 +18,11 @@ public class AuthenticationServicesImpl
 	public void authenticate(String userName, String passWord)
 		throws AuthenticationException
 	{
-		IUsernamePasswordToken usernamePasswordToken = usernamePasswordTokenBuilder
-					.userName(userName)
-					.passWord(passWord)
-					.build();
+		UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(userName, passWord);
 		
 		try
 		{
-			rdbmsRealm.getAuthenticationInfo(usernamePasswordToken.getDelegate());
+			rdbmsRealm.getAuthenticationInfo(usernamePasswordToken);
 		} catch (org.apache.shiro.authc.AuthenticationException e)
 		{
 			throw new AuthenticationException(e);
