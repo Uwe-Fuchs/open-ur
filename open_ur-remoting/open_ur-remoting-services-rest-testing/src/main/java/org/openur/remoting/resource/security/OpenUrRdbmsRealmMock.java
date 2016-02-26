@@ -14,13 +14,12 @@ public class OpenUrRdbmsRealmMock
 	extends OpenUrRdbmsRealm
 {
 	public static final String REALM_NAME = "realmName";
-	public static final String SALT_VALUE = "myVerySecretSalt";
 	public static final SimpleAuthenticationInfo AUTH_INFO;
 	
 	static
 	{
 		AUTH_INFO = new SimpleAuthenticationInfo(TestObjectContainer.USER_NAME_1, TestObjectContainer.PASSWORD_1.toCharArray(), REALM_NAME);
-		AUTH_INFO.setCredentialsSalt(ByteSource.Util.bytes(SALT_VALUE));
+		AUTH_INFO.setCredentialsSalt(ByteSource.Util.bytes(TestObjectContainer.SALT_BASE));
 	}
 
 	@Override

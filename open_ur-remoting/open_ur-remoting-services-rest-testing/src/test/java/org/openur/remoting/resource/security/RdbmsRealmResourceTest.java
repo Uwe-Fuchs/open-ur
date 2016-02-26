@@ -21,6 +21,7 @@ import javax.ws.rs.core.UriBuilder;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -35,6 +36,9 @@ import org.openur.remoting.xchange.rest.providers.json.UsernamePwTokenProvider;
 public class RdbmsRealmResourceTest
 	extends AbstractResourceTest
 {
+	public static final UsernamePasswordToken TOKEN_WITH_WRONG_PW = new UsernamePasswordToken(TestObjectContainer.USER_NAME_1, "someWrongPw");
+	public static final UsernamePasswordToken TOKEN_WITH_UNKNOWN_USERNAME = new UsernamePasswordToken("someUnknownUserName", "somePw");
+	
 	private WebTarget service;
 	
 	@Override
@@ -94,14 +98,14 @@ public class RdbmsRealmResourceTest
 		b = service
 					.path(SUPPORTS_RESOURCE_PATH)
 					.request()
-					.put(Entity.entity(MockRdbmsRealmFactory.TOKEN_WITH_WRONG_PW, MediaType.APPLICATION_JSON), Boolean.class);
+					.put(Entity.entity(RdbmsRealmResourceTest.TOKEN_WITH_WRONG_PW, MediaType.APPLICATION_JSON), Boolean.class);
 		
 		assertFalse(b);
 		
 		b = service
 					.path(SUPPORTS_RESOURCE_PATH)
 					.request()
-					.put(Entity.entity(MockRdbmsRealmFactory.TOKEN_WITH_UNKNOWN_USERNAME, MediaType.APPLICATION_JSON), Boolean.class);
+					.put(Entity.entity(RdbmsRealmResourceTest.TOKEN_WITH_UNKNOWN_USERNAME, MediaType.APPLICATION_JSON), Boolean.class);
 		
 		assertFalse(b);
 	}
@@ -136,7 +140,7 @@ public class RdbmsRealmResourceTest
 		{
 			chars[i] = (char) saltBytes[i];
 		}
-		assertEquals(OpenUrRdbmsRealmMock.SALT_VALUE, new String(chars));
+		assertEquals(TestObjectContainer.SALT_BASE, new String(chars));
 	}
 
 //	@Test(expected=AuthenticationException.class)
