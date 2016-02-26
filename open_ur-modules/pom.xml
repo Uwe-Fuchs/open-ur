@@ -26,6 +26,7 @@
 		<module>open_ur-module-persistence-dao-api</module>
 		<module>open_ur-module-persistence-mapping-impl</module>
 		<module>open_ur-module-persistence-dao-impl</module>
+    	<module>open_ur-module-integration-security-shiro</module>
 		<module>open_ur-module-service</module>
   </modules>
 
