@@ -189,6 +189,11 @@
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.openur.module.integration</groupId>
+				<artifactId>open_ur-module-integration-security-shiro</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.openur.module.service</groupId>
 				<artifactId>open_ur-module-service</artifactId>
 				<version>${project.version}</version>

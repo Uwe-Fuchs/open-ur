@@ -70,6 +70,10 @@
 			<artifactId>open_ur-module-persistence-dao-api</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.openur.module.integration</groupId>
+			<artifactId>open_ur-module-integration-security-shiro</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
 		</dependency>
