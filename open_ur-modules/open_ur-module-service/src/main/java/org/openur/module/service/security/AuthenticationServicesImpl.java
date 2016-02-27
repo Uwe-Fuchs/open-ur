@@ -22,7 +22,7 @@ public class AuthenticationServicesImpl
 		
 		try
 		{
-			rdbmsRealm.getAuthenticationInfo(usernamePasswordToken);
+			rdbmsRealm.getUsernamePwAuthenticationInfo(usernamePasswordToken);
 		} catch (org.apache.shiro.authc.AuthenticationException e)
 		{
 			throw new AuthenticationException(e);

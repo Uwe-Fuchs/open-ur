@@ -12,25 +12,6 @@ import com.google.gson.JsonSerializationContext;
 
 public abstract class AbstractJsonSerializer
 {
-	private String identifier = null;
-	private LocalDateTime creationDate = null;
-	private LocalDateTime lastModifiedDate = null;
-
-	protected String getIdentifier()
-	{
-		return identifier;
-	}
-
-	protected LocalDateTime getCreationDate()
-	{
-		return creationDate;
-	}
-
-	protected LocalDateTime getLastModifiedDate()
-	{
-		return lastModifiedDate;
-	}
-
 	protected <I extends IdentifiableEntityImpl> void serialize(I src, JsonObject jsonObject, JsonSerializationContext context)
 	{
 		jsonObject.addProperty("identifier", src.getIdentifier());

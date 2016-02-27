@@ -1,14 +1,10 @@
 package org.openur.module.integration.security.shiro;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
 import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.DefaultPasswordService;
@@ -18,7 +14,6 @@ import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
 import org.apache.shiro.crypto.hash.DefaultHashService;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.realm.jdbc.JdbcRealm.SaltStyle;
-import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +22,6 @@ import org.mockito.Mockito;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.security.authentication.UserAccount;
 import org.openur.module.domain.security.authentication.UserAccountBuilder;
-import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
 import org.openur.module.persistence.dao.ISecurityDao;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -69,16 +63,10 @@ public class OpenUrRdbmsRealmTest
 
 		realm.setCredentialsMatcher(new SimpleCredentialsMatcher());
 
-		AuthenticationInfo authInfo = realm.getAuthenticationInfo(USERNAME_PW_TOKEN);
+		UsernamePwAuthenticationInfo authInfo = realm.getUsernamePwAuthenticationInfo(USERNAME_PW_TOKEN);
 
-		PrincipalCollection principalCollection = authInfo.getPrincipals();
-		List<?> principals = principalCollection.asList();
-		assertEquals(1, principals.size());
-		assertTrue(principals.contains(TestObjectContainer.USER_NAME_1));
-		String userName = principalCollection.getPrimaryPrincipal().toString();
-		assertEquals(TestObjectContainer.USER_NAME_1, userName);
-		String passWord = new String((char[]) authInfo.getCredentials());
-		assertEquals(TestObjectContainer.PASSWORD_1, passWord);
+		assertEquals(TestObjectContainer.USER_NAME_1, authInfo.getUserName());
+		assertEquals(TestObjectContainer.PASSWORD_1, new String(authInfo.getPassWord()));
 	}
 
 	@Test
@@ -95,16 +83,10 @@ public class OpenUrRdbmsRealmTest
 		credentialsMatcher.setPasswordService(passwordService);
 		realm.setCredentialsMatcher(credentialsMatcher);
 
-		AuthenticationInfo authInfo = realm.getAuthenticationInfo(USERNAME_PW_TOKEN);
-
-		PrincipalCollection principalCollection = authInfo.getPrincipals();
-		List<?> principals = principalCollection.asList();
-		assertEquals(1, principals.size());
-		assertTrue(principals.contains(TestObjectContainer.USER_NAME_1));
-		String userName = authInfo.getPrincipals().getPrimaryPrincipal().toString();
-		assertEquals(TestObjectContainer.USER_NAME_1, userName);
-		String passWord = new String((char[]) authInfo.getCredentials());
-		assertEquals(encryptedPassword, passWord);
+		UsernamePwAuthenticationInfo authInfo = realm.getUsernamePwAuthenticationInfo(USERNAME_PW_TOKEN);
+		
+		assertEquals(TestObjectContainer.USER_NAME_1, authInfo.getUserName());
+		assertEquals(encryptedPassword, new String(authInfo.getPassWord()));
 	}
 
 	@Test
@@ -123,16 +105,10 @@ public class OpenUrRdbmsRealmTest
 		realm.setCredentialsMatcher(credentialsMatcher);
 		realm.setSaltStyle(SaltStyle.COLUMN);
 
-		AuthenticationInfo authInfo = realm.getAuthenticationInfo(USERNAME_PW_TOKEN);
-
-		PrincipalCollection principalCollection = authInfo.getPrincipals();
-		List<?> principals = principalCollection.asList();
-		assertEquals(1, principals.size());
-		assertTrue(principals.contains(TestObjectContainer.USER_NAME_1));
-		String userName = authInfo.getPrincipals().getPrimaryPrincipal().toString();
-		assertEquals(TestObjectContainer.USER_NAME_1, userName);
-		String passWord = new String((char[]) authInfo.getCredentials());
-		assertEquals(encryptedAndSaltedPassword, passWord);
+		UsernamePwAuthenticationInfo authInfo = realm.getUsernamePwAuthenticationInfo(USERNAME_PW_TOKEN);
+		
+		assertEquals(TestObjectContainer.USER_NAME_1, authInfo.getUserName());
+		assertEquals(encryptedAndSaltedPassword, new String(authInfo.getPassWord()));
 	}
 
 	@Test
@@ -152,13 +128,10 @@ public class OpenUrRdbmsRealmTest
 		realm.addSaltForUser(TestObjectContainer.USER_NAME_1, hashedSaltBase64);
 		realm.setSaltStyle(SaltStyle.EXTERNAL);	// is set automatically when adding external salt, only set here for demonstrating-purposes!
 
-		AuthenticationInfo authInfo = realm.getAuthenticationInfo(USERNAME_PW_TOKEN);
-
-		assertEquals(1, authInfo.getPrincipals().asList().size());
-		String userName = authInfo.getPrincipals().getPrimaryPrincipal().toString();
-		assertEquals(TestObjectContainer.USER_NAME_1, userName);
-		String passWord = new String((char[]) authInfo.getCredentials());
-		assertEquals(encryptedAndSaltedPassword, passWord);
+		UsernamePwAuthenticationInfo authInfo = realm.getUsernamePwAuthenticationInfo(USERNAME_PW_TOKEN);
+		
+		assertEquals(TestObjectContainer.USER_NAME_1, authInfo.getUserName());
+		assertEquals(encryptedAndSaltedPassword, new String(authInfo.getPassWord()));
 	}
 
 	@Test(expected=AuthenticationException.class)

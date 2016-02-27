@@ -39,6 +39,10 @@
 			<artifactId>open_ur-module-domain-testfixture</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.openur.module.integration</groupId>
+			<artifactId>open_ur-module-integration-security-shiro</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>

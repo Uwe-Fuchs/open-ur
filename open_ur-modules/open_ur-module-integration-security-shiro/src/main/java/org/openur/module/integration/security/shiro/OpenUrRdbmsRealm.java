@@ -8,9 +8,7 @@ import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AccountException;
 import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -34,9 +32,15 @@ public class OpenUrRdbmsRealm
 
 	@Inject
 	private ISecurityDao securityDao;
+	
+	public UsernamePwAuthenticationInfo getUsernamePwAuthenticationInfo(UsernamePasswordToken token)
+		throws AuthenticationException
+	{
+		return (UsernamePwAuthenticationInfo) getAuthenticationInfo(token);
+	}
 
 	@Override
-	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token)
+	protected UsernamePwAuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token)
 		throws AuthenticationException
 	{
 		UsernamePasswordToken upToken = (UsernamePasswordToken) token;
@@ -55,7 +59,7 @@ public class OpenUrRdbmsRealm
 			throw new UnknownAccountException("No account found for user [" + username + "]");
 		}
 
-		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(username, userAccount.getPassWord().toCharArray(), getName());
+		UsernamePwAuthenticationInfo info = new UsernamePwAuthenticationInfo(username, userAccount.getPassWord().toCharArray(), getName());
 		
 		String salt = null;
 		

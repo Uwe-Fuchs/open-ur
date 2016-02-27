@@ -2,11 +2,11 @@ package org.openur.module.service.config;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
+import org.openur.module.integration.security.shiro.UsernamePwAuthenticationInfo;
 
 public class OpenUrRdbmsRealmMock
 	extends OpenUrRdbmsRealm
@@ -14,7 +14,7 @@ public class OpenUrRdbmsRealmMock
 	public static final UsernamePasswordToken USERNAME_PW_TOKEN = new UsernamePasswordToken(TestObjectContainer.USER_NAME_1, TestObjectContainer.PASSWORD_1);
 	
 	@Override
-	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token)
+	protected UsernamePwAuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token)
 		throws AuthenticationException
 	{
 		if (!areTokensEqual(USERNAME_PW_TOKEN, (UsernamePasswordToken) token))

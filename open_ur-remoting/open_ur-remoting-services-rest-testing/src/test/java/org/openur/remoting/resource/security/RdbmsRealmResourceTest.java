@@ -30,7 +30,7 @@ import org.junit.Test;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
 import org.openur.remoting.resource.AbstractResourceTest;
-import org.openur.remoting.xchange.rest.providers.json.SimpleAuthenticationInfoProvider;
+import org.openur.remoting.xchange.rest.providers.json.UsernamePwAuthenticationInfoProvider;
 import org.openur.remoting.xchange.rest.providers.json.UsernamePwTokenProvider;
 
 public class RdbmsRealmResourceTest
@@ -55,7 +55,7 @@ public class RdbmsRealmResourceTest
 
 		ResourceConfig config = new ResourceConfig(RdbmsRealmResource.class)
 					.register(UsernamePwTokenProvider.class)
-					.register(SimpleAuthenticationInfoProvider.class)
+					.register(UsernamePwAuthenticationInfoProvider.class)
 					.register(binder);
 
 		return config;
@@ -68,7 +68,7 @@ public class RdbmsRealmResourceTest
 		super.setUp();
 
 		getMyClient().register(UsernamePwTokenProvider.class);
-		getMyClient().register(SimpleAuthenticationInfoProvider.class);
+		getMyClient().register(UsernamePwAuthenticationInfoProvider.class);
 		service = getMyClient().target(getBaseURI());		
 	}
 

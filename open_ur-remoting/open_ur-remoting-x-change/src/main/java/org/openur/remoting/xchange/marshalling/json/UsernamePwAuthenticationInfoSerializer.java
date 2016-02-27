@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.openur.module.integration.security.shiro.UsernamePwAuthenticationInfo;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -20,12 +20,12 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-public class SimpleAuthenticationInfoSerializer
-	implements JsonSerializer<SimpleAuthenticationInfo>, JsonDeserializer<SimpleAuthenticationInfo>
+public class UsernamePwAuthenticationInfoSerializer
+	implements JsonSerializer<UsernamePwAuthenticationInfo>, JsonDeserializer<UsernamePwAuthenticationInfo>
 {
 	@SuppressWarnings("unchecked")
 	@Override
-	public JsonElement serialize(SimpleAuthenticationInfo src, Type typeOfSrc, JsonSerializationContext context)
+	public JsonElement serialize(UsernamePwAuthenticationInfo src, Type typeOfSrc, JsonSerializationContext context)
 	{
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.add("credentials", context.serialize(src.getCredentials()));
@@ -63,10 +63,10 @@ public class SimpleAuthenticationInfoSerializer
 	}
 
 	@Override
-	public SimpleAuthenticationInfo deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+	public UsernamePwAuthenticationInfo deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 		throws JsonParseException
 	{
-		SimpleAuthenticationInfo authInfo = new SimpleAuthenticationInfo();
+		UsernamePwAuthenticationInfo authInfo = new UsernamePwAuthenticationInfo();
 		JsonObject jsonObject = json.getAsJsonObject();
 		
 		JsonElement element = jsonObject.get("principals");
