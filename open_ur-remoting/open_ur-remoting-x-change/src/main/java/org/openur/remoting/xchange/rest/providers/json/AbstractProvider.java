@@ -12,15 +12,13 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 
-import org.openur.module.domain.IdentifiableEntityImpl;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public abstract class AbstractProvider<I extends IdentifiableEntityImpl>
-	implements MessageBodyWriter<I>, MessageBodyReader<I>
+public abstract class AbstractProvider<T>
+	implements MessageBodyWriter<T>, MessageBodyReader<T>
 {	
-	public static String readFromInputStream(InputStream entityStream)
+	public String readFromInputStream(InputStream entityStream)
 		throws IOException
 	{
 		StringBuilder result = new StringBuilder();
@@ -44,7 +42,7 @@ public abstract class AbstractProvider<I extends IdentifiableEntityImpl>
 	}
 	
 	@Override
-	public long getSize(I t, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType)
+	public long getSize(T t, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType)
 	{
 		return -1;
 	}
@@ -62,7 +60,7 @@ public abstract class AbstractProvider<I extends IdentifiableEntityImpl>
 	}
 
 	@Override
-	public I readFrom(Class<I> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, String> httpHeaders, 
+	public T readFrom(Class<T> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, String> httpHeaders, 
 			InputStream entityStream)
 		throws IOException, WebApplicationException
 	{
@@ -72,7 +70,7 @@ public abstract class AbstractProvider<I extends IdentifiableEntityImpl>
 	}
 
 	@Override
-	public void writeTo(I t, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, 
+	public void writeTo(T t, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, 
 			OutputStream entityStream)
 		throws IOException, WebApplicationException
 	{

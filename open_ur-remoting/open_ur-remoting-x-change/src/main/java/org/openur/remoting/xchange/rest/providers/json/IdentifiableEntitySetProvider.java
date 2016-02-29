@@ -2,7 +2,6 @@ package org.openur.remoting.xchange.rest.providers.json;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Set;
@@ -11,8 +10,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.ext.MessageBodyReader;
-import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
 import org.openur.module.domain.IdentifiableEntityImpl;
@@ -31,22 +28,10 @@ import com.google.gson.GsonBuilder;
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
 public class IdentifiableEntitySetProvider<I extends IdentifiableEntityImpl>
-	implements MessageBodyWriter<Set<I>>, MessageBodyReader<Set<I>>
+	extends AbstractProvider<Set<I>>
 {
 	@Override
-	public long getSize(Set<I> userSet, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType)
-	{
-		return -1;
-	}
-
-	@Override
-	public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType)
-	{
-		return Set.class.isAssignableFrom(type);
-	}
-
-	@Override
-	public boolean isReadable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType)
+	protected boolean isProvided(Class<?> type)
 	{
 		return Set.class.isAssignableFrom(type);
 	}
@@ -56,7 +41,7 @@ public class IdentifiableEntitySetProvider<I extends IdentifiableEntityImpl>
 			MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
 		throws IOException, WebApplicationException
 	{
-		String result = AbstractProvider.readFromInputStream(entityStream);
+		String result = readFromInputStream(entityStream);
 
     Gson gson = createGsonBuilder()
     		.registerTypeAdapter(Person.class, new PersonSerializer())
@@ -68,15 +53,7 @@ public class IdentifiableEntitySetProvider<I extends IdentifiableEntityImpl>
 	}
 
 	@Override
-	public void writeTo(Set<I> userSet, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType, 
-			MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
-		throws IOException, WebApplicationException
-	{
-		Gson gson = createGsonBuilder().create();    
-		entityStream.write(gson.toJson(userSet, type).getBytes());
-	}
-
-	private GsonBuilder createGsonBuilder()
+	protected GsonBuilder createGsonBuilder()
 	{
 		return new GsonBuilder()
 		    .registerTypeAdapter(AuthorizableOrgUnit.class, new AuthorizableOrgUnitSerializer())
