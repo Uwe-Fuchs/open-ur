@@ -19,7 +19,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 public class AuthorizableMemberSerializer
-	extends AbstractJsonSerializer
+	extends AbstractIdentifiableEntitySerializer
 	implements JsonDeserializer<AuthorizableMember>, JsonSerializer<AuthorizableMember>
 {	
 	@Override

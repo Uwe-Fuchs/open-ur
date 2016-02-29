@@ -10,7 +10,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
-public abstract class AbstractJsonSerializer
+public abstract class AbstractIdentifiableEntitySerializer
 {
 	protected <I extends IdentifiableEntityImpl> void serialize(I src, JsonObject jsonObject, JsonSerializationContext context)
 	{

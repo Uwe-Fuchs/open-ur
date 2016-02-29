@@ -20,7 +20,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 public class OpenURRoleSerializer
-	extends AbstractJsonSerializer
+	extends AbstractIdentifiableEntitySerializer
 	implements JsonDeserializer<OpenURRole>, JsonSerializer<OpenURRole>
 {
 	@Override

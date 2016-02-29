@@ -10,7 +10,7 @@ import com.google.gson.JsonSerializationContext;
 
 
 public class UserStructureBaseSerializer
-	extends AbstractJsonSerializer
+	extends AbstractIdentifiableEntitySerializer
 {
 	// properties:
 	private String number = null;
