@@ -1,7 +1,6 @@
 package org.openur.remoting.resource.security;
 
 import static org.junit.Assert.*;
-
 import static org.openur.remoting.resource.security.AuthorizationResource.*;
 
 import javax.ws.rs.core.Application;
@@ -37,7 +36,7 @@ public class AuthorizationResourceTest
 	@Test
 	public void testHasPermissionInOrgUnit()
 	{
-		Boolean b = performRestCall_Get(AUTHORIZATION_RESOURCE_PATH + HAS_OU_PERMISSION_RESOURCE_PATH 
+		Boolean b = performRestCall_GET(HAS_OU_PERMISSION_RESOURCE_PATH 
 				+ "?personId=" + MockAuthorizationServicesFactory.PERSON_ID + "&ouId=" + MockAuthorizationServicesFactory.OU_ID 
 				+ "&text=" + MockAuthorizationServicesFactory.PERMISSION_TEXT	+ "&appName=" + MockAuthorizationServicesFactory.APP_NAME, 
 				MediaType.TEXT_PLAIN, Boolean.class);
@@ -48,7 +47,7 @@ public class AuthorizationResourceTest
 	@Test
 	public void testHasNoPermissionInOrgUnit()
 	{
-		Boolean b = performRestCall_Get(AUTHORIZATION_RESOURCE_PATH + HAS_OU_PERMISSION_RESOURCE_PATH 
+		Boolean b = performRestCall_GET(HAS_OU_PERMISSION_RESOURCE_PATH 
 				+ "?personId=" + MockAuthorizationServicesFactory.PERSON_ID + "&ouId=" + MockAuthorizationServicesFactory.OU_ID 
 				+ "&text=" + MockAuthorizationServicesFactory.OTHER_PERMISSION_TEXT + "&appName=" + MockAuthorizationServicesFactory.APP_NAME, 
 				MediaType.TEXT_PLAIN, Boolean.class);
@@ -59,7 +58,7 @@ public class AuthorizationResourceTest
 	@Test
 	public void testHasPermissionInSystem()
 	{
-		Boolean b = performRestCall_Get(AUTHORIZATION_RESOURCE_PATH + HAS_SYSTEM_PERMISSION_RESOURCE_PATH 
+		Boolean b = performRestCall_GET(HAS_SYSTEM_PERMISSION_RESOURCE_PATH 
 				+ "?personId=" + MockAuthorizationServicesFactory.PERSON_ID + "&text=" + MockAuthorizationServicesFactory.PERMISSION_TEXT
 				+ "&appName=" + MockAuthorizationServicesFactory.APP_NAME, MediaType.TEXT_PLAIN, Boolean.class);
 		
@@ -69,10 +68,16 @@ public class AuthorizationResourceTest
 	@Test
 	public void testHasNotPermissionInSystem()
 	{
-		Boolean b = performRestCall_Get(AUTHORIZATION_RESOURCE_PATH + HAS_SYSTEM_PERMISSION_RESOURCE_PATH 
+		Boolean b = performRestCall_GET(HAS_SYSTEM_PERMISSION_RESOURCE_PATH 
 				+ "?personId=" + MockAuthorizationServicesFactory.PERSON_ID + "&text=" + MockAuthorizationServicesFactory.OTHER_PERMISSION_TEXT
 				+ "&appName=" + MockAuthorizationServicesFactory.APP_NAME, MediaType.TEXT_PLAIN, Boolean.class);
 		
 		assertFalse(b);
+	}
+
+	@Override
+	protected String getBaseURI()
+	{
+		return super.getBaseURI() + AUTHORIZATION_RESOURCE_PATH;
 	}
 }

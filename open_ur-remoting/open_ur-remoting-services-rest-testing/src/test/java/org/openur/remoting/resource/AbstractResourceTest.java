@@ -1,7 +1,5 @@
 package org.openur.remoting.resource;
 
-import java.net.URI;
-
 import javax.ws.rs.HttpMethod;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -10,8 +8,8 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
 
+import org.apache.commons.lang3.Validate;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.After;
 import org.junit.Before;
@@ -19,6 +17,7 @@ import org.junit.Before;
 public abstract class AbstractResourceTest
 	extends JerseyTest
 {
+	private final String baseUri = "http://localhost:9998/";	
 	private Client client;
 
 	@Before
@@ -43,52 +42,43 @@ public abstract class AbstractResourceTest
 	{
 		return client;
 	}
-
-	protected <T> T performRestCall_Get(String url, String mediaType, Class<T> resultType)
-	{		
-		return performRestCall(url, mediaType, resultType, HttpMethod.GET, null);
-	}
-
-	protected <T> T performRestCall_Get(String url, Class<T> resultType)
+	
+	protected <E, R> R performRestCall(String url, String httpMethod, String acceptMediaType, String contentMediaType, Class<R> resultType, E object)
 	{
-		return performRestCall(url, resultType, HttpMethod.GET, null);
-	}
-
-	protected <T> T performRestCall_Get(String url, String mediaType, GenericType<T> resultType)
-	{
-		return performRestCall(url, mediaType, resultType, HttpMethod.GET, null);
-	}
-
-	protected <T> T performRestCall_Get(String url, GenericType<T> resultType)
-	{
-		return performRestCall(url, resultType, HttpMethod.GET, null);
-	}
-
-	protected <T> T performRestCall(String url, String mediaType, Class<T> resultType, String httpMethod, Entity<?> entity)
-	{		
-		return internalRestCall(url, mediaType, resultType, null, httpMethod, entity);
-	}
-
-	protected <T> T performRestCall(String url, Class<T> resultType, String httpMethod, Entity<?> entity)
-	{
-		return internalRestCall(url, MediaType.APPLICATION_JSON, resultType, null, httpMethod, entity);
-	}
-
-	protected <T> T performRestCall(String url, String mediaType, GenericType<T> resultType, String httpMethod, Entity<?> entity)
-	{
-		return internalRestCall(url, mediaType, null, resultType, httpMethod, entity);
-	}
-
-	protected <T> T performRestCall(String url, GenericType<T> resultType, String httpMethod, Entity<?> entity)
-	{
-		return internalRestCall(url, MediaType.APPLICATION_JSON, null, resultType, httpMethod, entity);
+		return internalRestCall(url, httpMethod, acceptMediaType, contentMediaType, resultType, null, object);
 	}
 	
-	private <T> T internalRestCall(String url, String mediaType, Class<T> resultClassType, GenericType<T> genericResultType, String httpMethod, Entity<?> entity)
+	protected <E, R> R performRestCall(String url, String httpMethod, String acceptMediaType, String contentMediaType, GenericType<R> genericResultType, E object)
+	{
+		return internalRestCall(url, httpMethod, acceptMediaType, contentMediaType, null, genericResultType, object);
+	}
+	
+	protected <E, R> R performRestCall_GET(String url, String acceptMediaType, Class<R> resultType)
+	{
+		return internalRestCall(url, HttpMethod.GET, acceptMediaType, MediaType.TEXT_PLAIN, resultType, null, (Object) null);
+	}
+	
+	protected <E, R> R performRestCall_GET(String url, String acceptMediaType, GenericType<R> genericResultType)
+	{
+		return internalRestCall(url, HttpMethod.GET, acceptMediaType, MediaType.TEXT_PLAIN, null, genericResultType, (Object) null);
+	}
+
+	private <E, R> R internalRestCall(String url, String httpMethod, String acceptMediaType, String contentMediaType, Class<R> resultClassType, GenericType<R> genericResultType, E object)
 	{
 		Invocation.Builder builder = client
-				.target("http://localhost:9998/" + url)
-				.request(mediaType);
+				.target(getBaseURI() + url)
+				.request()
+				.accept(acceptMediaType);
+		
+		Validate.isTrue(!((httpMethod == HttpMethod.POST || httpMethod == HttpMethod.PUT) && object == null), 
+					"object must not be null when calling REST-resource via PUT or POST");
+		
+		Entity<E> entity = null;
+		
+		if (object != null)
+		{
+			entity = Entity.entity(object, contentMediaType);			
+		}
 		
 		Response response;
 		
@@ -111,14 +101,14 @@ public abstract class AbstractResourceTest
 				break;
 		}
 
-		T result = resultClassType != null ? response.readEntity(resultClassType) : response.readEntity(genericResultType);
+		R result = resultClassType != null ? response.readEntity(resultClassType) : response.readEntity(genericResultType);
 		System.out.println("Result: " + result);
 	
 		return result;	
 	}
 
-	protected URI getBaseURI()
+	protected String getBaseURI()
 	{
-		return UriBuilder.fromUri("http://localhost:9998/").build();
+		return baseUri;
 	}
 }

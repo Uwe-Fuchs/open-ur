@@ -8,15 +8,16 @@ import static org.openur.remoting.resource.security.RdbmsRealmResource.AUTHENTIC
 import static org.openur.remoting.resource.security.RdbmsRealmResource.GET_NAME_RESOURCE_PATH;
 import static org.openur.remoting.resource.security.RdbmsRealmResource.SUPPORTS_RESOURCE_PATH;
 
-import java.net.URI;
 import java.util.Collection;
 import java.util.List;
 
+import javax.ws.rs.HttpMethod;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriBuilder;
 
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -38,8 +39,6 @@ public class RdbmsRealmResourceTest
 {
 	public static final UsernamePasswordToken TOKEN_WITH_WRONG_PW = new UsernamePasswordToken(TestObjectContainer.USER_NAME_1, "someWrongPw");
 	public static final UsernamePasswordToken TOKEN_WITH_UNKNOWN_USERNAME = new UsernamePasswordToken("someUnknownUserName", "somePw");
-	
-	private WebTarget service;
 	
 	@Override
 	protected Application configure()
@@ -69,45 +68,44 @@ public class RdbmsRealmResourceTest
 
 		getMyClient().register(UsernamePwTokenProvider.class);
 		getMyClient().register(UsernamePwAuthenticationInfoProvider.class);
-		service = getMyClient().target(getBaseURI());		
 	}
 
 	@Test
 	public void testGetName()
 	{
-		String result = service
-					.path(GET_NAME_RESOURCE_PATH)
-					.request()
-					.get(String.class);
-
+		String result = performRestCall_GET(GET_NAME_RESOURCE_PATH, MediaType.TEXT_PLAIN, String.class);
+		
 		assertEquals(OpenUrRdbmsRealmMock.REALM_NAME, result);
 	}
 
 	@Test
 	public void testSupports()
 	{
-		AuthenticationToken token = OpenUrRdbmsRealmMock.USERNAME_PW_TOKEN;
+		Boolean b = performRestCall(
+				SUPPORTS_RESOURCE_PATH, HttpMethod.PUT, MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON, Boolean.class, OpenUrRdbmsRealmMock.USERNAME_PW_TOKEN);
+		assertTrue(b);
+
+		b = performRestCall(SUPPORTS_RESOURCE_PATH, HttpMethod.PUT, MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON, Boolean.class, TOKEN_WITH_WRONG_PW);
+		assertFalse(b);
+
+		b = performRestCall(
+				SUPPORTS_RESOURCE_PATH, HttpMethod.PUT, MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON, Boolean.class, TOKEN_WITH_UNKNOWN_USERNAME);
+		assertFalse(b);
+	}
+
+	@Test
+	public void testSupports_OwnService()
+	{
+		Client client = ClientBuilder.newClient();
+		client.register(UsernamePwTokenProvider.class);
+		WebTarget service = client.target(getBaseURI());
 
 		Boolean b = service
 					.path(SUPPORTS_RESOURCE_PATH)
 					.request()
-					.put(Entity.entity(token, MediaType.APPLICATION_JSON), Boolean.class);
-
+					.put(Entity.entity(OpenUrRdbmsRealmMock.USERNAME_PW_TOKEN, MediaType.APPLICATION_JSON), Boolean.class);
+		
 		assertTrue(b);
-		
-		b = service
-					.path(SUPPORTS_RESOURCE_PATH)
-					.request()
-					.put(Entity.entity(RdbmsRealmResourceTest.TOKEN_WITH_WRONG_PW, MediaType.APPLICATION_JSON), Boolean.class);
-		
-		assertFalse(b);
-		
-		b = service
-					.path(SUPPORTS_RESOURCE_PATH)
-					.request()
-					.put(Entity.entity(RdbmsRealmResourceTest.TOKEN_WITH_UNKNOWN_USERNAME, MediaType.APPLICATION_JSON), Boolean.class);
-		
-		assertFalse(b);
 	}
 
 	@Test
@@ -115,11 +113,8 @@ public class RdbmsRealmResourceTest
 	{
 		AuthenticationToken token = OpenUrRdbmsRealmMock.USERNAME_PW_TOKEN;
 
-		AuthenticationInfo info = service
-					.path(AUTHENTICATE_RESOURCE_PATH)
-					.request()
-					.accept(MediaType.APPLICATION_JSON_TYPE)
-					.put(Entity.entity(token, MediaType.APPLICATION_JSON_TYPE), AuthenticationInfo.class);
+		AuthenticationInfo info = performRestCall(
+					AUTHENTICATE_RESOURCE_PATH, HttpMethod.PUT, MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, AuthenticationInfo.class, token);
 
 		assertNotNull(info);
 		String passWord = new String((char[]) info.getCredentials());
@@ -154,10 +149,8 @@ public class RdbmsRealmResourceTest
 //	}
 
 	@Override
-	protected URI getBaseURI()
+	protected String getBaseURI()
 	{
-		String baseUri = super.getBaseURI().toString();
-		
-		return UriBuilder.fromUri(baseUri + RdbmsRealmResource.RDBMS_REALM_RESOURCE_PATH).build();
+		return super.getBaseURI() + RdbmsRealmResource.RDBMS_REALM_RESOURCE_PATH;
 	}
 }

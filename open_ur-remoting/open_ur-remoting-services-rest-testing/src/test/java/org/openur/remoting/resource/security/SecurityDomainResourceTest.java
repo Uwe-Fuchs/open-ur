@@ -1,13 +1,13 @@
 package org.openur.remoting.resource.security;
 
 import static org.junit.Assert.*;
-
 import static org.openur.remoting.resource.security.SecurityDomainResource.*;
 
 import java.util.Set;
 
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
@@ -65,8 +65,8 @@ public class SecurityDomainResourceTest
 	@Test
 	public void testFindRoleById()
 	{
-		OpenURRole r = performRestCall_Get(SECURITY_DOMAIN_RESOURCE_PATH + ROLE_PER_ID_RESOURCE_PATH 
-				+ TestObjectContainer.ROLE_X.getIdentifier(), OpenURRole.class);
+		OpenURRole r = performRestCall_GET(ROLE_PER_ID_RESOURCE_PATH 
+				+ TestObjectContainer.ROLE_X.getIdentifier(), MediaType.APPLICATION_JSON, OpenURRole.class);
 		
 		assertTrue(new RoleComparer().objectsAreEqual(r, TestObjectContainer.ROLE_X));
 	}
@@ -74,8 +74,8 @@ public class SecurityDomainResourceTest
 	@Test
 	public void testFindRoleByName()
 	{
-		OpenURRole r = performRestCall_Get(SECURITY_DOMAIN_RESOURCE_PATH + ROLE_PER_NAME_RESOURCE_PATH 
-					+ TestObjectContainer.ROLE_X.getRoleName(), OpenURRole.class);
+		OpenURRole r = performRestCall_GET(ROLE_PER_NAME_RESOURCE_PATH 
+					+ TestObjectContainer.ROLE_X.getRoleName(), MediaType.APPLICATION_JSON, OpenURRole.class);
 		
 		assertTrue(new RoleComparer().objectsAreEqual(r, TestObjectContainer.ROLE_X));
 	}
@@ -83,7 +83,7 @@ public class SecurityDomainResourceTest
 	@Test
 	public void testObtainAllRoles()
 	{
-		Set<OpenURRole> resultSet = performRestCall_Get(SECURITY_DOMAIN_RESOURCE_PATH + ALL_ROLES_RESOURCE_PATH, 
+		Set<OpenURRole> resultSet = performRestCall_GET(ALL_ROLES_RESOURCE_PATH, MediaType.APPLICATION_JSON, 
 					new GenericType<Set<OpenURRole>>(new ParameterizedTypeImpl(Set.class, OpenURRole.class)));
 
 		assertFalse(resultSet.isEmpty());
@@ -100,8 +100,8 @@ public class SecurityDomainResourceTest
 	@Test
 	public void testFindPermissionById()
 	{
-		OpenURPermission p = performRestCall_Get(SECURITY_DOMAIN_RESOURCE_PATH + PERMISSION_PER_ID_RESOURCE_PATH 
-					+ TestObjectContainer.PERMISSION_1_A.getIdentifier(), OpenURPermission.class);
+		OpenURPermission p = performRestCall_GET(PERMISSION_PER_ID_RESOURCE_PATH 
+					+ TestObjectContainer.PERMISSION_1_A.getIdentifier(), MediaType.APPLICATION_JSON, OpenURPermission.class);
 		
 		assertTrue(EqualsBuilder.reflectionEquals(p, TestObjectContainer.PERMISSION_1_A));
 	}
@@ -109,9 +109,9 @@ public class SecurityDomainResourceTest
 	@Test
 	public void testFindPermissionByText()
 	{
-		OpenURPermission p = performRestCall_Get(SECURITY_DOMAIN_RESOURCE_PATH + PERMISSION_PER_TEXT_RESOURCE_PATH 
+		OpenURPermission p = performRestCall_GET(PERMISSION_PER_TEXT_RESOURCE_PATH 
 					+ "?text=" + TestObjectContainer.PERMISSION_1_A.getPermissionText() 
-					+ "&appName=" + TestObjectContainer.APP_A.getApplicationName(), OpenURPermission.class);
+					+ "&appName=" + TestObjectContainer.APP_A.getApplicationName(), MediaType.APPLICATION_JSON, OpenURPermission.class);
 		
 		assertTrue(EqualsBuilder.reflectionEquals(p, TestObjectContainer.PERMISSION_1_A));
 	}
@@ -119,8 +119,8 @@ public class SecurityDomainResourceTest
 	@Test
 	public void testObtainPermissionsForApp()
 	{
-		Set<OpenURPermission> resultSet = performRestCall_Get(SECURITY_DOMAIN_RESOURCE_PATH + PERMISSIONS_PER_APP_RESOURCE_PATH 
-					+ TestObjectContainer.APP_A.getApplicationName(), 
+		Set<OpenURPermission> resultSet = performRestCall_GET(PERMISSIONS_PER_APP_RESOURCE_PATH 
+					+ TestObjectContainer.APP_A.getApplicationName(), MediaType.APPLICATION_JSON, 
 					new GenericType<Set<OpenURPermission>>(new ParameterizedTypeImpl(Set.class, OpenURPermission.class)));
 
 		assertFalse(resultSet.isEmpty());
@@ -135,7 +135,7 @@ public class SecurityDomainResourceTest
 	@Test
 	public void testObtainAllPermissions()
 	{
-		Set<OpenURPermission> resultSet = performRestCall_Get(SECURITY_DOMAIN_RESOURCE_PATH + ALL_PERMISSIONS_RESOURCE_PATH, 
+		Set<OpenURPermission> resultSet = performRestCall_GET(ALL_PERMISSIONS_RESOURCE_PATH, MediaType.APPLICATION_JSON, 
 				new GenericType<Set<OpenURPermission>>(new ParameterizedTypeImpl(Set.class, OpenURPermission.class)));
 
 		assertFalse(resultSet.isEmpty());
@@ -153,5 +153,11 @@ public class SecurityDomainResourceTest
 		assertTrue(new PermissionComparer().objectsAreEqual(TestObjectContainer.PERMISSION_1_C, p));
 		p = DomainObjectHelper.findIdentifiableEntityInCollection(resultSet, TestObjectContainer.PERMISSION_2_C.getIdentifier());
 		assertTrue(new PermissionComparer().objectsAreEqual(TestObjectContainer.PERMISSION_2_C, p));
+	}
+
+	@Override
+	protected String getBaseURI()
+	{
+		return super.getBaseURI() + SECURITY_DOMAIN_RESOURCE_PATH;
 	}
 }
