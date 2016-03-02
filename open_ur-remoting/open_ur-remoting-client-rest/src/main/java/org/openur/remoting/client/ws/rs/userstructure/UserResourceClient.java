@@ -12,6 +12,7 @@ import java.util.Set;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
 
 import org.glassfish.hk2.utilities.reflection.ParameterizedTypeImpl;
 import org.openur.module.domain.userstructure.person.IPerson;
@@ -44,7 +45,7 @@ public class UserResourceClient
 				.append(personId)
 				.toString();
 		
-		return performRestCall(url, Person.class);
+		return performRestCall(url, MediaType.APPLICATION_JSON, Person.class);
 	}
 
 	@Override
@@ -57,7 +58,7 @@ public class UserResourceClient
 				.append(personalNumber)
 				.toString();
 		
-		return performRestCall(url, Person.class);
+		return performRestCall(url, MediaType.APPLICATION_JSON, Person.class);
 	}
 
 	@Override
@@ -69,7 +70,7 @@ public class UserResourceClient
 				.append(ALL_PERSONS_RESOURCE_PATH)
 				.toString();
 		
-		return performRestCall(url, new GenericType<Set<IPerson>>(new ParameterizedTypeImpl(Set.class, Person.class)));
+		return performRestCall(url, MediaType.APPLICATION_JSON, new GenericType<Set<IPerson>>(new ParameterizedTypeImpl(Set.class, Person.class)));
 	}
 
 	@Override
@@ -82,7 +83,7 @@ public class UserResourceClient
 				.append(techUserId)
 				.toString();
 		
-		return performRestCall(url, TechnicalUser.class);
+		return performRestCall(url, MediaType.APPLICATION_JSON, TechnicalUser.class);
 	}
 
 	@Override
@@ -95,7 +96,7 @@ public class UserResourceClient
 				.append(techUserNumber)
 				.toString();
 		
-		return performRestCall(url, TechnicalUser.class);
+		return performRestCall(url, MediaType.APPLICATION_JSON, TechnicalUser.class);
 	}
 
 	@Override
@@ -107,6 +108,6 @@ public class UserResourceClient
 				.append(ALL_TECHUSERS_RESOURCE_PATH)
 				.toString();
 		
-		return performRestCall(url, new GenericType<Set<ITechnicalUser>>(new ParameterizedTypeImpl(Set.class, TechnicalUser.class)));
+		return performRestCall(url, MediaType.APPLICATION_JSON, new GenericType<Set<ITechnicalUser>>(new ParameterizedTypeImpl(Set.class, TechnicalUser.class)));
 	}
 }

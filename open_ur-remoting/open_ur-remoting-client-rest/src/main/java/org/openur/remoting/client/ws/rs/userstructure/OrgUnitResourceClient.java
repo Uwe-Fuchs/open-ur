@@ -11,6 +11,7 @@ import java.util.Set;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
 
 import org.glassfish.hk2.utilities.reflection.ParameterizedTypeImpl;
 import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
@@ -42,7 +43,7 @@ public class OrgUnitResourceClient
 				.append(inclMembersRoles.toString())
 				.toString();
 		
-		return performRestCall(url, AuthorizableOrgUnit.class);
+		return performRestCall(url, MediaType.APPLICATION_JSON, AuthorizableOrgUnit.class);
 	}
 
 	@Override
@@ -57,7 +58,7 @@ public class OrgUnitResourceClient
 				.append(inclMembersRoles.toString())
 				.toString();
 
-		return performRestCall(url, AuthorizableOrgUnit.class);
+		return performRestCall(url, MediaType.APPLICATION_JSON, AuthorizableOrgUnit.class);
 	}
 
 	@Override
@@ -70,7 +71,7 @@ public class OrgUnitResourceClient
 				.toString();
 		
 		return performRestCall(
-					url, new GenericType<Set<IAuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
+					url, MediaType.APPLICATION_JSON, new GenericType<Set<IAuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
 	}
 
 	@Override
@@ -86,7 +87,7 @@ public class OrgUnitResourceClient
 				.toString();
 		
 		return performRestCall(
-					url, new GenericType<Set<IAuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
+					url, MediaType.APPLICATION_JSON, new GenericType<Set<IAuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
 	}
 
 	@Override
@@ -99,6 +100,6 @@ public class OrgUnitResourceClient
 				.toString();
 		
 		return performRestCall(
-					url, new GenericType<Set<IAuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
+					url, MediaType.APPLICATION_JSON, new GenericType<Set<IAuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
 	}
 }

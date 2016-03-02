@@ -55,12 +55,12 @@ public abstract class AbstractResourceTest
 	
 	protected <T> T performRestCall_GET(String url, String acceptMediaType, Class<T> resultType)
 	{
-		return internalRestCall(url, HttpMethod.GET, acceptMediaType, MediaType.TEXT_PLAIN, resultType, null, (Object) null);
+		return internalRestCall(url, HttpMethod.GET, acceptMediaType, MediaType.TEXT_PLAIN, resultType, null, null);
 	}
 	
 	protected <T> T performRestCall_GET(String url, String acceptMediaType, GenericType<T> genericResultType)
 	{
-		return internalRestCall(url, HttpMethod.GET, acceptMediaType, MediaType.TEXT_PLAIN, null, genericResultType, (Object) null);
+		return internalRestCall(url, HttpMethod.GET, acceptMediaType, MediaType.TEXT_PLAIN, null, genericResultType, null);
 	}
 
 	private <E, R> R internalRestCall(String url, String httpMethod, String acceptMediaType, String contentMediaType, Class<R> resultClassType, GenericType<R> genericResultType, E object)

@@ -13,6 +13,7 @@ import java.util.Set;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
 
 import org.glassfish.hk2.utilities.reflection.ParameterizedTypeImpl;
 import org.openur.module.domain.security.authorization.IPermission;
@@ -45,7 +46,7 @@ public class SecurityDomainResourceClient
 				.append(roleId)
 				.toString();
 		
-		return performRestCall(url, OpenURRole.class);
+		return performRestCall(url, MediaType.APPLICATION_JSON, OpenURRole.class);
 	}
 
 	@Override
@@ -58,7 +59,7 @@ public class SecurityDomainResourceClient
 				.append(roleName)
 				.toString();
 		
-		return performRestCall(url, OpenURRole.class);
+		return performRestCall(url, MediaType.APPLICATION_JSON, OpenURRole.class);
 	}
 
 	@Override
@@ -70,7 +71,7 @@ public class SecurityDomainResourceClient
 				.append(ALL_ROLES_RESOURCE_PATH)
 				.toString();
 		
-		return performRestCall(url, new GenericType<Set<IRole>>(new ParameterizedTypeImpl(Set.class, OpenURRole.class)));
+		return performRestCall(url, MediaType.APPLICATION_JSON, new GenericType<Set<IRole>>(new ParameterizedTypeImpl(Set.class, OpenURRole.class)));
 	}
 
 	@Override
@@ -83,7 +84,7 @@ public class SecurityDomainResourceClient
 				.append(permissionId)
 				.toString();
 		
-		return performRestCall(url, OpenURPermission.class);
+		return performRestCall(url, MediaType.APPLICATION_JSON, OpenURPermission.class);
 	}
 
 	@Override
@@ -99,7 +100,7 @@ public class SecurityDomainResourceClient
 				.append(applicationName)
 				.toString();
 		
-		return performRestCall(url, OpenURPermission.class);
+		return performRestCall(url, MediaType.APPLICATION_JSON, OpenURPermission.class);
 	}
 
 	@Override
@@ -112,7 +113,7 @@ public class SecurityDomainResourceClient
 				.append(applicationName)
 				.toString();
 		
-		return performRestCall(url, new GenericType<Set<IPermission>>(new ParameterizedTypeImpl(Set.class, OpenURPermission.class)));
+		return performRestCall(url, MediaType.APPLICATION_JSON, new GenericType<Set<IPermission>>(new ParameterizedTypeImpl(Set.class, OpenURPermission.class)));
 	}
 
 	@Override
@@ -124,6 +125,6 @@ public class SecurityDomainResourceClient
 				.append(ALL_PERMISSIONS_RESOURCE_PATH)
 				.toString();
 		
-		return performRestCall(url, new GenericType<Set<IPermission>>(new ParameterizedTypeImpl(Set.class, OpenURPermission.class)));
+		return performRestCall(url, MediaType.APPLICATION_JSON, new GenericType<Set<IPermission>>(new ParameterizedTypeImpl(Set.class, OpenURPermission.class)));
 	}
 }
