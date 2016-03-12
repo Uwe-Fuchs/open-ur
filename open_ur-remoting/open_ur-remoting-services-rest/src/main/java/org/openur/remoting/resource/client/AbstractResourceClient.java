@@ -1,7 +1,7 @@
-package org.openur.remoting.client.ws.rs;
+package org.openur.remoting.resource.client;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import javax.ws.rs.HttpMethod;
@@ -13,29 +13,31 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
 import org.glassfish.jersey.client.ClientConfig;
 
 public abstract class AbstractResourceClient
 {
-	private final List<Class<?>> providers;
+	private final List<Class<?>> providers = new ArrayList<>();
 	private final String baseUrl;
 
 	public AbstractResourceClient(String baseUrl, Class<?>... newProviders)
+	{
+		this(baseUrl);
+		
+		if (ArrayUtils.isNotEmpty(newProviders) && newProviders[0] != null)
+		{
+			this.providers.addAll(Arrays.asList(newProviders));
+		}
+	}
+
+	public AbstractResourceClient(String baseUrl)
 	{
 		super();
 
 		Validate.notEmpty(baseUrl, "Base-URL must not be empty!");
 		this.baseUrl = baseUrl;
-
-		newProviders = newProviders != null ? newProviders : new Class<?>[] {};
-		List<Class<?>> providersTmp = Arrays.asList(newProviders);
-		this.providers = Collections.unmodifiableList(providersTmp);
-	}
-
-	protected String getBaseUrl()
-	{
-		return baseUrl;
 	}
 
 	private Client createJerseyClient()
@@ -54,7 +56,7 @@ public abstract class AbstractResourceClient
 	{
 		Client client = createJerseyClient();
 
-		Invocation.Builder builder = client.target(url).request().accept(acceptMediaType);
+		Invocation.Builder builder = client.target(getBaseUrl() + url).request().accept(acceptMediaType);
 
 		Validate.isTrue(!((httpMethod == HttpMethod.POST || httpMethod == HttpMethod.PUT) && object == null), "object must not be null when calling REST-resource via PUT or POST");
 
@@ -87,16 +89,18 @@ public abstract class AbstractResourceClient
 		}
 
 		R result = resultClassType != null ? response.readEntity(resultClassType) : response.readEntity(genericResultType);
+		
+		client.close();
 
 		return result;
 	}
 
-	protected <T> T performRestCall(String url, String acceptMediaType, Class<T> resultType)
+	protected <T> T performRestCall_GET(String url, String acceptMediaType, Class<T> resultType)
 	{
 		return internalRestCall(url, HttpMethod.GET, acceptMediaType, MediaType.TEXT_PLAIN, resultType, null, null);
 	}
 
-	protected <T> T performRestCall(String url, String acceptMediaType, GenericType<T> resultType)
+	protected <T> T performRestCall_GET(String url, String acceptMediaType, GenericType<T> resultType)
 	{
 		return internalRestCall(url, HttpMethod.GET, acceptMediaType, MediaType.TEXT_PLAIN, null, resultType, null);
 	}
@@ -109,6 +113,17 @@ public abstract class AbstractResourceClient
 	protected <E, R> R performRestCall(String url, String httpMethod, String acceptMediaType, String contentMediaType, GenericType<R> genericResultType, E object)
 	{
 		return internalRestCall(url, httpMethod, acceptMediaType, contentMediaType, null, genericResultType, object);
+	}
+
+	protected String getBaseUrl()
+	{
+		return baseUrl;
+	}
+
+	public void addProvider(Class<?> newProvider)
+	{
+		Validate.notNull(newProvider, "new provider must not be null!");
+		this.providers.add(newProvider);
 	}
 
 	public List<Class<?>> getProviders()

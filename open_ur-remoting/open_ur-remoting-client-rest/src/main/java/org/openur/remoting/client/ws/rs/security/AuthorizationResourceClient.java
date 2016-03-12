@@ -1,6 +1,5 @@
 package org.openur.remoting.client.ws.rs.security;
 
-import static org.openur.remoting.resource.security.AuthorizationResource.AUTHORIZATION_RESOURCE_PATH;
 import static org.openur.remoting.resource.security.AuthorizationResource.HAS_OU_PERMISSION_RESOURCE_PATH;
 import static org.openur.remoting.resource.security.AuthorizationResource.HAS_SYSTEM_PERMISSION_RESOURCE_PATH;
 
@@ -8,7 +7,7 @@ import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
 
 import org.openur.module.service.security.IAuthorizationServices;
-import org.openur.remoting.client.ws.rs.AbstractResourceClient;
+import org.openur.remoting.resource.client.AbstractResourceClient;
 import org.openur.remoting.xchange.rest.providers.json.PermissionProvider;
 
 public class AuthorizationResourceClient
@@ -25,8 +24,6 @@ public class AuthorizationResourceClient
 	public Boolean hasPermission(String personId, String orgUnitId, String permissionText, String applicationName)
 	{
 		String url = new StringBuilder()
-				.append(getBaseUrl())
-				.append(AUTHORIZATION_RESOURCE_PATH)
 				.append(HAS_OU_PERMISSION_RESOURCE_PATH)
 				.append("?personId=")
 				.append(personId)
@@ -38,15 +35,13 @@ public class AuthorizationResourceClient
 				.append(applicationName)
 				.toString();
 		
-		return performRestCall(url, MediaType.TEXT_PLAIN, Boolean.class);
+		return performRestCall_GET(url, MediaType.TEXT_PLAIN, Boolean.class);
 	}
 
 	@Override
 	public Boolean hasPermission(String personId, String permissionText, String applicationName)
 	{
 		String url = new StringBuilder()
-				.append(getBaseUrl())
-				.append(AUTHORIZATION_RESOURCE_PATH)
 				.append(HAS_SYSTEM_PERMISSION_RESOURCE_PATH)
 				.append("?personId=")
 				.append(personId)
@@ -56,6 +51,6 @@ public class AuthorizationResourceClient
 				.append(applicationName)
 				.toString();
 		
-		return performRestCall(url, MediaType.TEXT_PLAIN, Boolean.class);
+		return performRestCall_GET(url, MediaType.TEXT_PLAIN, Boolean.class);
 	}
 }

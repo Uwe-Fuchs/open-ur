@@ -6,7 +6,6 @@ import static org.openur.remoting.resource.userstructure.UserResource.PERSON_PER
 import static org.openur.remoting.resource.userstructure.UserResource.PERSON_PER_NUMBER_RESOURCE_PATH;
 import static org.openur.remoting.resource.userstructure.UserResource.TECHUSER_PER_ID_RESOURCE_PATH;
 import static org.openur.remoting.resource.userstructure.UserResource.TECHUSER_PER_NUMBER_RESOURCE_PATH;
-import static org.openur.remoting.resource.userstructure.UserResource.USER_RESOURCE_PATH;
 
 import java.util.Set;
 
@@ -20,7 +19,7 @@ import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
 import org.openur.module.service.userstructure.IUserServices;
-import org.openur.remoting.client.ws.rs.AbstractResourceClient;
+import org.openur.remoting.resource.client.AbstractResourceClient;
 import org.openur.remoting.xchange.rest.providers.json.IdentifiableEntitySetProvider;
 import org.openur.remoting.xchange.rest.providers.json.PersonProvider;
 import org.openur.remoting.xchange.rest.providers.json.TechnicalUserProvider;
@@ -39,75 +38,58 @@ public class UserResourceClient
 	public IPerson findPersonById(String personId)
 	{
 		String url = new StringBuilder()
-				.append(getBaseUrl())
-				.append(USER_RESOURCE_PATH)
 				.append(PERSON_PER_ID_RESOURCE_PATH)
 				.append(personId)
 				.toString();
 		
-		return performRestCall(url, MediaType.APPLICATION_JSON, Person.class);
+		return performRestCall_GET(url, MediaType.APPLICATION_JSON, Person.class);
 	}
 
 	@Override
 	public IPerson findPersonByNumber(String personalNumber)
 	{
 		String url = new StringBuilder()
-				.append(getBaseUrl())
-				.append(USER_RESOURCE_PATH)
 				.append(PERSON_PER_NUMBER_RESOURCE_PATH)
 				.append(personalNumber)
 				.toString();
 		
-		return performRestCall(url, MediaType.APPLICATION_JSON, Person.class);
+		return performRestCall_GET(url, MediaType.APPLICATION_JSON, Person.class);
 	}
 
 	@Override
 	public Set<IPerson> obtainAllPersons()
 	{
-		String url = new StringBuilder()
-				.append(getBaseUrl())
-				.append(USER_RESOURCE_PATH)
-				.append(ALL_PERSONS_RESOURCE_PATH)
-				.toString();
-		
-		return performRestCall(url, MediaType.APPLICATION_JSON, new GenericType<Set<IPerson>>(new ParameterizedTypeImpl(Set.class, Person.class)));
+		return performRestCall_GET(
+					ALL_PERSONS_RESOURCE_PATH, MediaType.APPLICATION_JSON, new GenericType<Set<IPerson>>(new ParameterizedTypeImpl(Set.class, Person.class)));
 	}
 
 	@Override
 	public ITechnicalUser findTechnicalUserById(String techUserId)
 	{
 		String url = new StringBuilder()
-				.append(getBaseUrl())
-				.append(USER_RESOURCE_PATH)
 				.append(TECHUSER_PER_ID_RESOURCE_PATH)
 				.append(techUserId)
 				.toString();
 		
-		return performRestCall(url, MediaType.APPLICATION_JSON, TechnicalUser.class);
+		return performRestCall_GET(url, MediaType.APPLICATION_JSON, TechnicalUser.class);
 	}
 
 	@Override
 	public ITechnicalUser findTechnicalUserByNumber(String techUserNumber)
 	{
 		String url = new StringBuilder()
-				.append(getBaseUrl())
-				.append(USER_RESOURCE_PATH)
 				.append(TECHUSER_PER_NUMBER_RESOURCE_PATH)
 				.append(techUserNumber)
 				.toString();
 		
-		return performRestCall(url, MediaType.APPLICATION_JSON, TechnicalUser.class);
+		return performRestCall_GET(url, MediaType.APPLICATION_JSON, TechnicalUser.class);
 	}
 
 	@Override
 	public Set<ITechnicalUser> obtainAllTechnicalUsers()
 	{
-		String url = new StringBuilder()
-				.append(getBaseUrl())
-				.append(USER_RESOURCE_PATH)
-				.append(ALL_TECHUSERS_RESOURCE_PATH)
-				.toString();
-		
-		return performRestCall(url, MediaType.APPLICATION_JSON, new GenericType<Set<ITechnicalUser>>(new ParameterizedTypeImpl(Set.class, TechnicalUser.class)));
+		return performRestCall_GET(
+					ALL_TECHUSERS_RESOURCE_PATH, MediaType.APPLICATION_JSON, 
+					new GenericType<Set<ITechnicalUser>>(new ParameterizedTypeImpl(Set.class, TechnicalUser.class)));
 	}
 }

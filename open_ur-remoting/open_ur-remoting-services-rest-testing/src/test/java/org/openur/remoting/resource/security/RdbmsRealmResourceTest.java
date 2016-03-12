@@ -66,14 +66,14 @@ public class RdbmsRealmResourceTest
 	{
 		super.setUp();
 
-		getMyClient().register(UsernamePwTokenProvider.class);
-		getMyClient().register(UsernamePwAuthenticationInfoProvider.class);
+		getResourceClient().addProvider(UsernamePwTokenProvider.class);
+		getResourceClient().addProvider(UsernamePwAuthenticationInfoProvider.class);
 	}
 
 	@Test
 	public void testGetName()
 	{
-		String result = performRestCall_GET(GET_NAME_RESOURCE_PATH, MediaType.TEXT_PLAIN, String.class);
+		String result = getResourceClient().performRestCall_GET(GET_NAME_RESOURCE_PATH, MediaType.TEXT_PLAIN, String.class);
 		
 		assertEquals(OpenUrRdbmsRealmMock.REALM_NAME, result);
 	}
@@ -81,14 +81,15 @@ public class RdbmsRealmResourceTest
 	@Test
 	public void testSupports()
 	{
-		Boolean b = performRestCall(
+		Boolean b = getResourceClient().performRestCall(
 				SUPPORTS_RESOURCE_PATH, HttpMethod.PUT, MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON, Boolean.class, OpenUrRdbmsRealmMock.USERNAME_PW_TOKEN);
 		assertTrue(b);
 
-		b = performRestCall(SUPPORTS_RESOURCE_PATH, HttpMethod.PUT, MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON, Boolean.class, TOKEN_WITH_WRONG_PW);
+		b = getResourceClient().performRestCall(
+				SUPPORTS_RESOURCE_PATH, HttpMethod.PUT, MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON, Boolean.class, TOKEN_WITH_WRONG_PW);
 		assertFalse(b);
 
-		b = performRestCall(
+		b = getResourceClient().performRestCall(
 				SUPPORTS_RESOURCE_PATH, HttpMethod.PUT, MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON, Boolean.class, TOKEN_WITH_UNKNOWN_USERNAME);
 		assertFalse(b);
 	}
@@ -113,7 +114,7 @@ public class RdbmsRealmResourceTest
 	{
 		AuthenticationToken token = OpenUrRdbmsRealmMock.USERNAME_PW_TOKEN;
 
-		AuthenticationInfo info = performRestCall(
+		AuthenticationInfo info = getResourceClient().performRestCall(
 					AUTHENTICATE_RESOURCE_PATH, HttpMethod.PUT, MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, AuthenticationInfo.class, token);
 
 		assertNotNull(info);

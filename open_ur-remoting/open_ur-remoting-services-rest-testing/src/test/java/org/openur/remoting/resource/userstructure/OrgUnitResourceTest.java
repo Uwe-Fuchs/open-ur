@@ -52,14 +52,14 @@ public class OrgUnitResourceTest
 	{
 		super.setUp();
 		
-		getMyClient().register(OrgUnitProvider.class);
-		getMyClient().register(IdentifiableEntitySetProvider.class);
+		getResourceClient().addProvider(OrgUnitProvider.class);
+		getResourceClient().addProvider(IdentifiableEntitySetProvider.class);
 	}
 
 	@Test
 	public void testFindOrgUnitAndMembersById()
 	{
-		AuthorizableOrgUnit o = performRestCall_GET(
+		AuthorizableOrgUnit o = getResourceClient().performRestCall_GET(
 				ORGUNIT_PER_ID_RESOURCE_PATH + TestObjectContainer.ORG_UNIT_UUID_A 
 				+ "?inclMembers=true", MediaType.APPLICATION_JSON, AuthorizableOrgUnit.class);
 
@@ -70,7 +70,7 @@ public class OrgUnitResourceTest
 	@Test
 	public void testFindOrgUnitWithoutMembersById()
 	{		
-		AuthorizableOrgUnit o = performRestCall_GET(
+		AuthorizableOrgUnit o = getResourceClient().performRestCall_GET(
 				ORGUNIT_PER_ID_RESOURCE_PATH + TestObjectContainer.ORG_UNIT_UUID_A, MediaType.APPLICATION_JSON, AuthorizableOrgUnit.class);
 
 		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, o));
@@ -80,7 +80,7 @@ public class OrgUnitResourceTest
 	@Test
 	public void testFindOrgUnitAndMembersByNumber()
 	{
-		AuthorizableOrgUnit o = performRestCall_GET(
+		AuthorizableOrgUnit o = getResourceClient().performRestCall_GET(
 				ORGUNIT_PER_NUMBER_RESOURCE_PATH + TestObjectContainer.ORG_UNIT_NUMBER_A 
 				+ "?inclMembers=true", MediaType.APPLICATION_JSON, AuthorizableOrgUnit.class);
 
@@ -91,7 +91,7 @@ public class OrgUnitResourceTest
 	@Test
 	public void testFindOrgUnitWithoutMembersByNumber()
 	{
-		AuthorizableOrgUnit o = performRestCall_GET(
+		AuthorizableOrgUnit o = getResourceClient().performRestCall_GET(
 				ORGUNIT_PER_NUMBER_RESOURCE_PATH + TestObjectContainer.ORG_UNIT_NUMBER_A, MediaType.APPLICATION_JSON, AuthorizableOrgUnit.class);
 
 		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, o));
@@ -101,7 +101,7 @@ public class OrgUnitResourceTest
 	@Test
 	public void testObtainAllOrgUnits()
 	{
-		Set<AuthorizableOrgUnit> resultSet = performRestCall_GET(ALL_ORGUNITS_RESOURCE_PATH, MediaType.APPLICATION_JSON, 
+		Set<AuthorizableOrgUnit> resultSet = getResourceClient().performRestCall_GET(ALL_ORGUNITS_RESOURCE_PATH, MediaType.APPLICATION_JSON, 
 				new GenericType<Set<AuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
 
 		assertFalse(resultSet.isEmpty());
@@ -118,7 +118,7 @@ public class OrgUnitResourceTest
 	@Test
 	public void testObtainSubOrgUnitsForOrgUnit_inclMembers()
 	{
-		Set<AuthorizableOrgUnit> resultSet = performRestCall_GET(
+		Set<AuthorizableOrgUnit> resultSet = getResourceClient().performRestCall_GET(
 				SUB_ORGUNITS_RESOURCE_PATH + TestObjectContainer.SUPER_OU_UUID_1 + "?inclMembers=true", MediaType.APPLICATION_JSON, 
 				new GenericType<Set<AuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
 
@@ -136,7 +136,7 @@ public class OrgUnitResourceTest
 	@Test
 	public void testObtainSubOrgUnitsForOrgUnit_exclMembers()
 	{
-		Set<AuthorizableOrgUnit> resultSet = performRestCall_GET(
+		Set<AuthorizableOrgUnit> resultSet = getResourceClient().performRestCall_GET(
 				SUB_ORGUNITS_RESOURCE_PATH + TestObjectContainer.SUPER_OU_UUID_1 + "?inclMembers=false", MediaType.APPLICATION_JSON, 
 				new GenericType<Set<AuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
 
@@ -148,7 +148,7 @@ public class OrgUnitResourceTest
 		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, p));
 		
 		// default value for query-param => without members:
-		resultSet = performRestCall_GET(
+		resultSet = getResourceClient().performRestCall_GET(
 				SUB_ORGUNITS_RESOURCE_PATH + TestObjectContainer.SUPER_OU_UUID_1, MediaType.APPLICATION_JSON, 
 				new GenericType<Set<AuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
 
@@ -163,7 +163,7 @@ public class OrgUnitResourceTest
 	@Test
 	public void testObtainRootOrgUnits()
 	{
-		Set<AuthorizableOrgUnit> resultSet = performRestCall_GET(ALL_ROOT_ORGUNITS_RESOURCE_PATH, MediaType.APPLICATION_JSON,
+		Set<AuthorizableOrgUnit> resultSet = getResourceClient().performRestCall_GET(ALL_ROOT_ORGUNITS_RESOURCE_PATH, MediaType.APPLICATION_JSON,
 				new GenericType<Set<AuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
 
 		assertFalse(resultSet.isEmpty());

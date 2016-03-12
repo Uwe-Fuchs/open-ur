@@ -7,7 +7,6 @@ import static org.openur.remoting.resource.security.SecurityDomainResource.PERMI
 import static org.openur.remoting.resource.security.SecurityDomainResource.PERMISSION_PER_TEXT_RESOURCE_PATH;
 import static org.openur.remoting.resource.security.SecurityDomainResource.ROLE_PER_ID_RESOURCE_PATH;
 import static org.openur.remoting.resource.security.SecurityDomainResource.ROLE_PER_NAME_RESOURCE_PATH;
-import static org.openur.remoting.resource.security.SecurityDomainResource.SECURITY_DOMAIN_RESOURCE_PATH;
 
 import java.util.Set;
 
@@ -21,7 +20,7 @@ import org.openur.module.domain.security.authorization.IRole;
 import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.domain.security.authorization.OpenURRole;
 import org.openur.module.service.security.ISecurityDomainServices;
-import org.openur.remoting.client.ws.rs.AbstractResourceClient;
+import org.openur.remoting.resource.client.AbstractResourceClient;
 import org.openur.remoting.xchange.rest.providers.json.IdentifiableEntitySetProvider;
 import org.openur.remoting.xchange.rest.providers.json.PermissionProvider;
 import org.openur.remoting.xchange.rest.providers.json.RoleProvider;
@@ -40,59 +39,47 @@ public class SecurityDomainResourceClient
 	public IRole findRoleById(String roleId)
 	{
 		String url = new StringBuilder()
-				.append(getBaseUrl())
-				.append(SECURITY_DOMAIN_RESOURCE_PATH)
 				.append(ROLE_PER_ID_RESOURCE_PATH)
 				.append(roleId)
 				.toString();
 		
-		return performRestCall(url, MediaType.APPLICATION_JSON, OpenURRole.class);
+		return performRestCall_GET(url, MediaType.APPLICATION_JSON, OpenURRole.class);
 	}
 
 	@Override
 	public IRole findRoleByName(String roleName)
 	{
 		String url = new StringBuilder()
-				.append(getBaseUrl())
-				.append(SECURITY_DOMAIN_RESOURCE_PATH)
 				.append(ROLE_PER_NAME_RESOURCE_PATH)
 				.append(roleName)
 				.toString();
 		
-		return performRestCall(url, MediaType.APPLICATION_JSON, OpenURRole.class);
+		return performRestCall_GET(url, MediaType.APPLICATION_JSON, OpenURRole.class);
 	}
 
 	@Override
 	public Set<IRole> obtainAllRoles()
 	{
-		String url = new StringBuilder()
-				.append(getBaseUrl())
-				.append(SECURITY_DOMAIN_RESOURCE_PATH)
-				.append(ALL_ROLES_RESOURCE_PATH)
-				.toString();
-		
-		return performRestCall(url, MediaType.APPLICATION_JSON, new GenericType<Set<IRole>>(new ParameterizedTypeImpl(Set.class, OpenURRole.class)));
+		return performRestCall_GET(
+					ALL_ROLES_RESOURCE_PATH, MediaType.APPLICATION_JSON, 
+					new GenericType<Set<IRole>>(new ParameterizedTypeImpl(Set.class, OpenURRole.class)));
 	}
 
 	@Override
 	public IPermission findPermissionById(String permissionId)
 	{
 		String url = new StringBuilder()
-				.append(getBaseUrl())
-				.append(SECURITY_DOMAIN_RESOURCE_PATH)
 				.append(PERMISSION_PER_ID_RESOURCE_PATH)
 				.append(permissionId)
 				.toString();
 		
-		return performRestCall(url, MediaType.APPLICATION_JSON, OpenURPermission.class);
+		return performRestCall_GET(url, MediaType.APPLICATION_JSON, OpenURPermission.class);
 	}
 
 	@Override
 	public IPermission findPermission(String permissionText, String applicationName)
 	{
 		String url = new StringBuilder()
-				.append(getBaseUrl())
-				.append(SECURITY_DOMAIN_RESOURCE_PATH)
 				.append(PERMISSION_PER_TEXT_RESOURCE_PATH)
 				.append("?text=")
 				.append(permissionText)
@@ -100,31 +87,26 @@ public class SecurityDomainResourceClient
 				.append(applicationName)
 				.toString();
 		
-		return performRestCall(url, MediaType.APPLICATION_JSON, OpenURPermission.class);
+		return performRestCall_GET(url, MediaType.APPLICATION_JSON, OpenURPermission.class);
 	}
 
 	@Override
 	public Set<IPermission> obtainPermissionsForApp(String applicationName)
 	{
 		String url = new StringBuilder()
-				.append(getBaseUrl())
-				.append(SECURITY_DOMAIN_RESOURCE_PATH)
 				.append(PERMISSIONS_PER_APP_RESOURCE_PATH)
 				.append(applicationName)
 				.toString();
 		
-		return performRestCall(url, MediaType.APPLICATION_JSON, new GenericType<Set<IPermission>>(new ParameterizedTypeImpl(Set.class, OpenURPermission.class)));
+		return performRestCall_GET(
+				url, MediaType.APPLICATION_JSON, new GenericType<Set<IPermission>>(new ParameterizedTypeImpl(Set.class, OpenURPermission.class)));
 	}
 
 	@Override
 	public Set<IPermission> obtainAllPermissions()
 	{
-		String url = new StringBuilder()
-				.append(getBaseUrl())
-				.append(SECURITY_DOMAIN_RESOURCE_PATH)
-				.append(ALL_PERMISSIONS_RESOURCE_PATH)
-				.toString();
-		
-		return performRestCall(url, MediaType.APPLICATION_JSON, new GenericType<Set<IPermission>>(new ParameterizedTypeImpl(Set.class, OpenURPermission.class)));
+		return performRestCall_GET(
+				ALL_PERMISSIONS_RESOURCE_PATH, MediaType.APPLICATION_JSON, 
+				new GenericType<Set<IPermission>>(new ParameterizedTypeImpl(Set.class, OpenURPermission.class)));
 	}
 }

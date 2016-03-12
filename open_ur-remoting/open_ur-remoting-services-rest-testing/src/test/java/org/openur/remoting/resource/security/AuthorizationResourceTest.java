@@ -36,7 +36,7 @@ public class AuthorizationResourceTest
 	@Test
 	public void testHasPermissionInOrgUnit()
 	{
-		Boolean b = performRestCall_GET(HAS_OU_PERMISSION_RESOURCE_PATH 
+		Boolean b = getResourceClient().performRestCall_GET(HAS_OU_PERMISSION_RESOURCE_PATH 
 				+ "?personId=" + MockAuthorizationServicesFactory.PERSON_ID + "&ouId=" + MockAuthorizationServicesFactory.OU_ID 
 				+ "&text=" + MockAuthorizationServicesFactory.PERMISSION_TEXT	+ "&appName=" + MockAuthorizationServicesFactory.APP_NAME, 
 				MediaType.TEXT_PLAIN, Boolean.class);
@@ -47,7 +47,7 @@ public class AuthorizationResourceTest
 	@Test
 	public void testHasNoPermissionInOrgUnit()
 	{
-		Boolean b = performRestCall_GET(HAS_OU_PERMISSION_RESOURCE_PATH 
+		Boolean b = getResourceClient().performRestCall_GET(HAS_OU_PERMISSION_RESOURCE_PATH 
 				+ "?personId=" + MockAuthorizationServicesFactory.PERSON_ID + "&ouId=" + MockAuthorizationServicesFactory.OU_ID 
 				+ "&text=" + MockAuthorizationServicesFactory.OTHER_PERMISSION_TEXT + "&appName=" + MockAuthorizationServicesFactory.APP_NAME, 
 				MediaType.TEXT_PLAIN, Boolean.class);
@@ -58,7 +58,7 @@ public class AuthorizationResourceTest
 	@Test
 	public void testHasPermissionInSystem()
 	{
-		Boolean b = performRestCall_GET(HAS_SYSTEM_PERMISSION_RESOURCE_PATH 
+		Boolean b = getResourceClient().performRestCall_GET(HAS_SYSTEM_PERMISSION_RESOURCE_PATH 
 				+ "?personId=" + MockAuthorizationServicesFactory.PERSON_ID + "&text=" + MockAuthorizationServicesFactory.PERMISSION_TEXT
 				+ "&appName=" + MockAuthorizationServicesFactory.APP_NAME, MediaType.TEXT_PLAIN, Boolean.class);
 		
@@ -68,7 +68,7 @@ public class AuthorizationResourceTest
 	@Test
 	public void testHasNotPermissionInSystem()
 	{
-		Boolean b = performRestCall_GET(HAS_SYSTEM_PERMISSION_RESOURCE_PATH 
+		Boolean b = getResourceClient().performRestCall_GET(HAS_SYSTEM_PERMISSION_RESOURCE_PATH 
 				+ "?personId=" + MockAuthorizationServicesFactory.PERSON_ID + "&text=" + MockAuthorizationServicesFactory.OTHER_PERMISSION_TEXT
 				+ "&appName=" + MockAuthorizationServicesFactory.APP_NAME, MediaType.TEXT_PLAIN, Boolean.class);
 		

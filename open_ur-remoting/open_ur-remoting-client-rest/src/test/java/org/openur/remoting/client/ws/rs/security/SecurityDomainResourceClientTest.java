@@ -45,7 +45,7 @@ public class SecurityDomainResourceClientTest
 				.register(binder);
 		
 		// Client:
-		securityDomainServices = new SecurityDomainResourceClient("http://localhost:9998/");		
+		securityDomainServices = new SecurityDomainResourceClient("http://localhost:9998/" + SecurityDomainResource.SECURITY_DOMAIN_RESOURCE_PATH);		
 		
 		for (Class<?> provider : ((SecurityDomainResourceClient) securityDomainServices).getProviders())
 		{

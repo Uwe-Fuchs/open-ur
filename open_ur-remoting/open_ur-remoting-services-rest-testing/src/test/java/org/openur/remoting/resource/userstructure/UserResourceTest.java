@@ -64,15 +64,16 @@ public class UserResourceTest
 	{
 		super.setUp();
 		
-		getMyClient().register(PersonProvider.class);
-		getMyClient().register(TechnicalUserProvider.class);
-		getMyClient().register(IdentifiableEntitySetProvider.class);
+		getResourceClient().addProvider(PersonProvider.class);
+		getResourceClient().addProvider(TechnicalUserProvider.class);
+		getResourceClient().addProvider(IdentifiableEntitySetProvider.class);
 	}
 
 	@Test
 	public void testGetPersonByIdResource()
 	{
-		Person p = performRestCall_GET(PERSON_PER_ID_RESOURCE_PATH + TestObjectContainer.PERSON_UUID_1, MediaType.APPLICATION_JSON, Person.class);
+		Person p = getResourceClient().performRestCall_GET(
+					PERSON_PER_ID_RESOURCE_PATH + TestObjectContainer.PERSON_UUID_1, MediaType.APPLICATION_JSON, Person.class);
 		
 		assertTrue(new PersonComparer().objectsAreEqual(TestObjectContainer.PERSON_1, p));
 	}
@@ -80,7 +81,8 @@ public class UserResourceTest
 	@Test
 	public void testGetPersonByNumberResource()
 	{
-		Person p = performRestCall_GET(PERSON_PER_NUMBER_RESOURCE_PATH + TestObjectContainer.PERSON_NUMBER_1, MediaType.APPLICATION_JSON, Person.class);
+		Person p = getResourceClient().performRestCall_GET(
+					PERSON_PER_NUMBER_RESOURCE_PATH + TestObjectContainer.PERSON_NUMBER_1, MediaType.APPLICATION_JSON, Person.class);
 		
 		assertTrue(new PersonComparer().objectsAreEqual(TestObjectContainer.PERSON_1, p));
 	}
@@ -88,7 +90,7 @@ public class UserResourceTest
 	@Test
 	public void testObtainAllPersonsResource()
 	{
-		Set<Person> resultSet = performRestCall_GET(ALL_PERSONS_RESOURCE_PATH, MediaType.APPLICATION_JSON, 
+		Set<Person> resultSet = getResourceClient().performRestCall_GET(ALL_PERSONS_RESOURCE_PATH, MediaType.APPLICATION_JSON, 
 					new GenericType<Set<Person>>(new ParameterizedTypeImpl(Set.class, Person.class)));
 
 		assertFalse(resultSet.isEmpty());
@@ -105,7 +107,7 @@ public class UserResourceTest
 	@Test
 	public void testGetTechUserByIdResource()
 	{
-		TechnicalUser tu = performRestCall_GET(
+		TechnicalUser tu = getResourceClient().performRestCall_GET(
 					TECHUSER_PER_ID_RESOURCE_PATH + TestObjectContainer.TECH_USER_UUID_1, MediaType.APPLICATION_JSON, TechnicalUser.class);
 
 		assertTrue(EqualsBuilder.reflectionEquals(TestObjectContainer.TECH_USER_1, tu));
@@ -114,7 +116,7 @@ public class UserResourceTest
 	@Test
 	public void testGetTechUserByNumberResource()
 	{
-		TechnicalUser tu = performRestCall_GET(
+		TechnicalUser tu = getResourceClient().performRestCall_GET(
 					TECHUSER_PER_NUMBER_RESOURCE_PATH + TestObjectContainer.TECH_USER_NUMBER_1, MediaType.APPLICATION_JSON, TechnicalUser.class);
 
 		assertTrue(EqualsBuilder.reflectionEquals(TestObjectContainer.TECH_USER_1, tu));
@@ -123,7 +125,7 @@ public class UserResourceTest
 	@Test
 	public void testObtainAllTechUsersResource()
 	{
-		Set<TechnicalUser> resultSet = performRestCall_GET(ALL_TECHUSERS_RESOURCE_PATH, MediaType.APPLICATION_JSON, 
+		Set<TechnicalUser> resultSet = getResourceClient().performRestCall_GET(ALL_TECHUSERS_RESOURCE_PATH, MediaType.APPLICATION_JSON, 
 					new GenericType<Set<TechnicalUser>>(new ParameterizedTypeImpl(Set.class, TechnicalUser.class)));
 
 		assertFalse(resultSet.isEmpty());
