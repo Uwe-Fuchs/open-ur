@@ -48,7 +48,7 @@ public class UserResourceClientTest
 				.register(binder);
 		
 		// Client:
-		userServices = new UserResourceClient("http://localhost:9998/" + UserResource.USER_RESOURCE_PATH);		
+		userServices = new UserResourceClient("http://localhost:9998/");		
 		
 		for (Class<?> provider : ((UserResourceClient) userServices).getProviders())
 		{

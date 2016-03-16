@@ -44,7 +44,7 @@ public class OrgUnitResourceClientTest
 				.register(binder);
 
 		// Client:
-		orgUnitServices = new OrgUnitResourceClient("http://localhost:9998/" + OrgUnitResource.ORGUNIT_RESOURCE_PATH);		
+		orgUnitServices = new OrgUnitResourceClient("http://localhost:9998/");		
 		
 		for (Class<?> provider : ((OrgUnitResourceClient) orgUnitServices).getProviders())
 		{

@@ -8,6 +8,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.openur.module.service.security.IAuthorizationServices;
 import org.openur.remoting.resource.client.AbstractResourceClient;
+import org.openur.remoting.resource.security.AuthorizationResource;
 import org.openur.remoting.xchange.rest.providers.json.PermissionProvider;
 
 public class AuthorizationResourceClient
@@ -17,7 +18,7 @@ public class AuthorizationResourceClient
 	@Inject
 	public AuthorizationResourceClient(String baseUrl)
 	{
-		super(baseUrl, PermissionProvider.class);
+		super(baseUrl + AuthorizationResource.AUTHORIZATION_RESOURCE_PATH, PermissionProvider.class);
 	}
 
 	@Override

@@ -21,7 +21,7 @@ public class AuthorizationResourceClientTest
 	protected Application configure()
 	{		
 		// Client:
-		authorizationServices = new AuthorizationResourceClient("http://localhost:9998/" + AuthorizationResource.AUTHORIZATION_RESOURCE_PATH);
+		authorizationServices = new AuthorizationResourceClient("http://localhost:9998/");
 		
 		// Http-Testserver:
 		AbstractBinder binder = new AbstractBinder()

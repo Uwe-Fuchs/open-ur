@@ -20,6 +20,7 @@ import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
 import org.openur.module.service.userstructure.IUserServices;
 import org.openur.remoting.resource.client.AbstractResourceClient;
+import org.openur.remoting.resource.userstructure.UserResource;
 import org.openur.remoting.xchange.rest.providers.json.IdentifiableEntitySetProvider;
 import org.openur.remoting.xchange.rest.providers.json.PersonProvider;
 import org.openur.remoting.xchange.rest.providers.json.TechnicalUserProvider;
@@ -31,7 +32,7 @@ public class UserResourceClient
 	@Inject
 	public UserResourceClient(String baseUrl)
 	{
-		super(baseUrl, PersonProvider.class, TechnicalUserProvider.class, IdentifiableEntitySetProvider.class);
+		super(baseUrl + UserResource.USER_RESOURCE_PATH, PersonProvider.class, TechnicalUserProvider.class, IdentifiableEntitySetProvider.class);
 	}
 
 	@Override

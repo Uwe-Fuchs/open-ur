@@ -17,6 +17,7 @@ import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.service.userstructure.IOrgUnitServices;
 import org.openur.remoting.resource.client.AbstractResourceClient;
+import org.openur.remoting.resource.userstructure.OrgUnitResource;
 import org.openur.remoting.xchange.rest.providers.json.IdentifiableEntitySetProvider;
 import org.openur.remoting.xchange.rest.providers.json.OrgUnitProvider;
 
@@ -27,7 +28,7 @@ public class OrgUnitResourceClient
 	@Inject
 	public OrgUnitResourceClient(String baseUrl)
 	{
-		super(baseUrl, OrgUnitProvider.class, IdentifiableEntitySetProvider.class);
+		super(baseUrl + OrgUnitResource.ORGUNIT_RESOURCE_PATH, OrgUnitProvider.class, IdentifiableEntitySetProvider.class);
 	}
 
 	@Override

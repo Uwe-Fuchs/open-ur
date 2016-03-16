@@ -21,6 +21,7 @@ import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.domain.security.authorization.OpenURRole;
 import org.openur.module.service.security.ISecurityDomainServices;
 import org.openur.remoting.resource.client.AbstractResourceClient;
+import org.openur.remoting.resource.security.SecurityDomainResource;
 import org.openur.remoting.xchange.rest.providers.json.IdentifiableEntitySetProvider;
 import org.openur.remoting.xchange.rest.providers.json.PermissionProvider;
 import org.openur.remoting.xchange.rest.providers.json.RoleProvider;
@@ -32,7 +33,8 @@ public class SecurityDomainResourceClient
 	@Inject
 	public SecurityDomainResourceClient(String baseUrl)
 	{
-		super(baseUrl, PermissionProvider.class, RoleProvider.class, IdentifiableEntitySetProvider.class);
+		super(baseUrl + SecurityDomainResource.SECURITY_DOMAIN_RESOURCE_PATH, 
+				PermissionProvider.class, RoleProvider.class, IdentifiableEntitySetProvider.class);
 	}
 
 	@Override
