@@ -4,19 +4,24 @@ import static org.junit.Assert.*;
 
 import javax.ws.rs.core.Application;
 
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
+import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
 import org.openur.remoting.resource.security.MockRdbmsRealmFactory;
+import org.openur.remoting.resource.security.OpenUrRdbmsRealmMock;
 import org.openur.remoting.resource.security.RdbmsRealmResource;
-import org.openur.remoting.xchange.rest.providers.json.UsernamePwAuthenticationInfoProvider;
-import org.openur.remoting.xchange.rest.providers.json.UsernamePwTokenProvider;
 
 public class RdbmsRealmResourceClientTest
 	extends JerseyTest
 {
+	private static final UsernamePasswordToken TOKEN_WITH_WRONG_PW = new UsernamePasswordToken(TestObjectContainer.USER_NAME_1, "someWrongPw");
+	
 	private RdbmsRealmResourceClient realm;
 
 	@Override
@@ -33,8 +38,6 @@ public class RdbmsRealmResourceClientTest
 		};
 		
 		ResourceConfig config = new ResourceConfig(RdbmsRealmResource.class)
-				.register(UsernamePwTokenProvider.class)
-				.register(UsernamePwAuthenticationInfoProvider.class)
 				.register(binder);
 		
 		// Client:
@@ -51,18 +54,44 @@ public class RdbmsRealmResourceClientTest
 	@Test
 	public void testGetName()
 	{
-		fail("Not yet implemented");
+		String result = realm.getName();
+		System.out.println("Result: " + result);
+		
+		assertEquals(OpenUrRdbmsRealmMock.REALM_NAME, result);
 	}
 
 	@Test
 	public void testSupports()
 	{
-		fail("Not yet implemented");
+		boolean b = realm.supports(OpenUrRdbmsRealmMock.USERNAME_PW_TOKEN);
+		System.out.println("Result: " + b);
+		assertTrue(b);
+		
+		b = realm.supports(TOKEN_WITH_WRONG_PW);
+		System.out.println("Result: " + b);
+		assertFalse(b);
 	}
 
 	@Test
 	public void testGetAuthenticationInfo()
 	{
-		fail("Not yet implemented");
+		AuthenticationInfo info = realm.getAuthenticationInfo(OpenUrRdbmsRealmMock.USERNAME_PW_TOKEN);
+
+		assertNotNull(info);
+		System.out.println("Result: " + info);
+		
+		String passWord = new String((char[]) info.getCredentials());
+		assertEquals(TestObjectContainer.PASSWORD_1, passWord);
+		
+		String userName = info.getPrincipals().getPrimaryPrincipal().toString();
+		assertEquals(TestObjectContainer.USER_NAME_1, userName);
+		
+		byte[] saltBytes = ((SimpleAuthenticationInfo) info).getCredentialsSalt().getBytes();
+		char[] chars = new char[saltBytes.length];
+		for (int i = 0; i < saltBytes.length; i++)
+		{
+			chars[i] = (char) saltBytes[i];
+		}
+		assertEquals(TestObjectContainer.SALT_BASE, new String(chars));
 	}
 }
