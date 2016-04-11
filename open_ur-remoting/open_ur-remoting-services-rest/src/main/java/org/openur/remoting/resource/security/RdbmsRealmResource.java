@@ -47,8 +47,8 @@ public class RdbmsRealmResource
 
 	@Override
 	@PUT
-	@Consumes({ MediaType.APPLICATION_JSON })
-	@Produces({ MediaType.APPLICATION_JSON })
+	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Path(AUTHENTICATE_RESOURCE_PATH)
 	public AuthenticationInfo getAuthenticationInfo(AuthenticationToken token)
 		throws AuthenticationException

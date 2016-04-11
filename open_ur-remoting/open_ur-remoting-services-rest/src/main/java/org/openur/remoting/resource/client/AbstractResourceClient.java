@@ -52,6 +52,7 @@ public abstract class AbstractResourceClient
 		return ClientBuilder.newClient(clientConfig);
 	}
 
+	@SuppressWarnings("unchecked")
 	private <E, R> R internalRestCall(String url, String httpMethod, String acceptMediaType, String contentMediaType, Class<R> resultClassType, GenericType<R> genericResultType, E object)
 	{
 		Client client = createJerseyClient();
@@ -87,12 +88,14 @@ public abstract class AbstractResourceClient
 				response = builder.get();
 				break;
 		}
-
-		R result = resultClassType != null ? response.readEntity(resultClassType) : response.readEntity(genericResultType);
 		
-		client.close();
-
-		return result;
+		if (Response.class.equals(genericResultType) || Response.class.equals(resultClassType))		
+		{
+			return (R) response;
+		} else
+		{
+			return resultClassType != null ? response.readEntity(resultClassType) : response.readEntity(genericResultType);
+		}		
 	}
 
 	protected <T> T performRestCall_GET(String url, String acceptMediaType, Class<T> resultType)

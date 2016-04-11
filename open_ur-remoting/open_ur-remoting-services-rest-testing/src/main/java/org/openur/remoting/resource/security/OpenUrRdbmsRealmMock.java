@@ -15,6 +15,7 @@ public class OpenUrRdbmsRealmMock
 	public static final String REALM_NAME = "realmName";
 	public static final UsernamePwAuthenticationInfo AUTH_INFO;
 	public static final UsernamePasswordToken USERNAME_PW_TOKEN;
+	public static final String ERROR_MSG = "No AuthenticationInfo-instance given!";
 	
 	static
 	{
@@ -32,7 +33,7 @@ public class OpenUrRdbmsRealmMock
 			return AUTH_INFO;
 		}
 
-		throw new AuthenticationException();
+		throw new AuthenticationException(ERROR_MSG);
 	}
 
 	@Override

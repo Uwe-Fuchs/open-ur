@@ -18,6 +18,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -31,6 +32,7 @@ import org.junit.Test;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
 import org.openur.remoting.resource.AbstractResourceTest;
+import org.openur.remoting.resource.errorhandling.AuthenticationExceptionMapper;
 import org.openur.remoting.xchange.rest.providers.json.UsernamePwAuthenticationInfoProvider;
 import org.openur.remoting.xchange.rest.providers.json.UsernamePwTokenProvider;
 
@@ -55,6 +57,7 @@ public class RdbmsRealmResourceTest
 		ResourceConfig config = new ResourceConfig(RdbmsRealmResource.class)
 					.register(UsernamePwTokenProvider.class)
 					.register(UsernamePwAuthenticationInfoProvider.class)
+					.register(AuthenticationExceptionMapper.class)
 					.register(binder);
 
 		return config;
@@ -139,15 +142,17 @@ public class RdbmsRealmResourceTest
 		assertEquals(TestObjectContainer.SALT_BASE, new String(chars));
 	}
 
-//	@Test(expected=AuthenticationException.class)
-//	public void testDoGetAuthenticationInfo_Wrong_PW()
-//	{
-//		service
-//				.path(AUTHENTICATE_RESOURCE_PATH)
-//				.request()
-//				.accept(MediaType.APPLICATION_JSON_TYPE)
-//				.put(Entity.entity(MockRdbmsRealmFactory.TOKEN_WITH_WRONG_PW, MediaType.APPLICATION_JSON_TYPE), AuthenticationInfo.class);
-//	}
+	@Test
+	public void testDoGetAuthenticationInfo_Wrong_PW()
+	{
+		Response response = getResourceClient().performRestCall(
+					AUTHENTICATE_RESOURCE_PATH, HttpMethod.PUT, MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, Response.class, TOKEN_WITH_WRONG_PW);
+		
+		assertNotNull(response);
+		assertEquals(404, response.getStatus());
+		String errorMessage = response.readEntity(String.class);
+		assertEquals(OpenUrRdbmsRealmMock.ERROR_MSG, errorMessage);
+	}
 
 	@Override
 	protected String getBaseURI()
