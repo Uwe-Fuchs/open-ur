@@ -156,8 +156,7 @@ public class RdbmsRealmResourceTest
 		
 		assertNotNull(response);
 		AuthenticationInfo info = response.readEntity(AuthenticationInfo.class);
-		assertNotNull(info);
-		
+		assertNotNull(info);		
 	}
 
 	@Test
