@@ -6,6 +6,7 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 import org.apache.shiro.authc.AuthenticationException;
+import org.openur.remoting.xchange.rest.errorhandling.ErrorMessage;
 
 @Provider
 public class AuthenticationExceptionMapper
@@ -14,9 +15,11 @@ public class AuthenticationExceptionMapper
 	@Override
 	public Response toResponse(AuthenticationException exception)
 	{
+		ErrorMessage errorMessage = new ErrorMessage(exception.getMessage(), AuthenticationException.class, Response.Status.NOT_FOUND);
+		
 		return Response
 				.status(Response.Status.NOT_FOUND)
-				.entity(exception.getMessage())
+				.entity(errorMessage)
 				.type(MediaType.APPLICATION_JSON)
 				.build();
 	}

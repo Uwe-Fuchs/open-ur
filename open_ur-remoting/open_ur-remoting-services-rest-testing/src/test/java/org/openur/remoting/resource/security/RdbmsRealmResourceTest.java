@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.ws.rs.HttpMethod;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -20,6 +21,7 @@ import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
@@ -33,6 +35,7 @@ import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
 import org.openur.remoting.resource.AbstractResourceTest;
 import org.openur.remoting.resource.errorhandling.AuthenticationExceptionMapper;
+import org.openur.remoting.xchange.rest.providers.json.ErrorMessageProvider;
 import org.openur.remoting.xchange.rest.providers.json.UsernamePwAuthenticationInfoProvider;
 import org.openur.remoting.xchange.rest.providers.json.UsernamePwTokenProvider;
 
@@ -58,6 +61,7 @@ public class RdbmsRealmResourceTest
 					.register(UsernamePwTokenProvider.class)
 					.register(UsernamePwAuthenticationInfoProvider.class)
 					.register(AuthenticationExceptionMapper.class)
+					.register(ErrorMessageProvider.class)
 					.register(binder);
 
 		return config;
@@ -71,6 +75,7 @@ public class RdbmsRealmResourceTest
 
 		getResourceClient().addProvider(UsernamePwTokenProvider.class);
 		getResourceClient().addProvider(UsernamePwAuthenticationInfoProvider.class);
+		getResourceClient().addProvider(ErrorMessageProvider.class);
 	}
 
 	@Test
@@ -143,15 +148,32 @@ public class RdbmsRealmResourceTest
 	}
 
 	@Test
-	public void testDoGetAuthenticationInfo_Wrong_PW()
-	{
+	public void testGetAuthenticationInfo_Response()
+	{		
+		AuthenticationToken token = OpenUrRdbmsRealmMock.USERNAME_PW_TOKEN;
 		Response response = getResourceClient().performRestCall(
-					AUTHENTICATE_RESOURCE_PATH, HttpMethod.PUT, MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, Response.class, TOKEN_WITH_WRONG_PW);
+				AUTHENTICATE_RESOURCE_PATH, HttpMethod.PUT, MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, Response.class, token);
 		
 		assertNotNull(response);
-		assertEquals(404, response.getStatus());
-		String errorMessage = response.readEntity(String.class);
-		assertEquals(OpenUrRdbmsRealmMock.ERROR_MSG, errorMessage);
+		AuthenticationInfo info = response.readEntity(AuthenticationInfo.class);
+		assertNotNull(info);
+		
+	}
+
+	@Test
+	public void testDoGetAuthenticationInfo_Wrong_PW()
+	{
+		try
+		{
+			getResourceClient().performRestCall(
+				AUTHENTICATE_RESOURCE_PATH, HttpMethod.PUT, MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, Response.class, TOKEN_WITH_WRONG_PW);
+		} catch (WebApplicationException e)
+		{
+			assertNotNull(e);
+			assertEquals(404, e.getResponse().getStatus());
+			assertEquals(OpenUrRdbmsRealmMock.ERROR_MSG, e.getMessage());
+			assertEquals(AuthenticationException.class, e.getCause().getClass());
+		}
 	}
 
 	@Override

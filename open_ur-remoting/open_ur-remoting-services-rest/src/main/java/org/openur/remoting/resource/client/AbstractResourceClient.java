@@ -1,10 +1,12 @@
 package org.openur.remoting.resource.client;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.ws.rs.HttpMethod;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -16,6 +18,7 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
 import org.glassfish.jersey.client.ClientConfig;
+import org.openur.remoting.xchange.rest.errorhandling.ErrorMessage;
 
 public abstract class AbstractResourceClient
 {
@@ -52,7 +55,6 @@ public abstract class AbstractResourceClient
 		return ClientBuilder.newClient(clientConfig);
 	}
 
-	@SuppressWarnings("unchecked")
 	private <E, R> R internalRestCall(String url, String httpMethod, String acceptMediaType, String contentMediaType, Class<R> resultClassType, GenericType<R> genericResultType, E object)
 	{
 		Client client = createJerseyClient();
@@ -89,13 +91,7 @@ public abstract class AbstractResourceClient
 				break;
 		}
 		
-		if (Response.class.equals(genericResultType) || Response.class.equals(resultClassType))		
-		{
-			return (R) response;
-		} else
-		{
-			return resultClassType != null ? response.readEntity(resultClassType) : response.readEntity(genericResultType);
-		}		
+		return handleResponse(resultClassType, genericResultType, response);
 	}
 
 	protected <T> T performRestCall_GET(String url, String acceptMediaType, Class<T> resultType)
@@ -132,5 +128,35 @@ public abstract class AbstractResourceClient
 	public List<Class<?>> getProviders()
 	{
 		return providers;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private <R> R handleResponse(Class<R> resultClassType, GenericType<R> genericResultType, Response response)
+	{
+		if (!Response.class.equals(genericResultType) && !Response.class.equals(resultClassType))		
+		{						
+			return resultClassType != null ? response.readEntity(resultClassType) : response.readEntity(genericResultType);
+		}
+		
+		if (response == null || response.getStatus() < 400)
+		{
+			return (R) response;
+		}
+		
+		WebApplicationException ex = null;
+		
+		try
+		{
+			ErrorMessage errorMessage = response.readEntity(ErrorMessage.class);
+			Class<?> clazz = Class.forName(errorMessage.getExceptionClassName());
+			Constructor<?> constructor = clazz.getConstructor(String.class);
+			Throwable t = (Throwable) constructor.newInstance(errorMessage.getMessage());
+			ex = new WebApplicationException(errorMessage.getMessage(), t, response);
+		} catch (Exception ignored)
+		{
+			return (R) response;
+		}
+		
+		throw ex;
 	}
 }
