@@ -1,9 +1,13 @@
 package org.openur.remoting.client.ws.rs.security;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import javax.ws.rs.core.Application;
 
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -13,6 +17,7 @@ import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
+import org.openur.remoting.resource.errorhandling.AuthenticationExceptionMapper;
 import org.openur.remoting.resource.security.MockRdbmsRealmFactory;
 import org.openur.remoting.resource.security.OpenUrRdbmsRealmMock;
 import org.openur.remoting.resource.security.RdbmsRealmResource;
@@ -47,6 +52,8 @@ public class RdbmsRealmResourceClientTest
 		{
 			config.register(provider);
 		}
+		
+		config.register(AuthenticationExceptionMapper.class);
 		
 		return config;
 	}
@@ -93,5 +100,11 @@ public class RdbmsRealmResourceClientTest
 			chars[i] = (char) saltBytes[i];
 		}
 		assertEquals(TestObjectContainer.SALT_BASE, new String(chars));
+	}
+
+	@Test(expected=AuthenticationException.class)
+	public void testDoGetAuthenticationInfo_Wrong_PW()
+	{
+		realm.getAuthenticationInfo(TOKEN_WITH_WRONG_PW);
 	}
 }

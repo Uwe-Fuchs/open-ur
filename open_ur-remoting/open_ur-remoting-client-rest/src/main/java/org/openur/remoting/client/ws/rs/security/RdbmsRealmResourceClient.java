@@ -3,6 +3,7 @@ package org.openur.remoting.client.ws.rs.security;
 import static org.openur.remoting.resource.security.RdbmsRealmResource.AUTHENTICATE_RESOURCE_PATH;
 
 import javax.ws.rs.HttpMethod;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.shiro.authc.AuthenticationException;
@@ -11,6 +12,7 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.realm.Realm;
 import org.openur.remoting.resource.client.AbstractResourceClient;
 import org.openur.remoting.resource.security.RdbmsRealmResource;
+import org.openur.remoting.xchange.rest.providers.json.ErrorMessageProvider;
 import org.openur.remoting.xchange.rest.providers.json.UsernamePwAuthenticationInfoProvider;
 import org.openur.remoting.xchange.rest.providers.json.UsernamePwTokenProvider;
 
@@ -20,7 +22,11 @@ public class RdbmsRealmResourceClient
 {
 	public RdbmsRealmResourceClient(String baseUrl)
 	{
-		super(baseUrl + RdbmsRealmResource.RDBMS_REALM_RESOURCE_PATH, UsernamePwTokenProvider.class, UsernamePwAuthenticationInfoProvider.class);
+		super(baseUrl + RdbmsRealmResource.RDBMS_REALM_RESOURCE_PATH, 
+				UsernamePwTokenProvider.class, 
+				UsernamePwAuthenticationInfoProvider.class, 
+				ErrorMessageProvider.class
+		);
 	}
 
 	@Override
@@ -40,7 +46,18 @@ public class RdbmsRealmResourceClient
 	public AuthenticationInfo getAuthenticationInfo(AuthenticationToken token)
 		throws AuthenticationException
 	{
-		return performRestCall(
-				AUTHENTICATE_RESOURCE_PATH, HttpMethod.PUT, MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, AuthenticationInfo.class, token);
+		try
+		{
+			return performRestCall(
+					AUTHENTICATE_RESOURCE_PATH, HttpMethod.PUT, MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, AuthenticationInfo.class, token);			
+		} catch (WebApplicationException e)
+		{
+			if (e.getCause() != null && AuthenticationException.class.equals(e.getCause().getClass()))
+			{
+				throw (AuthenticationException) e.getCause();
+			}
+			
+			throw e;
+		}
 	}
 }
