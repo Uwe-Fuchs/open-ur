@@ -133,30 +133,35 @@ public abstract class AbstractResourceClient
 	@SuppressWarnings("unchecked")
 	private <R> R handleResponse(Class<R> resultClassType, GenericType<R> genericResultType, Response response)
 	{
+		if (response == null)
+		{
+			throw new WebApplicationException("Server-Response was null!");
+		}
+		
+		if (response.getStatus() >= 400)
+		{
+			WebApplicationException ex = null;
+			
+			try
+			{
+				ErrorMessage errorMessage = response.readEntity(ErrorMessage.class);
+				Class<?> clazz = Class.forName(errorMessage.getExceptionClassName());
+				Constructor<?> constructor = clazz.getConstructor(String.class);
+				Throwable t = (Throwable) constructor.newInstance(errorMessage.getMessage());
+				ex = new WebApplicationException(errorMessage.getMessage(), t, response);
+			} catch (Exception ignored)
+			{
+				ex = new WebApplicationException("Unrecognized error. Please check your server-log!", response.getStatus());
+			}
+			
+			throw ex;
+		}
+		
 		if (!Response.class.equals(genericResultType) && !Response.class.equals(resultClassType))		
 		{						
 			return resultClassType != null ? response.readEntity(resultClassType) : response.readEntity(genericResultType);
 		}
 		
-		if (response == null || response.getStatus() < 400)
-		{
-			return (R) response;
-		}
-		
-		WebApplicationException ex = null;
-		
-		try
-		{
-			ErrorMessage errorMessage = response.readEntity(ErrorMessage.class);
-			Class<?> clazz = Class.forName(errorMessage.getExceptionClassName());
-			Constructor<?> constructor = clazz.getConstructor(String.class);
-			Throwable t = (Throwable) constructor.newInstance(errorMessage.getMessage());
-			ex = new WebApplicationException(errorMessage.getMessage(), t, response);
-		} catch (Exception ignored)
-		{
-			return (R) response;
-		}
-		
-		throw ex;
+		return (R) response;
 	}
 }
