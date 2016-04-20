@@ -19,7 +19,7 @@ import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
 import org.openur.remoting.resource.errorhandling.AuthenticationExceptionMapper;
 import org.openur.remoting.resource.security.MockRdbmsRealmFactory;
-import org.openur.remoting.resource.security.OpenUrRdbmsRealmMock;
+import org.openur.remoting.resource.security.MockRdbmsRealmFactory.OpenUrRdbmsRealmMock;
 import org.openur.remoting.resource.security.RdbmsRealmResource;
 
 public class RdbmsRealmResourceClientTest

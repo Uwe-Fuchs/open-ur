@@ -55,6 +55,42 @@ public abstract class AbstractResourceClient
 		return ClientBuilder.newClient(clientConfig);
 	}
 
+	protected <T> T performRestCall_GET(String url, String acceptMediaType, Class<T> resultType)
+	{
+		return internalRestCall(url, HttpMethod.GET, acceptMediaType, MediaType.TEXT_PLAIN, resultType, null, null);
+	}
+
+	protected <T> T performRestCall_GET(String url, String acceptMediaType, GenericType<T> resultType)
+	{
+		return internalRestCall(url, HttpMethod.GET, acceptMediaType, MediaType.TEXT_PLAIN, null, resultType, null);
+	}
+	
+	protected <E, R> R performRestCall(String url, String httpMethod, String acceptMediaType, String contentMediaType, Class<R> resultType, E object)
+	{
+		return internalRestCall(url, httpMethod, acceptMediaType, contentMediaType, resultType, null, object);
+	}
+	
+	protected <E, R> R performRestCall(String url, String httpMethod, String acceptMediaType, String contentMediaType, GenericType<R> genericResultType, E object)
+	{
+		return internalRestCall(url, httpMethod, acceptMediaType, contentMediaType, null, genericResultType, object);
+	}
+
+	protected String getBaseUrl()
+	{
+		return baseUrl;
+	}
+
+	public void addProvider(Class<?> newProvider)
+	{
+		Validate.notNull(newProvider, "new provider must not be null!");
+		this.providers.add(newProvider);
+	}
+
+	public List<Class<?>> getProviders()
+	{
+		return providers;
+	}
+
 	private <E, R> R internalRestCall(String url, String httpMethod, String acceptMediaType, String contentMediaType, Class<R> resultClassType, GenericType<R> genericResultType, E object)
 	{
 		Client client = createJerseyClient();
@@ -92,42 +128,6 @@ public abstract class AbstractResourceClient
 		}
 		
 		return handleResponse(resultClassType, genericResultType, response);
-	}
-
-	protected <T> T performRestCall_GET(String url, String acceptMediaType, Class<T> resultType)
-	{
-		return internalRestCall(url, HttpMethod.GET, acceptMediaType, MediaType.TEXT_PLAIN, resultType, null, null);
-	}
-
-	protected <T> T performRestCall_GET(String url, String acceptMediaType, GenericType<T> resultType)
-	{
-		return internalRestCall(url, HttpMethod.GET, acceptMediaType, MediaType.TEXT_PLAIN, null, resultType, null);
-	}
-	
-	protected <E, R> R performRestCall(String url, String httpMethod, String acceptMediaType, String contentMediaType, Class<R> resultType, E object)
-	{
-		return internalRestCall(url, httpMethod, acceptMediaType, contentMediaType, resultType, null, object);
-	}
-	
-	protected <E, R> R performRestCall(String url, String httpMethod, String acceptMediaType, String contentMediaType, GenericType<R> genericResultType, E object)
-	{
-		return internalRestCall(url, httpMethod, acceptMediaType, contentMediaType, null, genericResultType, object);
-	}
-
-	protected String getBaseUrl()
-	{
-		return baseUrl;
-	}
-
-	public void addProvider(Class<?> newProvider)
-	{
-		Validate.notNull(newProvider, "new provider must not be null!");
-		this.providers.add(newProvider);
-	}
-
-	public List<Class<?>> getProviders()
-	{
-		return providers;
 	}
 	
 	@SuppressWarnings("unchecked")

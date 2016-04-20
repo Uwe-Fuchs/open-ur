@@ -25,7 +25,6 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -38,13 +37,11 @@ import org.openur.remoting.resource.errorhandling.AuthenticationExceptionMapper;
 import org.openur.remoting.xchange.rest.providers.json.ErrorMessageProvider;
 import org.openur.remoting.xchange.rest.providers.json.UsernamePwAuthenticationInfoProvider;
 import org.openur.remoting.xchange.rest.providers.json.UsernamePwTokenProvider;
+import org.openur.remoting.resource.security.MockRdbmsRealmFactory.OpenUrRdbmsRealmMock;
 
 public class RdbmsRealmResourceTest
 	extends AbstractResourceTest
 {
-	public static final UsernamePasswordToken TOKEN_WITH_WRONG_PW = new UsernamePasswordToken(TestObjectContainer.USER_NAME_1, "someWrongPw");
-	public static final UsernamePasswordToken TOKEN_WITH_UNKNOWN_USERNAME = new UsernamePasswordToken("someUnknownUserName", "somePw");
-	
 	@Override
 	protected Application configure()
 	{
@@ -90,15 +87,18 @@ public class RdbmsRealmResourceTest
 	public void testSupports()
 	{
 		Boolean b = getResourceClient().performRestCall(
-				SUPPORTS_RESOURCE_PATH, HttpMethod.PUT, MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON, Boolean.class, OpenUrRdbmsRealmMock.USERNAME_PW_TOKEN);
+				SUPPORTS_RESOURCE_PATH, HttpMethod.PUT, MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON, Boolean.class, 
+				OpenUrRdbmsRealmMock.USERNAME_PW_TOKEN);
 		assertTrue(b);
 
 		b = getResourceClient().performRestCall(
-				SUPPORTS_RESOURCE_PATH, HttpMethod.PUT, MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON, Boolean.class, TOKEN_WITH_WRONG_PW);
+				SUPPORTS_RESOURCE_PATH, HttpMethod.PUT, MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON, Boolean.class, 
+				OpenUrRdbmsRealmMock.TOKEN_WITH_WRONG_PW);
 		assertFalse(b);
 
 		b = getResourceClient().performRestCall(
-				SUPPORTS_RESOURCE_PATH, HttpMethod.PUT, MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON, Boolean.class, TOKEN_WITH_UNKNOWN_USERNAME);
+				SUPPORTS_RESOURCE_PATH, HttpMethod.PUT, MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON, Boolean.class, 
+				OpenUrRdbmsRealmMock.TOKEN_WITH_UNKNOWN_USERNAME);
 		assertFalse(b);
 	}
 
@@ -152,7 +152,7 @@ public class RdbmsRealmResourceTest
 	{		
 		AuthenticationToken token = OpenUrRdbmsRealmMock.USERNAME_PW_TOKEN;
 		Response response = getResourceClient().performRestCall(
-				AUTHENTICATE_RESOURCE_PATH, HttpMethod.PUT, MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, Response.class, token);
+						AUTHENTICATE_RESOURCE_PATH, HttpMethod.PUT, MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, Response.class, token);
 		
 		assertNotNull(response);
 		AuthenticationInfo info = response.readEntity(AuthenticationInfo.class);
@@ -165,7 +165,8 @@ public class RdbmsRealmResourceTest
 		try
 		{
 			getResourceClient().performRestCall(
-				AUTHENTICATE_RESOURCE_PATH, HttpMethod.PUT, MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, Response.class, TOKEN_WITH_WRONG_PW);
+						AUTHENTICATE_RESOURCE_PATH, HttpMethod.PUT, MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, Response.class, 
+						OpenUrRdbmsRealmMock.TOKEN_WITH_WRONG_PW);
 		} catch (WebApplicationException e)
 		{
 			assertNotNull(e);

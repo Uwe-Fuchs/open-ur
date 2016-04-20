@@ -7,6 +7,7 @@ import org.glassfish.hk2.api.Factory;
 import org.mockito.Mockito;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.service.userstructure.IUserServices;
+import org.openur.module.util.exception.OpenURRuntimeException;
 
 public class MockUserServicesFactory
 	implements Factory<IUserServices>
@@ -24,6 +25,8 @@ public class MockUserServicesFactory
 		Mockito.when(userServicesMock.findTechnicalUserByNumber(TestObjectContainer.TECH_USER_NUMBER_1)).thenReturn(TestObjectContainer.TECH_USER_1);
 		Mockito.when(userServicesMock.obtainAllTechnicalUsers()).thenReturn(new HashSet<>(Arrays.asList(TestObjectContainer.TECH_USER_1, 
 			TestObjectContainer.TECH_USER_2, TestObjectContainer.TECH_USER_3)));
+		
+		Mockito.doThrow(new OpenURRuntimeException()).when(userServicesMock).findPersonById("Hallo");
 
 		return userServicesMock;
 	}
