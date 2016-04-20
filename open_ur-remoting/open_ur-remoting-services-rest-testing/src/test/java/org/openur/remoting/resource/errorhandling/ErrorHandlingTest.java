@@ -16,15 +16,12 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
-import org.openur.module.service.userstructure.IUserServices;
 import org.openur.module.util.exception.OpenURRuntimeException;
 import org.openur.remoting.resource.AbstractResourceTest;
 import org.openur.remoting.resource.errorhandling.MockErrorHandlingFactory.ErrorHandlingTestRealmMock;
 import org.openur.remoting.resource.security.MockRdbmsRealmFactory.OpenUrRdbmsRealmMock;
 import org.openur.remoting.resource.security.RdbmsRealmResource;
-import org.openur.remoting.resource.userstructure.MockUserServicesFactory;
 import org.openur.remoting.xchange.rest.providers.json.ErrorMessageProvider;
-import org.openur.remoting.xchange.rest.providers.json.PersonProvider;
 import org.openur.remoting.xchange.rest.providers.json.UsernamePwAuthenticationInfoProvider;
 import org.openur.remoting.xchange.rest.providers.json.UsernamePwTokenProvider;
 
@@ -39,13 +36,11 @@ public class ErrorHandlingTest
 			@Override
 			protected void configure()
 			{
-				bindFactory(MockUserServicesFactory.class).to(IUserServices.class);
 				bindFactory(MockErrorHandlingFactory.class).to(OpenUrRdbmsRealm.class);
 			}
 		};
 
 		ResourceConfig config = new ResourceConfig(RdbmsRealmResource.class)
-				.register(PersonProvider.class)
 				.register(UsernamePwTokenProvider.class)
 				.register(UsernamePwAuthenticationInfoProvider.class)
 				.register(AuthenticationExceptionMapper.class)
@@ -62,7 +57,6 @@ public class ErrorHandlingTest
 	{
 		super.setUp();
 
-		getResourceClient().addProvider(PersonProvider.class);
 		getResourceClient().addProvider(UsernamePwTokenProvider.class);
 		getResourceClient().addProvider(UsernamePwAuthenticationInfoProvider.class);
 		getResourceClient().addProvider(ErrorMessageProvider.class);
