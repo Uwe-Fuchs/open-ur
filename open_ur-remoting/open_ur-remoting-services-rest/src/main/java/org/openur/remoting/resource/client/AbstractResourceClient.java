@@ -91,7 +91,8 @@ public abstract class AbstractResourceClient
 		return providers;
 	}
 
-	private <E, R> R internalRestCall(String url, String httpMethod, String acceptMediaType, String contentMediaType, Class<R> resultClassType, GenericType<R> genericResultType, E object)
+	// protected scope for test-purposes!
+	protected <E, R> R internalRestCall(String url, String httpMethod, String acceptMediaType, String contentMediaType, Class<R> resultClassType, GenericType<R> genericResultType, E object)
 	{
 		Client client = createJerseyClient();
 
@@ -129,9 +130,10 @@ public abstract class AbstractResourceClient
 		
 		return handleResponse(resultClassType, genericResultType, response);
 	}
-	
+
+	// protected scope for test-purposes!
 	@SuppressWarnings("unchecked")
-	private <R> R handleResponse(Class<R> resultClassType, GenericType<R> genericResultType, Response response)
+	protected <R> R handleResponse(Class<R> resultClassType, GenericType<R> genericResultType, Response response)
 	{
 		if (response == null)
 		{

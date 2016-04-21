@@ -33,11 +33,6 @@ public abstract class AbstractResourceTest
 	protected class MyTestResourceClient
 		extends AbstractResourceClient
 	{
-		public MyTestResourceClient(String baseUrl, Class<?>... newProviders)
-		{
-			super(baseUrl, newProviders);
-		}
-
 		public MyTestResourceClient(String baseUrl)
 		{
 			super(baseUrl);
@@ -47,6 +42,15 @@ public abstract class AbstractResourceTest
 		public <E, R> R performRestCall(String url, String httpMethod, String acceptMediaType, String contentMediaType, Class<R> resultType, E object)
 		{
 			R result = super.performRestCall(url, httpMethod, acceptMediaType, contentMediaType, resultType, object);
+			System.out.println("Result: " + result);
+
+			return result;
+		}
+
+		@Override
+		public <E, R> R performRestCall(String url, String httpMethod, String acceptMediaType, String contentMediaType, GenericType<R> genericResultType, E object)
+		{
+			R result = super.performRestCall(url, httpMethod, acceptMediaType, contentMediaType, genericResultType, object);
 			System.out.println("Result: " + result);
 
 			return result;
@@ -65,15 +69,6 @@ public abstract class AbstractResourceTest
 		public <T> T performRestCall_GET(String url, String acceptMediaType, GenericType<T> resultType)
 		{
 			T result = super.performRestCall_GET(url, acceptMediaType, resultType);
-			System.out.println("Result: " + result);
-
-			return result;
-		}
-
-		@Override
-		public <E, R> R performRestCall(String url, String httpMethod, String acceptMediaType, String contentMediaType, GenericType<R> genericResultType, E object)
-		{
-			R result = super.performRestCall(url, httpMethod, acceptMediaType, contentMediaType, genericResultType, object);
 			System.out.println("Result: " + result);
 
 			return result;

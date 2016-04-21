@@ -19,6 +19,7 @@ import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
 import org.openur.module.util.exception.OpenURRuntimeException;
 import org.openur.remoting.resource.AbstractResourceTest;
 import org.openur.remoting.resource.errorhandling.MockErrorHandlingFactory.ErrorHandlingTestRealmMock;
+import org.openur.remoting.resource.errorhandling.MockErrorHandlingFactory.MyNullResponseResourceClientMock;
 import org.openur.remoting.resource.security.MockRdbmsRealmFactory.OpenUrRdbmsRealmMock;
 import org.openur.remoting.resource.security.RdbmsRealmResource;
 import org.openur.remoting.xchange.rest.providers.json.ErrorMessageProvider;
@@ -95,6 +96,27 @@ public class ErrorHandlingTest
 			assertEquals(500, e.getResponse().getStatus());
 			assertEquals(ErrorHandlingTestRealmMock.RUNTIME_ERROR_MSG, e.getMessage());
 			assertEquals(OpenURRuntimeException.class, e.getCause().getClass());	
+		}
+	}
+	
+	@Test
+	public void testNullResponseException()
+	{
+		MyNullResponseResourceClientMock resourceClient = new MyNullResponseResourceClientMock(getBaseURI());
+		resourceClient.addProvider(UsernamePwTokenProvider.class);
+		resourceClient.addProvider(UsernamePwAuthenticationInfoProvider.class);
+		resourceClient.addProvider(ErrorMessageProvider.class);
+		
+		try
+		{
+			AuthenticationToken token = OpenUrRdbmsRealmMock.TOKEN_WITH_WRONG_PW;
+			resourceClient.performRestCall(
+						AUTHENTICATE_RESOURCE_PATH, HttpMethod.PUT, MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, AuthenticationInfo.class, token);
+			fail("expected WebApplicationException not thrown!");
+		} catch (WebApplicationException e)
+		{
+			assertNotNull(e);
+			assertEquals("Server-Response was null!", e.getMessage());
 		}
 	}
 
