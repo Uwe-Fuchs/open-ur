@@ -2,6 +2,8 @@ package org.openur.remoting.client.ws.rs.security;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -11,6 +13,7 @@ import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
@@ -20,24 +23,27 @@ import org.openur.module.domain.utils.common.DomainObjectHelper;
 import org.openur.module.domain.utils.compare.PermissionComparer;
 import org.openur.module.domain.utils.compare.RoleComparer;
 import org.openur.module.service.security.ISecurityDomainServices;
-import org.openur.remoting.resource.security.MockSecurityDomainServicesFactory;
 import org.openur.remoting.resource.security.SecurityDomainResource;
 
 public class SecurityDomainResourceClientTest
 	extends JerseyTest
 {
-	private ISecurityDomainServices securityDomainServices;
+	private ISecurityDomainServices securityDomainServicesMock;
+	private SecurityDomainResourceClient securityDomainResourceClient;
 	
 	@Override
 	protected Application configure()
 	{
+		// mocked service:
+		securityDomainServicesMock = Mockito.mock(ISecurityDomainServices.class);
+		
 		// Http-Testserver:
 		AbstractBinder binder = new AbstractBinder()
 		{
 			@Override
 			protected void configure()
 			{
-				bindFactory(MockSecurityDomainServicesFactory.class).to(ISecurityDomainServices.class);
+				bind(securityDomainServicesMock).to(ISecurityDomainServices.class);
 			}
 		};
 
@@ -45,9 +51,9 @@ public class SecurityDomainResourceClientTest
 				.register(binder);
 		
 		// Client:
-		securityDomainServices = new SecurityDomainResourceClient("http://localhost:9998/");		
+		securityDomainResourceClient = new SecurityDomainResourceClient("http://localhost:9998/");		
 		
-		for (Class<?> provider : ((SecurityDomainResourceClient) securityDomainServices).getProviders())
+		for (Class<?> provider : ((SecurityDomainResourceClient) securityDomainResourceClient).getProviders())
 		{
 			config.register(provider);
 		}
@@ -58,7 +64,10 @@ public class SecurityDomainResourceClientTest
 	@Test
 	public void testFindRoleById()
 	{
-		IRole r = securityDomainServices.findRoleById(TestObjectContainer.ROLE_X.getIdentifier());
+		Mockito.when(securityDomainServicesMock.findRoleById(TestObjectContainer.ROLE_X.getIdentifier())).thenReturn(
+				TestObjectContainer.ROLE_X);		
+		
+		IRole r = securityDomainResourceClient.findRoleById(TestObjectContainer.ROLE_X.getIdentifier());
 
 		assertNotNull(r);
 		System.out.println("Result: " + r);
@@ -69,7 +78,10 @@ public class SecurityDomainResourceClientTest
 	@Test
 	public void testFindRoleByName()
 	{
-		IRole r = securityDomainServices.findRoleByName(TestObjectContainer.ROLE_X.getRoleName());
+		Mockito.when(securityDomainServicesMock.findRoleByName(TestObjectContainer.ROLE_X.getRoleName())).thenReturn(
+				TestObjectContainer.ROLE_X);
+		
+		IRole r = securityDomainResourceClient.findRoleByName(TestObjectContainer.ROLE_X.getRoleName());
 
 		assertNotNull(r);
 		System.out.println("Result: " + r);
@@ -80,7 +92,10 @@ public class SecurityDomainResourceClientTest
 	@Test
 	public void testObtainAllRoles()
 	{
-		Set<IRole> roles = securityDomainServices.obtainAllRoles();
+		Mockito.when(securityDomainServicesMock.obtainAllRoles()).thenReturn(new HashSet<>(Arrays.asList(TestObjectContainer.ROLE_X, 
+				TestObjectContainer.ROLE_Y, TestObjectContainer.ROLE_Z)));
+		
+		Set<IRole> roles = securityDomainResourceClient.obtainAllRoles();
 
 		assertFalse(roles.isEmpty());
 		assertEquals(3, roles.size());
@@ -99,7 +114,10 @@ public class SecurityDomainResourceClientTest
 	@Test
 	public void testFindPermissionById()
 	{
-		IPermission p = securityDomainServices.findPermissionById(TestObjectContainer.PERMISSION_1_A.getIdentifier());
+		Mockito.when(securityDomainServicesMock.findPermissionById(TestObjectContainer.PERMISSION_1_A.getIdentifier())).thenReturn(
+				TestObjectContainer.PERMISSION_1_A);
+		
+		IPermission p = securityDomainResourceClient.findPermissionById(TestObjectContainer.PERMISSION_1_A.getIdentifier());
 
 		assertNotNull(p);
 		System.out.println("Result: " + p);
@@ -110,7 +128,10 @@ public class SecurityDomainResourceClientTest
 	@Test
 	public void testFindPermission()
 	{
-		IPermission p = securityDomainServices.findPermission(
+		Mockito.when(securityDomainServicesMock.findPermission(TestObjectContainer.PERMISSION_1_A.getPermissionText(), 
+				TestObjectContainer.APP_A.getApplicationName())).thenReturn(TestObjectContainer.PERMISSION_1_A);
+		
+		IPermission p = securityDomainResourceClient.findPermission(
 				TestObjectContainer.PERMISSION_1_A.getPermissionText(), TestObjectContainer.APP_A.getApplicationName());
 
 		assertNotNull(p);
@@ -122,7 +143,10 @@ public class SecurityDomainResourceClientTest
 	@Test
 	public void testObtainPermissionsForApp()
 	{
-		Set<IPermission> permissions = securityDomainServices.obtainPermissionsForApp(TestObjectContainer.APP_A.getApplicationName());
+		Mockito.when(securityDomainServicesMock.obtainPermissionsForApp(TestObjectContainer.APP_A.getApplicationName())).thenReturn(
+				new HashSet<>(Arrays.asList(TestObjectContainer.PERMISSION_1_A, TestObjectContainer.PERMISSION_2_A)));
+		
+		Set<IPermission> permissions = securityDomainResourceClient.obtainPermissionsForApp(TestObjectContainer.APP_A.getApplicationName());
 
 		assertFalse(permissions.isEmpty());
 		assertEquals(2, permissions.size());
@@ -139,7 +163,11 @@ public class SecurityDomainResourceClientTest
 	@Test
 	public void testObtainAllPermissions()
 	{
-		Set<IPermission> permissions = securityDomainServices.obtainAllPermissions();
+		Mockito.when(securityDomainServicesMock.obtainAllPermissions()).thenReturn(new HashSet<>(Arrays.asList(
+				TestObjectContainer.PERMISSION_1_A, TestObjectContainer.PERMISSION_1_B, TestObjectContainer.PERMISSION_1_C,
+				TestObjectContainer.PERMISSION_2_A, TestObjectContainer.PERMISSION_2_B, TestObjectContainer.PERMISSION_2_C)));
+		
+		Set<IPermission> permissions = securityDomainResourceClient.obtainAllPermissions();
 
 		assertFalse(permissions.isEmpty());
 		assertEquals(6, permissions.size());

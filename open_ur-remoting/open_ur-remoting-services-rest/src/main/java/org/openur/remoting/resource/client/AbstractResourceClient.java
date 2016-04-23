@@ -51,6 +51,8 @@ public abstract class AbstractResourceClient
 		{
 			clientConfig.register(clazz);
 		}
+		
+		//TODO: Use Configuration instead of Jersey-specific ClientConfig
 
 		return ClientBuilder.newClient(clientConfig);
 	}

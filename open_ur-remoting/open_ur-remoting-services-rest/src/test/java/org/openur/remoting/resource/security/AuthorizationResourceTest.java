@@ -1,41 +1,36 @@
-package org.openur.remoting.client.ws.rs.security;
+package org.openur.remoting.resource.security;
 
 import static org.junit.Assert.*;
+import static org.openur.remoting.resource.security.AuthorizationResource.*;
 
 import java.util.UUID;
 
 import javax.ws.rs.core.Application;
+import javax.ws.rs.core.MediaType;
 
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.openur.module.service.security.IAuthorizationServices;
-import org.openur.remoting.resource.security.AuthorizationResource;
+import org.openur.remoting.resource.AbstractResourceTest;
 
-public class AuthorizationResourceClientTest
-	extends JerseyTest
+public class AuthorizationResourceTest
+	extends AbstractResourceTest
 {
 	public static final String APP_NAME = "appName";
 	public static final String PERMISSION_TEXT = "permissionText";
 	public static final String OTHER_PERMISSION_TEXT = "otherPermissionText";
 	public static final String PERSON_ID = UUID.randomUUID().toString();
 	public static final String OU_ID = UUID.randomUUID().toString();
-
+	
 	private IAuthorizationServices authorizationServicesMock;
-	private AuthorizationResourceClient authorizationResourceClient;
-
+	
 	@Override
 	protected Application configure()
-	{		
-		// mocked service:
+	{
 		authorizationServicesMock = Mockito.mock(IAuthorizationServices.class);
 		
-		// Client:
-		authorizationResourceClient = new AuthorizationResourceClient("http://localhost:9998/");
-		
-		// Http-Testserver:
 		AbstractBinder binder = new AbstractBinder()
 		{
 			@Override
@@ -56,21 +51,21 @@ public class AuthorizationResourceClientTest
 	{
 		Mockito.when(authorizationServicesMock.hasPermission(PERSON_ID, OU_ID, PERMISSION_TEXT, APP_NAME)).thenReturn(Boolean.TRUE);		
 		
-		Boolean b = authorizationResourceClient.hasPermission(PERSON_ID, OU_ID, PERMISSION_TEXT, APP_NAME);
-
-		System.out.println("Result: " + b);
-		assertTrue(b);		
+		Boolean b = getResourceClient().performRestCall_GET(HAS_OU_PERMISSION_RESOURCE_PATH + "?personId=" + PERSON_ID 
+				+ "&ouId=" + OU_ID + "&text=" + PERMISSION_TEXT	+ "&appName=" + APP_NAME, MediaType.TEXT_PLAIN, Boolean.class);
+		
+		assertTrue(b);
 	}
 	
 	@Test
 	public void testHasNoPermissionInOrgUnit()
-	{
+	{		
 		Mockito.when(authorizationServicesMock.hasPermission(PERSON_ID, OU_ID, OTHER_PERMISSION_TEXT, APP_NAME)).thenReturn(Boolean.FALSE);
 		
-		Boolean b = authorizationResourceClient.hasPermission(PERSON_ID, OU_ID, OTHER_PERMISSION_TEXT, APP_NAME);
-	
-		System.out.println("Result: " + b);
-		assertFalse(b);	
+		Boolean b = getResourceClient().performRestCall_GET(HAS_OU_PERMISSION_RESOURCE_PATH + "?personId=" + PERSON_ID 
+				+ "&ouId=" + OU_ID + "&text=" + PERMISSION_TEXT	+ "&appName=" + APP_NAME, MediaType.TEXT_PLAIN, Boolean.class);
+		
+		assertFalse(b);
 	}
 
 	@Test
@@ -78,20 +73,26 @@ public class AuthorizationResourceClientTest
 	{
 		Mockito.when(authorizationServicesMock.hasPermission(PERSON_ID, PERMISSION_TEXT, APP_NAME)).thenReturn(Boolean.TRUE);		
 		
-		Boolean b = authorizationResourceClient.hasPermission(PERSON_ID, PERMISSION_TEXT, APP_NAME);
-	
-		System.out.println("Result: " + b);
-		assertTrue(b);	
+		Boolean b = getResourceClient().performRestCall_GET(HAS_SYSTEM_PERMISSION_RESOURCE_PATH + "?personId=" + PERSON_ID 
+			+ "&text=" + PERMISSION_TEXT 	+ "&appName=" + APP_NAME, MediaType.TEXT_PLAIN, Boolean.class);
+		
+		assertTrue(b);
 	}
 
 	@Test
 	public void testHasNotPermissionInSystem()
-	{
+	{	
 		Mockito.when(authorizationServicesMock.hasPermission(PERSON_ID, OTHER_PERMISSION_TEXT, APP_NAME)).thenReturn(Boolean.FALSE);
 		
-		Boolean b = authorizationResourceClient.hasPermission(PERSON_ID, OTHER_PERMISSION_TEXT, APP_NAME);
-	
-		System.out.println("Result: " + b);
+		Boolean b = getResourceClient().performRestCall_GET(HAS_SYSTEM_PERMISSION_RESOURCE_PATH + "?personId=" + PERSON_ID 
+			+ "&text=" + OTHER_PERMISSION_TEXT 	+ "&appName=" + APP_NAME, MediaType.TEXT_PLAIN, Boolean.class);
+		
 		assertFalse(b);
+	}
+
+	@Override
+	protected String getBaseURI()
+	{
+		return super.getBaseURI() + AUTHORIZATION_RESOURCE_PATH;
 	}
 }

@@ -32,25 +32,29 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
+import org.openur.module.integration.security.shiro.OpenUrRdbmsRealmMock;
 import org.openur.remoting.resource.AbstractResourceTest;
 import org.openur.remoting.resource.errorhandling.AuthenticationExceptionMapper;
 import org.openur.remoting.xchange.rest.providers.json.ErrorMessageProvider;
 import org.openur.remoting.xchange.rest.providers.json.UsernamePwAuthenticationInfoProvider;
 import org.openur.remoting.xchange.rest.providers.json.UsernamePwTokenProvider;
-import org.openur.remoting.resource.security.MockRdbmsRealmFactory.OpenUrRdbmsRealmMock;
 
 public class RdbmsRealmResourceTest
 	extends AbstractResourceTest
 {
+	private OpenUrRdbmsRealm realmMock;
+	
 	@Override
 	protected Application configure()
 	{
+		realmMock = new OpenUrRdbmsRealmMock();
+		
 		AbstractBinder binder = new AbstractBinder()
 		{
 			@Override
 			protected void configure()
 			{
-				bindFactory(MockRdbmsRealmFactory.class).to(OpenUrRdbmsRealm.class);
+				bind(realmMock).to(OpenUrRdbmsRealm.class);
 			}
 		};
 

@@ -3,6 +3,8 @@ package org.openur.remoting.resource.security;
 import static org.junit.Assert.*;
 import static org.openur.remoting.resource.security.SecurityDomainResource.*;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.ws.rs.core.Application;
@@ -15,6 +17,7 @@ import org.glassfish.hk2.utilities.reflection.ParameterizedTypeImpl;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.domain.security.authorization.OpenURRole;
@@ -30,15 +33,19 @@ import org.openur.remoting.xchange.rest.providers.json.RoleProvider;
 public class SecurityDomainResourceTest
 	extends AbstractResourceTest
 {
+	private ISecurityDomainServices securityDomainServicesMock;
+	
 	@Override
 	protected Application configure()
-	{
+	{		
+		securityDomainServicesMock = Mockito.mock(ISecurityDomainServices.class);
+		
 		AbstractBinder binder = new AbstractBinder()
 		{
 			@Override
 			protected void configure()
 			{
-				bindFactory(MockSecurityDomainServicesFactory.class).to(ISecurityDomainServices.class);
+				bind(securityDomainServicesMock).to(ISecurityDomainServices.class);
 			}
 		};
 
@@ -65,6 +72,9 @@ public class SecurityDomainResourceTest
 	@Test
 	public void testFindRoleById()
 	{
+		Mockito.when(securityDomainServicesMock.findRoleById(TestObjectContainer.ROLE_X.getIdentifier())).thenReturn(
+				TestObjectContainer.ROLE_X);		
+		
 		OpenURRole r = getResourceClient().performRestCall_GET(ROLE_PER_ID_RESOURCE_PATH 
 				+ TestObjectContainer.ROLE_X.getIdentifier(), MediaType.APPLICATION_JSON, OpenURRole.class);
 		
@@ -74,8 +84,11 @@ public class SecurityDomainResourceTest
 	@Test
 	public void testFindRoleByName()
 	{
+		Mockito.when(securityDomainServicesMock.findRoleByName(TestObjectContainer.ROLE_X.getRoleName())).thenReturn(
+				TestObjectContainer.ROLE_X);
+		
 		OpenURRole r = getResourceClient().performRestCall_GET(ROLE_PER_NAME_RESOURCE_PATH 
-					+ TestObjectContainer.ROLE_X.getRoleName(), MediaType.APPLICATION_JSON, OpenURRole.class);
+				+ TestObjectContainer.ROLE_X.getRoleName(), MediaType.APPLICATION_JSON, OpenURRole.class);
 		
 		assertTrue(new RoleComparer().objectsAreEqual(r, TestObjectContainer.ROLE_X));
 	}
@@ -83,8 +96,11 @@ public class SecurityDomainResourceTest
 	@Test
 	public void testObtainAllRoles()
 	{
+		Mockito.when(securityDomainServicesMock.obtainAllRoles()).thenReturn(new HashSet<>(Arrays.asList(TestObjectContainer.ROLE_X, 
+				TestObjectContainer.ROLE_Y, TestObjectContainer.ROLE_Z)));
+		
 		Set<OpenURRole> resultSet = getResourceClient().performRestCall_GET(ALL_ROLES_RESOURCE_PATH, MediaType.APPLICATION_JSON, 
-					new GenericType<Set<OpenURRole>>(new ParameterizedTypeImpl(Set.class, OpenURRole.class)));
+				new GenericType<Set<OpenURRole>>(new ParameterizedTypeImpl(Set.class, OpenURRole.class)));
 
 		assertFalse(resultSet.isEmpty());
 		assertEquals(3, resultSet.size());
@@ -100,6 +116,9 @@ public class SecurityDomainResourceTest
 	@Test
 	public void testFindPermissionById()
 	{
+		Mockito.when(securityDomainServicesMock.findPermissionById(TestObjectContainer.PERMISSION_1_A.getIdentifier())).thenReturn(
+						TestObjectContainer.PERMISSION_1_A);
+		
 		OpenURPermission p = getResourceClient().performRestCall_GET(PERMISSION_PER_ID_RESOURCE_PATH 
 					+ TestObjectContainer.PERMISSION_1_A.getIdentifier(), MediaType.APPLICATION_JSON, OpenURPermission.class);
 		
@@ -109,6 +128,9 @@ public class SecurityDomainResourceTest
 	@Test
 	public void testFindPermissionByText()
 	{
+		Mockito.when(securityDomainServicesMock.findPermission(TestObjectContainer.PERMISSION_1_A.getPermissionText(), 
+					TestObjectContainer.APP_A.getApplicationName())).thenReturn(TestObjectContainer.PERMISSION_1_A);
+		
 		OpenURPermission p = getResourceClient().performRestCall_GET(PERMISSION_PER_TEXT_RESOURCE_PATH 
 					+ "?text=" + TestObjectContainer.PERMISSION_1_A.getPermissionText() 
 					+ "&appName=" + TestObjectContainer.APP_A.getApplicationName(), MediaType.APPLICATION_JSON, OpenURPermission.class);
@@ -119,6 +141,9 @@ public class SecurityDomainResourceTest
 	@Test
 	public void testObtainPermissionsForApp()
 	{
+		Mockito.when(securityDomainServicesMock.obtainPermissionsForApp(TestObjectContainer.APP_A.getApplicationName())).thenReturn(
+					new HashSet<>(Arrays.asList(TestObjectContainer.PERMISSION_1_A, TestObjectContainer.PERMISSION_2_A)));
+		
 		Set<OpenURPermission> resultSet = getResourceClient().performRestCall_GET(PERMISSIONS_PER_APP_RESOURCE_PATH 
 					+ TestObjectContainer.APP_A.getApplicationName(), MediaType.APPLICATION_JSON, 
 					new GenericType<Set<OpenURPermission>>(new ParameterizedTypeImpl(Set.class, OpenURPermission.class)));
@@ -135,6 +160,10 @@ public class SecurityDomainResourceTest
 	@Test
 	public void testObtainAllPermissions()
 	{
+		Mockito.when(securityDomainServicesMock.obtainAllPermissions()).thenReturn(new HashSet<>(Arrays.asList(
+				TestObjectContainer.PERMISSION_1_A, TestObjectContainer.PERMISSION_1_B, TestObjectContainer.PERMISSION_1_C,
+				TestObjectContainer.PERMISSION_2_A, TestObjectContainer.PERMISSION_2_B, TestObjectContainer.PERMISSION_2_C)));
+		
 		Set<OpenURPermission> resultSet = getResourceClient().performRestCall_GET(ALL_PERMISSIONS_RESOURCE_PATH, MediaType.APPLICATION_JSON, 
 				new GenericType<Set<OpenURPermission>>(new ParameterizedTypeImpl(Set.class, OpenURPermission.class)));
 

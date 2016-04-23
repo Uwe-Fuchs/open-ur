@@ -11,6 +11,8 @@ import static org.openur.remoting.resource.userstructure.UserResource.TECHUSER_P
 import static org.openur.remoting.resource.userstructure.UserResource.TECHUSER_PER_NUMBER_RESOURCE_PATH;
 import static org.openur.remoting.resource.userstructure.UserResource.USER_RESOURCE_PATH;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.ws.rs.core.Application;
@@ -23,6 +25,7 @@ import org.glassfish.hk2.utilities.reflection.ParameterizedTypeImpl;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
@@ -37,15 +40,19 @@ import org.openur.remoting.xchange.rest.providers.json.TechnicalUserProvider;
 public class UserResourceTest
 	extends AbstractResourceTest
 {
+	private IUserServices userServicesMock;
+	
 	@Override
 	protected Application configure()
 	{
+		userServicesMock = Mockito.mock(IUserServices.class);
+		
 		AbstractBinder binder = new AbstractBinder()
 		{
 			@Override
 			protected void configure()
 			{
-				bindFactory(MockUserServicesFactory.class).to(IUserServices.class);
+				bind(userServicesMock).to(IUserServices.class);
 			}
 		};
 
@@ -72,6 +79,8 @@ public class UserResourceTest
 	@Test
 	public void testGetPersonByIdResource()
 	{
+		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
+		
 		Person p = getResourceClient().performRestCall_GET(
 					PERSON_PER_ID_RESOURCE_PATH + TestObjectContainer.PERSON_UUID_1, MediaType.APPLICATION_JSON, Person.class);
 		
@@ -81,6 +90,8 @@ public class UserResourceTest
 	@Test
 	public void testGetPersonByNumberResource()
 	{
+		Mockito.when(userServicesMock.findPersonByNumber(TestObjectContainer.PERSON_NUMBER_1)).thenReturn(TestObjectContainer.PERSON_1);
+		
 		Person p = getResourceClient().performRestCall_GET(
 					PERSON_PER_NUMBER_RESOURCE_PATH + TestObjectContainer.PERSON_NUMBER_1, MediaType.APPLICATION_JSON, Person.class);
 		
@@ -90,6 +101,9 @@ public class UserResourceTest
 	@Test
 	public void testObtainAllPersonsResource()
 	{
+		Mockito.when(userServicesMock.obtainAllPersons()).thenReturn(new HashSet<>(Arrays.asList(TestObjectContainer.PERSON_1, TestObjectContainer.PERSON_2, 
+					TestObjectContainer.PERSON_3)));
+		
 		Set<Person> resultSet = getResourceClient().performRestCall_GET(ALL_PERSONS_RESOURCE_PATH, MediaType.APPLICATION_JSON, 
 					new GenericType<Set<Person>>(new ParameterizedTypeImpl(Set.class, Person.class)));
 
@@ -107,6 +121,8 @@ public class UserResourceTest
 	@Test
 	public void testGetTechUserByIdResource()
 	{
+		Mockito.when(userServicesMock.findTechnicalUserById(TestObjectContainer.TECH_USER_UUID_1)).thenReturn(TestObjectContainer.TECH_USER_1);
+		
 		TechnicalUser tu = getResourceClient().performRestCall_GET(
 					TECHUSER_PER_ID_RESOURCE_PATH + TestObjectContainer.TECH_USER_UUID_1, MediaType.APPLICATION_JSON, TechnicalUser.class);
 
@@ -116,6 +132,8 @@ public class UserResourceTest
 	@Test
 	public void testGetTechUserByNumberResource()
 	{
+		Mockito.when(userServicesMock.findTechnicalUserByNumber(TestObjectContainer.TECH_USER_NUMBER_1)).thenReturn(TestObjectContainer.TECH_USER_1);
+		
 		TechnicalUser tu = getResourceClient().performRestCall_GET(
 					TECHUSER_PER_NUMBER_RESOURCE_PATH + TestObjectContainer.TECH_USER_NUMBER_1, MediaType.APPLICATION_JSON, TechnicalUser.class);
 
@@ -125,6 +143,9 @@ public class UserResourceTest
 	@Test
 	public void testObtainAllTechUsersResource()
 	{
+		Mockito.when(userServicesMock.obtainAllTechnicalUsers()).thenReturn(new HashSet<>(Arrays.asList(TestObjectContainer.TECH_USER_1, 
+					TestObjectContainer.TECH_USER_2, TestObjectContainer.TECH_USER_3)));
+		
 		Set<TechnicalUser> resultSet = getResourceClient().performRestCall_GET(ALL_TECHUSERS_RESOURCE_PATH, MediaType.APPLICATION_JSON, 
 					new GenericType<Set<TechnicalUser>>(new ParameterizedTypeImpl(Set.class, TechnicalUser.class)));
 

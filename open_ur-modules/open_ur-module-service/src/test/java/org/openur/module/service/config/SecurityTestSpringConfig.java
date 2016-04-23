@@ -2,13 +2,8 @@ package org.openur.module.service.config;
 
 import static org.mockito.Mockito.mock;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
-import org.openur.module.integration.security.shiro.UsernamePwAuthenticationInfo;
+import org.openur.module.integration.security.shiro.OpenUrRdbmsRealmMock;
 import org.openur.module.persistence.dao.ISecurityDao;
 import org.openur.module.service.security.AuthenticationServicesImpl;
 import org.openur.module.service.security.AuthorizationServicesImpl;
@@ -66,23 +61,5 @@ public class SecurityTestSpringConfig
 	public IOrgUnitServices orgUnitServices()
 	{		
 		return mock(IOrgUnitServices.class);
-	}
-	
-	static class OpenUrRdbmsRealmMock
-		extends OpenUrRdbmsRealm
-	{
-		public static final UsernamePasswordToken USERNAME_PW_TOKEN = new UsernamePasswordToken(TestObjectContainer.USER_NAME_1, TestObjectContainer.PASSWORD_1);
-		
-		@Override
-		protected UsernamePwAuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token)
-			throws AuthenticationException
-		{
-			if (!EqualsBuilder.reflectionEquals(USERNAME_PW_TOKEN, (UsernamePasswordToken) token))
-			{
-				throw new AuthenticationException();
-			}
-	
-			return null;
-		}
 	}
 }

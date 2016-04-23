@@ -17,9 +17,8 @@ import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
+import org.openur.module.integration.security.shiro.OpenUrRdbmsRealmMock;
 import org.openur.remoting.resource.errorhandling.AuthenticationExceptionMapper;
-import org.openur.remoting.resource.security.MockRdbmsRealmFactory;
-import org.openur.remoting.resource.security.MockRdbmsRealmFactory.OpenUrRdbmsRealmMock;
 import org.openur.remoting.resource.security.RdbmsRealmResource;
 
 public class RdbmsRealmResourceClientTest
@@ -27,18 +26,22 @@ public class RdbmsRealmResourceClientTest
 {
 	private static final UsernamePasswordToken TOKEN_WITH_WRONG_PW = new UsernamePasswordToken(TestObjectContainer.USER_NAME_1, "someWrongPw");
 	
-	private RdbmsRealmResourceClient realm;
+	private RdbmsRealmResourceClient realmClient;
+	private OpenUrRdbmsRealm realmMock;
 
 	@Override
 	protected Application configure()
 	{
+		// mocked service:
+		realmMock = new OpenUrRdbmsRealmMock();
+		
 		// Http-Testserver:
 		AbstractBinder binder = new AbstractBinder()
 		{
 			@Override
 			protected void configure()
 			{
-				bindFactory(MockRdbmsRealmFactory.class).to(OpenUrRdbmsRealm.class);
+				bind(realmMock).to(OpenUrRdbmsRealm.class);
 			}
 		};
 		
@@ -46,9 +49,9 @@ public class RdbmsRealmResourceClientTest
 				.register(binder);
 		
 		// Client:
-		realm = new RdbmsRealmResourceClient("http://localhost:9998/");	
+		realmClient = new RdbmsRealmResourceClient("http://localhost:9998/");	
 		
-		for (Class<?> provider : ((RdbmsRealmResourceClient) realm).getProviders())
+		for (Class<?> provider : ((RdbmsRealmResourceClient) realmClient).getProviders())
 		{
 			config.register(provider);
 		}
@@ -61,7 +64,7 @@ public class RdbmsRealmResourceClientTest
 	@Test
 	public void testGetName()
 	{
-		String result = realm.getName();
+		String result = realmClient.getName();
 		System.out.println("Result: " + result);
 		
 		assertEquals(OpenUrRdbmsRealmMock.REALM_NAME, result);
@@ -70,11 +73,11 @@ public class RdbmsRealmResourceClientTest
 	@Test
 	public void testSupports()
 	{
-		boolean b = realm.supports(OpenUrRdbmsRealmMock.USERNAME_PW_TOKEN);
+		boolean b = realmClient.supports(OpenUrRdbmsRealmMock.USERNAME_PW_TOKEN);
 		System.out.println("Result: " + b);
 		assertTrue(b);
 		
-		b = realm.supports(TOKEN_WITH_WRONG_PW);
+		b = realmClient.supports(TOKEN_WITH_WRONG_PW);
 		System.out.println("Result: " + b);
 		assertFalse(b);
 	}
@@ -82,7 +85,7 @@ public class RdbmsRealmResourceClientTest
 	@Test
 	public void testGetAuthenticationInfo()
 	{
-		AuthenticationInfo info = realm.getAuthenticationInfo(OpenUrRdbmsRealmMock.USERNAME_PW_TOKEN);
+		AuthenticationInfo info = realmClient.getAuthenticationInfo(OpenUrRdbmsRealmMock.USERNAME_PW_TOKEN);
 
 		assertNotNull(info);
 		System.out.println("Result: " + info);
@@ -105,6 +108,6 @@ public class RdbmsRealmResourceClientTest
 	@Test(expected=AuthenticationException.class)
 	public void testDoGetAuthenticationInfo_Wrong_PW()
 	{
-		realm.getAuthenticationInfo(TOKEN_WITH_WRONG_PW);
+		realmClient.getAuthenticationInfo(TOKEN_WITH_WRONG_PW);
 	}
 }

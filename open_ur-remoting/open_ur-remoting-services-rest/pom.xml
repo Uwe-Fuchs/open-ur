@@ -22,6 +22,11 @@
 			<artifactId>open_ur-module-domain-api</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.openur.module.domain</groupId>
+			<artifactId>open_ur-module-domain-testfixture</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.openur.module.service</groupId>
 			<artifactId>open_ur-module-service</artifactId>
 		</dependency>
@@ -32,6 +37,11 @@
 		<dependency>
 			<groupId>org.glassfish.jersey.containers</groupId>
 			<artifactId>jersey-container-grizzly2-http</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.test-framework.providers</groupId>
+			<artifactId>jersey-test-framework-provider-grizzly2</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
