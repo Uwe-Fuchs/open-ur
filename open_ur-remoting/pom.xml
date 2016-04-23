@@ -19,7 +19,6 @@
 
 	<modules>
 		<module>open_ur-remoting-services-rest</module>
-		<module>open_ur-remoting-services-rest-testing</module>
 		<module>open_ur-remoting-x-change</module>
 		<module>open_ur-remoting-webservice-app</module>
 		<module>open_ur-remoting-client-rest</module>
@@ -40,12 +39,6 @@
 			<dependency>
 				<groupId>org.openur.remoting.resource</groupId>
 				<artifactId>open_ur-remoting-services-rest</artifactId>
-				<version>${project.version}</version>
-				<type>jar</type>
-			</dependency>
-			<dependency>
-				<groupId>org.openur.remoting.resource</groupId>
-				<artifactId>open_ur-remoting-services-rest-testing</artifactId>
 				<version>${project.version}</version>
 				<type>jar</type>
 			</dependency>

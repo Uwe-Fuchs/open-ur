@@ -41,11 +41,6 @@
 			<artifactId>open_ur-remoting-services-rest</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.openur.remoting.resource</groupId>
-			<artifactId>open_ur-remoting-services-rest-testing</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.openur.remoting.xchange</groupId>
 			<artifactId>open_ur-remoting-x-change</artifactId>
 		</dependency>
