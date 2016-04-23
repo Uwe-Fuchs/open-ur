@@ -44,15 +44,18 @@ public class UserAccountRepositoryTest
 	//@Rollback(value=false)
 	public void testFindUserAccountByUserName()
 	{
+		String someUserName = "someUserName";
+		String somePassWord = "somePassWord";
+		
 		PPerson pPerson = personMapper.mapFromDomainObject(TestObjectContainer.PERSON_1);
 		
-		PUserAccount pUserAccount = new PUserAccount(pPerson, TestObjectContainer.USER_NAME_1, TestObjectContainer.PASSWORD_1);
+		PUserAccount pUserAccount = new PUserAccount(pPerson, someUserName, somePassWord);
 		pUserAccount = saveUserAccount(pUserAccount);
 		
-		pUserAccount = userAccountRepository.findUserAccountByUserName(TestObjectContainer.USER_NAME_1);
+		pUserAccount = userAccountRepository.findUserAccountByUserName(someUserName);
 		
 		assertNotNull(pUserAccount);
-		assertEquals(TestObjectContainer.PASSWORD_1, pUserAccount.getPassWord());
+		assertEquals(somePassWord, pUserAccount.getPassWord());
 		
 		pUserAccount = userAccountRepository.findUserAccountByUserName("someUnknownUserName");
 		assertNull(pUserAccount);

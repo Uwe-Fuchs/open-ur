@@ -10,12 +10,10 @@ import javax.ws.rs.core.Application;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
-import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealmMock;
 import org.openur.remoting.resource.errorhandling.AuthenticationExceptionMapper;
@@ -24,8 +22,6 @@ import org.openur.remoting.resource.security.RdbmsRealmResource;
 public class RdbmsRealmResourceClientTest
 	extends JerseyTest
 {
-	private static final UsernamePasswordToken TOKEN_WITH_WRONG_PW = new UsernamePasswordToken(TestObjectContainer.USER_NAME_1, "someWrongPw");
-	
 	private RdbmsRealmResourceClient realmClient;
 	private OpenUrRdbmsRealm realmMock;
 
@@ -77,7 +73,7 @@ public class RdbmsRealmResourceClientTest
 		System.out.println("Result: " + b);
 		assertTrue(b);
 		
-		b = realmClient.supports(TOKEN_WITH_WRONG_PW);
+		b = realmClient.supports(OpenUrRdbmsRealmMock.TOKEN_WITH_WRONG_PW);
 		System.out.println("Result: " + b);
 		assertFalse(b);
 	}
@@ -91,10 +87,10 @@ public class RdbmsRealmResourceClientTest
 		System.out.println("Result: " + info);
 		
 		String passWord = new String((char[]) info.getCredentials());
-		assertEquals(TestObjectContainer.PASSWORD_1, passWord);
+		assertEquals(OpenUrRdbmsRealmMock.PASSWORD_1, passWord);
 		
 		String userName = info.getPrincipals().getPrimaryPrincipal().toString();
-		assertEquals(TestObjectContainer.USER_NAME_1, userName);
+		assertEquals(OpenUrRdbmsRealmMock.USER_NAME_1, userName);
 		
 		byte[] saltBytes = ((SimpleAuthenticationInfo) info).getCredentialsSalt().getBytes();
 		char[] chars = new char[saltBytes.length];
@@ -102,12 +98,12 @@ public class RdbmsRealmResourceClientTest
 		{
 			chars[i] = (char) saltBytes[i];
 		}
-		assertEquals(TestObjectContainer.SALT_BASE, new String(chars));
+		assertEquals(OpenUrRdbmsRealmMock.SALT_BASE, new String(chars));
 	}
 
 	@Test(expected=AuthenticationException.class)
 	public void testDoGetAuthenticationInfo_Wrong_PW()
 	{
-		realmClient.getAuthenticationInfo(TOKEN_WITH_WRONG_PW);
+		realmClient.getAuthenticationInfo(OpenUrRdbmsRealmMock.TOKEN_WITH_WRONG_PW);
 	}
 }

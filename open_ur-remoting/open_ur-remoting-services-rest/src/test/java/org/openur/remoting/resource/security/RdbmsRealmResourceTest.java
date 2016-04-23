@@ -30,7 +30,6 @@ import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.Before;
 import org.junit.Test;
-import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealmMock;
 import org.openur.remoting.resource.AbstractResourceTest;
@@ -131,16 +130,16 @@ public class RdbmsRealmResourceTest
 
 		assertNotNull(info);
 		String passWord = new String((char[]) info.getCredentials());
-		assertEquals(TestObjectContainer.PASSWORD_1, passWord);
+		assertEquals(OpenUrRdbmsRealmMock.PASSWORD_1, passWord);
 		
 		PrincipalCollection principalCollection = info.getPrincipals();
 		Collection<?> coll = principalCollection.fromRealm(OpenUrRdbmsRealmMock.REALM_NAME);
 		assertEquals(1, coll.size());
 		List<?> principals = principalCollection.asList();
 		assertEquals(1, principals.size());
-		assertTrue(principals.contains(TestObjectContainer.USER_NAME_1));
+		assertTrue(principals.contains(OpenUrRdbmsRealmMock.USER_NAME_1));
 		String userName = principalCollection.getPrimaryPrincipal().toString();
-		assertEquals(TestObjectContainer.USER_NAME_1, userName);
+		assertEquals(OpenUrRdbmsRealmMock.USER_NAME_1, userName);
 		
 		byte[] saltBytes = ((SimpleAuthenticationInfo) info).getCredentialsSalt().getBytes();
 		char[] chars = new char[saltBytes.length];
@@ -148,7 +147,7 @@ public class RdbmsRealmResourceTest
 		{
 			chars[i] = (char) saltBytes[i];
 		}
-		assertEquals(TestObjectContainer.SALT_BASE, new String(chars));
+		assertEquals(OpenUrRdbmsRealmMock.SALT_BASE, new String(chars));
 	}
 
 	@Test

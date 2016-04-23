@@ -18,6 +18,7 @@ import org.junit.runner.RunWith;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.security.authentication.IUserAccount;
 import org.openur.module.domain.security.authentication.UserAccount;
+import org.openur.module.domain.security.authentication.UserAccountBuilder;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
 import org.openur.module.domain.security.authorization.OpenURPermission;
@@ -240,10 +241,18 @@ public class SecurityDaoImplRdbmsTest
 	@Transactional(readOnly=false)
 	public void testFindUserAccount()
 	{
-		PUserAccount persistable = userAccountMapper.mapFromDomainObject(TestObjectContainer.PERSON_1_ACCOUNT, TestObjectContainer.PERSON_1);
+		String saltBase = "MyVerySecretPersonalSalt";	
+		String someUserName = "someUserName";
+		String somePassWord = "somePassWord";
+		UserAccount PERSON_1_ACCOUNT = new UserAccountBuilder(someUserName, somePassWord)
+				.identifier(TestObjectContainer.PERSON_UUID_1)
+				.salt(saltBase)
+				.build();
+		
+		PUserAccount persistable = userAccountMapper.mapFromDomainObject(PERSON_1_ACCOUNT, TestObjectContainer.PERSON_1);
 		persistable = saveUserAccount(persistable);
 		
-		IUserAccount u = securityDao.findUserAccountByUserName(TestObjectContainer.USER_NAME_1);
+		IUserAccount u = securityDao.findUserAccountByUserName(someUserName);
 		
 		assertNotNull(u);
 		assertTrue(UserAccountMapper.domainObjectEqualsToEntity((UserAccount) u, persistable));
