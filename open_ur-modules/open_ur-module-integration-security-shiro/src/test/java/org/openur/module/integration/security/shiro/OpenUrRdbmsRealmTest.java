@@ -161,6 +161,7 @@ public class OpenUrRdbmsRealmTest
 	{
 		DefaultHashService hashService = new DefaultHashService();
 		hashService.setHashAlgorithmName(Sha256Hash.ALGORITHM_NAME);
+		
 		DefaultPasswordService passwordService = new DefaultPasswordService();
 		passwordService.setHashService(hashService);
 		

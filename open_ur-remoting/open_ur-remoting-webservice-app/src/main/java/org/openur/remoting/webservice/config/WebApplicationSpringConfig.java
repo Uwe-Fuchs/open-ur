@@ -1,5 +1,6 @@
 package org.openur.remoting.webservice.config;
 
+import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
 import org.apache.shiro.realm.Realm;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
 import org.openur.module.persistence.dao.IApplicationDao;
@@ -64,7 +65,10 @@ public class WebApplicationSpringConfig
 	@Bean(name = "openUrRdbmsRealm")
 	public Realm openUrRdbmsRealm()
 	{
-		return new OpenUrRdbmsRealm();
+		OpenUrRdbmsRealm realm = new OpenUrRdbmsRealm();
+		realm.setCredentialsMatcher(new SimpleCredentialsMatcher());
+		
+		return realm;
 	}
 
 	// dao's:
