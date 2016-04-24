@@ -26,6 +26,12 @@
 		<dependency>
 			<groupId>org.openur.module.service</groupId>
 			<artifactId>open_ur-module-service</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.openur.module.persistence</groupId>
+					<artifactId>open_ur-module-persistence-dao-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.openur.module.domain</groupId>
@@ -43,10 +49,21 @@
 		<dependency>
 			<groupId>org.openur.remoting.xchange</groupId>
 			<artifactId>open_ur-remoting-x-change</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.openur.module.persistence</groupId>
+					<artifactId>open_ur-module-persistence-dao-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-grizzly2-http</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jersey.test-framework.providers</groupId>
 			<artifactId>jersey-test-framework-provider-grizzly2</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.gson</groupId>

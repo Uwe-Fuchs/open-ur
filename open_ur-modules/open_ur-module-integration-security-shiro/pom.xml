@@ -39,6 +39,7 @@
 		<dependency>
 			<groupId>org.openur.module.domain</groupId>
 			<artifactId>open_ur-module-domain-impl</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.openur.module.domain</groupId>

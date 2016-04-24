@@ -13,8 +13,6 @@
 	<artifactId>open_ur-module-service</artifactId>
 	<packaging>jar</packaging>
 
-
-
 	<properties>
 	</properties>
 
@@ -66,6 +64,7 @@
 		<dependency>
 			<groupId>org.openur.module.persistence</groupId>
 			<artifactId>open_ur-module-persistence-mapping-api</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.openur.module.persistence</groupId>
