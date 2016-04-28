@@ -174,7 +174,7 @@ public class RdbmsRealmResourceTest
 		{
 			assertNotNull(e);
 			assertEquals(404, e.getResponse().getStatus());
-			assertEquals(OpenUrRdbmsRealmMock.ERROR_MSG, e.getMessage());
+			assertEquals(OpenUrRdbmsRealmMock.AUTH_ERROR_MSG, e.getMessage());
 			assertEquals(AuthenticationException.class, e.getCause().getClass());
 		}
 	}

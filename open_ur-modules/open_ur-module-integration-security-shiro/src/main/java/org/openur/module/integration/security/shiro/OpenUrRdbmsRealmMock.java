@@ -10,6 +10,7 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.util.ByteSource;
 import org.openur.module.domain.security.authentication.IUserAccount;
+import org.openur.module.util.exception.OpenURRuntimeException;
 
 /**
  * Mock-Object for {@link OpenUrRdbmsRealm}, for the {@link OpenUrRdbmsRealm#getAuthenticationInfo()}-Method is final and hence cannot be mocked via Mockito.
@@ -21,7 +22,8 @@ public class OpenUrRdbmsRealmMock
 	extends OpenUrRdbmsRealm
 {
 	public static final String REALM_NAME = "realmName";
-	public static final String ERROR_MSG = "No AuthenticationInfo-instance given!";
+	public static final String AUTH_ERROR_MSG = "No AuthenticationInfo-instance given!";
+	public static final String RUNTIME_ERROR_MSG = "Common OpenURRuntimeException!";
 	public static final String SALT_BASE = "MyVerySecretPersonalSalt";	
 	public static final String PERSON_UUID_1 = UUID.randomUUID().toString();
 	public static final String USER_NAME_1 = "userName_1";
@@ -35,12 +37,14 @@ public class OpenUrRdbmsRealmMock
 	public static final UsernamePasswordToken USERNAME_PW_TOKEN;
 	public static final UsernamePasswordToken TOKEN_WITH_WRONG_PW;
 	public static final UsernamePasswordToken TOKEN_WITH_UNKNOWN_USERNAME;
+	public static final UsernamePasswordToken TOKEN_CAUSING_RUNTIME_EXCEPTION;
 	
 	static
 	{
 		USERNAME_PW_TOKEN = new UsernamePasswordToken(USER_NAME_1, PASSWORD_1);
 		TOKEN_WITH_WRONG_PW = new UsernamePasswordToken(USER_NAME_1, "someWrongPw");
 		TOKEN_WITH_UNKNOWN_USERNAME = new UsernamePasswordToken("someUnknownUserName", "somePw");
+		TOKEN_CAUSING_RUNTIME_EXCEPTION = new UsernamePasswordToken("userNameCausingRuntimeException", "somePw");
 		AUTH_INFO = new UsernamePwAuthenticationInfo(USER_NAME_1, PASSWORD_1.toCharArray(), REALM_NAME);
 		AUTH_INFO.setCredentialsSalt(ByteSource.Util.bytes(SALT_BASE));
 		
@@ -62,9 +66,12 @@ public class OpenUrRdbmsRealmMock
 		if (EqualsBuilder.reflectionEquals(USERNAME_PW_TOKEN, token))
 		{
 			return AUTH_INFO;
+		} else if (EqualsBuilder.reflectionEquals(TOKEN_CAUSING_RUNTIME_EXCEPTION, token))
+		{
+			throw new OpenURRuntimeException(RUNTIME_ERROR_MSG);
 		}
 
-		throw new AuthenticationException(ERROR_MSG);
+		throw new AuthenticationException(AUTH_ERROR_MSG);
 	}
 
 	@Override

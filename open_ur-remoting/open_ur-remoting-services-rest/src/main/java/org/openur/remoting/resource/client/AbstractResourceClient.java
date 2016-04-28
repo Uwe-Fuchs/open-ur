@@ -155,7 +155,7 @@ public abstract class AbstractResourceClient
 				ex = new WebApplicationException(errorMessage.getMessage(), t, response);
 			} catch (Exception ignored)
 			{
-				ex = new WebApplicationException("Unrecognized error. Please check your server-log!", response.getStatus());
+				ex = new WebApplicationException("Unrecognized error!", response.getStatus());
 			}
 			
 			throw ex;
