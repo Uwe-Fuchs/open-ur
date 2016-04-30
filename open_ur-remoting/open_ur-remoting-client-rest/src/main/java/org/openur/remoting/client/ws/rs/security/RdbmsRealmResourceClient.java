@@ -12,7 +12,6 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.realm.Realm;
 import org.openur.remoting.resource.client.AbstractResourceClient;
 import org.openur.remoting.resource.security.RdbmsRealmResource;
-import org.openur.remoting.xchange.rest.providers.json.ErrorMessageProvider;
 import org.openur.remoting.xchange.rest.providers.json.UsernamePwAuthenticationInfoProvider;
 import org.openur.remoting.xchange.rest.providers.json.UsernamePwTokenProvider;
 
@@ -22,11 +21,7 @@ public class RdbmsRealmResourceClient
 {
 	public RdbmsRealmResourceClient(String baseUrl)
 	{
-		super(baseUrl + RdbmsRealmResource.RDBMS_REALM_RESOURCE_PATH, 
-				UsernamePwTokenProvider.class, 
-				UsernamePwAuthenticationInfoProvider.class, 
-				ErrorMessageProvider.class
-		);
+		super(baseUrl + RdbmsRealmResource.RDBMS_REALM_RESOURCE_PATH, UsernamePwTokenProvider.class, UsernamePwAuthenticationInfoProvider.class);
 	}
 
 	@Override

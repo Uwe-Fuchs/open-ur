@@ -19,6 +19,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
 import org.glassfish.jersey.client.ClientConfig;
 import org.openur.remoting.xchange.rest.errorhandling.ErrorMessage;
+import org.openur.remoting.xchange.rest.providers.json.ErrorMessageProvider;
 
 public abstract class AbstractResourceClient
 {
@@ -33,6 +34,8 @@ public abstract class AbstractResourceClient
 		{
 			this.providers.addAll(Arrays.asList(newProviders));
 		}
+		
+		this.providers.add(ErrorMessageProvider.class);
 	}
 
 	public AbstractResourceClient(String baseUrl)
