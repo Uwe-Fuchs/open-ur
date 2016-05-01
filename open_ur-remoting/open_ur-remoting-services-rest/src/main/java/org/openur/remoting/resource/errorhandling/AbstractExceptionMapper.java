@@ -11,7 +11,7 @@ import org.openur.remoting.xchange.rest.errorhandling.ErrorMessage;
 public abstract class AbstractExceptionMapper<T extends Throwable>
 	implements ExceptionMapper<T>
 {
-	public static final String DEFAULT_ERROR_MSG = "An exception has occurred!";
+	private static final String GENERIC_DEFAULT_ERROR_MSG = "An exception has occurred!";
 	
 	@Override
 	public Response toResponse(T exception)
@@ -27,9 +27,14 @@ public abstract class AbstractExceptionMapper<T extends Throwable>
 				.build();
 	}
 	
+	public static String getGenericDefaultErrorMsg()
+	{
+		return GENERIC_DEFAULT_ERROR_MSG;
+	}
+
 	protected String getDefaultExceptionMessage()
 	{
-		return DEFAULT_ERROR_MSG;
+		return getGenericDefaultErrorMsg();
 	}
 	
 	protected Status getHttpStatus(Throwable ex)

@@ -14,6 +14,7 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
@@ -155,10 +156,20 @@ public abstract class AbstractResourceClient
 				Class<?> clazz = Class.forName(errorMessage.getExceptionClassName());
 				Constructor<?> constructor = clazz.getConstructor(String.class);
 				Throwable t = (Throwable) constructor.newInstance(errorMessage.getMessage());
-				ex = new WebApplicationException(errorMessage.getMessage(), t, response);
+				ex = (t instanceof WebApplicationException) ? ((WebApplicationException) t) : new WebApplicationException(errorMessage.getMessage(), t, response);
 			} catch (Exception ignored)
 			{
-				ex = new WebApplicationException("Unrecognized error!", response.getStatus());
+				String reasonPhrase;
+				
+				try
+				{
+					reasonPhrase = Status.fromStatusCode(response.getStatus()).getReasonPhrase();
+				} catch (Exception alsoIgnored)
+				{
+					reasonPhrase = "Unrecognized error!";
+				}
+				
+				ex = new WebApplicationException(reasonPhrase, response.getStatus());
 			}
 			
 			throw ex;
