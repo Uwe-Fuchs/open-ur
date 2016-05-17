@@ -30,7 +30,7 @@ public class JpaRepositorySpringConfig
 	{
     final JndiDataSourceLookup dsLookup = new JndiDataSourceLookup();
     dsLookup.setResourceRef(true);
-    DataSource dataSource = dsLookup.getDataSource("java:comp/env/jdbc/open_ur");
+    DataSource dataSource = dsLookup.getDataSource(env.getProperty("database.jndiName", "java:comp/env/jdbc/open_ur"));
     
     return dataSource;
 	}
