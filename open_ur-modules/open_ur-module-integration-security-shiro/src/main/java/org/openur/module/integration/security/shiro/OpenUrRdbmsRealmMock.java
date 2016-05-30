@@ -34,19 +34,27 @@ public class OpenUrRdbmsRealmMock
 	public static final String PASSWORD_2 = "password_2";	
 	public static final MyUserAccount TECH_USER_2_ACCOUNT;
 	public static final UsernamePwAuthenticationInfo AUTH_INFO;
+	public static final UsernamePwAuthenticationInfo AUTH_INFO_2;
 	public static final UsernamePasswordToken USERNAME_PW_TOKEN;
+	public static final UsernamePasswordToken USERNAME_PW_TOKEN_2;
 	public static final UsernamePasswordToken TOKEN_WITH_WRONG_PW;
 	public static final UsernamePasswordToken TOKEN_WITH_UNKNOWN_USERNAME;
 	public static final UsernamePasswordToken TOKEN_CAUSING_RUNTIME_EXCEPTION;
 	
+	private int authCounter = 0;
+
 	static
 	{
 		USERNAME_PW_TOKEN = new UsernamePasswordToken(USER_NAME_1, PASSWORD_1);
+		USERNAME_PW_TOKEN_2 = new UsernamePasswordToken(USER_NAME_2, PASSWORD_2);
 		TOKEN_WITH_WRONG_PW = new UsernamePasswordToken(USER_NAME_1, "someWrongPw");
 		TOKEN_WITH_UNKNOWN_USERNAME = new UsernamePasswordToken("someUnknownUserName", "somePw");
 		TOKEN_CAUSING_RUNTIME_EXCEPTION = new UsernamePasswordToken("userNameCausingRuntimeException", "somePw");
-		AUTH_INFO = new UsernamePwAuthenticationInfo(USER_NAME_1, PASSWORD_1.toCharArray(), REALM_NAME);
+		
+		AUTH_INFO = new UsernamePwAuthenticationInfo(USER_NAME_1, PASSWORD_1.toCharArray(), REALM_NAME, PERSON_UUID_1);
 		AUTH_INFO.setCredentialsSalt(ByteSource.Util.bytes(SALT_BASE));
+		AUTH_INFO_2 = new UsernamePwAuthenticationInfo(USER_NAME_2, PASSWORD_2.toCharArray(), REALM_NAME, TECH_USER_UUID_2);
+		AUTH_INFO_2.setCredentialsSalt(ByteSource.Util.bytes(SALT_BASE));
 		
 		PERSON_1_ACCOUNT = new MyUserAccount();
 		PERSON_1_ACCOUNT.setUserName(USER_NAME_1);
@@ -63,9 +71,15 @@ public class OpenUrRdbmsRealmMock
 	protected UsernamePwAuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token)
 		throws AuthenticationException
 	{
+		// increment counter:
+		authCounter++;
+		
 		if (EqualsBuilder.reflectionEquals(USERNAME_PW_TOKEN, token))
 		{
 			return AUTH_INFO;
+		} else if (EqualsBuilder.reflectionEquals(USERNAME_PW_TOKEN_2, token))
+		{
+			return AUTH_INFO_2;
 		} else if (EqualsBuilder.reflectionEquals(TOKEN_CAUSING_RUNTIME_EXCEPTION, token))
 		{
 			throw new OpenURRuntimeException(RUNTIME_ERROR_MSG);
@@ -84,6 +98,11 @@ public class OpenUrRdbmsRealmMock
 	public String getName()
 	{
 		return REALM_NAME;
+	}
+	
+	public int getAuthCounter()
+	{
+		return authCounter;
 	}
 	
 	public static class MyUserAccount

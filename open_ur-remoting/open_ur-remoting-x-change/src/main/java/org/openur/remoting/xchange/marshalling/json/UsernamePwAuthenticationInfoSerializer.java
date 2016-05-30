@@ -29,6 +29,7 @@ public class UsernamePwAuthenticationInfoSerializer
 	{
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.add("credentials", context.serialize(src.getCredentials()));
+		jsonObject.add("identifier", context.serialize(src.getIdentifier()));
 		
 		ByteSource credentialsSalt = src.getCredentialsSalt();
 		
@@ -66,10 +67,13 @@ public class UsernamePwAuthenticationInfoSerializer
 	public UsernamePwAuthenticationInfo deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 		throws JsonParseException
 	{
-		UsernamePwAuthenticationInfo authInfo = new UsernamePwAuthenticationInfo();
 		JsonObject jsonObject = json.getAsJsonObject();
 		
-		JsonElement element = jsonObject.get("principals");
+		JsonElement element = jsonObject.get("identifier");
+		String identifier = element != null ? element.getAsString() : null;
+		UsernamePwAuthenticationInfo authInfo = new UsernamePwAuthenticationInfo(identifier);
+		
+		element = jsonObject.get("principals");
 		
 		if (element != null)
 		{

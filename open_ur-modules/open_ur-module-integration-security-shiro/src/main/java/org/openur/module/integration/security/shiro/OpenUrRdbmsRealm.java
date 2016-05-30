@@ -59,7 +59,8 @@ public class OpenUrRdbmsRealm
 			throw new UnknownAccountException("No account found for user [" + username + "]");
 		}
 
-		UsernamePwAuthenticationInfo info = new UsernamePwAuthenticationInfo(username, userAccount.getPassWord().toCharArray(), getName());
+		UsernamePwAuthenticationInfo info = new UsernamePwAuthenticationInfo(
+				username, userAccount.getPassWord().toCharArray(), getName(), userAccount.getIdentifier());
 		
 		String salt = null;
 		

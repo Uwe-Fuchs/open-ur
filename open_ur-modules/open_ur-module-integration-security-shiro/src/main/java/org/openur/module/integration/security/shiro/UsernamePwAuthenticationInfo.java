@@ -12,20 +12,28 @@ public class UsernamePwAuthenticationInfo
 	extends SimpleAuthenticationInfo
 {
 	private static final long serialVersionUID = 524455112641625935L;
+	
+	private String identifier;
 
-	public UsernamePwAuthenticationInfo(String userName, char[] passWord, String realmName)
+	public UsernamePwAuthenticationInfo(String userName, char[] passWord, String realmName, String identifier)
 	{
 		super(userName, passWord, realmName);
+		
+		this.identifier = identifier;
 	}
 
-	public UsernamePwAuthenticationInfo(String userName, char[] passWord, ByteSource credentialsSalt, String realmName)
+	public UsernamePwAuthenticationInfo(String userName, char[] passWord, ByteSource credentialsSalt, String realmName, String identifier)
 	{
 		super(userName, passWord, credentialsSalt, realmName);
+		
+		this.identifier = identifier;
 	}
 
-	public UsernamePwAuthenticationInfo()
+	public UsernamePwAuthenticationInfo(String identifier)
 	{
 		super();
+		
+		this.identifier = identifier;
 	}
 
 	public String getUserName()
@@ -36,6 +44,11 @@ public class UsernamePwAuthenticationInfo
 	public char[] getPassWord()
 	{
 		return getCredentials();
+	}
+
+	public String getIdentifier()
+	{
+		return identifier;
 	}
 
 	@Override
