@@ -1,5 +1,7 @@
 package org.openur.remoting.webservice.config;
 
+import javax.inject.Inject;
+
 import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
 import org.apache.shiro.realm.Realm;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
@@ -30,12 +32,17 @@ import org.openur.module.service.userstructure.IOrgUnitServices;
 import org.openur.module.service.userstructure.IUserServices;
 import org.openur.module.service.userstructure.OrgUnitServicesImpl;
 import org.openur.module.service.userstructure.UserServicesImpl;
+import org.openur.remoting.resource.secure_api.SecureApiSettings;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
 @Configuration
 public class WebApplicationSpringConfig
 {
+	@Inject
+	protected Environment env;
+	
 	// services:
 	@Bean(name = "userServices")
 	public IUserServices userServices()
@@ -69,6 +76,21 @@ public class WebApplicationSpringConfig
 		realm.setCredentialsMatcher(new SimpleCredentialsMatcher());
 		
 		return realm;
+	}
+	
+	// secure REST-API:
+	@Bean(name = "remoteAuthenticationPermissionName")
+	public String remoteAuthenticationPermissionName()
+	{
+		return env.getProperty("remoteAuthenticationPermissionName", "remoteAuthentication");
+	}
+
+	@Bean(name = "secureApiSettings")
+	public SecureApiSettings secureApiSettings()
+	{
+		String secureApiSettingsStr = env.getProperty("secureApiSettings", "NO_SECURITY");
+		
+		return SecureApiSettings.valueOf(secureApiSettingsStr);
 	}
 
 	// dao's:

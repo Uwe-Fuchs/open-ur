@@ -46,7 +46,7 @@ public class AbstractAuthenticationFilterTest
 			protected void configure()
 			{
 				bind(realmMock).to(OpenUrRdbmsRealm.class);
-				bind(remoteAuthenticationPermissionName).to(String.class);
+				bind(remoteAuthenticationPermissionName).to(String.class).named("remoteAuthenticationPermissionName");
 				bind(settings).to(SecureApiSettings.class);
 				bind(authorizationServicesMock).to(IAuthorizationServices.class);
 				bind(userServicesMock).to(IUserServices.class);

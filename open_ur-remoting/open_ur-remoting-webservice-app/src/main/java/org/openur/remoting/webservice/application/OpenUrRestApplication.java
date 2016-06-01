@@ -3,6 +3,7 @@ package org.openur.remoting.webservice.application;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.openur.remoting.resource.errorhandling.AuthenticationExceptionMapper;
 import org.openur.remoting.resource.errorhandling.GenericExceptionMapper;
+import org.openur.remoting.resource.secure_api.AuthenticationFilter;
 import org.openur.remoting.xchange.rest.providers.json.ErrorMessageProvider;
 import org.openur.remoting.xchange.rest.providers.json.OrgUnitProvider;
 import org.openur.remoting.xchange.rest.providers.json.PermissionProvider;
@@ -41,5 +42,6 @@ public class OpenUrRestApplication
 		register(AuthenticationExceptionMapper.class);
 		register(GenericExceptionMapper.class);
 		register(ErrorMessageProvider.class);
+		register(AuthenticationFilter.class);
 	}
 }
