@@ -12,7 +12,7 @@ import javax.persistence.UniqueConstraint;
 import org.apache.commons.lang3.Validate;
 
 @Entity(name="USER_ACCOUNT")
-@Table(uniqueConstraints={@UniqueConstraint(name="UNQ_USERNAME", columnNames={"USERNAME"})})
+@Table(uniqueConstraints={@UniqueConstraint(name="UNQ_USERNAME", columnNames={"USERNAME"}), @UniqueConstraint(name="UNQ_USER_ID", columnNames={"USER_ID"})})
 public class PUserAccount
 	extends AbstractOpenUrPersistable
 {
@@ -20,7 +20,7 @@ public class PUserAccount
 
 	// properties:
 	@OneToOne(fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
-	@JoinColumn(name="ID", referencedColumnName="ID")
+	@JoinColumn(name="USER_ID", referencedColumnName="ID", nullable=false)
 	private PUserStructureBase userStructureBase;
 	
 	@Column(name="USERNAME", length=50, nullable=false)
