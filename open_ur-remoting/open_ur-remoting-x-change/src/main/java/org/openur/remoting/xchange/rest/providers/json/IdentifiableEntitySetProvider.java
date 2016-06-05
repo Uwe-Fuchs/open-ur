@@ -17,10 +17,12 @@ import org.openur.module.domain.security.authorization.AuthorizableMember;
 import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.OpenURRole;
 import org.openur.module.domain.userstructure.person.Person;
+import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
 import org.openur.remoting.xchange.marshalling.json.AuthorizableMemberSerializer;
 import org.openur.remoting.xchange.marshalling.json.AuthorizableOrgUnitSerializer;
 import org.openur.remoting.xchange.marshalling.json.OpenURRoleSerializer;
 import org.openur.remoting.xchange.marshalling.json.PersonSerializer;
+import org.openur.remoting.xchange.marshalling.json.TechnicalUserSerializer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -56,6 +58,7 @@ public class IdentifiableEntitySetProvider<I extends IdentifiableEntityImpl>
 	protected GsonBuilder createGsonBuilder()
 	{
 		return new GsonBuilder()
+    		.registerTypeAdapter(TechnicalUser.class, new TechnicalUserSerializer())
 		    .registerTypeAdapter(AuthorizableOrgUnit.class, new AuthorizableOrgUnitSerializer())
 		    .registerTypeAdapter(AuthorizableMember.class, new AuthorizableMemberSerializer())
 		    .registerTypeAdapter(OpenURRole.class, new OpenURRoleSerializer());
