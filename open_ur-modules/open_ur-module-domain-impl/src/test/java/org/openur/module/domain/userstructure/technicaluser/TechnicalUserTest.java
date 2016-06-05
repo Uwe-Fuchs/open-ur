@@ -77,6 +77,6 @@ public class TechnicalUserTest
 		Set<OpenURApplication> applications = techUser.getApplications();
 		assertEquals(applications.size(), 2);
 		assertTrue(applications.contains(app1));
-		assertEquals(applications.iterator().next(), app2);		
+		assertTrue(applications.contains(app2));	
 	}
 }
