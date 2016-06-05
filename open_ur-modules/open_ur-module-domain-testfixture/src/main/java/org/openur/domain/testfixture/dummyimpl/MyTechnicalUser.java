@@ -1,7 +1,11 @@
 package org.openur.domain.testfixture.dummyimpl;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
+import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 import org.openur.module.util.data.Status;
 
@@ -17,10 +21,12 @@ public class MyTechnicalUser
 	
 	private String identifier;
 	private String number;	
+	private Map<MyApplicationImpl, Set<MyPermissionImpl>> permissions = new HashMap<>();	
 	
 	public MyTechnicalUser(String identifier, String number)
 	{
 		super();
+		
 		this.identifier = identifier;
 		this.number = number;
 	}
@@ -35,6 +41,23 @@ public class MyTechnicalUser
 	public String getNumber()
 	{
 		return this.number;
+	}
+
+	@Override
+	public Set<MyPermissionImpl> getPermissions(IApplication application)
+	{
+		return permissions.get(application);
+	}
+	
+	public void addPermissionSet(MyApplicationImpl app, Set<MyPermissionImpl> perms)
+	{
+		this.permissions.put(app, perms);
+	}
+
+	@Override
+	public Set<MyApplicationImpl> getApplications()
+	{
+		return this.permissions.keySet();
 	}
 
 	@Override

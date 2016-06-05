@@ -341,18 +341,21 @@ public class TestObjectContainer
 		TECH_USER_1 = new TechnicalUserBuilder(TECH_USER_NUMBER_1)
 				.identifier(TECH_USER_UUID_1)
 				.status(Status.ACTIVE)
-				.creationDate(LocalDateTime.now())
+				.creationDate(LocalDateTime.now())				
+				.permissions(new HashSet<OpenURPermission>(Arrays.asList(PERMISSION_1_A, PERMISSION_2_A)))
 				.build();
 		
 		TECH_USER_2 = new TechnicalUserBuilder(TECH_USER_NUMBER_2)
 				.identifier(TECH_USER_UUID_2)
 				.status(Status.ACTIVE)
-				.creationDate(LocalDateTime.of(2012, 06, 20, 0, 0))
+				.creationDate(LocalDateTime.of(2012, 06, 20, 0, 0))				
+				.permissions(new HashSet<OpenURPermission>(Arrays.asList(PERMISSION_1_B, PERMISSION_2_B)))
 				.build();
 		
 		TECH_USER_3 = new TechnicalUserBuilder(TECH_USER_NUMBER_3)
 				.identifier(TECH_USER_UUID_3)
-				.status(Status.INACTIVE)
+				.status(Status.INACTIVE)				
+				.permissions(new HashSet<OpenURPermission>(Arrays.asList(PERMISSION_1_C, PERMISSION_2_C)))
 				.build();
 	}
 }
