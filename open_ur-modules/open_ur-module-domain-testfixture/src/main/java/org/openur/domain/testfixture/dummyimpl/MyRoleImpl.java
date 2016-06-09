@@ -26,6 +26,11 @@ public class MyRoleImpl
 		this.role = role;
 	}
 
+	public void addPermissionSet(MyApplicationImpl app, Set<MyPermissionImpl> perms)
+	{
+		this.permissions.put(app, perms);
+	}
+
 	@Override
 	public String getIdentifier()
 	{
@@ -37,22 +42,13 @@ public class MyRoleImpl
 	{
 		return this.role;
 	}
-
-	@Override
-	public Set<? extends IPermission> getPermissions(IApplication application)
-	{
-		return permissions.get(application);
-	}
 	
-	public void addPermissionSet(MyApplicationImpl app, Set<MyPermissionImpl> perms)
-	{
-		this.permissions.put(app, perms);
-	}
-
 	@Override
-	public Map<MyApplicationImpl, Set<? extends IPermission>> getAllPermissions()
+	public boolean containsPermission(IApplication application, IPermission permission)
 	{
-		return null;
+		Set<MyPermissionImpl> perms = this.permissions.get(application);
+		
+		return perms != null && perms.contains(permission);
 	}
 
 	@Override

@@ -57,7 +57,7 @@ public class OpenURRoleTest
 			.permissions(new HashSet<OpenURPermission>(Arrays.asList(perm1, perm2)))
 			.build();
 		
-		Map<OpenURApplication, Set<? extends IPermission>> perms = role.getAllPermissions();
+		Map<OpenURApplication, Set<OpenURPermission>> perms = role.getAllPermissions();
 		assertEquals(perms.size(), 2);
 		assertEquals(perms.get(app1).size(), 1);
 		assertEquals(perms.get(app1).iterator().next(), perm1);

@@ -7,33 +7,20 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.Validate;
-import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.application.OpenURApplication;
+import org.openur.module.domain.security.authorization.IPermissionsContainer;
 import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.domain.userstructure.UserStructureBase;
 import org.openur.module.domain.userstructure.UserStructureBaseBuilder;
 
 public class TechnicalUser
 	extends UserStructureBase
-	implements ITechnicalUser
+	implements ITechnicalUser, IPermissionsContainer<OpenURApplication, OpenURPermission>
 {
 	private static final long serialVersionUID = 4476135911103120283L;
 	
 	// properties:
 	private final Map<OpenURApplication, Set<OpenURPermission>> permissions;
-
-	// accessors:	
-	@Override
-	public Set<OpenURPermission> getPermissions(IApplication application)
-	{
-		return permissions.get(application);
-	}	
-
-	@Override
-	public Set<OpenURApplication> getApplications()
-	{
-		return this.permissions.keySet();
-	}
 
 	// constructor:
 	TechnicalUser(TechnicalUserBuilder b)
@@ -41,6 +28,13 @@ public class TechnicalUser
 		super(b);
 
 		this.permissions = Collections.unmodifiableMap(b.getPermissions());
+	}
+
+	// accessors:
+	@Override
+	public Map<OpenURApplication, Set<OpenURPermission>> getAllPermissions()
+	{
+		return this.permissions;
 	}
 
 	// builder:

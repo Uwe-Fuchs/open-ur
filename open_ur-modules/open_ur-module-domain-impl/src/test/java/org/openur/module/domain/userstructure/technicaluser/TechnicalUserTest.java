@@ -56,27 +56,4 @@ public class TechnicalUserTest
 		assertEquals(perms.size(), 1);
 		assertEquals(perms.iterator().next(), perm2);
 	}
-	
-	@Test
-	public void testGetApplications()
-	{
-		OpenURApplication app1 = new OpenURApplicationBuilder("app1")
-			.build();		
-		OpenURPermission perm1 = new OpenURPermissionBuilder("perm1", app1)
-			.build();
-		
-		OpenURApplication app2 = new OpenURApplicationBuilder("app2")
-			.build();
-		OpenURPermission perm2 = new OpenURPermissionBuilder("perm2", app2)
-			.build();		
-	
-		TechnicalUser techUser = new TechnicalUserBuilder("abc")
-			.permissions(new HashSet<OpenURPermission>(Arrays.asList(perm1, perm2)))
-			.build();
-		
-		Set<OpenURApplication> applications = techUser.getApplications();
-		assertEquals(applications.size(), 2);
-		assertTrue(applications.contains(app1));
-		assertTrue(applications.contains(app2));	
-	}
 }

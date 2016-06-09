@@ -1,7 +1,6 @@
 package org.openur.module.domain.security.authorization;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -11,7 +10,7 @@ import org.openur.module.domain.application.OpenURApplication;
 
 public class OpenURRole
 	extends IdentifiableEntityImpl
-	implements IRole
+	implements IRole, IPermissionsContainer<OpenURApplication, OpenURPermission>
 {
 	private static final long serialVersionUID = -5991333789511591402L;
 	
@@ -37,28 +36,21 @@ public class OpenURRole
 		return roleName;
 	}
 
-	@Override
-	public Set<OpenURPermission> getPermissions(IApplication app)
-	{
-		return permissions.get(app);
-	}
-
 	public String getDescription()
 	{
 		return description;
 	}
+
+	@Override
+	public Map<OpenURApplication, Set<OpenURPermission>> getAllPermissions()
+	{
+		return this.permissions;
+	}
 	
 	// operations:
 	@Override
-	public Map<OpenURApplication, Set<? extends IPermission>> getAllPermissions()
+	public boolean containsPermission(IApplication application, IPermission permission)
 	{
-		Map<OpenURApplication, Set<? extends IPermission>> map = new HashMap<>(this.permissions.size());
-		
-		for (OpenURApplication app : this.permissions.keySet())
-		{
-			map.put(app, this.getPermissions(app));
-		}
-		
-		return map;
-	}
+		return IPermissionsContainer.super.containsPermission(application, permission);
+	}	
 }
