@@ -15,6 +15,14 @@ public interface IRole
 	String getRoleName();
 	
 	// operations:
+	/**
+	 * has this role a certain permission?
+	 * 
+	 * @param application : the application whose permissions are queried.
+	 * @param permission : the permission in question.
+	 * 
+	 * @return this role has the permission.
+	 */
 	boolean containsPermission(IApplication application, IPermission permission);
 	
 	@Override

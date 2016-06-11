@@ -141,21 +141,24 @@ public class TestObjectContainer
 				.build();
 		
 		// roles:
-		ROLE_X = new OpenURRoleBuilder("role_X")
+		OpenURRoleBuilder roleBuilder = new OpenURRoleBuilder("role_X");
+		ROLE_X = roleBuilder
 				.description("description role_X")
 				.creationDate(LocalDateTime.now())
-				.permissions(new HashSet<OpenURPermission>(Arrays.asList(PERMISSION_1_A, PERMISSION_2_A)))
+				.permissions(new HashSet<OpenURPermission>(Arrays.asList(PERMISSION_1_A, PERMISSION_2_A)), roleBuilder)
 				.build();
 
-		ROLE_Y = new OpenURRoleBuilder("role_Y")
+		roleBuilder = new OpenURRoleBuilder("role_Y");
+		ROLE_Y = roleBuilder
 				.description("description role_Y")
 				.creationDate(LocalDateTime.now())
-				.permissions(new HashSet<OpenURPermission>(Arrays.asList(PERMISSION_1_B, PERMISSION_2_B)))
+				.permissions(new HashSet<OpenURPermission>(Arrays.asList(PERMISSION_1_B, PERMISSION_2_B)), roleBuilder)
 				.build();
 
-		ROLE_Z = new OpenURRoleBuilder("role_Z")
+		roleBuilder = new OpenURRoleBuilder("role_Z");
+		ROLE_Z = roleBuilder
 				.description("description role_Z")
-				.permissions(new HashSet<OpenURPermission>(Arrays.asList(PERMISSION_1_C, PERMISSION_2_C)))
+				.permissions(new HashSet<OpenURPermission>(Arrays.asList(PERMISSION_1_C, PERMISSION_2_C)), roleBuilder)
 				.build();
 		
 		// persons:
@@ -338,24 +341,27 @@ public class TestObjectContainer
 				.build();		
 		
 		// technical Users:
-		TECH_USER_1 = new TechnicalUserBuilder(TECH_USER_NUMBER_1)
+		TechnicalUserBuilder techUserBuilder = new TechnicalUserBuilder(TECH_USER_NUMBER_1);
+		TECH_USER_1 = techUserBuilder
 				.identifier(TECH_USER_UUID_1)
 				.status(Status.ACTIVE)
 				.creationDate(LocalDateTime.now())				
-				.permissions(new HashSet<OpenURPermission>(Arrays.asList(PERMISSION_1_A, PERMISSION_2_A)))
+				.permissions(new HashSet<OpenURPermission>(Arrays.asList(PERMISSION_1_A, PERMISSION_2_A)), techUserBuilder)
 				.build();
-		
-		TECH_USER_2 = new TechnicalUserBuilder(TECH_USER_NUMBER_2)
+
+		techUserBuilder = new TechnicalUserBuilder(TECH_USER_NUMBER_2);
+		TECH_USER_2 = techUserBuilder
 				.identifier(TECH_USER_UUID_2)
 				.status(Status.ACTIVE)
 				.creationDate(LocalDateTime.of(2012, 06, 20, 0, 0))				
-				.permissions(new HashSet<OpenURPermission>(Arrays.asList(PERMISSION_1_B, PERMISSION_2_B)))
+				.permissions(new HashSet<OpenURPermission>(Arrays.asList(PERMISSION_1_B, PERMISSION_2_B)), techUserBuilder)
 				.build();
-		
-		TECH_USER_3 = new TechnicalUserBuilder(TECH_USER_NUMBER_3)
+
+		techUserBuilder = new TechnicalUserBuilder(TECH_USER_NUMBER_3);
+		TECH_USER_3 = techUserBuilder
 				.identifier(TECH_USER_UUID_3)
 				.status(Status.INACTIVE)				
-				.permissions(new HashSet<OpenURPermission>(Arrays.asList(PERMISSION_1_C, PERMISSION_2_C)))
+				.permissions(new HashSet<OpenURPermission>(Arrays.asList(PERMISSION_1_C, PERMISSION_2_C)), techUserBuilder)
 				.build();
 	}
 }

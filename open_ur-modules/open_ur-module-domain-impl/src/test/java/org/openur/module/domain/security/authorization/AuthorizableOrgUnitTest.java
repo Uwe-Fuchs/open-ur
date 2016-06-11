@@ -74,9 +74,10 @@ public class AuthorizableOrgUnitTest
 		OpenURApplication app1 = new OpenURApplicationBuilder("app1")
 			.build();		
 		OpenURPermission perm11 = new OpenURPermissionBuilder("perm11", app1)
-			.build();		
-		OpenURRole role1 = new OpenURRoleBuilder("role1")
-			.permissions(new HashSet<OpenURPermission>(Arrays.asList(perm11)))
+			.build();	
+		OpenURRoleBuilder roleBuilder = new OpenURRoleBuilder("role1");
+		OpenURRole role1 = roleBuilder
+			.permissions(new HashSet<OpenURPermission>(Arrays.asList(perm11)), roleBuilder)
 			.build();
 		
 		Person person = new PersonBuilder("numberPers1", Name.create(Gender.MALE, "Barack", "Obama"))

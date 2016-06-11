@@ -2,6 +2,8 @@ package org.openur.module.domain.userstructure.technicaluser;
 
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.openur.module.domain.application.IApplication;
+import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.userstructure.IUserStructureBase;
 
 public interface ITechnicalUser
@@ -18,6 +20,17 @@ public interface ITechnicalUser
 		
 		return number;
 	}
+	
+	// operations:
+	/**
+	 * has this technical-user a certain permission?
+	 * 
+	 * @param application : the application whose permissions are queried.
+	 * @param permission : the permission in question.
+	 * 
+	 * @return this technical-user has the permission.
+	 */
+	boolean containsPermission(IApplication application, IPermission permission);
 	
 	default int compareTo(ITechnicalUser other)
 	{

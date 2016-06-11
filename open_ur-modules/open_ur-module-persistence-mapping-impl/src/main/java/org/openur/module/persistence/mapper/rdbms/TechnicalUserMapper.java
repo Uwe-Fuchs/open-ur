@@ -31,15 +31,15 @@ public class TechnicalUserMapper
 //				.stream()
 //				.map(permissionMapper::mapFromImmutable)
 //				.forEach(pPerm -> persistable.addPermssion(pPerm))
-//		);
-
-		for (OpenURApplication app : domainObject.getApplications())
+	//		);
+	
+		for (OpenURApplication app : domainObject.getAllPermissions().keySet())
 		{
 			domainObject.getPermissions(app)
 				.stream()
 				.map(permissionMapper::mapFromDomainObject)
 				.forEach(p -> persistable.addPermssion(p));
-		}
+		}		
 		
 		return persistable;
 	}
@@ -54,7 +54,8 @@ public class TechnicalUserMapper
 			entity.getPermissions()
 				.stream()
 				.map(permissionMapper::mapFromEntity)
-				.collect(Collectors.toSet())
+				.collect(Collectors.toSet()),
+			immutableBuilder
 		);
 		
 		return immutableBuilder.build();
@@ -82,19 +83,8 @@ public class TechnicalUserMapper
 	
 	private static OpenURPermission findPermissionInDomainObject(PPermission pPerm, TechnicalUser techUser)
 	{
-		for (OpenURApplication openUrApp : techUser.getApplications())
+		for (OpenURApplication openUrApp : techUser.getAllPermissions().keySet())
 		{
-//			Optional<OpenURPermission> openUrPerm2 = techUser
-//					.getPermissions(openUrApp)
-//					.stream()
-//					.filter(perm -> PermissionMapper.domainObjectEqualsToEntity(perm, pPerm))
-//					.findFirst();
-//			
-//			if (openUrPerm2.isPresent())
-//			{
-//				return openUrPerm2.get();
-//			}
-			
 			for (OpenURPermission openUrPerm : techUser.getPermissions(openUrApp))
 			{
 				if (PermissionMapper.domainObjectEqualsToEntity(openUrPerm, pPerm))

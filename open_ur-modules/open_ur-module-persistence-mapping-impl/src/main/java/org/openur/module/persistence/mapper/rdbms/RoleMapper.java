@@ -55,7 +55,8 @@ public class RoleMapper
 			entity.getPermissions()
 				.stream()
 				.map(permissionMapper::mapFromEntity)
-				.collect(Collectors.toSet())
+				.collect(Collectors.toSet()),
+			immutableBuilder
 		);
 		
 		return immutableBuilder

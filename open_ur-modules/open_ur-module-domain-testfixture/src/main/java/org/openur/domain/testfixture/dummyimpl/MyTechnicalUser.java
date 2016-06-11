@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.openur.module.domain.application.IApplication;
+import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 import org.openur.module.util.data.Status;
 
@@ -42,22 +43,18 @@ public class MyTechnicalUser
 	{
 		return this.number;
 	}
-
-	@Override
-	public Set<MyPermissionImpl> getPermissions(IApplication application)
-	{
-		return permissions.get(application);
-	}
 	
 	public void addPermissionSet(MyApplicationImpl app, Set<MyPermissionImpl> perms)
 	{
 		this.permissions.put(app, perms);
 	}
-
+	
 	@Override
-	public Set<MyApplicationImpl> getApplications()
+	public boolean containsPermission(IApplication application, IPermission permission)
 	{
-		return this.permissions.keySet();
+		Set<MyPermissionImpl> perms = this.permissions.get(application);
+		
+		return perms != null && perms.contains(permission);
 	}
 
 	@Override

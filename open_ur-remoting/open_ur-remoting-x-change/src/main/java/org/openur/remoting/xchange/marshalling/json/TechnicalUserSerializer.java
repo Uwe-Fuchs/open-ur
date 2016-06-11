@@ -4,7 +4,6 @@ import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
 import org.openur.module.domain.userstructure.technicaluser.TechnicalUser.TechnicalUserBuilder;
@@ -38,7 +37,7 @@ public class TechnicalUserSerializer
 			permissions.add(context.deserialize(e, OpenURPermission.class));
 		}
 		
-		builder.permissions(permissions);
+		builder.permissions(permissions, builder);
 
 		return builder.build();
 	}
@@ -51,12 +50,19 @@ public class TechnicalUserSerializer
 		
 		Set<OpenURPermission> permissions = new HashSet<>();
 		
-		for (OpenURApplication application : src.getApplications())
-		{
-			src.getPermissions(application)
-					.stream()
-					.forEach(permissions::add);
-		}
+		src.getAllPermissions().values()
+				.stream()
+				.forEach(
+					p -> p.stream()
+					.forEach(permissions::add));		
+
+//		for (Set<? extends IPermission> p : src.getAllPermissions().values())
+//		{
+//			for (IPermission ip : p)
+//			{
+//				permissions.add((OpenURPermission) ip);
+//			}
+//		}
 
 		jsonObject.add("permissions", context.serialize(permissions));
 

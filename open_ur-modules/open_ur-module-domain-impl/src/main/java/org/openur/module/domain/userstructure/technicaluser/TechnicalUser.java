@@ -4,12 +4,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.Validate;
+import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.application.OpenURApplication;
+import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IPermissionsContainer;
 import org.openur.module.domain.security.authorization.OpenURPermission;
+import org.openur.module.domain.security.authorization.IPermissionContainerBuilder;
 import org.openur.module.domain.userstructure.UserStructureBase;
 import org.openur.module.domain.userstructure.UserStructureBaseBuilder;
 
@@ -36,31 +37,21 @@ public class TechnicalUser
 	{
 		return this.permissions;
 	}
+	
+	// operations:
+	@Override
+	public boolean containsPermission(IApplication application, IPermission permission)
+	{
+		return IPermissionsContainer.super.containsPermission(application, permission);
+	}	
 
 	// builder:
 	public static class TechnicalUserBuilder
 		extends UserStructureBaseBuilder<TechnicalUserBuilder>
+		implements IPermissionContainerBuilder
 	{
 		// properties:
 		private Map<OpenURApplication, Set<OpenURPermission>> permissions = new HashMap<>();
-		
-		// builder-methods:
-		public TechnicalUserBuilder permissions(Set<OpenURPermission> perms)
-		{		
-			Validate.notNull(perms, "permissions must not be null!");
-			
-			Map<OpenURApplication, Set<OpenURPermission>> permsLocal = perms
-				.stream()
-				.collect(Collectors.groupingBy(OpenURPermission::getApplication, Collectors.toSet()));
-			
-			// make permission-sets unmodifiable:
-			for (OpenURApplication app : permsLocal.keySet())
-			{
-				this.permissions.put(app, Collections.unmodifiableSet(permsLocal.get(app)));
-			}
-			
-			return this;
-		}
 	  
 	  // constructors:
 		public TechnicalUserBuilder(String techUserNumber)
@@ -69,10 +60,11 @@ public class TechnicalUser
 		}
 		
 		// accessors:
-		Map<OpenURApplication, Set<OpenURPermission>> getPermissions()
+		@Override
+		public Map<OpenURApplication, Set<OpenURPermission>> getPermissions()
 		{
 			return permissions;
-		}		
+		}
 		
 		public TechnicalUser build()
 		{

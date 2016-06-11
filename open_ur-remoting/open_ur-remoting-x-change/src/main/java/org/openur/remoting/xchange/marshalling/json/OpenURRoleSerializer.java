@@ -36,20 +36,17 @@ public class OpenURRoleSerializer
 			jsonObject.addProperty("description", src.getDescription());
 		}
 
-		if (src.getAllPermissions() != null)
+		Set<OpenURPermission> permissions = new HashSet<>();
+
+		for (Set<? extends IPermission> p : src.getAllPermissions().values())
 		{
-			Set<OpenURPermission> permissions = new HashSet<>();
-
-			for (Set<? extends IPermission> p : src.getAllPermissions().values())
+			for (IPermission ip : p)
 			{
-				for (IPermission ip : p)
-				{
-					permissions.add((OpenURPermission) ip);
-				}
+				permissions.add((OpenURPermission) ip);
 			}
-
-			jsonObject.add("permissions", context.serialize(permissions));
 		}
+
+		jsonObject.add("permissions", context.serialize(permissions));
 
 		return jsonObject;
 	}
@@ -73,7 +70,7 @@ public class OpenURRoleSerializer
 			permissions.add(context.deserialize(e, OpenURPermission.class));
 		}
 		
-		builder.permissions(permissions);
+		builder.permissions(permissions, builder);
 
 		return builder.build();
 	}

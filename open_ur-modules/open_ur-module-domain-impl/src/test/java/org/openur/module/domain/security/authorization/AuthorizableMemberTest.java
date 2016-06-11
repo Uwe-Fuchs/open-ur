@@ -55,9 +55,10 @@ public class AuthorizableMemberTest
 		OpenURPermission perm11 = new OpenURPermissionBuilder("perm11", app1)
 			.build();
 		OpenURPermission perm12 = new OpenURPermissionBuilder("perm12", app1)
-			.build();		
-		OpenURRole role1 = new OpenURRoleBuilder("role1")
-			.permissions(new HashSet<OpenURPermission>(Arrays.asList(perm11, perm12)))
+			.build();	
+		OpenURRoleBuilder roleBuilder = new OpenURRoleBuilder("role1");
+		OpenURRole role1 = roleBuilder
+			.permissions(new HashSet<OpenURPermission>(Arrays.asList(perm11, perm12)), roleBuilder)
 			.build();
 		
 		Person person = new PersonBuilder("numberPers1", Name.create(Gender.MALE, "Barack", "Obama"))
@@ -76,9 +77,10 @@ public class AuthorizableMemberTest
 		OpenURPermission perm21 = new OpenURPermissionBuilder("perm21", app2)
 			.build();
 		OpenURPermission perm22 = new OpenURPermissionBuilder("perm22", app2)
-			.build();		
-		OpenURRole role2 = new OpenURRoleBuilder("role2")
-			.permissions(new HashSet<OpenURPermission>(Arrays.asList(perm21, perm22)))
+			.build();
+		roleBuilder = new OpenURRoleBuilder("role2");
+		OpenURRole role2 = roleBuilder
+			.permissions(new HashSet<OpenURPermission>(Arrays.asList(perm21, perm22)), roleBuilder)
 			.build();
 		
 		assertFalse(member.hasPermission(perm21));
