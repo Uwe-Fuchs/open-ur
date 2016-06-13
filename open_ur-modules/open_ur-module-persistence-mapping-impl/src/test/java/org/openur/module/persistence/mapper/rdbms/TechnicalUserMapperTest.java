@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
-import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
+import org.openur.module.domain.security.authorization.AuthorizableTechUser;
 import org.openur.module.persistence.rdbms.config.MapperSpringConfig;
 import org.openur.module.persistence.rdbms.entity.PTechnicalUser;
 import org.springframework.test.context.ActiveProfiles;
@@ -25,7 +25,7 @@ public class TechnicalUserMapperTest
 	@Test
 	public void testMapFromDomainObject()
 	{
-		TechnicalUser immutable = TestObjectContainer.TECH_USER_3;		
+		AuthorizableTechUser immutable = TestObjectContainer.TECH_USER_3;		
 		PTechnicalUser persistable = technicalUserMapper.mapFromDomainObject(immutable);
 
 		assertTrue(TechnicalUserMapper.domainObjectEqualsToEntity(immutable, persistable));
@@ -35,7 +35,7 @@ public class TechnicalUserMapperTest
 	public void testMapToImmutable()
 	{
 		PTechnicalUser persistable = technicalUserMapper.mapFromDomainObject(TestObjectContainer.TECH_USER_3);		
-		TechnicalUser immutable = technicalUserMapper.mapFromEntity(persistable);
+		AuthorizableTechUser immutable = technicalUserMapper.mapFromEntity(persistable);
 
 		assertTrue(TechnicalUserMapper.domainObjectEqualsToEntity(immutable, persistable));
 	}

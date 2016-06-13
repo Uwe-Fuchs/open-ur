@@ -42,6 +42,7 @@ public class AuthorizableMemberTest
 		
 		member = new AuthorizableMemberBuilder(person, OU_ID_1)
 			.roles(Arrays.asList(role1, role2))
+			.identifier("someId")
 			.build();
 		assertTrue(member.hasRole(role1));
 		assertTrue(member.hasRole(role2));

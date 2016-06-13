@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.openur.module.domain.application.IApplication;
+import org.openur.module.domain.security.authorization.IAuthorizableTechUser;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 import org.openur.module.util.data.Status;
@@ -15,8 +16,8 @@ import org.openur.module.util.data.Status;
  * 
  * @author info@uwefuchs.de
  */
-public class MyTechnicalUser
-	implements ITechnicalUser
+public class MyAuthorizableTechUser
+	implements IAuthorizableTechUser
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -24,7 +25,7 @@ public class MyTechnicalUser
 	private String number;	
 	private Map<MyApplicationImpl, Set<MyPermissionImpl>> permissions = new HashMap<>();	
 	
-	public MyTechnicalUser(String identifier, String number)
+	public MyAuthorizableTechUser(String identifier, String number)
 	{
 		super();
 		

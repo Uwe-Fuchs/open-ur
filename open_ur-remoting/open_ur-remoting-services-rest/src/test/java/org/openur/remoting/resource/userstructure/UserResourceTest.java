@@ -27,8 +27,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
+import org.openur.module.domain.security.authorization.AuthorizableTechUser;
 import org.openur.module.domain.userstructure.person.Person;
-import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
 import org.openur.module.domain.utils.common.DomainObjectHelper;
 import org.openur.module.domain.utils.compare.PersonComparer;
 import org.openur.module.service.userstructure.IUserServices;
@@ -123,8 +123,8 @@ public class UserResourceTest
 	{
 		Mockito.when(userServicesMock.findTechnicalUserById(TestObjectContainer.TECH_USER_UUID_1)).thenReturn(TestObjectContainer.TECH_USER_1);
 		
-		TechnicalUser tu = getResourceClient().performRestCall_GET(
-					TECHUSER_PER_ID_RESOURCE_PATH + TestObjectContainer.TECH_USER_UUID_1, MediaType.APPLICATION_JSON, TechnicalUser.class);
+		AuthorizableTechUser tu = getResourceClient().performRestCall_GET(
+					TECHUSER_PER_ID_RESOURCE_PATH + TestObjectContainer.TECH_USER_UUID_1, MediaType.APPLICATION_JSON, AuthorizableTechUser.class);
 
 		assertTrue(EqualsBuilder.reflectionEquals(TestObjectContainer.TECH_USER_1, tu));
 	}
@@ -134,8 +134,8 @@ public class UserResourceTest
 	{
 		Mockito.when(userServicesMock.findTechnicalUserByNumber(TestObjectContainer.TECH_USER_NUMBER_1)).thenReturn(TestObjectContainer.TECH_USER_1);
 		
-		TechnicalUser tu = getResourceClient().performRestCall_GET(
-					TECHUSER_PER_NUMBER_RESOURCE_PATH + TestObjectContainer.TECH_USER_NUMBER_1, MediaType.APPLICATION_JSON, TechnicalUser.class);
+		AuthorizableTechUser tu = getResourceClient().performRestCall_GET(
+					TECHUSER_PER_NUMBER_RESOURCE_PATH + TestObjectContainer.TECH_USER_NUMBER_1, MediaType.APPLICATION_JSON, AuthorizableTechUser.class);
 
 		assertTrue(EqualsBuilder.reflectionEquals(TestObjectContainer.TECH_USER_1, tu));
 	}
@@ -146,8 +146,8 @@ public class UserResourceTest
 		Mockito.when(userServicesMock.obtainAllTechnicalUsers()).thenReturn(new HashSet<>(Arrays.asList(TestObjectContainer.TECH_USER_1, 
 					TestObjectContainer.TECH_USER_2, TestObjectContainer.TECH_USER_3)));
 		
-		Set<TechnicalUser> resultSet = getResourceClient().performRestCall_GET(ALL_TECHUSERS_RESOURCE_PATH, MediaType.APPLICATION_JSON, 
-					new GenericType<Set<TechnicalUser>>(new ParameterizedTypeImpl(Set.class, TechnicalUser.class)));
+		Set<AuthorizableTechUser> resultSet = getResourceClient().performRestCall_GET(ALL_TECHUSERS_RESOURCE_PATH, MediaType.APPLICATION_JSON, 
+					new GenericType<Set<AuthorizableTechUser>>(new ParameterizedTypeImpl(Set.class, AuthorizableTechUser.class)));
 
 		assertFalse(resultSet.isEmpty());
 		assertEquals(3, resultSet.size());

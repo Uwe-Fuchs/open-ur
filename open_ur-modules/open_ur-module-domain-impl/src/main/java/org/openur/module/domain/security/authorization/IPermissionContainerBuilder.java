@@ -26,11 +26,11 @@ public interface IPermissionContainerBuilder
 	 * builder-method for permissions-container
 	 * 
 	 * @param perms Set containing permissions.
-	 * @param builder the {@link IdentifiableEntityBuilder} which holds the permissions-container.
+	 * @param builder the builder-instance that holds the permissions-container.
 	 * 
 	 * @return {@link IdentifiableEntityBuilder}
 	 */
-	default <I extends IdentifiableEntityBuilder<I>> I permissions(Set<OpenURPermission> perms, I builder)
+	default <I> I permissions(Set<OpenURPermission> perms, I builder)
 	{
 		Validate.notNull(perms, "permissions must not be null!");
 		

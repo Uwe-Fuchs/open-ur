@@ -2,8 +2,8 @@ package org.openur.module.service.userstructure;
 
 import java.util.Set;
 
+import org.openur.module.domain.security.authorization.IAuthorizableTechUser;
 import org.openur.module.domain.userstructure.person.IPerson;
-import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 
 public interface IUserServices
 {
@@ -40,7 +40,7 @@ public interface IUserServices
    * 
    * @return the technical user or null, if no user is found.
    */
-	ITechnicalUser findTechnicalUserById(String techUserId);
+	IAuthorizableTechUser findTechnicalUserById(String techUserId);
 	
   /**
    * searches a technical user via it's (domain specific) user-number.
@@ -49,7 +49,7 @@ public interface IUserServices
    * 
    * @return the technical user or null, if no user is found.
    */
-	ITechnicalUser findTechnicalUserByNumber(String techUserNumber);
+	IAuthorizableTechUser findTechnicalUserByNumber(String techUserNumber);
 	
   /**
    * returns all stored technical users in a set.
@@ -57,5 +57,5 @@ public interface IUserServices
    * 
    * @return Set with all technical users.
    */
-  Set<ITechnicalUser> obtainAllTechnicalUsers();
+  Set<IAuthorizableTechUser> obtainAllTechnicalUsers();
 }

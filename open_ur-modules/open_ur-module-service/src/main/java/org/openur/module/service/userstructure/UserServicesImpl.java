@@ -8,8 +8,8 @@ import javax.inject.Inject;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.Validate;
+import org.openur.module.domain.security.authorization.IAuthorizableTechUser;
 import org.openur.module.domain.userstructure.person.IPerson;
-import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 import org.openur.module.persistence.dao.IPersonDao;
 import org.openur.module.persistence.dao.ITechnicalUserDao;
 
@@ -58,31 +58,31 @@ public class UserServicesImpl
 	}
 
 	@Override
-	public ITechnicalUser findTechnicalUserById(String techUserId)
+	public IAuthorizableTechUser findTechnicalUserById(String techUserId)
 	{
 		Validate.notEmpty(techUserId, "user-id must not be empty!");
 		
-		ITechnicalUser techUser = technicalUserDao.findTechnicalUserById(techUserId);
+		IAuthorizableTechUser techUser = technicalUserDao.findTechnicalUserById(techUserId);
 
 		return techUser;
 	}
 
 	@Override
-	public ITechnicalUser findTechnicalUserByNumber(String techUserNumber)
+	public IAuthorizableTechUser findTechnicalUserByNumber(String techUserNumber)
 	{
 		Validate.notEmpty(techUserNumber, "user-number must not be empty!");
 		
-		ITechnicalUser techUser = technicalUserDao.findTechnicalUserByNumber(techUserNumber);
+		IAuthorizableTechUser techUser = technicalUserDao.findTechnicalUserByNumber(techUserNumber);
 
 		return techUser;
 	}
 
 	@Override
-	public Set<ITechnicalUser> obtainAllTechnicalUsers()
+	public Set<IAuthorizableTechUser> obtainAllTechnicalUsers()
 	{
-		Set<ITechnicalUser> techUsersSet = new HashSet<>();
+		Set<IAuthorizableTechUser> techUsersSet = new HashSet<>();
 
-		List<ITechnicalUser> techUsersList = technicalUserDao.obtainAllTechnicalUsers();
+		List<IAuthorizableTechUser> techUsersList = technicalUserDao.obtainAllTechnicalUsers();
 
 		if (!CollectionUtils.isEmpty(techUsersList))
 		{

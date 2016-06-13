@@ -6,9 +6,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.openur.module.domain.security.authentication.UserAccount;
 import org.openur.module.domain.security.authentication.UserAccountBuilder;
+import org.openur.module.domain.security.authorization.AuthorizableTechUser;
 import org.openur.module.domain.userstructure.UserStructureBase;
 import org.openur.module.domain.userstructure.person.Person;
-import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
 import org.openur.module.persistence.rdbms.entity.PUserAccount;
 import org.openur.module.persistence.rdbms.entity.PUserStructureBase;
 
@@ -31,9 +31,9 @@ public class UserAccountMapper
 		{
 			Person person = (Person) userStructureBase;
 			pUserStructureBase = personMapper.mapFromDomainObject(person);
-		} else if (userStructureBase instanceof TechnicalUser)
+		} else if (userStructureBase instanceof AuthorizableTechUser)
 		{
-			TechnicalUser techUser = (TechnicalUser) userStructureBase;
+			AuthorizableTechUser techUser = (AuthorizableTechUser) userStructureBase;
 			pUserStructureBase = technicalUserMapper.mapFromDomainObject(techUser);
 		} else
 		{

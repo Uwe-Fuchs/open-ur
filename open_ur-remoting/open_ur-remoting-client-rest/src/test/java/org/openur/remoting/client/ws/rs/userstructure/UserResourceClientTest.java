@@ -19,9 +19,9 @@ import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
+import org.openur.module.domain.security.authorization.IAuthorizableTechUser;
 import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.domain.userstructure.person.Person;
-import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 import org.openur.module.domain.utils.common.DomainObjectHelper;
 import org.openur.module.domain.utils.compare.PersonComparer;
 import org.openur.module.service.userstructure.IUserServices;
@@ -116,7 +116,7 @@ public class UserResourceClientTest
 	{
 		Mockito.when(userServicesMock.findTechnicalUserById(TestObjectContainer.TECH_USER_UUID_1)).thenReturn(TestObjectContainer.TECH_USER_1);
 		
-		ITechnicalUser tu = userResourceClient.findTechnicalUserById(TestObjectContainer.TECH_USER_UUID_1);
+		IAuthorizableTechUser tu = userResourceClient.findTechnicalUserById(TestObjectContainer.TECH_USER_UUID_1);
 
 		assertNotNull(tu);
 		System.out.println("Result: " + tu);
@@ -129,7 +129,7 @@ public class UserResourceClientTest
 	{
 		Mockito.when(userServicesMock.findTechnicalUserByNumber(TestObjectContainer.TECH_USER_NUMBER_1)).thenReturn(TestObjectContainer.TECH_USER_1);
 		
-		ITechnicalUser tu = userResourceClient.findTechnicalUserByNumber(TestObjectContainer.TECH_USER_NUMBER_1);
+		IAuthorizableTechUser tu = userResourceClient.findTechnicalUserByNumber(TestObjectContainer.TECH_USER_NUMBER_1);
 
 		assertNotNull(tu);
 		System.out.println("Result: " + tu);
@@ -143,7 +143,7 @@ public class UserResourceClientTest
 		Mockito.when(userServicesMock.obtainAllTechnicalUsers()).thenReturn(new HashSet<>(Arrays.asList(TestObjectContainer.TECH_USER_1, 
 					TestObjectContainer.TECH_USER_2, TestObjectContainer.TECH_USER_3)));
 		
-		Set<ITechnicalUser> resultSet = userResourceClient.obtainAllTechnicalUsers();
+		Set<IAuthorizableTechUser> resultSet = userResourceClient.obtainAllTechnicalUsers();
 
 		assertFalse(resultSet.isEmpty());
 		assertEquals(3, resultSet.size());

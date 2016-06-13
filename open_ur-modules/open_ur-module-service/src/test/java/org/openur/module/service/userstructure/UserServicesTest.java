@@ -16,10 +16,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.openur.domain.testfixture.dummyimpl.MyPerson;
-import org.openur.domain.testfixture.dummyimpl.MyTechnicalUser;
+import org.openur.domain.testfixture.dummyimpl.MyAuthorizableTechUser;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
+import org.openur.module.domain.security.authorization.IAuthorizableTechUser;
 import org.openur.module.domain.userstructure.person.IPerson;
-import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 import org.openur.module.persistence.dao.IPersonDao;
 import org.openur.module.persistence.dao.ITechnicalUserDao;
 import org.openur.module.service.config.UserStructureTestSpringConfig;
@@ -41,8 +41,8 @@ public class UserServicesTest
 	
 	private static IPerson PERSON_1;
 	private static IPerson PERSON_2;
-	private static ITechnicalUser TECH_USER_1;
-	private static ITechnicalUser TECH_USER_2;
+	private static IAuthorizableTechUser TECH_USER_1;
+	private static IAuthorizableTechUser TECH_USER_2;
 	
 	@Inject
 	private IPersonDao personDaoMock;
@@ -67,8 +67,8 @@ public class UserServicesTest
 		PERSON_1 = new MyPerson(UUID_1, NO_123);
 		PERSON_2 = new MyPerson(UUID_2, NO_456);
 		
-		TECH_USER_1 = new MyTechnicalUser(UUID_1, NO_123);
-		TECH_USER_2 = new MyTechnicalUser(UUID_2, NO_456);
+		TECH_USER_1 = new MyAuthorizableTechUser(UUID_1, NO_123);
+		TECH_USER_2 = new MyAuthorizableTechUser(UUID_2, NO_456);
 	}
 
 	@Test
@@ -201,7 +201,7 @@ public class UserServicesTest
 		// test with open-ur-specific domain-objects:
 		Mockito.when(technicalUserDaoMock.findTechnicalUserById(TestObjectContainer.TECH_USER_UUID_1)).thenReturn(TestObjectContainer.TECH_USER_1);
 		
-		ITechnicalUser tu = userServices.findTechnicalUserById(TestObjectContainer.TECH_USER_UUID_1);		
+		IAuthorizableTechUser tu = userServices.findTechnicalUserById(TestObjectContainer.TECH_USER_UUID_1);		
 		assertNotNull(tu);
 		assertEquals(TestObjectContainer.TECH_USER_UUID_1, tu.getIdentifier());
 		assertEquals(TestObjectContainer.TECH_USER_NUMBER_1, tu.getNumber());
@@ -241,7 +241,7 @@ public class UserServicesTest
 		// test with open-ur-specific domain-objects:
 		Mockito.when(technicalUserDaoMock.findTechnicalUserByNumber(TestObjectContainer.TECH_USER_NUMBER_1)).thenReturn(TestObjectContainer.TECH_USER_1);
 		
-		ITechnicalUser tu = userServices.findTechnicalUserByNumber(TestObjectContainer.TECH_USER_NUMBER_1);		
+		IAuthorizableTechUser tu = userServices.findTechnicalUserByNumber(TestObjectContainer.TECH_USER_NUMBER_1);		
 		assertNotNull(tu);
 		assertEquals(TestObjectContainer.TECH_USER_UUID_1, tu.getIdentifier());
 		assertEquals(TestObjectContainer.TECH_USER_NUMBER_1, tu.getNumber());
@@ -281,18 +281,18 @@ public class UserServicesTest
 		// test with open-ur-specific domain-objects:
 		Mockito.when(technicalUserDaoMock.obtainAllTechnicalUsers()).thenReturn(Arrays.asList(TestObjectContainer.TECH_USER_1, TestObjectContainer.TECH_USER_2));
 		
-		Set<ITechnicalUser> techUsersSet = userServices.obtainAllTechnicalUsers();
+		Set<IAuthorizableTechUser> techUsersSet = userServices.obtainAllTechnicalUsers();
 		
 		assertTrue(techUsersSet != null);
 		assertEquals(2, techUsersSet.size());
 		
-		for (ITechnicalUser tu : techUsersSet)
+		for (IAuthorizableTechUser tu : techUsersSet)
 		{
 			assertTrue(TestObjectContainer.TECH_USER_UUID_1.equals(tu.getIdentifier()) || TestObjectContainer.TECH_USER_UUID_2.equals(tu.getIdentifier()));
 			assertTrue(TestObjectContainer.TECH_USER_NUMBER_1.equals(tu.getNumber()) || TestObjectContainer.TECH_USER_NUMBER_2.equals(tu.getNumber()));
 		}
 		
-		for (ITechnicalUser p : techUsersSet)
+		for (IAuthorizableTechUser p : techUsersSet)
 		{
 			assertFalse(OTHER_UUID.equals(p.getIdentifier()));
 			assertFalse(NUMBER_DIFFERENT_FROM_ALL_OTHERS.equals(p.getNumber()));
@@ -306,13 +306,13 @@ public class UserServicesTest
 		assertTrue(techUsersSet != null);
 		assertEquals(2, techUsersSet.size());
 		
-		for (ITechnicalUser tu : techUsersSet)
+		for (IAuthorizableTechUser tu : techUsersSet)
 		{
 			assertTrue(UUID_1.equals(tu.getIdentifier()) || UUID_2.equals(tu.getIdentifier()));
 			assertTrue(NO_123.equals(tu.getNumber()) || NO_456.equals(tu.getNumber()));
 		}
 		
-		for (ITechnicalUser p : techUsersSet)
+		for (IAuthorizableTechUser p : techUsersSet)
 		{
 			assertFalse(OTHER_UUID.equals(p.getIdentifier()));
 			assertFalse(NUMBER_DIFFERENT_FROM_ALL_OTHERS.equals(p.getNumber()));

@@ -9,8 +9,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.openur.module.domain.security.authorization.IAuthorizableTechUser;
 import org.openur.module.domain.userstructure.person.IPerson;
-import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
 import org.openur.module.service.userstructure.IUserServices;
 
 @Path(UserResource.USER_RESOURCE_PATH)
@@ -59,7 +59,7 @@ public class UserResource
 	@GET
 	@Path(TECHUSER_PER_ID_RESOURCE_PATH + "{id}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public ITechnicalUser findTechnicalUserById(@PathParam("id") String id)
+	public IAuthorizableTechUser findTechnicalUserById(@PathParam("id") String id)
 	{
 		return userServices.findTechnicalUserById(id);
 	}
@@ -68,7 +68,7 @@ public class UserResource
 	@GET
 	@Path(TECHUSER_PER_NUMBER_RESOURCE_PATH + "{number}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public ITechnicalUser findTechnicalUserByNumber(@PathParam("number") String number)
+	public IAuthorizableTechUser findTechnicalUserByNumber(@PathParam("number") String number)
 	{
 		return userServices.findTechnicalUserByNumber(number);
 	}
@@ -77,7 +77,7 @@ public class UserResource
 	@GET
 	@Path(ALL_TECHUSERS_RESOURCE_PATH)
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public Set<ITechnicalUser> obtainAllTechnicalUsers()
+	public Set<IAuthorizableTechUser> obtainAllTechnicalUsers()
 	{
 		return userServices.obtainAllTechnicalUsers();
 	}

@@ -15,9 +15,9 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
+import org.openur.module.domain.security.authorization.AuthorizableTechUser;
+import org.openur.module.domain.security.authorization.IAuthorizableTechUser;
 import org.openur.module.domain.security.authorization.OpenURPermission;
-import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
-import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
 import org.openur.module.persistence.dao.ITechnicalUserDao;
 import org.openur.module.persistence.mapper.rdbms.IEntityDomainObjectMapper;
 import org.openur.module.persistence.mapper.rdbms.TechnicalUserMapper;
@@ -44,7 +44,7 @@ public class TechnicalUserDaoImplRdbmsTest
 	private IEntityDomainObjectMapper<PPermission, OpenURPermission> permissionMapper;
 	
 	@Inject
-	private IEntityDomainObjectMapper<PTechnicalUser, TechnicalUser> technicalUserMapper;
+	private IEntityDomainObjectMapper<PTechnicalUser, AuthorizableTechUser> technicalUserMapper;
 	
 	@Inject
 	private TechnicalUserRepository technicalUserRepository;
@@ -69,10 +69,10 @@ public class TechnicalUserDaoImplRdbmsTest
 		persistable.setPermissions(new HashSet<>(Arrays.asList(perm1, perm2)));
 		persistable = saveTechnicalUser(persistable);
 
-		ITechnicalUser tu = technicalUserDao.findTechnicalUserById(persistable.getIdentifier());
+		IAuthorizableTechUser tu = technicalUserDao.findTechnicalUserById(persistable.getIdentifier());
 
 		assertNotNull(tu);
-		assertTrue(TechnicalUserMapper.domainObjectEqualsToEntity((TechnicalUser) tu, persistable));
+		assertTrue(TechnicalUserMapper.domainObjectEqualsToEntity((AuthorizableTechUser) tu, persistable));
 	}
 
 	@Test
@@ -86,16 +86,16 @@ public class TechnicalUserDaoImplRdbmsTest
 		persistable.setPermissions(new HashSet<>(Arrays.asList(perm1, perm2)));
 		persistable = saveTechnicalUser(persistable);
 
-		ITechnicalUser tu = technicalUserDao.findTechnicalUserByNumber(TestObjectContainer.TECH_USER_NUMBER_2);
+		IAuthorizableTechUser tu = technicalUserDao.findTechnicalUserByNumber(TestObjectContainer.TECH_USER_NUMBER_2);
 
 		assertNotNull(tu);
-		assertTrue(TechnicalUserMapper.domainObjectEqualsToEntity((TechnicalUser) tu, persistable));
+		assertTrue(TechnicalUserMapper.domainObjectEqualsToEntity((AuthorizableTechUser) tu, persistable));
 	}
 
 	@Test
 	public void testObtainAllTechnicalUsers()
 	{
-		List<ITechnicalUser> allTechUsers = technicalUserDao.obtainAllTechnicalUsers();
+		List<IAuthorizableTechUser> allTechUsers = technicalUserDao.obtainAllTechnicalUsers();
 		assertNotNull(allTechUsers);
 		assertEquals(allTechUsers.size(), 0);
 
@@ -119,11 +119,11 @@ public class TechnicalUserDaoImplRdbmsTest
 		assertNotNull(allTechUsers);
 		assertEquals(allTechUsers.size(), 2);
 
-		Iterator<ITechnicalUser> iter = allTechUsers.iterator();
-		TechnicalUser _tu1 = (TechnicalUser) iter.next();
-		TechnicalUser _tu2 = (TechnicalUser) iter.next();
-		TechnicalUser tu1 = _tu1.getTechUserNumber().equals(persistable1.getTechUserNumber()) ? _tu1 : _tu2;
-		TechnicalUser tu2 = _tu1.getTechUserNumber().equals(persistable1.getTechUserNumber()) ? _tu2 : _tu1;
+		Iterator<IAuthorizableTechUser> iter = allTechUsers.iterator();
+		AuthorizableTechUser _tu1 = (AuthorizableTechUser) iter.next();
+		AuthorizableTechUser _tu2 = (AuthorizableTechUser) iter.next();
+		AuthorizableTechUser tu1 = _tu1.getTechUserNumber().equals(persistable1.getTechUserNumber()) ? _tu1 : _tu2;
+		AuthorizableTechUser tu2 = _tu1.getTechUserNumber().equals(persistable1.getTechUserNumber()) ? _tu2 : _tu1;
 
 		assertTrue(TechnicalUserMapper.domainObjectEqualsToEntity(tu1, persistable1));
 		assertTrue(TechnicalUserMapper.domainObjectEqualsToEntity(tu2, persistable2));

@@ -4,9 +4,9 @@ import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.openur.module.domain.security.authorization.AuthorizableTechUser;
+import org.openur.module.domain.security.authorization.AuthorizableTechUserBuilder;
 import org.openur.module.domain.security.authorization.OpenURPermission;
-import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
-import org.openur.module.domain.userstructure.technicaluser.TechnicalUser.TechnicalUserBuilder;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
@@ -19,15 +19,15 @@ import com.google.gson.JsonSerializer;
 
 public class TechnicalUserSerializer
 	extends UserStructureBaseSerializer
-	implements JsonSerializer<TechnicalUser>, JsonDeserializer<TechnicalUser>
+	implements JsonSerializer<AuthorizableTechUser>, JsonDeserializer<AuthorizableTechUser>
 {
 	@Override
-	public TechnicalUser deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+	public AuthorizableTechUser deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 		throws JsonParseException
 	{		
 		JsonObject jsonObject = json.getAsJsonObject();		
 		
-		TechnicalUserBuilder builder = new TechnicalUserBuilder(getNumber());
+		AuthorizableTechUserBuilder builder = new AuthorizableTechUserBuilder(getNumber());
 		super.deserialize(jsonObject, builder);
 		
 		JsonArray permissionsArray = jsonObject.get("permissions").getAsJsonArray();
@@ -43,7 +43,7 @@ public class TechnicalUserSerializer
 	}
 
 	@Override
-	public JsonElement serialize(TechnicalUser src, Type typeOfSrc, JsonSerializationContext context)
+	public JsonElement serialize(AuthorizableTechUser src, Type typeOfSrc, JsonSerializationContext context)
 	{
 		JsonObject jsonObject = new JsonObject();		
 		super.serialize(src, jsonObject, context);

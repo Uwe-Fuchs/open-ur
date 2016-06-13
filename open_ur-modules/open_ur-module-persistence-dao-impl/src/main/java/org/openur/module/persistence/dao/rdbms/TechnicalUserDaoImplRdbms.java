@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
-import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
+import org.openur.module.domain.security.authorization.IAuthorizableTechUser;
 import org.openur.module.persistence.dao.ITechnicalUserDao;
 import org.openur.module.persistence.mapper.rdbms.IEntityDomainObjectMapper;
 import org.openur.module.persistence.rdbms.entity.PTechnicalUser;
@@ -19,7 +19,7 @@ public class TechnicalUserDaoImplRdbms
 	implements ITechnicalUserDao
 {
 	@Inject
-	private IEntityDomainObjectMapper<PTechnicalUser, ? extends ITechnicalUser> technicalUserMapper;
+	private IEntityDomainObjectMapper<PTechnicalUser, ? extends IAuthorizableTechUser> technicalUserMapper;
 	
 	@Inject
 	private TechnicalUserRepository technicalUserRepository;
@@ -41,7 +41,7 @@ public class TechnicalUserDaoImplRdbms
 	 *           , if techUserId cannot be casted into a long-value.
 	 */
 	@Override
-	public ITechnicalUser findTechnicalUserById(String techUserId)
+	public IAuthorizableTechUser findTechnicalUserById(String techUserId)
 		throws NumberFormatException
 	{
 		long techUserIdL = Long.parseLong(techUserId);
@@ -57,7 +57,7 @@ public class TechnicalUserDaoImplRdbms
 	}
 
 	@Override
-	public ITechnicalUser findTechnicalUserByNumber(String techUserNumber)
+	public IAuthorizableTechUser findTechnicalUserByNumber(String techUserNumber)
 	{
 		PTechnicalUser persistable = technicalUserRepository.findTechnicalUserByNumber(techUserNumber);
 
@@ -70,7 +70,7 @@ public class TechnicalUserDaoImplRdbms
 	}
 
 	@Override
-	public List<ITechnicalUser> obtainAllTechnicalUsers()
+	public List<IAuthorizableTechUser> obtainAllTechnicalUsers()
 	{
 		List<PTechnicalUser> techUsers = technicalUserRepository.findAll();
 

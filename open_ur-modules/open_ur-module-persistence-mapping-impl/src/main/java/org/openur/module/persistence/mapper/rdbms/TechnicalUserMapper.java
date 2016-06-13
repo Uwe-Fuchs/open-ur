@@ -5,20 +5,20 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 import org.openur.module.domain.application.OpenURApplication;
+import org.openur.module.domain.security.authorization.AuthorizableTechUser;
+import org.openur.module.domain.security.authorization.AuthorizableTechUserBuilder;
 import org.openur.module.domain.security.authorization.OpenURPermission;
-import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
-import org.openur.module.domain.userstructure.technicaluser.TechnicalUser.TechnicalUserBuilder;
 import org.openur.module.persistence.rdbms.entity.PPermission;
 import org.openur.module.persistence.rdbms.entity.PTechnicalUser;
 
 public class TechnicalUserMapper
-	extends UserStructureBaseMapper implements IEntityDomainObjectMapper<PTechnicalUser, TechnicalUser>
+	extends UserStructureBaseMapper implements IEntityDomainObjectMapper<PTechnicalUser, AuthorizableTechUser>
 {
 	@Inject
 	private PermissionMapper permissionMapper;
 	
 	@Override
-	public PTechnicalUser mapFromDomainObject(TechnicalUser domainObject)
+	public PTechnicalUser mapFromDomainObject(AuthorizableTechUser domainObject)
 	{
 		PTechnicalUser persistable = new PTechnicalUser(domainObject.getTechUserNumber());
 
@@ -45,10 +45,10 @@ public class TechnicalUserMapper
 	}
 	
 	@Override
-	public TechnicalUser mapFromEntity(PTechnicalUser entity)
+	public AuthorizableTechUser mapFromEntity(PTechnicalUser entity)
 	{
-		TechnicalUserBuilder immutableBuilder = new TechnicalUserBuilder(entity.getTechUserNumber());		
-		immutableBuilder = super.mapFromEntity(immutableBuilder, entity);
+		AuthorizableTechUserBuilder immutableBuilder = new AuthorizableTechUserBuilder(entity.getTechUserNumber());		
+		immutableBuilder = (AuthorizableTechUserBuilder) super.mapFromEntity(immutableBuilder, entity);
 		
 		immutableBuilder.permissions(
 			entity.getPermissions()
@@ -61,7 +61,7 @@ public class TechnicalUserMapper
 		return immutableBuilder.build();
 	}
 
-	public static boolean domainObjectEqualsToEntity(TechnicalUser domainObject, PTechnicalUser entity)
+	public static boolean domainObjectEqualsToEntity(AuthorizableTechUser domainObject, PTechnicalUser entity)
 	{
 		if (!UserStructureBaseMapper.domainObjectEqualsToEntity(domainObject, entity))
 		{
@@ -81,7 +81,7 @@ public class TechnicalUserMapper
 		return domainObject.getTechUserNumber().equals(entity.getTechUserNumber());
 	}
 	
-	private static OpenURPermission findPermissionInDomainObject(PPermission pPerm, TechnicalUser techUser)
+	private static OpenURPermission findPermissionInDomainObject(PPermission pPerm, AuthorizableTechUser techUser)
 	{
 		for (OpenURApplication openUrApp : techUser.getAllPermissions().keySet())
 		{

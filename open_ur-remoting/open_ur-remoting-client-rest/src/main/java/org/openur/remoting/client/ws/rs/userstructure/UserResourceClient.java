@@ -14,10 +14,10 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 
 import org.glassfish.hk2.utilities.reflection.ParameterizedTypeImpl;
+import org.openur.module.domain.security.authorization.AuthorizableTechUser;
+import org.openur.module.domain.security.authorization.IAuthorizableTechUser;
 import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.domain.userstructure.person.Person;
-import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
-import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
 import org.openur.module.service.userstructure.IUserServices;
 import org.openur.remoting.resource.client.AbstractResourceClient;
 import org.openur.remoting.resource.userstructure.UserResource;
@@ -65,32 +65,32 @@ public class UserResourceClient
 	}
 
 	@Override
-	public ITechnicalUser findTechnicalUserById(String techUserId)
+	public IAuthorizableTechUser findTechnicalUserById(String techUserId)
 	{
 		String url = new StringBuilder()
 				.append(TECHUSER_PER_ID_RESOURCE_PATH)
 				.append(techUserId)
 				.toString();
 		
-		return performRestCall_GET(url, MediaType.APPLICATION_JSON, TechnicalUser.class);
+		return performRestCall_GET(url, MediaType.APPLICATION_JSON, AuthorizableTechUser.class);
 	}
 
 	@Override
-	public ITechnicalUser findTechnicalUserByNumber(String techUserNumber)
+	public IAuthorizableTechUser findTechnicalUserByNumber(String techUserNumber)
 	{
 		String url = new StringBuilder()
 				.append(TECHUSER_PER_NUMBER_RESOURCE_PATH)
 				.append(techUserNumber)
 				.toString();
 		
-		return performRestCall_GET(url, MediaType.APPLICATION_JSON, TechnicalUser.class);
+		return performRestCall_GET(url, MediaType.APPLICATION_JSON, AuthorizableTechUser.class);
 	}
 
 	@Override
-	public Set<ITechnicalUser> obtainAllTechnicalUsers()
+	public Set<IAuthorizableTechUser> obtainAllTechnicalUsers()
 	{
 		return performRestCall_GET(
 					ALL_TECHUSERS_RESOURCE_PATH, MediaType.APPLICATION_JSON, 
-					new GenericType<Set<ITechnicalUser>>(new ParameterizedTypeImpl(Set.class, TechnicalUser.class)));
+					new GenericType<Set<IAuthorizableTechUser>>(new ParameterizedTypeImpl(Set.class, AuthorizableTechUser.class)));
 	}
 }

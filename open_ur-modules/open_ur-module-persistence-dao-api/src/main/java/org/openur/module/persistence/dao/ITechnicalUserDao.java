@@ -2,7 +2,7 @@ package org.openur.module.persistence.dao;
 
 import java.util.List;
 
-import org.openur.module.domain.userstructure.technicaluser.ITechnicalUser;
+import org.openur.module.domain.security.authorization.IAuthorizableTechUser;
 
 /**
  * 
@@ -18,7 +18,7 @@ public interface ITechnicalUserDao
 	 * 
 	 * @return the technical user or null, if no user is found.
 	 */
-	ITechnicalUser findTechnicalUserById(String techUserId);
+	IAuthorizableTechUser findTechnicalUserById(String techUserId);
 
 	/**
 	 * searches a technical user via it's (domain specific) user-number.
@@ -28,7 +28,7 @@ public interface ITechnicalUserDao
 	 * 
 	 * @return the technical user or null, if no user is found.
 	 */
-	ITechnicalUser findTechnicalUserByNumber(String techUserNumber);
+	IAuthorizableTechUser findTechnicalUserByNumber(String techUserNumber);
 
 	/**
 	 * returns all stored technical users in a list. If no users are found, the
@@ -36,5 +36,5 @@ public interface ITechnicalUserDao
 	 * 
 	 * @return List with all technical users.
 	 */
-	List<ITechnicalUser> obtainAllTechnicalUsers();
+	List<IAuthorizableTechUser> obtainAllTechnicalUsers();
 }

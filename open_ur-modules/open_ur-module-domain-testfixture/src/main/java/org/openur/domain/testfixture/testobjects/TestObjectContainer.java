@@ -12,6 +12,8 @@ import org.openur.module.domain.security.authorization.AuthorizableMember;
 import org.openur.module.domain.security.authorization.AuthorizableMember.AuthorizableMemberBuilder;
 import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.AuthorizableOrgUnit.AuthorizableOrgUnitBuilder;
+import org.openur.module.domain.security.authorization.AuthorizableTechUser;
+import org.openur.module.domain.security.authorization.AuthorizableTechUserBuilder;
 import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.domain.security.authorization.OpenURPermissionBuilder;
 import org.openur.module.domain.security.authorization.OpenURRole;
@@ -23,8 +25,6 @@ import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.person.PersonBuilder;
-import org.openur.module.domain.userstructure.technicaluser.TechnicalUser;
-import org.openur.module.domain.userstructure.technicaluser.TechnicalUser.TechnicalUserBuilder;
 import org.openur.module.util.data.Gender;
 import org.openur.module.util.data.PermissionScope;
 import org.openur.module.util.data.Status;
@@ -97,9 +97,9 @@ public class TestObjectContainer
 	public static final String TECH_USER_NUMBER_1 = "tech_user_no_1";
 	public static final String TECH_USER_NUMBER_2 = "tech_user_no_2";
 	public static final String TECH_USER_NUMBER_3 = "tech_user_no_3";
-	public static final TechnicalUser TECH_USER_1;
-	public static final TechnicalUser TECH_USER_2;
-	public static final TechnicalUser TECH_USER_3;
+	public static final AuthorizableTechUser TECH_USER_1;
+	public static final AuthorizableTechUser TECH_USER_2;
+	public static final AuthorizableTechUser TECH_USER_3;
 	
 	static
 	{
@@ -341,27 +341,24 @@ public class TestObjectContainer
 				.build();		
 		
 		// technical Users:
-		TechnicalUserBuilder techUserBuilder = new TechnicalUserBuilder(TECH_USER_NUMBER_1);
-		TECH_USER_1 = techUserBuilder
+		TECH_USER_1 = new AuthorizableTechUserBuilder(TECH_USER_NUMBER_1)
 				.identifier(TECH_USER_UUID_1)
 				.status(Status.ACTIVE)
-				.creationDate(LocalDateTime.now())				
-				.permissions(new HashSet<OpenURPermission>(Arrays.asList(PERMISSION_1_A, PERMISSION_2_A)), techUserBuilder)
+				.creationDate(LocalDateTime.now())	
+				.permissions(new HashSet<OpenURPermission>(Arrays.asList(PERMISSION_1_A, PERMISSION_2_A)))
 				.build();
 
-		techUserBuilder = new TechnicalUserBuilder(TECH_USER_NUMBER_2);
-		TECH_USER_2 = techUserBuilder
+		TECH_USER_2 = new AuthorizableTechUserBuilder(TECH_USER_NUMBER_2)
 				.identifier(TECH_USER_UUID_2)
 				.status(Status.ACTIVE)
 				.creationDate(LocalDateTime.of(2012, 06, 20, 0, 0))				
-				.permissions(new HashSet<OpenURPermission>(Arrays.asList(PERMISSION_1_B, PERMISSION_2_B)), techUserBuilder)
+				.permissions(new HashSet<OpenURPermission>(Arrays.asList(PERMISSION_1_B, PERMISSION_2_B)))
 				.build();
 
-		techUserBuilder = new TechnicalUserBuilder(TECH_USER_NUMBER_3);
-		TECH_USER_3 = techUserBuilder
+		TECH_USER_3 = new AuthorizableTechUserBuilder(TECH_USER_NUMBER_3)	
+				.permissions(new HashSet<OpenURPermission>(Arrays.asList(PERMISSION_1_C, PERMISSION_2_C)))
 				.identifier(TECH_USER_UUID_3)
-				.status(Status.INACTIVE)				
-				.permissions(new HashSet<OpenURPermission>(Arrays.asList(PERMISSION_1_C, PERMISSION_2_C)), techUserBuilder)
+				.status(Status.INACTIVE)			
 				.build();
 	}
 }
