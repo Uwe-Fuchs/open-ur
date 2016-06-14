@@ -11,7 +11,7 @@ import org.openur.module.domain.application.OpenURApplicationBuilder;
 import org.openur.module.domain.security.authorization.AuthorizableMember;
 import org.openur.module.domain.security.authorization.AuthorizableMember.AuthorizableMemberBuilder;
 import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
-import org.openur.module.domain.security.authorization.AuthorizableOrgUnit.AuthorizableOrgUnitBuilder;
+import org.openur.module.domain.security.authorization.AuthorizableOrgUnitBuilder;
 import org.openur.module.domain.security.authorization.AuthorizableTechUser;
 import org.openur.module.domain.security.authorization.AuthorizableTechUserBuilder;
 import org.openur.module.domain.security.authorization.OpenURPermission;

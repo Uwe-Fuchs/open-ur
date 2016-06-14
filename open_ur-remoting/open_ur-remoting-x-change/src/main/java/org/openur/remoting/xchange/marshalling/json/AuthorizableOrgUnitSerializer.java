@@ -7,7 +7,7 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.openur.module.domain.security.authorization.AuthorizableMember;
 import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
-import org.openur.module.domain.security.authorization.AuthorizableOrgUnit.AuthorizableOrgUnitBuilder;
+import org.openur.module.domain.security.authorization.AuthorizableOrgUnitBuilder;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.EMailAddress;
 
@@ -29,7 +29,7 @@ public class AuthorizableOrgUnitSerializer
 		throws JsonParseException
 	{
 		JsonObject jsonObject = json.getAsJsonObject();
-		AuthorizableOrgUnitBuilder orgUnitBuilder = new AuthorizableOrgUnit.AuthorizableOrgUnitBuilder();		
+		AuthorizableOrgUnitBuilder orgUnitBuilder = new AuthorizableOrgUnitBuilder();		
 		super.deserialize(jsonObject, orgUnitBuilder);
 
 		String name = jsonObject.get("name").getAsString();

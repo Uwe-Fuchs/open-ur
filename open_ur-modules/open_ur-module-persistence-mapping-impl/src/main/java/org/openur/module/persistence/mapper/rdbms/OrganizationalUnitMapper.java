@@ -8,7 +8,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.openur.module.domain.security.authorization.AuthorizableMember;
 import org.openur.module.domain.security.authorization.AuthorizableMember.AuthorizableMemberBuilder;
 import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
-import org.openur.module.domain.security.authorization.AuthorizableOrgUnit.AuthorizableOrgUnitBuilder;
+import org.openur.module.domain.security.authorization.AuthorizableOrgUnitBuilder;
 import org.openur.module.domain.security.authorization.OpenURRole;
 import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.person.Person;
