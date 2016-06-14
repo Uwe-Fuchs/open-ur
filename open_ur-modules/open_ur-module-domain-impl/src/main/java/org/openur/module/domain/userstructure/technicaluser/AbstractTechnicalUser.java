@@ -17,7 +17,7 @@ public abstract class AbstractTechnicalUser
 
 	// builder:
 	public static abstract class AbstractTechnicalUserBuilder<T extends AbstractTechnicalUserBuilder<T>>
-		extends UserStructureBaseBuilder<AbstractTechnicalUserBuilder<T>>
+		extends UserStructureBaseBuilder<T>
 	{
 		// constructors:
 		public AbstractTechnicalUserBuilder(String techUserNumber)

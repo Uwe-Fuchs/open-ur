@@ -13,10 +13,10 @@ public class AbstractTechnicalUserTest
 	{
 		MyTechnicalUserBuilder tub = new MyTechnicalUserBuilder("abc");
 		tub.status(Status.ACTIVE);
-		AbstractTechnicalUser tu1 = tub.build();
+		MyTechnicalUser tu1 = tub.build();
 		
 		tub = new MyTechnicalUserBuilder("xyz");
-		AbstractTechnicalUser tu2 = tub.build();
+		MyTechnicalUser tu2 = tub.build();
 		
 		assertTrue(tu1.compareTo(tu2) < 0);
 	}

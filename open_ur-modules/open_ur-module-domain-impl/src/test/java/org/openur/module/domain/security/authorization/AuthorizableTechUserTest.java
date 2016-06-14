@@ -11,6 +11,7 @@ import java.util.Set;
 import org.junit.Test;
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
+import org.openur.module.util.data.Status;
 
 public class AuthorizableTechUserTest
 {
@@ -30,6 +31,7 @@ public class AuthorizableTechUserTest
 		
 		AuthorizableTechUser techUser = new AuthorizableTechUserBuilder("abc")
 			.identifier("someId")
+			.status(Status.ACTIVE)
 			.permissions(new HashSet<OpenURPermission>(Arrays.asList(perm1, perm2)))
 			.build();
 		
