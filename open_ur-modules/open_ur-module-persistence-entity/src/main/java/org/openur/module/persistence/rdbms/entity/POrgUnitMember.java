@@ -33,7 +33,7 @@ public class POrgUnitMember
 	@JoinColumn(name="PERSON_ID", referencedColumnName="ID", nullable=false)
 	private PPerson person;
 	
-	@ManyToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	@JoinTable(
 		name="ROLES_MEMBERS",
 		joinColumns={@JoinColumn(name="ID_MEMBER", referencedColumnName="ID")},
