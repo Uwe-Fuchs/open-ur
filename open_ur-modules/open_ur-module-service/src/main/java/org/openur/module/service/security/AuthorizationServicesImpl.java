@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
+import org.openur.module.domain.security.authorization.IAuthorizableTechUser;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.service.userstructure.IOrgUnitServices;
@@ -24,14 +25,14 @@ public class AuthorizationServicesImpl
 	@Inject
 	private ISecurityDomainServices securityDomainServices;
 
-	private boolean internalHasPermission(IPerson user, IAuthorizableOrgUnit orgUnit,	IPermission permission)
+	private boolean internalHasPermission(IPerson person, IAuthorizableOrgUnit orgUnit,	IPermission permission)
 	{
 		boolean hasPerm = false;
 		IAuthorizableOrgUnit ouTmp = orgUnit;
 		
 		while (!hasPerm && ouTmp != null)
 		{
-			hasPerm = ouTmp.hasPermission(user, permission);
+			hasPerm = ouTmp.hasPermission(person, permission);
 			ouTmp = ouTmp.getSuperOrgUnit();
 		}
 		
@@ -39,20 +40,29 @@ public class AuthorizationServicesImpl
 	}
 	
 	private boolean lookupDomainObjectsAndCheckIfUserHasPermission(
-		String personId, String permissionText, String applicationName, IAuthorizableOrgUnit orgUnit)
+		String userId, String permissionText, String applicationName, IAuthorizableOrgUnit orgUnit)
 	{
-		Validate.notEmpty(personId, "person-id must not be empty!");
+		Validate.notEmpty(userId, "user-id must not be empty!");
 		Validate.notEmpty(permissionText, "permission-text must not be empty!");
 		Validate.notEmpty(applicationName, "application-name must not be empty!");
-		
-		IPerson person = userServices.findPersonById(personId);
-		Validate.notNull(person, String.format("No person found for ID '%s'!", personId));
 		
 		IPermission permission = securityDomainServices.findPermission(permissionText, applicationName);
 		Validate.notNull(
 			permission, String.format("No permission found with permission-text '%s' and application-name '%s'!", permissionText, applicationName));
 		
-		return internalHasPermission(person, orgUnit, permission);
+		if (orgUnit != null)
+		{
+			IPerson person = userServices.findPersonById(userId);
+			Validate.notNull(person, String.format("No person found for ID '%s'!", userId));
+			
+			return internalHasPermission(person, orgUnit, permission);			
+		} else
+		{
+			IAuthorizableTechUser techUser = userServices.findTechnicalUserById(userId);
+			Validate.notNull(techUser, String.format("No technical-user found for techUserId '%s'!", techUser));
+			
+			return techUser.hasPermission(permission);
+		}
 	}
 
 	@Override
@@ -76,5 +86,11 @@ public class AuthorizationServicesImpl
 		IAuthorizableOrgUnit orgUnit = rootOus.stream().findFirst().get();
 		
 		return lookupDomainObjectsAndCheckIfUserHasPermission(personId, permissionText, applicationName, orgUnit);
+	}
+
+	@Override
+	public Boolean hasPermissionTechUser(String techUserId, String permissionText, String applicationName)
+	{
+		return lookupDomainObjectsAndCheckIfUserHasPermission(techUserId, permissionText, applicationName, null);
 	}
 }

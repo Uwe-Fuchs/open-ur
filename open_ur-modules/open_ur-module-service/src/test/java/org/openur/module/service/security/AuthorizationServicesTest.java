@@ -16,6 +16,7 @@ import org.mockito.Mockito;
 import org.openur.domain.testfixture.dummyimpl.MyApplicationImpl;
 import org.openur.domain.testfixture.dummyimpl.MyAuthorizableMember;
 import org.openur.domain.testfixture.dummyimpl.MyAuthorizableOrgUnit;
+import org.openur.domain.testfixture.dummyimpl.MyAuthorizableTechUser;
 import org.openur.domain.testfixture.dummyimpl.MyPermissionImpl;
 import org.openur.domain.testfixture.dummyimpl.MyPerson;
 import org.openur.domain.testfixture.dummyimpl.MyRoleImpl;
@@ -60,6 +61,7 @@ public class AuthorizationServicesTest
 	private static final String OTHER_OU_ID = UUID.randomUUID().toString();
 	private static final String SUPER_OU_ID = UUID.randomUUID().toString();
 	private static final String ROOT_OU_ID = UUID.randomUUID().toString();
+	private static final String TECH_USER_ID = UUID.randomUUID().toString();
 	
 	private MyApplicationImpl app;
 	private MyPermissionImpl permission;
@@ -78,17 +80,21 @@ public class AuthorizationServicesTest
 	private MyAuthorizableOrgUnit otherOu;
 	private MyAuthorizableOrgUnit superOu;
 	private MyAuthorizableOrgUnit rootOu;
+	private MyAuthorizableTechUser techUser; 
 	
 	@Before
 	public void setUp()
 	{
 		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
 		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_3)).thenReturn(TestObjectContainer.PERSON_3);
+		Mockito.when(userServicesMock.findTechnicalUserById(TestObjectContainer.TECH_USER_UUID_1)).thenReturn(TestObjectContainer.TECH_USER_1);
 		Mockito.when(orgUnitServicesMock.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_A, Boolean.TRUE)).thenReturn(TestObjectContainer.ORG_UNIT_A);
 		Mockito.when(orgUnitServicesMock.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_C, Boolean.TRUE)).thenReturn(TestObjectContainer.ORG_UNIT_C);
 		Mockito.when(orgUnitServicesMock.findOrgUnitById(TestObjectContainer.SUPER_OU_UUID_1, Boolean.TRUE)).thenReturn(TestObjectContainer.SUPER_OU_1);		
 		Mockito.when(securityDaoMock.findPermission(TestObjectContainer.PERMISSION_1_A.getPermissionText(), TestObjectContainer.APP_A.getApplicationName()))
 				.thenReturn(TestObjectContainer.PERMISSION_1_A);
+		Mockito.when(securityDaoMock.findPermission(TestObjectContainer.PERMISSION_2_A.getPermissionText(), TestObjectContainer.APP_A.getApplicationName()))
+				.thenReturn(TestObjectContainer.PERMISSION_2_A);
 		Mockito.when(securityDaoMock.findPermission(TestObjectContainer.PERMISSION_1_C.getPermissionText(), TestObjectContainer.APP_C.getApplicationName()))
 				.thenReturn(TestObjectContainer.PERMISSION_1_C);
 		Mockito.when(securityDaoMock.findPermission(TestObjectContainer.PERMISSION_2_C.getPermissionText(), TestObjectContainer.APP_C.getApplicationName()))
@@ -136,6 +142,9 @@ public class AuthorizationServicesTest
 		otherOu = new MyAuthorizableOrgUnit(OTHER_OU_ID, "otherOuNumber");
 		otherOu.setSuperOrgUnit(superOu);
 		
+		techUser = new MyAuthorizableTechUser(TECH_USER_ID, "techUserNumber");
+		techUser.addPermissionSet(app, new HashSet<MyPermissionImpl>(Arrays.asList(permission, otherPermission)));
+		
 		Mockito.when(securityDaoMock.findPermission(PERMISSION_TEXT, APP_NAME)).thenReturn(permission);
 		Mockito.when(securityDaoMock.findPermission(PERMISSION_IN_SUPER_OU_TEXT, APP_NAME)).thenReturn(permissionInSuperOu);
 		Mockito.when(securityDaoMock.findPermission(OTHER_PERMISSION_TEXT, APP_NAME)).thenReturn(otherPermission);
@@ -146,6 +155,7 @@ public class AuthorizationServicesTest
 		Mockito.when(orgUnitServicesMock.findOrgUnitById(OU_ID, Boolean.TRUE)).thenReturn(ou);
 		Mockito.when(orgUnitServicesMock.findOrgUnitById(OTHER_OU_ID, Boolean.TRUE)).thenReturn(otherOu);
 		Mockito.when(orgUnitServicesMock.obtainRootOrgUnits()).thenReturn(new HashSet<IAuthorizableOrgUnit>(Arrays.asList(rootOu)));
+		Mockito.when(userServicesMock.findTechnicalUserById(TECH_USER_ID)).thenReturn(techUser);
 	}
 
 	@Test
@@ -207,6 +217,23 @@ public class AuthorizationServicesTest
 		assertFalse(authorizationServices.hasPermission(PERSON_IN_ROOT_ID, OTHER_PERMISSION_TEXT, APP_NAME));		
 	}
 
+	@Test
+	public void testHasPermissionTechUser()
+	{		
+		// test with standard open-ur domain-objects:
+		assertTrue(authorizationServices.hasPermissionTechUser(TestObjectContainer.TECH_USER_UUID_1, 
+				TestObjectContainer.PERMISSION_1_A.getPermissionText(), TestObjectContainer.APP_A.getApplicationName()));
+		assertTrue(authorizationServices.hasPermissionTechUser(TestObjectContainer.TECH_USER_UUID_1, 
+				TestObjectContainer.PERMISSION_2_A.getPermissionText(), TestObjectContainer.APP_A.getApplicationName()));
+		assertFalse(authorizationServices.hasPermissionTechUser(TestObjectContainer.TECH_USER_UUID_1, 
+				TestObjectContainer.PERMISSION_1_C.getPermissionText(), TestObjectContainer.APP_C.getApplicationName()));
+		
+		// test with arbitrary domain-objects:
+		assertTrue(authorizationServices.hasPermissionTechUser(TECH_USER_ID, PERMISSION_TEXT, APP_NAME));
+		assertTrue(authorizationServices.hasPermissionTechUser(TECH_USER_ID, OTHER_PERMISSION_TEXT, APP_NAME));
+		assertFalse(authorizationServices.hasPermissionTechUser(TECH_USER_ID, PERMISSION_IN_SUPER_OU_TEXT, APP_NAME));
+	}
+
 	@Test(expected=NullPointerException.class)
 	public void testNoPersonFoundForId()
 	{		
@@ -223,5 +250,12 @@ public class AuthorizationServicesTest
 	public void testNoPermissionFoundWithGivenText()
 	{		
 		authorizationServices.hasPermission(PERSON_ID, SUPER_OU_ID, "somePermissionText", app.getApplicationName());
+	}
+
+	@Test(expected=NullPointerException.class)
+	public void testCheckPermissionTechUserButGivePersonId()
+	{		
+		// check tech-user-permission with valid permission-text but with person-id:
+		authorizationServices.hasPermissionTechUser(PERSON_ID, PERMISSION_TEXT, app.getApplicationName());
 	}
 }

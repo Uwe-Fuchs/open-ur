@@ -26,4 +26,15 @@ public interface IAuthorizationServices
 	 * @return the person has the permission.
 	 */
 	Boolean hasPermission(String personId, String permissionText, String applicationName);
+
+	/**
+	 * checks if a technical-user has a certain permission in an application.
+	 * 
+	 * @param techUserId
+	 * @param permissionText
+	 * @param applicationName
+	 * 
+	 * @return the technical-user has the permission.
+	 */
+	Boolean hasPermissionTechUser(String techUserId, String permissionText, String applicationName);
 }
