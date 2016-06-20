@@ -18,11 +18,12 @@ import org.openur.remoting.resource.AbstractResourceTest;
 public class AuthorizationResourceTest
 	extends AbstractResourceTest
 {
-	public static final String APP_NAME = "appName";
-	public static final String PERMISSION_TEXT = "permissionText";
-	public static final String OTHER_PERMISSION_TEXT = "otherPermissionText";
-	public static final String PERSON_ID = UUID.randomUUID().toString();
-	public static final String OU_ID = UUID.randomUUID().toString();
+	private static final String APP_NAME = "appName";
+	private static final String PERMISSION_TEXT = "permissionText";
+	private static final String OTHER_PERMISSION_TEXT = "otherPermissionText";
+	private static final String PERSON_ID = UUID.randomUUID().toString();
+	private static final String OU_ID = UUID.randomUUID().toString();
+	private static final String TECH_USER_ID = UUID.randomUUID().toString();
 	
 	private IAuthorizationServices authorizationServicesMock;
 	
@@ -88,6 +89,28 @@ public class AuthorizationResourceTest
 			+ "&text=" + OTHER_PERMISSION_TEXT 	+ "&appName=" + APP_NAME, MediaType.TEXT_PLAIN, Boolean.class);
 		
 		assertFalse(b);
+	}
+
+	@Test
+	public void testHasPermissionTechUser()
+	{		
+		Mockito.when(authorizationServicesMock.hasPermissionTechUser(TECH_USER_ID, PERMISSION_TEXT, APP_NAME)).thenReturn(Boolean.TRUE);		
+		
+		Boolean b = getResourceClient().performRestCall_GET(HAS_TECH_USER_PERMISSION_RESOURCE_PATH + "?techUserId=" + TECH_USER_ID 
+			+ "&text=" + PERMISSION_TEXT 	+ "&appName=" + APP_NAME, MediaType.TEXT_PLAIN, Boolean.class);
+		
+		assertTrue(b);		
+	}
+
+	@Test
+	public void testHasNotPermissionTechUser()
+	{		
+		Mockito.when(authorizationServicesMock.hasPermissionTechUser(TECH_USER_ID, OTHER_PERMISSION_TEXT, APP_NAME)).thenReturn(Boolean.FALSE);		
+		
+		Boolean b = getResourceClient().performRestCall_GET(HAS_TECH_USER_PERMISSION_RESOURCE_PATH + "?techUserId=" + TECH_USER_ID 
+			+ "&text=" + OTHER_PERMISSION_TEXT 	+ "&appName=" + APP_NAME, MediaType.TEXT_PLAIN, Boolean.class);
+		
+		assertFalse(b);	
 	}
 
 	@Override

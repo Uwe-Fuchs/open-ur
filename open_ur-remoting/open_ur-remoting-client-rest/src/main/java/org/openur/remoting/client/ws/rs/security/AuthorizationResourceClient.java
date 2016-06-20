@@ -2,6 +2,7 @@ package org.openur.remoting.client.ws.rs.security;
 
 import static org.openur.remoting.resource.security.AuthorizationResource.HAS_OU_PERMISSION_RESOURCE_PATH;
 import static org.openur.remoting.resource.security.AuthorizationResource.HAS_SYSTEM_PERMISSION_RESOURCE_PATH;
+import static org.openur.remoting.resource.security.AuthorizationResource.HAS_TECH_USER_PERMISSION_RESOURCE_PATH;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
@@ -46,6 +47,22 @@ public class AuthorizationResourceClient
 				.append(HAS_SYSTEM_PERMISSION_RESOURCE_PATH)
 				.append("?personId=")
 				.append(personId)
+				.append("&text=")
+				.append(permissionText)
+				.append("&appName=")
+				.append(applicationName)
+				.toString();
+		
+		return performRestCall_GET(url, MediaType.TEXT_PLAIN, Boolean.class);
+	}
+
+	@Override
+	public Boolean hasPermissionTechUser(String techUserId, String permissionText, String applicationName)
+	{
+		String url = new StringBuilder()
+				.append(HAS_TECH_USER_PERMISSION_RESOURCE_PATH)
+				.append("?techUserId=")
+				.append(techUserId)
 				.append("&text=")
 				.append(permissionText)
 				.append("&appName=")

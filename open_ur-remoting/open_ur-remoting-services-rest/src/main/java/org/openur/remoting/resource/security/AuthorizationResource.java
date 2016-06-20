@@ -16,6 +16,7 @@ public class AuthorizationResource
 	public static final String AUTHORIZATION_RESOURCE_PATH = "authorization/";
 	public static final String HAS_OU_PERMISSION_RESOURCE_PATH = "ou";
 	public static final String HAS_SYSTEM_PERMISSION_RESOURCE_PATH = "system";
+	public static final String HAS_TECH_USER_PERMISSION_RESOURCE_PATH = "techuser";
 	
 	@Inject
 	private IAuthorizationServices authorizationServices;
@@ -38,5 +39,15 @@ public class AuthorizationResource
 		@QueryParam("appName") String applicationName)
 	{
 		return authorizationServices.hasPermission(personId, permissionText, applicationName);
+	}
+
+	@Override
+	@GET
+	@Path(HAS_TECH_USER_PERMISSION_RESOURCE_PATH)
+	@Produces( MediaType.TEXT_PLAIN )
+	public Boolean hasPermissionTechUser(@QueryParam("techUserId") String techUserId, @QueryParam("text") String permissionText, 
+		@QueryParam("appName") String applicationName)
+	{
+		return authorizationServices.hasPermissionTechUser(techUserId, permissionText, applicationName);
 	}	
 }

@@ -17,11 +17,12 @@ import org.openur.remoting.resource.security.AuthorizationResource;
 public class AuthorizationResourceClientTest
 	extends JerseyTest
 {
-	public static final String APP_NAME = "appName";
-	public static final String PERMISSION_TEXT = "permissionText";
-	public static final String OTHER_PERMISSION_TEXT = "otherPermissionText";
-	public static final String PERSON_ID = UUID.randomUUID().toString();
-	public static final String OU_ID = UUID.randomUUID().toString();
+	private static final String APP_NAME = "appName";
+	private static final String PERMISSION_TEXT = "permissionText";
+	private static final String OTHER_PERMISSION_TEXT = "otherPermissionText";
+	private static final String PERSON_ID = UUID.randomUUID().toString();
+	private static final String OU_ID = UUID.randomUUID().toString();
+	private static final String TECH_USER_ID = UUID.randomUUID().toString();
 
 	private IAuthorizationServices authorizationServicesMock;
 	private AuthorizationResourceClient authorizationResourceClient;
@@ -90,6 +91,28 @@ public class AuthorizationResourceClientTest
 		Mockito.when(authorizationServicesMock.hasPermission(PERSON_ID, OTHER_PERMISSION_TEXT, APP_NAME)).thenReturn(Boolean.FALSE);
 		
 		Boolean b = authorizationResourceClient.hasPermission(PERSON_ID, OTHER_PERMISSION_TEXT, APP_NAME);
+	
+		System.out.println("Result: " + b);
+		assertFalse(b);
+	}
+
+	@Test
+	public void testHasPermissionTechUser()
+	{
+		Mockito.when(authorizationServicesMock.hasPermissionTechUser(TECH_USER_ID, PERMISSION_TEXT, APP_NAME)).thenReturn(Boolean.TRUE);
+		
+		Boolean b = authorizationResourceClient.hasPermissionTechUser(TECH_USER_ID, PERMISSION_TEXT, APP_NAME);
+	
+		System.out.println("Result: " + b);
+		assertTrue(b);
+	}
+
+	@Test
+	public void testHasNotPermissionTechUser()
+	{		
+		Mockito.when(authorizationServicesMock.hasPermissionTechUser(TECH_USER_ID, OTHER_PERMISSION_TEXT, APP_NAME)).thenReturn(Boolean.FALSE);	
+		
+		Boolean b = authorizationResourceClient.hasPermission(TECH_USER_ID, OTHER_PERMISSION_TEXT, APP_NAME);
 	
 		System.out.println("Result: " + b);
 		assertFalse(b);
