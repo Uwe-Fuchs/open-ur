@@ -33,7 +33,7 @@ public class AuthenticationFilterPlainCredentialsTest
 	@Test
 	public void testFilterValidCredentials()
 	{
-		Mockito.when(authorizationServicesMock.hasPermission(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, remoteAuthenticationPermissionName, applicationName))
+		Mockito.when(authorizationServicesMock.hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, remoteAuthenticationPermissionName, applicationName))
 				.thenReturn(Boolean.TRUE);
 		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
 
@@ -49,7 +49,7 @@ public class AuthenticationFilterPlainCredentialsTest
 		assertTrue(new PersonComparer().objectsAreEqual(TestObjectContainer.PERSON_1, p));
 
 		assertEquals(1, realmMock.getAuthCounter());
-		verify(authorizationServicesMock, times(1)).hasPermission(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, remoteAuthenticationPermissionName, applicationName);
+		verify(authorizationServicesMock, times(1)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, remoteAuthenticationPermissionName, applicationName);
 	}
 
 	@Test
@@ -64,13 +64,13 @@ public class AuthenticationFilterPlainCredentialsTest
 
 		// authentication is called, but authorization isn't (because of authentication-failure):
 		assertEquals(1, realmMock.getAuthCounter());
-		verify(authorizationServicesMock, times(0)).hasPermission(anyString(), anyString(), anyString());
+		verify(authorizationServicesMock, times(0)).hasPermissionTechUser(anyString(), anyString(), anyString());
 	}
 
 	@Test
 	public void testFilterNotAuthorized()
 	{
-		Mockito.when(authorizationServicesMock.hasPermission(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, remoteAuthenticationPermissionName, applicationName))
+		Mockito.when(authorizationServicesMock.hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, remoteAuthenticationPermissionName, applicationName))
 				.thenReturn(Boolean.FALSE);
 
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
@@ -81,7 +81,7 @@ public class AuthenticationFilterPlainCredentialsTest
 		System.out.println(response.getStatus());
 
 		assertEquals(1, realmMock.getAuthCounter());
-		verify(authorizationServicesMock, times(1)).hasPermission(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, remoteAuthenticationPermissionName, applicationName);
+		verify(authorizationServicesMock, times(1)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, remoteAuthenticationPermissionName, applicationName);
 	}
 
 	@Test

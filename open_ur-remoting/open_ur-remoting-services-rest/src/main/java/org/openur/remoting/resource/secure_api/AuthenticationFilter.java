@@ -125,7 +125,7 @@ public class AuthenticationFilter
 		}
 		
 		// Permission-check:
-		boolean hasPermission = authorizationServices.hasPermission(info.getIdentifier(), remoteAuthenticationPermissionName, applicationName);
+		boolean hasPermission = authorizationServices.hasPermissionTechUser(info.getIdentifier(), remoteAuthenticationPermissionName, applicationName);
 		
 		if (!hasPermission)
 		{

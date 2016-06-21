@@ -35,7 +35,7 @@ public class AuthenticationFilterHashedCredentialsTest
 	public void testFilter()
 		throws UnsupportedEncodingException
 	{
-		Mockito.when(authorizationServicesMock.hasPermission(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, remoteAuthenticationPermissionName, applicationName))
+		Mockito.when(authorizationServicesMock.hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, remoteAuthenticationPermissionName, applicationName))
 				.thenReturn(Boolean.TRUE);
 		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
 
@@ -55,6 +55,6 @@ public class AuthenticationFilterHashedCredentialsTest
 		assertTrue(new PersonComparer().objectsAreEqual(TestObjectContainer.PERSON_1, p));
 
 		assertEquals(1, realmMock.getAuthCounter());
-		verify(authorizationServicesMock, times(1)).hasPermission(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, remoteAuthenticationPermissionName, applicationName);
+		verify(authorizationServicesMock, times(1)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, remoteAuthenticationPermissionName, applicationName);
 	}
 }
