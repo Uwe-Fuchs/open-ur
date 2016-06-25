@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -49,6 +50,7 @@ public abstract class AbstractOpenUrPersistable
 		return (this.getId() == null);
 	}
 	
+	@Transient
 	public String getIdentifier()
 	{
 		return (this.getId() != null) ? this.getId().toString() : null;

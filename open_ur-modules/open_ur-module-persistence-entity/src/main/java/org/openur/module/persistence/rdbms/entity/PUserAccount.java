@@ -7,6 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.Validate;
@@ -51,6 +52,12 @@ public class PUserAccount
 	public String getPassWord()
 	{
 		return passWord;
+	}
+	
+	@Transient
+	public String getUserId()
+	{
+		return userStructureBase.getIdentifier();
 	}
 
 	// constructors:

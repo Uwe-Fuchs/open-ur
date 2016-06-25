@@ -40,7 +40,6 @@ import org.openur.module.persistence.rdbms.entity.POrganizationalUnit;
 import org.openur.module.persistence.rdbms.entity.PPermission;
 import org.openur.module.persistence.rdbms.entity.PPerson;
 import org.openur.module.persistence.rdbms.entity.PRole;
-import org.openur.module.persistence.rdbms.entity.PTechnicalUser;
 import org.openur.module.persistence.rdbms.repository.AddressRepository;
 import org.openur.module.persistence.rdbms.repository.ApplicationRepository;
 import org.openur.module.persistence.rdbms.repository.OrgUnitMemberRepository;
@@ -413,12 +412,6 @@ public class OrgUnitDaoImplRdbmsTest
 	private PPerson savePerson(PPerson persistable)
 	{
 		return personRepository.save(persistable);
-	}
-
-	@Transactional(readOnly = false)
-	private PTechnicalUser saveTechnicalUser(PTechnicalUser persistable)
-	{
-		return technicalUserRepository.save(persistable);
 	}
 
 	@Transactional(readOnly = false)

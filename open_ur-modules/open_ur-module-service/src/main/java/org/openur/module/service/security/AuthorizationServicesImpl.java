@@ -59,7 +59,7 @@ public class AuthorizationServicesImpl
 		} else
 		{
 			IAuthorizableTechUser techUser = userServices.findTechnicalUserById(userId);
-			Validate.notNull(techUser, String.format("No technical-user found for techUserId '%s'!", techUser));
+			Validate.notNull(techUser, String.format("No technical-user found for techUserId '%s'!", userId));
 			
 			return techUser.hasPermission(permission);
 		}

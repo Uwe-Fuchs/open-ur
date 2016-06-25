@@ -57,6 +57,11 @@ public class UserAccountMapper
 
 		super.mapFromEntity(immutableBuilder, entity);
 		
+		if (entity.getUserId() != null)
+		{
+			immutableBuilder.identifier(entity.getUserId());			
+		}			
+		
 		if (StringUtils.isNotBlank(entity.getSalt()))
 		{
 			immutableBuilder.salt(entity.getSalt());
