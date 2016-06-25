@@ -76,7 +76,7 @@ public class AuthenticationFilter
 		if (CollectionUtils.isEmpty(applicationNameHeaders))
 		{
 			String msg = String.format("Bad request for resource-method: [%s]: No application-name given!", method);
-			abortBadRequest(requestContext, msg);
+			abortWithBadRequest(requestContext, msg);
 			
 			return;
 		}
@@ -90,7 +90,7 @@ public class AuthenticationFilter
 		if (settings != SecureApiSettings.NO_SECURITY && CollectionUtils.isEmpty(authorization))
 		{
 			String msg = String.format("Bad request for resource-method: [{}]: No credentials found!", method);
-			abortBadRequest(requestContext, msg);
+			abortWithBadRequest(requestContext, msg);
 			
 			return;
 		}
@@ -125,11 +125,20 @@ public class AuthenticationFilter
 		}
 		
 		// Permission-check:
-		boolean hasPermission = authorizationServices.hasPermissionTechUser(info.getIdentifier(), remoteAuthenticationPermissionName, applicationName);
+		boolean hasPermission = false;
+		
+		try
+		{
+			hasPermission = authorizationServices.hasPermissionTechUser(info.getIdentifier(), remoteAuthenticationPermissionName, applicationName);
+		} catch (NullPointerException e)
+		{
+			hasPermission = false;
+			LOG.error(e.getMessage());
+		}
 		
 		if (!hasPermission)
 		{
-			LOG.warn("Access denied for resource-method: [{}]! User [{}] doesn't have permission [{}]!", 
+			LOG.warn("Access denied for resource-method: [{}]! User #{} doesn't have permission [{}]!", 
 					method, info.getIdentifier(), remoteAuthenticationPermissionName);
 			requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
 			
@@ -137,7 +146,7 @@ public class AuthenticationFilter
 		}
 	}
 	
-	private void abortBadRequest(ContainerRequestContext requestContext, String msg)
+	private void abortWithBadRequest(ContainerRequestContext requestContext, String msg)
 	{
 		LOG.warn(msg);
 		Response response = Response
