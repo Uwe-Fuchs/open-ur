@@ -70,18 +70,6 @@ public class AuthenticationFilter
 		
 		// Get request headers
 		MultivaluedMap<String, String> headers = requestContext.getHeaders();
-		
-		List<String> applicationNameHeaders = headers.get(APPLICATION_NAME_PROPERTY);		
-		
-		if (CollectionUtils.isEmpty(applicationNameHeaders))
-		{
-			String msg = String.format("Bad request for resource-method: [%s]: No application-name given!", method);
-			abortWithBadRequest(requestContext, msg);
-			
-			return;
-		}
-		
-		String applicationName = applicationNameHeaders.get(0);
 
 		// Fetch authorization header
 		List<String> authorization = headers.get(AUTHORIZATION_PROPERTY);
@@ -89,8 +77,8 @@ public class AuthenticationFilter
 		// If authorization is mandatory but no credentials present -> block access
 		if (settings != SecureApiSettings.NO_SECURITY && CollectionUtils.isEmpty(authorization))
 		{
-			String msg = String.format("Bad request for resource-method: [{}]: No credentials found!", method);
-			abortWithBadRequest(requestContext, msg);
+			String msg = String.format("Access denied for resource-method: [%s]: No credentials found!", method);
+			abortWithUnauthorized(requestContext, msg);
 			
 			return;
 		}
@@ -118,11 +106,23 @@ public class AuthenticationFilter
 			info = (UsernamePwAuthenticationInfo) realm.getAuthenticationInfo(token);
 		} catch (AuthenticationException e)
 		{
-			LOG.warn("Access denied for resource-method: [{}], Authentication failed with message: [{}]", method, e.getMessage());
-			requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
+			String msg = String.format("Access denied for resource-method: [%s], Authentication failed with message: [%s]", method, e.getMessage());
+			abortWithUnauthorized(requestContext, msg);
 			
 			return;
 		}
+		
+		List<String> applicationNameHeaders = headers.get(APPLICATION_NAME_PROPERTY);		
+		
+		if (CollectionUtils.isEmpty(applicationNameHeaders))
+		{
+			String msg = String.format("Bad request for resource-method: [%s]: No application-name given!", method);
+			abortWithBadRequest(requestContext, msg);
+			
+			return;
+		}
+		
+		String applicationName = applicationNameHeaders.get(0);
 		
 		// Permission-check:
 		boolean hasPermission = false;
@@ -138,9 +138,9 @@ public class AuthenticationFilter
 		
 		if (!hasPermission)
 		{
-			LOG.warn("Access denied for resource-method: [{}]! User #{} doesn't have permission [{}]!", 
+			String msg = String.format("Access denied for resource-method: [%s]! User #%s doesn't have permission [%s]!", 
 					method, info.getIdentifier(), remoteAuthenticationPermissionName);
-			requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
+			abortWithUnauthorized(requestContext, msg);
 			
 			return;
 		}
@@ -148,11 +148,21 @@ public class AuthenticationFilter
 	
 	private void abortWithBadRequest(ContainerRequestContext requestContext, String msg)
 	{
+		abortRequest(Response.Status.BAD_REQUEST, requestContext, msg);
+	}
+	
+	private void abortWithUnauthorized(ContainerRequestContext requestContext, String msg)
+	{
+		abortRequest(Response.Status.UNAUTHORIZED, requestContext, msg);
+	}
+	
+	private void abortRequest(Response.Status status, ContainerRequestContext requestContext, String msg)
+	{
 		LOG.warn(msg);
 		Response response = Response
-				.status(Response.Status.BAD_REQUEST)
+				.status(status)
 				.entity(msg)
 				.build();
-		requestContext.abortWith(response);
+		requestContext.abortWith(response);		
 	}
 }

@@ -85,11 +85,13 @@ public class AuthenticationFilterPlainCredentialsTest
 	}
 
 	@Test
-	public void testFilterNoAuthenticationName()
+	public void testFilterNoApplicationName()
 	{
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
 		// set new, empty headers, i.e. no application-name given:
 		invocationBuilder.headers(new MultivaluedHashMap<String, Object>());
+		// set valid credentials:
+		invocationBuilder.header(AuthenticationFilter.AUTHORIZATION_PROPERTY, OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2);
 		
 		Response response = invocationBuilder.get();
 		assertEquals(400, response.getStatus());
@@ -104,7 +106,7 @@ public class AuthenticationFilterPlainCredentialsTest
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
 		
 		Response response = invocationBuilder.get();
-		assertEquals(400, response.getStatus());
+		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
 		String msg = response.readEntity(String.class);
 		assertTrue(msg.contains("No credentials found!"));
