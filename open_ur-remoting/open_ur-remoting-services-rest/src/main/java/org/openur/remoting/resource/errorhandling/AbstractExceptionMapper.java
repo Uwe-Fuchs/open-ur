@@ -20,11 +20,13 @@ public abstract class AbstractExceptionMapper<T extends Throwable>
 		Status status = getHttpStatus(exception);
 		ErrorMessage errorMessage = new ErrorMessage(message, exception.getClass(), status);
 		
-		return Response
+		Response response = Response
 				.status(status)
 				.entity(errorMessage)
 				.type(MediaType.APPLICATION_JSON)
 				.build();
+		
+		return response;
 	}
 	
 	public static String getGenericDefaultErrorMsg()

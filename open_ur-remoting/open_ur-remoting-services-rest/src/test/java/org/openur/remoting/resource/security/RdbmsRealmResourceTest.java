@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.openur.remoting.resource.security.RdbmsRealmResource.AUTHENTICATE_RESOURCE_PATH;
 import static org.openur.remoting.resource.security.RdbmsRealmResource.GET_NAME_RESOURCE_PATH;
 import static org.openur.remoting.resource.security.RdbmsRealmResource.SUPPORTS_RESOURCE_PATH;
@@ -169,7 +170,9 @@ public class RdbmsRealmResourceTest
 		{
 			getResourceClient().performRestCall(
 						AUTHENTICATE_RESOURCE_PATH, HttpMethod.PUT, MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, Response.class, 
-						OpenUrRdbmsRealmMock.TOKEN_WITH_WRONG_PW);
+						OpenUrRdbmsRealmMock.TOKEN_WITH_WRONG_PW);	
+			
+			fail("expected exception not thrown!");
 		} catch (WebApplicationException e)
 		{
 			assertNotNull(e);

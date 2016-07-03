@@ -156,7 +156,7 @@ public abstract class AbstractResourceClient
 				Class<?> clazz = Class.forName(errorMessage.getExceptionClassName());
 				Constructor<?> constructor = clazz.getConstructor(String.class);
 				Throwable t = (Throwable) constructor.newInstance(errorMessage.getMessage());
-				ex = (t instanceof WebApplicationException) ? ((WebApplicationException) t) : new WebApplicationException(errorMessage.getMessage(), t, response);
+				ex = new WebApplicationException(errorMessage.getMessage(), t, response);
 			} catch (Exception ignored)
 			{
 				String reasonPhrase;
