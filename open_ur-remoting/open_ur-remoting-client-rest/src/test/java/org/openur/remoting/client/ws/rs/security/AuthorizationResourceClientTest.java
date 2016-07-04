@@ -12,6 +12,7 @@ import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.openur.module.service.security.IAuthorizationServices;
+import org.openur.module.util.exception.EntityNotFoundException;
 import org.openur.remoting.resource.security.AuthorizationResource;
 
 public class AuthorizationResourceClientTest
@@ -54,6 +55,7 @@ public class AuthorizationResourceClientTest
 	
 	@Test
 	public void testHasPermissionInOrgUnit()
+		throws EntityNotFoundException
 	{
 		Mockito.when(authorizationServicesMock.hasPermission(PERSON_ID, OU_ID, PERMISSION_TEXT, APP_NAME)).thenReturn(Boolean.TRUE);		
 		
@@ -65,6 +67,7 @@ public class AuthorizationResourceClientTest
 	
 	@Test
 	public void testHasNoPermissionInOrgUnit()
+		throws EntityNotFoundException
 	{
 		Mockito.when(authorizationServicesMock.hasPermission(PERSON_ID, OU_ID, OTHER_PERMISSION_TEXT, APP_NAME)).thenReturn(Boolean.FALSE);
 		
@@ -76,6 +79,7 @@ public class AuthorizationResourceClientTest
 
 	@Test
 	public void testHasPermissionInSystem()
+		throws EntityNotFoundException
 	{
 		Mockito.when(authorizationServicesMock.hasPermission(PERSON_ID, PERMISSION_TEXT, APP_NAME)).thenReturn(Boolean.TRUE);		
 		
@@ -87,6 +91,7 @@ public class AuthorizationResourceClientTest
 
 	@Test
 	public void testHasNotPermissionInSystem()
+		throws EntityNotFoundException
 	{
 		Mockito.when(authorizationServicesMock.hasPermission(PERSON_ID, OTHER_PERMISSION_TEXT, APP_NAME)).thenReturn(Boolean.FALSE);
 		
@@ -98,6 +103,7 @@ public class AuthorizationResourceClientTest
 
 	@Test
 	public void testHasPermissionTechUser()
+		throws EntityNotFoundException
 	{
 		Mockito.when(authorizationServicesMock.hasPermissionTechUser(TECH_USER_ID, PERMISSION_TEXT, APP_NAME)).thenReturn(Boolean.TRUE);
 		
@@ -109,6 +115,7 @@ public class AuthorizationResourceClientTest
 
 	@Test
 	public void testHasNotPermissionTechUser()
+		throws EntityNotFoundException
 	{		
 		Mockito.when(authorizationServicesMock.hasPermissionTechUser(TECH_USER_ID, OTHER_PERMISSION_TEXT, APP_NAME)).thenReturn(Boolean.FALSE);	
 		

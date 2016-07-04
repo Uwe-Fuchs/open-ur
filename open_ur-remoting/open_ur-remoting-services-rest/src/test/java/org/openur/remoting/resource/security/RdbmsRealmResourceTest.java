@@ -175,7 +175,6 @@ public class RdbmsRealmResourceTest
 			fail("expected exception not thrown!");
 		} catch (WebApplicationException e)
 		{
-			assertNotNull(e);
 			assertEquals(404, e.getResponse().getStatus());
 			assertEquals(OpenUrRdbmsRealmMock.AUTH_ERROR_MSG, e.getMessage());
 			assertEquals(AuthenticationException.class, e.getCause().getClass());

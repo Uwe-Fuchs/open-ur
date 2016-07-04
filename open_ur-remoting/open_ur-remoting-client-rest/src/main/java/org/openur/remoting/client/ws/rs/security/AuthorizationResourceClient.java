@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
 
 import org.openur.module.service.security.IAuthorizationServices;
+import org.openur.module.util.exception.EntityNotFoundException;
 import org.openur.remoting.resource.client.AbstractResourceClient;
 import org.openur.remoting.resource.security.AuthorizationResource;
 import org.openur.remoting.xchange.rest.providers.json.PermissionProvider;
@@ -23,7 +24,7 @@ public class AuthorizationResourceClient
 	}
 
 	@Override
-	public Boolean hasPermission(String personId, String orgUnitId, String permissionText, String applicationName)
+	public Boolean hasPermission(String personId, String orgUnitId, String permissionText, String applicationName) throws EntityNotFoundException
 	{
 		String url = new StringBuilder()
 				.append(HAS_OU_PERMISSION_RESOURCE_PATH)
@@ -41,7 +42,7 @@ public class AuthorizationResourceClient
 	}
 
 	@Override
-	public Boolean hasPermission(String personId, String permissionText, String applicationName)
+	public Boolean hasPermission(String personId, String permissionText, String applicationName) throws EntityNotFoundException
 	{
 		String url = new StringBuilder()
 				.append(HAS_SYSTEM_PERMISSION_RESOURCE_PATH)
@@ -57,7 +58,7 @@ public class AuthorizationResourceClient
 	}
 
 	@Override
-	public Boolean hasPermissionTechUser(String techUserId, String permissionText, String applicationName)
+	public Boolean hasPermissionTechUser(String techUserId, String permissionText, String applicationName) throws EntityNotFoundException
 	{
 		String url = new StringBuilder()
 				.append(HAS_TECH_USER_PERMISSION_RESOURCE_PATH)

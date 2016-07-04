@@ -18,6 +18,7 @@ import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.utils.compare.PersonComparer;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealmMock;
+import org.openur.module.util.exception.EntityNotFoundException;
 
 public class AuthenticationFilterPlainCredentialsTest
 	extends AbstractAuthenticationFilterTest
@@ -32,6 +33,7 @@ public class AuthenticationFilterPlainCredentialsTest
 
 	@Test
 	public void testFilterValidCredentials()
+		throws EntityNotFoundException
 	{
 		Mockito.when(authorizationServicesMock.hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, remoteAuthenticationPermissionName, applicationName))
 				.thenReturn(Boolean.TRUE);
@@ -54,6 +56,7 @@ public class AuthenticationFilterPlainCredentialsTest
 
 	@Test
 	public void testFilterWrongPassword()
+		throws EntityNotFoundException
 	{
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
 		// set invalid credentials:
@@ -69,6 +72,7 @@ public class AuthenticationFilterPlainCredentialsTest
 
 	@Test
 	public void testFilterNotAuthorized()
+		throws EntityNotFoundException
 	{
 		Mockito.when(authorizationServicesMock.hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, remoteAuthenticationPermissionName, applicationName))
 				.thenReturn(Boolean.FALSE);

@@ -22,6 +22,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
 import org.openur.module.integration.security.shiro.UsernamePwAuthenticationInfo;
 import org.openur.module.service.security.IAuthorizationServices;
+import org.openur.module.util.exception.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -130,7 +131,7 @@ public class AuthenticationFilter
 		try
 		{
 			hasPermission = authorizationServices.hasPermissionTechUser(info.getIdentifier(), remoteAuthenticationPermissionName, applicationName);
-		} catch (NullPointerException e)
+		} catch (EntityNotFoundException e)
 		{
 			hasPermission = false;
 			LOG.error(e.getMessage());

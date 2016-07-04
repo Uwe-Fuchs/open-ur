@@ -19,6 +19,7 @@ import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.utils.compare.PersonComparer;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealmMock;
+import org.openur.module.util.exception.EntityNotFoundException;
 
 public class AuthenticationFilterHashedCredentialsTest
 	extends AbstractAuthenticationFilterTest
@@ -33,7 +34,7 @@ public class AuthenticationFilterHashedCredentialsTest
 
 	@Test
 	public void testFilter()
-		throws UnsupportedEncodingException
+		throws UnsupportedEncodingException, EntityNotFoundException
 	{
 		Mockito.when(authorizationServicesMock.hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, remoteAuthenticationPermissionName, applicationName))
 				.thenReturn(Boolean.TRUE);

@@ -26,6 +26,7 @@ import org.openur.module.persistence.dao.ISecurityDao;
 import org.openur.module.service.config.SecurityTestSpringConfig;
 import org.openur.module.service.userstructure.IOrgUnitServices;
 import org.openur.module.service.userstructure.IUserServices;
+import org.openur.module.util.exception.EntityNotFoundException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -160,6 +161,7 @@ public class AuthorizationServicesTest
 
 	@Test
 	public void testHasPermissionInOrgUnit()
+		throws EntityNotFoundException
 	{
 		// test with standard open-ur domain-objects:
 		assertTrue(authorizationServices.hasPermission(
@@ -172,6 +174,7 @@ public class AuthorizationServicesTest
 
 	@Test
 	public void testMemberInOrgUnitButHasNotPermission()
+		throws EntityNotFoundException
 	{		
 		// test with standard open-ur domain-objects:
 		assertFalse(authorizationServices.hasPermission(
@@ -184,6 +187,7 @@ public class AuthorizationServicesTest
 
 	@Test
 	public void testNotMemberInOrgUnitAndThusHasNotPermission()
+		throws EntityNotFoundException
 	{		
 		// test with standard open-ur domain-objects:
 		assertFalse(authorizationServices.hasPermission(
@@ -196,6 +200,7 @@ public class AuthorizationServicesTest
 
 	@Test
 	public void testHasPermissionInSuperOrgUnit()
+		throws EntityNotFoundException
 	{		
 		// test with standard open-ur domain-objects:
 		assertTrue(authorizationServices.hasPermission(
@@ -208,6 +213,7 @@ public class AuthorizationServicesTest
 
 	@Test
 	public void testCheckSystemWidePermissions()
+		throws EntityNotFoundException
 	{		
 		// only test with arbitrary objects:		
 		// has permmission:
@@ -219,6 +225,7 @@ public class AuthorizationServicesTest
 
 	@Test
 	public void testHasPermissionTechUser()
+		throws EntityNotFoundException
 	{		
 		// test with standard open-ur domain-objects:
 		assertTrue(authorizationServices.hasPermissionTechUser(TestObjectContainer.TECH_USER_UUID_1, 
@@ -234,26 +241,44 @@ public class AuthorizationServicesTest
 		assertFalse(authorizationServices.hasPermissionTechUser(TECH_USER_ID, PERMISSION_IN_SUPER_OU_TEXT, APP_NAME));
 	}
 
-	@Test(expected=NullPointerException.class)
+	@Test(expected=EntityNotFoundException.class)
 	public void testNoPersonFoundForId()
+		throws EntityNotFoundException
 	{		
-		authorizationServices.hasPermission("somePersonId", SUPER_OU_ID, PERMISSION_TEXT, app.getApplicationName());
+		authorizationServices.hasPermission("someUnknownPersonId", SUPER_OU_ID, PERMISSION_TEXT, app.getApplicationName());
 	}
 
-	@Test(expected=NullPointerException.class)
+	@Test(expected=EntityNotFoundException.class)
 	public void testNoOrgUnitFoundForId()
+		throws EntityNotFoundException
 	{		
-		authorizationServices.hasPermission(PERSON_ID, "someOrgUnitId", PERMISSION_TEXT, app.getApplicationName());
+		authorizationServices.hasPermission(PERSON_ID, "someUnknownOuId", PERMISSION_TEXT, app.getApplicationName());
 	}
 
-	@Test(expected=NullPointerException.class)
+	@Test(expected=EntityNotFoundException.class)
 	public void testNoPermissionFoundWithGivenText()
+		throws EntityNotFoundException
 	{		
-		authorizationServices.hasPermission(PERSON_ID, SUPER_OU_ID, "somePermissionText", app.getApplicationName());
+		authorizationServices.hasPermission(PERSON_ID, SUPER_OU_ID, "someUnknownPermissionText", app.getApplicationName());
 	}
 
-	@Test(expected=NullPointerException.class)
+	@Test(expected=EntityNotFoundException.class)
+	public void testNoApplicationFoundWithGivenName()
+		throws EntityNotFoundException
+	{		
+		authorizationServices.hasPermission(PERSON_ID, OU_ID, PERMISSION_TEXT, "someUnknownApplicationName");		
+	}
+
+	@Test(expected=EntityNotFoundException.class)
+	public void testNoTechUserFoundForId()
+		throws EntityNotFoundException
+	{		
+		authorizationServices.hasPermissionTechUser("someUnknownTechUserId", PERMISSION_TEXT, app.getApplicationName());
+	}
+
+	@Test(expected=EntityNotFoundException.class)
 	public void testCheckPermissionTechUserButGivePersonId()
+		throws EntityNotFoundException
 	{		
 		// check tech-user-permission with valid permission-text but with person-id:
 		authorizationServices.hasPermissionTechUser(PERSON_ID, PERMISSION_TEXT, app.getApplicationName());
