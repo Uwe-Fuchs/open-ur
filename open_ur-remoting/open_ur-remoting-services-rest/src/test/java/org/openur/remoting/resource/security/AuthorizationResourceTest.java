@@ -17,7 +17,7 @@ import org.mockito.Mockito;
 import org.openur.module.service.security.IAuthorizationServices;
 import org.openur.module.util.exception.EntityNotFoundException;
 import org.openur.remoting.resource.AbstractResourceTest;
-import org.openur.remoting.resource.errorhandling.GenericExceptionMapper;
+import org.openur.remoting.resource.errorhandling.EntityNotFoundExceptionMapper;
 import org.openur.remoting.xchange.rest.providers.json.ErrorMessageProvider;
 
 public class AuthorizationResourceTest
@@ -47,7 +47,7 @@ public class AuthorizationResourceTest
 		};
 		
 		ResourceConfig config = new ResourceConfig(AuthorizationResource.class)
-			.register(GenericExceptionMapper.class)
+			.register(EntityNotFoundExceptionMapper.class)
 			.register(ErrorMessageProvider.class)
 			.register(binder);
 
@@ -102,7 +102,7 @@ public class AuthorizationResourceTest
 			fail("expected exception not thrown!");
 		} catch (WebApplicationException e)
 		{
-			assertEquals(400, e.getResponse().getStatus());
+			assertEquals(404, e.getResponse().getStatus());
 			assertEquals(errorMsg, e.getMessage());
 		}
 	}

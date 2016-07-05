@@ -5,9 +5,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response.Status;
 
 import org.openur.module.service.security.IAuthorizationServices;
 import org.openur.module.util.exception.EntityNotFoundException;
@@ -32,13 +30,7 @@ public class AuthorizationResource
 			@QueryParam("text") String permissionText, @QueryParam("appName") String applicationName)
 		throws EntityNotFoundException
 	{
-		try
-		{
-			return authorizationServices.hasPermission(personId, orgUnitId, permissionText, applicationName);
-		} catch (EntityNotFoundException e)
-		{
-			throw new WebApplicationException(e.getMessage(), e, Status.BAD_REQUEST);
-		}
+		return authorizationServices.hasPermission(personId, orgUnitId, permissionText, applicationName);
 	}
 
 	@Override

@@ -21,6 +21,6 @@ public class AuthenticationExceptionMapper
 	@Override
 	protected Status getHttpStatus(Throwable ex)
 	{
-		return Response.Status.NOT_FOUND;
+		return Response.Status.CONFLICT;
 	}
 }

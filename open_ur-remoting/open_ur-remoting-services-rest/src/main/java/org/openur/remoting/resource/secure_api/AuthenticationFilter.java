@@ -133,8 +133,11 @@ public class AuthenticationFilter
 			hasPermission = authorizationServices.hasPermissionTechUser(info.getIdentifier(), remoteAuthenticationPermissionName, applicationName);
 		} catch (EntityNotFoundException e)
 		{
-			hasPermission = false;
 			LOG.error(e.getMessage());
+			String msg = String.format("Bad request for resource-method: [%s]: [%s]", method, e.getMessage());
+			abortWithBadRequest(requestContext, msg);
+			
+			return;
 		}
 		
 		if (!hasPermission)
