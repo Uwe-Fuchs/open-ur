@@ -43,7 +43,7 @@ public abstract class AbstractResourceClient
 	{
 		super();
 
-		Validate.notEmpty(baseUrl, "Base-URL must not be empty!");
+		Validate.notBlank(baseUrl, "Base-URL must not be blank!");
 		this.baseUrl = baseUrl;
 	}
 

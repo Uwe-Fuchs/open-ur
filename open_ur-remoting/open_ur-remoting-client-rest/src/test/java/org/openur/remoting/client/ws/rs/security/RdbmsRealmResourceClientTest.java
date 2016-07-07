@@ -23,13 +23,12 @@ public class RdbmsRealmResourceClientTest
 	extends JerseyTest
 {
 	private RdbmsRealmResourceClient realmClient;
-	private OpenUrRdbmsRealm realmMock;
 
 	@Override
 	protected Application configure()
 	{
 		// mocked service:
-		realmMock = new OpenUrRdbmsRealmMock();
+		OpenUrRdbmsRealm realmMock = new OpenUrRdbmsRealmMock();
 		
 		// Http-Testserver:
 		AbstractBinder binder = new AbstractBinder()
