@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MultivaluedMap;
@@ -33,7 +34,7 @@ import org.slf4j.LoggerFactory;
 @Provider
 @Priority(value = Priorities.AUTHENTICATION)
 public class AuthenticationFilter
-	implements javax.ws.rs.container.ContainerRequestFilter
+	implements ContainerRequestFilter
 {
   private static final Logger LOG = LoggerFactory.getLogger(AuthenticationFilter.class);
   
