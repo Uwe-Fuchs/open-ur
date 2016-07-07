@@ -21,8 +21,8 @@ import org.openur.module.domain.utils.compare.PersonComparer;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealmMock;
 import org.openur.module.util.exception.EntityNotFoundException;
 
-public class AuthenticationFilterHashedCredentialsTest
-	extends AbstractAuthenticationFilterTest
+public class SecurityFilterHashedUsernamePwTest
+	extends AbstractSecurityFilterTest
 {
 	@Override
 	protected Application configure()
@@ -44,7 +44,7 @@ public class AuthenticationFilterHashedCredentialsTest
 		String token = OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2;
 		
 		// add hashed credential to request-headers:
-		invocationBuilder.header(AuthenticationFilter.AUTHORIZATION_PROPERTY, DatatypeConverter.printBase64Binary(token.getBytes("UTF-8")));
+		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHORIZATION_PROPERTY, DatatypeConverter.printBase64Binary(token.getBytes("UTF-8")));
 		
 		Response response = invocationBuilder.get();
 		assertEquals(200, response.getStatus());

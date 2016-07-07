@@ -21,7 +21,7 @@ import org.openur.remoting.resource.errorhandling.EntityNotFoundExceptionMapper;
 import org.openur.remoting.resource.userstructure.UserResource;
 import org.openur.remoting.xchange.rest.providers.json.PersonProvider;
 
-public class AbstractAuthenticationFilterTest
+public class AbstractSecurityFilterTest
 	extends JerseyTest
 {
 	protected String remoteAuthenticationPermissionName = "Hallo!!";
@@ -56,7 +56,7 @@ public class AbstractAuthenticationFilterTest
 		
 		ResourceConfig config = new ResourceConfig(UserResource.class)
 				.register(PersonProvider.class)
-				.register(AuthenticationFilter.class)
+				.register(SecurityFilter_UsernamePw.class)
 				.register(EntityNotFoundExceptionMapper.class)
 				.register(binder);
 
@@ -75,7 +75,7 @@ public class AbstractAuthenticationFilterTest
 				.path(TestObjectContainer.PERSON_UUID_1);
 
 		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
-		invocationBuilder.header(AuthenticationFilter.APPLICATION_NAME_PROPERTY, applicationName);
+		invocationBuilder.header(SecurityFilter_UsernamePw.APPLICATION_NAME_PROPERTY, applicationName);
 		
 		return invocationBuilder;
 	}

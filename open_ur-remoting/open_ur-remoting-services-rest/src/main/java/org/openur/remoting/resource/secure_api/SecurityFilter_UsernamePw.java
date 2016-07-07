@@ -28,15 +28,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This filter verify the access permissions for a user based on username and
- * passowrd provided in request
+ * This filter verifies the access permissions for a user based on username and
+ * password provided in request.
+ * 
+ * @author info@uwefuchs.com
  * */
 @Provider
 @Priority(value = Priorities.AUTHENTICATION)
-public class AuthenticationFilter
+public class SecurityFilter_UsernamePw
 	implements ContainerRequestFilter
 {
-  private static final Logger LOG = LoggerFactory.getLogger(AuthenticationFilter.class);
+  private static final Logger LOG = LoggerFactory.getLogger(SecurityFilter_UsernamePw.class);
   
   public static final String APPLICATION_NAME_PROPERTY = "application-name";
 	public static final String AUTHORIZATION_PROPERTY = "Authorization";

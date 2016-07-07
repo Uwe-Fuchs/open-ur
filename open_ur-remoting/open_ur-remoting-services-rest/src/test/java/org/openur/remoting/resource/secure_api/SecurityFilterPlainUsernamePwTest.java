@@ -20,8 +20,8 @@ import org.openur.module.domain.utils.compare.PersonComparer;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealmMock;
 import org.openur.module.util.exception.EntityNotFoundException;
 
-public class AuthenticationFilterPlainCredentialsTest
-	extends AbstractAuthenticationFilterTest
+public class SecurityFilterPlainUsernamePwTest
+	extends AbstractSecurityFilterTest
 {
 	@Override
 	protected Application configure()
@@ -40,7 +40,7 @@ public class AuthenticationFilterPlainCredentialsTest
 		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
 
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
-		invocationBuilder.header(AuthenticationFilter.AUTHORIZATION_PROPERTY, OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2);
+		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHORIZATION_PROPERTY, OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2);
 		Response response = invocationBuilder.get();
 		assertEquals(200, response.getStatus());
 		System.out.println(response.getStatus());
@@ -60,7 +60,7 @@ public class AuthenticationFilterPlainCredentialsTest
 	{
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
 		// set invalid credentials:
-		invocationBuilder.header(AuthenticationFilter.AUTHORIZATION_PROPERTY, OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + "someWrongPassword");
+		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHORIZATION_PROPERTY, OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + "someWrongPassword");
 		Response response = invocationBuilder.get();
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
@@ -79,7 +79,7 @@ public class AuthenticationFilterPlainCredentialsTest
 
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
 		// set valid credentials:
-		invocationBuilder.header(AuthenticationFilter.AUTHORIZATION_PROPERTY, OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2);
+		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHORIZATION_PROPERTY, OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2);
 		Response response = invocationBuilder.get();
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
@@ -95,7 +95,7 @@ public class AuthenticationFilterPlainCredentialsTest
 		// set new, empty headers, i.e. no application-name given:
 		invocationBuilder.headers(new MultivaluedHashMap<String, Object>());
 		// set valid credentials:
-		invocationBuilder.header(AuthenticationFilter.AUTHORIZATION_PROPERTY, OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2);
+		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHORIZATION_PROPERTY, OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2);
 		
 		Response response = invocationBuilder.get();
 		assertEquals(400, response.getStatus());

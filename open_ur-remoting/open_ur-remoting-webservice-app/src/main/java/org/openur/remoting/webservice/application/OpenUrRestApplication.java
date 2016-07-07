@@ -4,7 +4,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.openur.remoting.resource.errorhandling.AuthenticationExceptionMapper;
 import org.openur.remoting.resource.errorhandling.EntityNotFoundExceptionMapper;
 import org.openur.remoting.resource.errorhandling.GenericExceptionMapper;
-import org.openur.remoting.resource.secure_api.AuthenticationFilter;
+import org.openur.remoting.resource.secure_api.SecurityFilter_UsernamePw;
 import org.openur.remoting.xchange.rest.providers.json.ErrorMessageProvider;
 import org.openur.remoting.xchange.rest.providers.json.OrgUnitProvider;
 import org.openur.remoting.xchange.rest.providers.json.PermissionProvider;
@@ -44,6 +44,6 @@ public class OpenUrRestApplication
 		register(EntityNotFoundExceptionMapper.class);
 		register(GenericExceptionMapper.class);
 		register(ErrorMessageProvider.class);
-		register(AuthenticationFilter.class);
+		register(SecurityFilter_UsernamePw.class);
 	}
 }
