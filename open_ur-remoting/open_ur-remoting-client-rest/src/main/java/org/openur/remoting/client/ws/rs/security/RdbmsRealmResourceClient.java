@@ -47,9 +47,11 @@ public class RdbmsRealmResourceClient
 					AUTHENTICATE_RESOURCE_PATH, HttpMethod.PUT, MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, AuthenticationInfo.class, token);			
 		} catch (WebApplicationException e)
 		{
-			if (e.getCause() != null && AuthenticationException.class.equals(e.getCause().getClass()))
+			Throwable cause = e.getCause();
+			
+			if (cause != null && AuthenticationException.class.equals(cause.getClass()))
 			{
-				throw (AuthenticationException) e.getCause();
+				throw (AuthenticationException) cause;
 			}
 			
 			throw e;

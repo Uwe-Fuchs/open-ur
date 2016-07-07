@@ -13,7 +13,9 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.openur.module.service.security.IAuthorizationServices;
 import org.openur.module.util.exception.EntityNotFoundException;
+import org.openur.remoting.resource.errorhandling.EntityNotFoundExceptionMapper;
 import org.openur.remoting.resource.security.AuthorizationResource;
+import org.openur.remoting.xchange.rest.providers.json.ErrorMessageProvider;
 
 public class AuthorizationResourceClientTest
 	extends JerseyTest
@@ -48,6 +50,8 @@ public class AuthorizationResourceClientTest
 		};
 		
 		ResourceConfig config = new ResourceConfig(AuthorizationResource.class)
+			.register(EntityNotFoundExceptionMapper.class)
+			.register(ErrorMessageProvider.class)
 			.register(binder);
 
 		return config;
@@ -123,5 +127,32 @@ public class AuthorizationResourceClientTest
 	
 		System.out.println("Result: " + b);
 		assertFalse(b);
+	}
+
+	@Test(expected=EntityNotFoundException.class)
+	public void testHasPermissionInSystem_ThrowException()
+		throws EntityNotFoundException
+	{		
+		Mockito.when(authorizationServicesMock.hasPermission(PERSON_ID, PERMISSION_TEXT, APP_NAME)).thenThrow(new EntityNotFoundException());
+		
+		authorizationResourceClient.hasPermission(PERSON_ID, PERMISSION_TEXT, APP_NAME);
+	}
+
+	@Test(expected=EntityNotFoundException.class)
+	public void testHasPermissionInOrgUnit_ThrowException()
+		throws EntityNotFoundException
+	{		
+		Mockito.when(authorizationServicesMock.hasPermission(PERSON_ID, OU_ID, PERMISSION_TEXT, APP_NAME)).thenThrow(new EntityNotFoundException());
+		
+		authorizationResourceClient.hasPermission(PERSON_ID, OU_ID, PERMISSION_TEXT, APP_NAME);		
+	}
+
+	@Test(expected=EntityNotFoundException.class)
+	public void testHasPermissionTechUser_ThrowException()
+		throws EntityNotFoundException
+	{		
+		Mockito.when(authorizationServicesMock.hasPermissionTechUser(TECH_USER_ID, PERMISSION_TEXT, APP_NAME)).thenThrow(new EntityNotFoundException());
+		
+		authorizationResourceClient.hasPermissionTechUser(TECH_USER_ID, PERMISSION_TEXT, APP_NAME);		
 	}
 }
