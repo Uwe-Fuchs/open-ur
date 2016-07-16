@@ -1,7 +1,10 @@
 package org.openur.remoting.resource.userstructure;
 
+import static org.openur.remoting.resource.secure_api.PermissionConstraints.REMOTE_READ;
+
 import java.util.Set;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -32,6 +35,7 @@ public class UserResource
 	@GET
 	@Path(PERSON_PER_ID_RESOURCE_PATH + "{id}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@RolesAllowed(REMOTE_READ)
 	public IPerson findPersonById(@PathParam("id") String id)
 	{
 		return userServices.findPersonById(id);
@@ -41,6 +45,7 @@ public class UserResource
 	@GET
 	@Path(PERSON_PER_NUMBER_RESOURCE_PATH + "{number}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@RolesAllowed(REMOTE_READ)
 	public IPerson findPersonByNumber(@PathParam("number") String number)
 	{
 		return userServices.findPersonByNumber(number);
@@ -50,6 +55,7 @@ public class UserResource
 	@GET
 	@Path(ALL_PERSONS_RESOURCE_PATH)
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@RolesAllowed(REMOTE_READ)
 	public Set<IPerson> obtainAllPersons()
 	{
 		return userServices.obtainAllPersons();
@@ -59,6 +65,7 @@ public class UserResource
 	@GET
 	@Path(TECHUSER_PER_ID_RESOURCE_PATH + "{id}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@RolesAllowed(REMOTE_READ)
 	public IAuthorizableTechUser findTechnicalUserById(@PathParam("id") String id)
 	{
 		return userServices.findTechnicalUserById(id);
@@ -68,6 +75,7 @@ public class UserResource
 	@GET
 	@Path(TECHUSER_PER_NUMBER_RESOURCE_PATH + "{number}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@RolesAllowed(REMOTE_READ)
 	public IAuthorizableTechUser findTechnicalUserByNumber(@PathParam("number") String number)
 	{
 		return userServices.findTechnicalUserByNumber(number);
@@ -77,6 +85,7 @@ public class UserResource
 	@GET
 	@Path(ALL_TECHUSERS_RESOURCE_PATH)
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@RolesAllowed(REMOTE_READ)
 	public Set<IAuthorizableTechUser> obtainAllTechnicalUsers()
 	{
 		return userServices.obtainAllTechnicalUsers();

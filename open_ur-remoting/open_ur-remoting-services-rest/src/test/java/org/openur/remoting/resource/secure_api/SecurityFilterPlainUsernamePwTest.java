@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.openur.remoting.resource.secure_api.PermissionConstraints.REMOTE_READ;
 
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.Application;
@@ -35,12 +36,12 @@ public class SecurityFilterPlainUsernamePwTest
 	public void testFilterValidCredentials()
 		throws EntityNotFoundException
 	{
-		Mockito.when(authorizationServicesMock.hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, remoteAuthenticationPermissionName, applicationName))
+		Mockito.when(authorizationServicesMock.hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName))
 				.thenReturn(Boolean.TRUE);
 		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
 
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
-		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHORIZATION_PROPERTY, OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2);
+		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHENTICATION_PROPERTY, OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2);
 		Response response = invocationBuilder.get();
 		assertEquals(200, response.getStatus());
 		System.out.println(response.getStatus());
@@ -51,7 +52,7 @@ public class SecurityFilterPlainUsernamePwTest
 		assertTrue(new PersonComparer().objectsAreEqual(TestObjectContainer.PERSON_1, p));
 
 		assertEquals(1, realmMock.getAuthCounter());
-		verify(authorizationServicesMock, times(1)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, remoteAuthenticationPermissionName, applicationName);
+		verify(authorizationServicesMock, times(1)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName);
 	}
 
 	@Test
@@ -60,7 +61,7 @@ public class SecurityFilterPlainUsernamePwTest
 	{
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
 		// set invalid credentials:
-		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHORIZATION_PROPERTY, OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + "someWrongPassword");
+		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHENTICATION_PROPERTY, OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + "someWrongPassword");
 		Response response = invocationBuilder.get();
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
@@ -74,18 +75,18 @@ public class SecurityFilterPlainUsernamePwTest
 	public void testFilterNotAuthorized()
 		throws EntityNotFoundException
 	{
-		Mockito.when(authorizationServicesMock.hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, remoteAuthenticationPermissionName, applicationName))
+		Mockito.when(authorizationServicesMock.hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName))
 				.thenReturn(Boolean.FALSE);
 
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
 		// set valid credentials:
-		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHORIZATION_PROPERTY, OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2);
+		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHENTICATION_PROPERTY, OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2);
 		Response response = invocationBuilder.get();
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
 
 		assertEquals(1, realmMock.getAuthCounter());
-		verify(authorizationServicesMock, times(1)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, remoteAuthenticationPermissionName, applicationName);
+		verify(authorizationServicesMock, times(1)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName);
 	}
 
 	@Test
@@ -95,7 +96,7 @@ public class SecurityFilterPlainUsernamePwTest
 		// set new, empty headers, i.e. no application-name given:
 		invocationBuilder.headers(new MultivaluedHashMap<String, Object>());
 		// set valid credentials:
-		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHORIZATION_PROPERTY, OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2);
+		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHENTICATION_PROPERTY, OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2);
 		
 		Response response = invocationBuilder.get();
 		assertEquals(400, response.getStatus());

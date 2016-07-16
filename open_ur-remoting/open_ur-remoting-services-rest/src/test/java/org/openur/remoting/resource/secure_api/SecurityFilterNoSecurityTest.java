@@ -1,7 +1,11 @@
 package org.openur.remoting.resource.secure_api;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
@@ -11,7 +15,6 @@ import org.mockito.Mockito;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.utils.compare.PersonComparer;
-import org.openur.module.integration.security.shiro.OpenUrRdbmsRealmMock;
 import org.openur.module.util.exception.EntityNotFoundException;
 
 public class SecurityFilterNoSecurityTest
@@ -27,8 +30,6 @@ public class SecurityFilterNoSecurityTest
 	public void testFilter()
 		throws EntityNotFoundException
 	{
-		Mockito.when(authorizationServicesMock.hasPermission(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, remoteAuthenticationPermissionName, applicationName))
-				.thenReturn(Boolean.TRUE);
 		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
 
 		// do not add user-credentials to REST-request:

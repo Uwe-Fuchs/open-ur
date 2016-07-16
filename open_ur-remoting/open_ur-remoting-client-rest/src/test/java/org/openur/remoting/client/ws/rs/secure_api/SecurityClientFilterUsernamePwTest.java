@@ -99,7 +99,7 @@ public class SecurityClientFilterUsernamePwTest
 		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
 
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
-		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHORIZATION_PROPERTY, OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2);
+		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHENTICATION_PROPERTY, OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2);
 		Response response = invocationBuilder.get();
 		assertEquals(200, response.getStatus());
 		System.out.println(response.getStatus());

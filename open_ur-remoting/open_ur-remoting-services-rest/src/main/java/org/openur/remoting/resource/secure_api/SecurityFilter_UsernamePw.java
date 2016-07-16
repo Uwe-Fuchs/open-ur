@@ -1,12 +1,13 @@
 package org.openur.remoting.resource.secure_api;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.annotation.Priority;
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
@@ -41,15 +42,11 @@ public class SecurityFilter_UsernamePw
   private static final Logger LOG = LoggerFactory.getLogger(SecurityFilter_UsernamePw.class);
   
   public static final String APPLICATION_NAME_PROPERTY = "application-name";
-	public static final String AUTHORIZATION_PROPERTY = "Authorization";
+	public static final String AUTHENTICATION_PROPERTY = "Authentication";
 	public static final String AUTHENTICATION_SCHEME = "Basic";
 
 	@Context
 	private ResourceInfo resourceInfo;
-	
-	@Inject
-	@Named("remoteAuthenticationPermissionName")
-	private String remoteAuthenticationPermissionName;
 	
 	@Inject
 	private SecureApiSettings settings = SecureApiSettings.NO_SECURITY;
@@ -75,39 +72,24 @@ public class SecurityFilter_UsernamePw
 		// Get request headers
 		MultivaluedMap<String, String> headers = requestContext.getHeaders();
 
-		// Fetch authorization header
-		List<String> authorization = headers.get(AUTHORIZATION_PROPERTY);
+		// Fetch authentication header
+		List<String> authentication = headers.get(AUTHENTICATION_PROPERTY);
 
-		// If authorization is mandatory but no credentials present -> block access
-		if (settings != SecureApiSettings.NO_SECURITY && CollectionUtils.isEmpty(authorization))
+		// If security is mandatory but no credentials present -> block access
+		if (settings != SecureApiSettings.NO_SECURITY && CollectionUtils.isEmpty(authentication))
 		{
 			String msg = String.format("Access denied for resource-method: [%s]: No credentials found!", method);
 			abortWithUnauthorized(requestContext, msg);
 			
 			return;
 		}
-		
-		// Get encoded username and password
-		String usernameAndPassword = authorization.get(0).replaceFirst(AUTHENTICATION_SCHEME + " ", "");
 
-		// Decode username and password
-		if (settings == SecureApiSettings.HASHED_CREDENTIIALS)
-		{
-			usernameAndPassword = new String(DatatypeConverter.parseBase64Binary(usernameAndPassword));
-		}
-
-		// Split username and password tokens
-		StringTokenizer tokenizer = new StringTokenizer(usernameAndPassword, ":");
-		String username = tokenizer.nextToken();
-		String password = tokenizer.nextToken();
-
-		// Verify user access
+		// Verify user access:
 		UsernamePwAuthenticationInfo info = null;
 		
 		try
 		{
-			final UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-			info = (UsernamePwAuthenticationInfo) realm.getAuthenticationInfo(token);
+			info = checkAuthentication(authentication);
 		} catch (AuthenticationException e)
 		{
 			String msg = String.format("Access denied for resource-method: [%s], Authentication failed with message: [%s]", method, e.getMessage());
@@ -133,7 +115,7 @@ public class SecurityFilter_UsernamePw
 		
 		try
 		{
-			hasPermission = authorizationServices.hasPermissionTechUser(info.getIdentifier(), remoteAuthenticationPermissionName, applicationName);
+			hasPermission = checkPermissions(method, applicationName, info.getIdentifier());
 		} catch (EntityNotFoundException e)
 		{
 			LOG.error(e.getMessage());
@@ -145,8 +127,7 @@ public class SecurityFilter_UsernamePw
 		
 		if (!hasPermission)
 		{
-			String msg = String.format("Access denied for resource-method: [%s]! User #%s doesn't have permission [%s]!", 
-					method, info.getIdentifier(), remoteAuthenticationPermissionName);
+			String msg = String.format("Access denied for resource-method: [%s]! User #%s doesn't have permission!", method, info.getIdentifier());
 			abortWithUnauthorized(requestContext, msg);
 			
 			return;
@@ -171,5 +152,57 @@ public class SecurityFilter_UsernamePw
 				.entity(msg)
 				.build();
 		requestContext.abortWith(response);		
+	}
+	
+	private UsernamePwAuthenticationInfo checkAuthentication(List<String> authentication)
+		throws AuthenticationException
+	{
+		// Get encoded username and password
+		String usernameAndPassword = authentication.get(0).replaceFirst(AUTHENTICATION_SCHEME + " ", "");
+
+		// Decode username and password
+		if (settings == SecureApiSettings.HASHED_CREDENTIIALS)
+		{
+			usernameAndPassword = new String(DatatypeConverter.parseBase64Binary(usernameAndPassword));
+		}
+
+		// Split username and password tokens
+		StringTokenizer tokenizer = new StringTokenizer(usernameAndPassword, ":");
+		String username = tokenizer.nextToken();
+		String password = tokenizer.nextToken();
+		
+		// Verify user access:		
+		UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+		
+		return (UsernamePwAuthenticationInfo) realm.getAuthenticationInfo(token);
+	}
+	
+	private boolean checkPermissions(Method method, String applicationName, String userId)
+		throws EntityNotFoundException
+	{		
+		RolesAllowed ra = null;
+		Annotation[] methodAnnotations = method.getAnnotations();
+    for (final Annotation ma : methodAnnotations) {
+      if (ma.annotationType() == RolesAllowed.class) {
+          ra = RolesAllowed.class.cast(ma);
+          break;
+      }
+    }
+
+    if (ra != null)
+    {
+  		boolean hasPermission = false;
+  		
+    	for (String roleAllowed : ra.value())
+    	{
+    		hasPermission = authorizationServices.hasPermissionTechUser(userId, roleAllowed, applicationName);
+    		if (hasPermission)
+    		{
+    			return true;
+    		}
+    	}    	
+    }
+    
+		return false;
 	}
 }

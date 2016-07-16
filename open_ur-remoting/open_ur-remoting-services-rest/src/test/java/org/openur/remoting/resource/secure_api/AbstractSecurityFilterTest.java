@@ -24,7 +24,6 @@ import org.openur.remoting.xchange.rest.providers.json.PersonProvider;
 public class AbstractSecurityFilterTest
 	extends JerseyTest
 {
-	protected String remoteAuthenticationPermissionName = "Hallo!!";
 	protected String applicationName = "Demo-Application";
 	protected SecureApiSettings settings;
 	
@@ -46,7 +45,6 @@ public class AbstractSecurityFilterTest
 			protected void configure()
 			{
 				bind(realmMock).to(OpenUrRdbmsRealm.class);
-				bind(remoteAuthenticationPermissionName).to(String.class).named("remoteAuthenticationPermissionName");
 				bind(settings).to(SecureApiSettings.class);
 				bind(authorizationServicesMock).to(IAuthorizationServices.class);
 				bind(userServicesMock).to(IUserServices.class);
