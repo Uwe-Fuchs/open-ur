@@ -1,5 +1,9 @@
 package org.openur.remoting.resource.security;
 
+import static org.openur.remoting.resource.secure_api.PermissionConstraints.REMOTE_READ;
+import static org.openur.remoting.resource.secure_api.PermissionConstraints.REMOTE_CHECK_AUTHENTICATION;
+
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -30,6 +34,7 @@ public class RdbmsRealmResource
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	@Path(GET_NAME_RESOURCE_PATH)
+	@RolesAllowed(REMOTE_READ)
 	public String getName()
 	{
 		return realm.getName();
@@ -40,6 +45,7 @@ public class RdbmsRealmResource
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Produces(MediaType.TEXT_PLAIN)
 	@Path(SUPPORTS_RESOURCE_PATH)
+	@RolesAllowed(REMOTE_CHECK_AUTHENTICATION)
 	public boolean supports(AuthenticationToken token)
 	{
 		return realm.supports(token);
@@ -50,6 +56,7 @@ public class RdbmsRealmResource
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Path(AUTHENTICATE_RESOURCE_PATH)
+	@RolesAllowed(REMOTE_CHECK_AUTHENTICATION)
 	public AuthenticationInfo getAuthenticationInfo(AuthenticationToken token)
 		throws AuthenticationException
 	{

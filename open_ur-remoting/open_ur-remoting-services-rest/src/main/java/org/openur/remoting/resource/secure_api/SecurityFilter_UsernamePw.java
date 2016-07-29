@@ -127,7 +127,7 @@ public class SecurityFilter_UsernamePw
 
 		if (!hasPermission)
 		{
-			String msg = String.format("Access denied for resource-method: [%s]! User #%s doesn't have permission!", method, info.getIdentifier());
+			String msg = String.format("Access denied for resource-method: [%s]: User #%s doesn't have permission!", method, info.getIdentifier());
 			abortWithUnauthorized(requestContext, msg);
 
 			return;

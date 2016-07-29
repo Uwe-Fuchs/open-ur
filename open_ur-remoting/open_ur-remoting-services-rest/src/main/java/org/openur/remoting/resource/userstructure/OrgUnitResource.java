@@ -1,7 +1,10 @@
 package org.openur.remoting.resource.userstructure;
 
+import static org.openur.remoting.resource.secure_api.PermissionConstraints.REMOTE_READ;
+
 import java.util.Set;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -32,6 +35,7 @@ public class OrgUnitResource
 	@GET
 	@Path(ORGUNIT_PER_ID_RESOURCE_PATH + "{id}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@RolesAllowed(REMOTE_READ)
 	public IAuthorizableOrgUnit findOrgUnitById(@PathParam("id") String orgUnitId, 
 		@DefaultValue("false") @QueryParam("inclMembers") Boolean inclMembersRoles)
 	{
@@ -42,6 +46,7 @@ public class OrgUnitResource
 	@GET
 	@Path(ORGUNIT_PER_NUMBER_RESOURCE_PATH + "{number}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@RolesAllowed(REMOTE_READ)
 	public IAuthorizableOrgUnit findOrgUnitByNumber(@PathParam("number") String orgUnitNumber, 
 		@DefaultValue("false") @QueryParam("inclMembers") Boolean inclMembersRoles)
 	{
@@ -52,6 +57,7 @@ public class OrgUnitResource
 	@GET
 	@Path(ALL_ORGUNITS_RESOURCE_PATH)
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@RolesAllowed(REMOTE_READ)
 	public Set<IAuthorizableOrgUnit> obtainAllOrgUnits()
 	{
 		return orgUnitServices.obtainAllOrgUnits();
@@ -61,6 +67,7 @@ public class OrgUnitResource
 	@GET
 	@Path(SUB_ORGUNITS_RESOURCE_PATH + "{id}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@RolesAllowed(REMOTE_READ)
 	public Set<IAuthorizableOrgUnit> obtainSubOrgUnitsForOrgUnit(@PathParam("id") String orgUnitId, 
 		@DefaultValue("false") @QueryParam("inclMembers") Boolean inclMembersRoles)
 	{
@@ -71,6 +78,7 @@ public class OrgUnitResource
 	@GET
 	@Path(ALL_ROOT_ORGUNITS_RESOURCE_PATH)
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@RolesAllowed(REMOTE_READ)
 	public Set<IAuthorizableOrgUnit> obtainRootOrgUnits()
 	{
 		return orgUnitServices.obtainRootOrgUnits();

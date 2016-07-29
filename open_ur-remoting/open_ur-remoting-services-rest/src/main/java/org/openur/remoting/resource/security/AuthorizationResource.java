@@ -1,5 +1,8 @@
 package org.openur.remoting.resource.security;
 
+import static org.openur.remoting.resource.secure_api.PermissionConstraints.REMOTE_CHECK_PERMISSION;
+
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -26,6 +29,7 @@ public class AuthorizationResource
 	@GET
 	@Path(HAS_OU_PERMISSION_RESOURCE_PATH)
 	@Produces(MediaType.TEXT_PLAIN)
+	@RolesAllowed(REMOTE_CHECK_PERMISSION)
 	public Boolean hasPermission(@QueryParam("personId") String personId, @QueryParam("ouId") String orgUnitId, 
 			@QueryParam("text") String permissionText, @QueryParam("appName") String applicationName)
 		throws EntityNotFoundException
@@ -37,6 +41,7 @@ public class AuthorizationResource
 	@GET
 	@Path(HAS_SYSTEM_PERMISSION_RESOURCE_PATH)
 	@Produces(MediaType.TEXT_PLAIN)
+	@RolesAllowed(REMOTE_CHECK_PERMISSION)
 	public Boolean hasPermission(@QueryParam("personId") String personId, @QueryParam("text") String permissionText, 
 			@QueryParam("appName") String applicationName)
 		throws EntityNotFoundException
@@ -48,6 +53,7 @@ public class AuthorizationResource
 	@GET
 	@Path(HAS_TECH_USER_PERMISSION_RESOURCE_PATH)
 	@Produces(MediaType.TEXT_PLAIN)
+	@RolesAllowed(REMOTE_CHECK_PERMISSION)
 	public Boolean hasPermissionTechUser(@QueryParam("techUserId") String techUserId, @QueryParam("text") String permissionText, 
 			@QueryParam("appName") String applicationName)
 		throws EntityNotFoundException
