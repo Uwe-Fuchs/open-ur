@@ -39,21 +39,21 @@ import org.slf4j.LoggerFactory;
 public class SecurityFilter_UsernamePw
 	implements ContainerRequestFilter
 {
-  private static final Logger LOG = LoggerFactory.getLogger(SecurityFilter_UsernamePw.class);
-  
-  public static final String APPLICATION_NAME_PROPERTY = "application-name";
+	private static final Logger LOG = LoggerFactory.getLogger(SecurityFilter_UsernamePw.class);
+
+	public static final String APPLICATION_NAME_PROPERTY = "application-name";
 	public static final String AUTHENTICATION_PROPERTY = "Authentication";
 	public static final String AUTHENTICATION_SCHEME = "Basic";
 
 	@Context
 	private ResourceInfo resourceInfo;
-	
+
 	@Inject
 	private SecureApiSettings settings = SecureApiSettings.NO_SECURITY;
 
 	@Inject
 	private OpenUrRdbmsRealm realm;
-	
+
 	@Inject
 	private IAuthorizationServices authorizationServices;
 
@@ -65,10 +65,10 @@ public class SecurityFilter_UsernamePw
 		if (settings == SecureApiSettings.NO_SECURITY)
 		{
 			LOG.debug("Security for REST-API switched off, bypassing security-filter!", method);
-			
+
 			return;
 		}
-		
+
 		// Get request headers
 		MultivaluedMap<String, String> headers = requestContext.getHeaders();
 
@@ -80,13 +80,13 @@ public class SecurityFilter_UsernamePw
 		{
 			String msg = String.format("Access denied for resource-method: [%s]: No credentials found!", method);
 			abortWithUnauthorized(requestContext, msg);
-			
+
 			return;
 		}
 
 		// Verify user access:
 		UsernamePwAuthenticationInfo info = null;
-		
+
 		try
 		{
 			info = checkAuthentication(authentication);
@@ -94,25 +94,25 @@ public class SecurityFilter_UsernamePw
 		{
 			String msg = String.format("Access denied for resource-method: [%s], Authentication failed with message: [%s]", method, e.getMessage());
 			abortWithUnauthorized(requestContext, msg);
-			
+
 			return;
 		}
-		
-		List<String> applicationNameHeaders = headers.get(APPLICATION_NAME_PROPERTY);		
-		
+
+		List<String> applicationNameHeaders = headers.get(APPLICATION_NAME_PROPERTY);
+
 		if (CollectionUtils.isEmpty(applicationNameHeaders))
 		{
 			String msg = String.format("Bad request for resource-method: [%s]: No application-name given!", method);
 			abortWithBadRequest(requestContext, msg);
-			
+
 			return;
 		}
-		
+
 		String applicationName = applicationNameHeaders.get(0);
-		
+
 		// Permission-check:
 		boolean hasPermission = false;
-		
+
 		try
 		{
 			hasPermission = checkPermissions(method, applicationName, info.getIdentifier());
@@ -121,39 +121,36 @@ public class SecurityFilter_UsernamePw
 			LOG.error(e.getMessage());
 			String msg = String.format("Bad request for resource-method: [%s]: [%s]", method, e.getMessage());
 			abortWithBadRequest(requestContext, msg);
-			
+
 			return;
 		}
-		
+
 		if (!hasPermission)
 		{
 			String msg = String.format("Access denied for resource-method: [%s]! User #%s doesn't have permission!", method, info.getIdentifier());
 			abortWithUnauthorized(requestContext, msg);
-			
+
 			return;
 		}
 	}
-	
+
 	private void abortWithBadRequest(ContainerRequestContext requestContext, String msg)
 	{
 		abortRequest(Response.Status.BAD_REQUEST, requestContext, msg);
 	}
-	
+
 	private void abortWithUnauthorized(ContainerRequestContext requestContext, String msg)
 	{
 		abortRequest(Response.Status.UNAUTHORIZED, requestContext, msg);
 	}
-	
+
 	private void abortRequest(Response.Status status, ContainerRequestContext requestContext, String msg)
 	{
 		LOG.warn(msg);
-		Response response = Response
-				.status(status)
-				.entity(msg)
-				.build();
-		requestContext.abortWith(response);		
+		Response response = Response.status(status).entity(msg).build();
+		requestContext.abortWith(response);
 	}
-	
+
 	private UsernamePwAuthenticationInfo checkAuthentication(List<String> authentication)
 		throws AuthenticationException
 	{
@@ -170,39 +167,43 @@ public class SecurityFilter_UsernamePw
 		StringTokenizer tokenizer = new StringTokenizer(usernameAndPassword, ":");
 		String username = tokenizer.nextToken();
 		String password = tokenizer.nextToken();
-		
-		// Verify user access:		
+
+		// Verify user access:
 		UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-		
+
 		return (UsernamePwAuthenticationInfo) realm.getAuthenticationInfo(token);
 	}
-	
+
 	private boolean checkPermissions(Method method, String applicationName, String userId)
 		throws EntityNotFoundException
-	{		
+	{
 		RolesAllowed ra = null;
 		Annotation[] methodAnnotations = method.getAnnotations();
-    for (final Annotation ma : methodAnnotations) {
-      if (ma.annotationType() == RolesAllowed.class) {
-          ra = RolesAllowed.class.cast(ma);
-          break;
-      }
-    }
 
-    if (ra != null)
-    {
-  		boolean hasPermission = false;
-  		
-    	for (String roleAllowed : ra.value())
-    	{
-    		hasPermission = authorizationServices.hasPermissionTechUser(userId, roleAllowed, applicationName);
-    		if (hasPermission)
-    		{
-    			return true;
-    		}
-    	}    	
-    }
-    
+		for (final Annotation ma : methodAnnotations)
+		{
+			if (ma.annotationType() == RolesAllowed.class)
+			{
+				ra = RolesAllowed.class.cast(ma);
+				
+				break;
+			}
+		}
+		
+		// if no roles are declared on the method => skip permission-check:
+		if (ra == null)
+		{
+			return true;
+		}
+
+		for (String roleAllowed : ra.value())
+		{
+			if (authorizationServices.hasPermissionTechUser(userId, roleAllowed, applicationName))
+			{
+				return true;
+			}
+		}
+
 		return false;
 	}
 }

@@ -77,13 +77,6 @@ public class WebApplicationSpringConfig
 		
 		return realm;
 	}
-	
-	// secure REST-API:
-	@Bean(name = "remoteAuthenticationPermissionName")
-	public String remoteAuthenticationPermissionName()
-	{
-		return env.getProperty("remoteAuthenticationPermissionName", "remoteAuthentication");
-	}
 
 	@Bean(name = "secureApiSettings")
 	public SecureApiSettings secureApiSettings()

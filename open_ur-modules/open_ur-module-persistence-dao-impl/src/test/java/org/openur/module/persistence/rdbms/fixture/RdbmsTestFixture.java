@@ -60,7 +60,8 @@ public class RdbmsTestFixture
 	private POrgUnitMember member_2_A;
 	private POrgUnitMember member_1_B;
 	private POrgUnitMember member_3_B;
-	private PTechnicalUser techUser;
+	private PTechnicalUser techUser_1;
+	private PTechnicalUser techUser_2;
 	
 	@Inject
 	private IOrganizationalUnitMapper<AuthorizableOrgUnit> organizationalUnitMapper;
@@ -183,13 +184,23 @@ public class RdbmsTestFixture
 		
 		saveOrgUnit(orgUnit_C);
 
-		PPermission pRemoteAuth_A = new PPermission("remoteAuthentication", app_A);
-		PPermission pRemoteAuth_B = new PPermission("remoteAuthentication", app_B);
-		PPermission pRemoteAuth_C = new PPermission("remoteAuthentication", app_C);
+		PPermission pRemoteRead_A = new PPermission("remoteRead", app_A);
+		PPermission pRemoteRead_B = new PPermission("remoteRead", app_B);
+//		PPermission pRemoteRead_C = new PPermission("remoteRead", app_C);
+		PPermission pRemoteCheckAuth_A = new PPermission("remoteCheckAuthentication", app_A);
+//		PPermission pRemoteCheckAuth_B = new PPermission("remoteCheckAuthentication", app_B);
+//		PPermission pRemoteCheckAuth_C = new PPermission("remoteCheckAuthentication", app_C);
+		PPermission pRemoteCheckPerm_A = new PPermission("remoteCheckPermission", app_A);
+//		PPermission pRemoteCheckPerm_B = new PPermission("remoteCheckPermission", app_B);
+//		PPermission pRemoteCheckPerm_C = new PPermission("remoteCheckPermission", app_C);
 		
-		techUser = technicalUserMapper.mapFromDomainObject(TestObjectContainer.TECH_USER_1);
-		techUser.setPermissions(new HashSet<>(Arrays.asList(pRemoteAuth_A, pRemoteAuth_B, pRemoteAuth_C)));
-		saveTechnicalUser(techUser);		
+		techUser_1 = technicalUserMapper.mapFromDomainObject(TestObjectContainer.TECH_USER_1);
+		techUser_1.setPermissions(new HashSet<>(Arrays.asList(pRemoteRead_A, pRemoteCheckAuth_A, pRemoteCheckPerm_A)));
+		saveTechnicalUser(techUser_1);	
+		
+		techUser_2 = technicalUserMapper.mapFromDomainObject(TestObjectContainer.TECH_USER_2);
+		techUser_2.setPermissions(new HashSet<>(Arrays.asList(pRemoteRead_B)));
+		saveTechnicalUser(techUser_2);			
 		
 		String someUserName = "userName_1";
 		String somePassWord = "password_1";
@@ -198,7 +209,7 @@ public class RdbmsTestFixture
 		
 		someUserName = "userName_2";
 		somePassWord = "password_2";
-		pUserAccount = new PUserAccount(techUser, someUserName, somePassWord);
+		pUserAccount = new PUserAccount(techUser_1, someUserName, somePassWord);
 		saveUserAccount(pUserAccount);
 	}
 	
