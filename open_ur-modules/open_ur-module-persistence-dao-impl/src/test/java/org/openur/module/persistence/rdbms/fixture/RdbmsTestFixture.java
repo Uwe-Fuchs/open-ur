@@ -17,6 +17,7 @@ import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.AuthorizableTechUser;
 import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.domain.security.authorization.OpenURRole;
+import org.openur.module.domain.security.secure_api.PermissionConstraints;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.persistence.mapper.rdbms.IEntityDomainObjectMapper;
 import org.openur.module.persistence.mapper.rdbms.IOrganizationalUnitMapper;
@@ -184,15 +185,15 @@ public class RdbmsTestFixture
 		
 		saveOrgUnit(orgUnit_C);
 
-		PPermission pRemoteRead_A = new PPermission("remoteRead", app_A);
-		PPermission pRemoteRead_B = new PPermission("remoteRead", app_B);
-//		PPermission pRemoteRead_C = new PPermission("remoteRead", app_C);
-		PPermission pRemoteCheckAuth_A = new PPermission("remoteCheckAuthentication", app_A);
-//		PPermission pRemoteCheckAuth_B = new PPermission("remoteCheckAuthentication", app_B);
-//		PPermission pRemoteCheckAuth_C = new PPermission("remoteCheckAuthentication", app_C);
-		PPermission pRemoteCheckPerm_A = new PPermission("remoteCheckPermission", app_A);
-//		PPermission pRemoteCheckPerm_B = new PPermission("remoteCheckPermission", app_B);
-//		PPermission pRemoteCheckPerm_C = new PPermission("remoteCheckPermission", app_C);
+		PPermission pRemoteRead_A = new PPermission(PermissionConstraints.REMOTE_READ, app_A);
+		PPermission pRemoteRead_B = new PPermission(PermissionConstraints.REMOTE_READ, app_B);
+//		PPermission pRemoteRead_C = new PPermission(PermissionConstraints.REMOTE_READ, app_C);
+		PPermission pRemoteCheckAuth_A = new PPermission(PermissionConstraints.REMOTE_CHECK_AUTHENTICATION, app_A);
+//		PPermission pRemoteCheckAuth_B = new PPermission(PermissionConstraints.REMOTE_CHECK_AUTHENTICATION, app_B);
+//		PPermission pRemoteCheckAuth_C = new PPermission(PermissionConstraints.REMOTE_CHECK_AUTHENTICATION, app_C);
+		PPermission pRemoteCheckPerm_A = new PPermission(PermissionConstraints.REMOTE_CHECK_PERMISSION, app_A);
+//		PPermission pRemoteCheckPerm_B = new PPermission(PermissionConstraints.REMOTE_CHECK_PERMISSION, app_B);
+//		PPermission pRemoteCheckPerm_C = new PPermission(PermissionConstraints.REMOTE_CHECK_PERMISSION, app_C);
 		
 		techUser_1 = technicalUserMapper.mapFromDomainObject(TestObjectContainer.TECH_USER_1);
 		techUser_1.setPermissions(new HashSet<>(Arrays.asList(pRemoteRead_A, pRemoteCheckAuth_A, pRemoteCheckPerm_A)));
