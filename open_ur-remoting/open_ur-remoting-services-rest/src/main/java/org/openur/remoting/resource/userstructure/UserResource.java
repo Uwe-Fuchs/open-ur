@@ -1,6 +1,6 @@
 package org.openur.remoting.resource.userstructure;
 
-import static org.openur.remoting.resource.secure_api.PermissionConstraints.REMOTE_READ;
+import static org.openur.module.domain.security.secure_api.PermissionConstraints.REMOTE_READ;
 
 import java.util.Set;
 

@@ -1,7 +1,7 @@
 package org.openur.remoting.resource.security;
 
-import static org.openur.remoting.resource.secure_api.PermissionConstraints.REMOTE_READ;
-import static org.openur.remoting.resource.secure_api.PermissionConstraints.REMOTE_CHECK_AUTHENTICATION;
+import static org.openur.module.domain.security.secure_api.PermissionConstraints.REMOTE_READ;
+import static org.openur.module.domain.security.secure_api.PermissionConstraints.REMOTE_CHECK_AUTHENTICATION;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
