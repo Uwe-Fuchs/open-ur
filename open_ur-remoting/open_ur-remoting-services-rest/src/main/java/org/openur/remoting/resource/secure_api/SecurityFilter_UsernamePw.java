@@ -154,10 +154,10 @@ public class SecurityFilter_UsernamePw
 	private UsernamePwAuthenticationInfo checkAuthentication(List<String> authentication)
 		throws AuthenticationException
 	{
-		// Get encoded username and password
+		// Get username and password
 		String usernameAndPassword = authentication.get(0).replaceFirst(AUTHENTICATION_SCHEME + " ", "");
 
-		// Decode username and password
+		// Decode username and password (if encoded):
 		if (settings == SecureApiSettings.HASHED_CREDENTIIALS)
 		{
 			usernameAndPassword = new String(DatatypeConverter.parseBase64Binary(usernameAndPassword));

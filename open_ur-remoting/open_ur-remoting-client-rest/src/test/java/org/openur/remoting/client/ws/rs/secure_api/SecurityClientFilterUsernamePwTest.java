@@ -3,6 +3,7 @@ package org.openur.remoting.client.ws.rs.secure_api;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.openur.module.domain.security.secure_api.PermissionConstraints.REMOTE_READ;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -35,7 +36,6 @@ import org.openur.remoting.xchange.rest.providers.json.PersonProvider;
 public class SecurityClientFilterUsernamePwTest
 	extends JerseyTest
 {
-	private String remoteAuthenticationPermissionName = "Hallo!!";
 	protected String applicationName = "Demo-Application";
 	private SecureApiSettings settings = SecureApiSettings.PLAIN_CREDENTIALS;
 	
@@ -56,7 +56,6 @@ public class SecurityClientFilterUsernamePwTest
 			protected void configure()
 			{
 				bind(realmMock).to(OpenUrRdbmsRealm.class);
-				bind(remoteAuthenticationPermissionName).to(String.class).named("remoteAuthenticationPermissionName");
 				bind(settings).to(SecureApiSettings.class);
 				bind(authorizationServicesMock).to(IAuthorizationServices.class);
 				bind(userServicesMock).to(IUserServices.class);
@@ -72,11 +71,11 @@ public class SecurityClientFilterUsernamePwTest
 		return config;
 	}
 	
-	private Invocation.Builder buildInvocationTargetBuilder()
+	private Invocation.Builder buildInvocationTargetBuilder(String user, String password, boolean hashCredentials)
 	{
 		ClientConfig clientConfig = new ClientConfig();
 		clientConfig.register(PersonProvider.class);
-		clientConfig.register(SecurityClientFilter_UsernamePw.class);
+		clientConfig.register(new SecurityClientFilter_UsernamePw(user, password, hashCredentials));
 		Client client = ClientBuilder.newClient(clientConfig);
 		WebTarget webTarget = client
 				.target("http://localhost:9998/")
@@ -91,15 +90,14 @@ public class SecurityClientFilterUsernamePwTest
 	}
 
 	@Test
-	public void testFilterValidCredentials()
+	public void testFilterValidCredentials_PlainCredentials()
 		throws EntityNotFoundException
 	{
-		Mockito.when(authorizationServicesMock.hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, remoteAuthenticationPermissionName, applicationName))
+		Mockito.when(authorizationServicesMock.hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName))
 				.thenReturn(Boolean.TRUE);
 		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
 
-		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
-		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHENTICATION_PROPERTY, OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2);
+		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder(OpenUrRdbmsRealmMock.USER_NAME_2, OpenUrRdbmsRealmMock.PASSWORD_2, false);
 		Response response = invocationBuilder.get();
 		assertEquals(200, response.getStatus());
 		System.out.println(response.getStatus());
@@ -110,6 +108,6 @@ public class SecurityClientFilterUsernamePwTest
 		assertTrue(new PersonComparer().objectsAreEqual(TestObjectContainer.PERSON_1, p));
 
 		assertEquals(1, realmMock.getAuthCounter());
-		verify(authorizationServicesMock, times(1)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, remoteAuthenticationPermissionName, applicationName);
+		verify(authorizationServicesMock, times(1)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName);
 	}
 }
