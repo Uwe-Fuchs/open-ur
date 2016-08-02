@@ -28,7 +28,7 @@ public class SecurityFilterHashedUsernamePwTest
 	@Override
 	protected Application configure()
 	{
-		settings = SecureApiSettings.HASHED_CREDENTIIALS;
+		hashCredentials = Boolean.TRUE;
 		
 		return super.configure();
 	}
@@ -58,5 +58,21 @@ public class SecurityFilterHashedUsernamePwTest
 
 		assertEquals(1, realmMock.getAuthCounter());
 		verify(authorizationServicesMock, times(1)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName);
+	}
+
+	@Test
+	public void testFilterInvalidCredentials()
+	{
+		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
+		String token = OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2;
+		
+		// add UNHASHED credential to request-headers:
+		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHENTICATION_PROPERTY, token);
+		
+		Response response = invocationBuilder.get();
+		assertEquals(401, response.getStatus());
+		System.out.println(response.getStatus());
+		String msg = response.readEntity(String.class);
+		assertTrue(msg.contains(SecurityFilter_UsernamePw.NO_VALID_CREDENTIALS_FOUND_MSG));
 	}
 }

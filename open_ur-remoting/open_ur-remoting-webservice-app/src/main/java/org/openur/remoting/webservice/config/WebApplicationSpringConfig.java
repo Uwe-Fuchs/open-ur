@@ -32,7 +32,6 @@ import org.openur.module.service.userstructure.IOrgUnitServices;
 import org.openur.module.service.userstructure.IUserServices;
 import org.openur.module.service.userstructure.OrgUnitServicesImpl;
 import org.openur.module.service.userstructure.UserServicesImpl;
-import org.openur.remoting.resource.secure_api.SecureApiSettings;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -78,12 +77,12 @@ public class WebApplicationSpringConfig
 		return realm;
 	}
 
-	@Bean(name = "secureApiSettings")
-	public SecureApiSettings secureApiSettings()
+	@Bean(name = "hashCredentials")
+	public Boolean hashCredentials()
 	{
-		String secureApiSettingsStr = env.getProperty("secureApiSettings", "NO_SECURITY");
+		String hashCredentialsStr = env.getProperty("hashCredentials", "FALSE");
 		
-		return SecureApiSettings.valueOf(secureApiSettingsStr);
+		return Boolean.valueOf(hashCredentialsStr);
 	}
 
 	// dao's:

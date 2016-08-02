@@ -27,7 +27,7 @@ public class SecurityFilterPlainUsernamePwTest
 	@Override
 	protected Application configure()
 	{
-		settings = SecureApiSettings.PLAIN_CREDENTIALS;
+		hashCredentials = Boolean.FALSE;
 		
 		return super.configure();
 	}
@@ -106,6 +106,42 @@ public class SecurityFilterPlainUsernamePwTest
 	}
 
 	@Test
+	public void testFilterEmptyCredentials()
+	{
+		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
+		// set empty credentials:
+		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHENTICATION_PROPERTY, " ");
+		
+		Response response = invocationBuilder.get();
+		assertEquals(401, response.getStatus());
+		System.out.println(response.getStatus());
+		String msg = response.readEntity(String.class);
+		assertTrue(msg.contains(SecurityFilter_UsernamePw.NO_CREDENTIALS_FOUND_MSG));
+	}
+
+	@Test
+	public void testFilterInvalidCredentials()
+	{
+		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
+		// set invalid credentials:
+		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHENTICATION_PROPERTY, "+");
+		
+		Response response = invocationBuilder.get();
+		assertEquals(401, response.getStatus());
+		System.out.println(response.getStatus());
+		String msg = response.readEntity(String.class);
+		assertTrue(msg.contains(SecurityFilter_UsernamePw.NO_VALID_CREDENTIALS_FOUND_MSG));
+		
+		// set other invalid credentials:
+		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHENTICATION_PROPERTY, OpenUrRdbmsRealmMock.USER_NAME_2 + ":");
+		
+		response = invocationBuilder.get();
+		assertEquals(401, response.getStatus());
+		System.out.println(response.getStatus());
+		assertTrue(msg.contains(SecurityFilter_UsernamePw.NO_VALID_CREDENTIALS_FOUND_MSG));
+	}
+
+	@Test
 	public void testFilterNoCredentials()
 	{
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
@@ -114,6 +150,6 @@ public class SecurityFilterPlainUsernamePwTest
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
 		String msg = response.readEntity(String.class);
-		assertTrue(msg.contains("No credentials found!"));
+		assertTrue(msg.contains(SecurityFilter_UsernamePw.NO_CREDENTIALS_FOUND_MSG));
 	}
 }

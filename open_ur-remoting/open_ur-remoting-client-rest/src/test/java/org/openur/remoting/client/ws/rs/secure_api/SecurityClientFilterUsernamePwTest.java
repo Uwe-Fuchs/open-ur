@@ -1,6 +1,8 @@
 package org.openur.remoting.client.ws.rs.secure_api;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.openur.module.domain.security.secure_api.PermissionConstraints.REMOTE_READ;
@@ -13,6 +15,7 @@ import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.shiro.realm.Realm;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -22,13 +25,11 @@ import org.mockito.Mockito;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.utils.compare.PersonComparer;
-import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealmMock;
 import org.openur.module.service.security.IAuthorizationServices;
 import org.openur.module.service.userstructure.IUserServices;
 import org.openur.module.util.exception.EntityNotFoundException;
 import org.openur.remoting.resource.errorhandling.EntityNotFoundExceptionMapper;
-import org.openur.remoting.resource.secure_api.SecureApiSettings;
 import org.openur.remoting.resource.secure_api.SecurityFilter_UsernamePw;
 import org.openur.remoting.resource.userstructure.UserResource;
 import org.openur.remoting.xchange.rest.providers.json.PersonProvider;
@@ -37,7 +38,7 @@ public class SecurityClientFilterUsernamePwTest
 	extends JerseyTest
 {
 	protected String applicationName = "Demo-Application";
-	private SecureApiSettings settings = SecureApiSettings.PLAIN_CREDENTIALS;
+	private Boolean hashCredentials = Boolean.FALSE;
 	
 	private OpenUrRdbmsRealmMock realmMock;
 	private IAuthorizationServices authorizationServicesMock;
@@ -55,8 +56,8 @@ public class SecurityClientFilterUsernamePwTest
 			@Override
 			protected void configure()
 			{
-				bind(realmMock).to(OpenUrRdbmsRealm.class);
-				bind(settings).to(SecureApiSettings.class);
+				bind(realmMock).to(Realm.class);
+				bind(hashCredentials).to(Boolean.class);
 				bind(authorizationServicesMock).to(IAuthorizationServices.class);
 				bind(userServicesMock).to(IUserServices.class);
 			}

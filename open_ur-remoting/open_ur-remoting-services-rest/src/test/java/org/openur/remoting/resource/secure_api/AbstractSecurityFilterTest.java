@@ -7,13 +7,13 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.shiro.realm.Realm;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.mockito.Mockito;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
-import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealmMock;
 import org.openur.module.service.security.IAuthorizationServices;
 import org.openur.module.service.userstructure.IUserServices;
@@ -25,7 +25,7 @@ public class AbstractSecurityFilterTest
 	extends JerseyTest
 {
 	protected String applicationName = "Demo-Application";
-	protected SecureApiSettings settings;
+	protected Boolean hashCredentials;
 	
 	protected OpenUrRdbmsRealmMock realmMock;
 	protected IAuthorizationServices authorizationServicesMock;
@@ -37,15 +37,15 @@ public class AbstractSecurityFilterTest
 		realmMock = new OpenUrRdbmsRealmMock();
 		authorizationServicesMock = Mockito.mock(IAuthorizationServices.class);
 		userServicesMock = Mockito.mock(IUserServices.class);
-		settings = settings == null ? SecureApiSettings.NO_SECURITY : settings;
+		hashCredentials = (hashCredentials == null ? Boolean.FALSE : hashCredentials);
 		
 		AbstractBinder binder = new AbstractBinder()
 		{
 			@Override
 			protected void configure()
 			{
-				bind(realmMock).to(OpenUrRdbmsRealm.class);
-				bind(settings).to(SecureApiSettings.class);
+				bind(realmMock).to(Realm.class);
+				bind(hashCredentials).to(Boolean.class);
 				bind(authorizationServicesMock).to(IAuthorizationServices.class);
 				bind(userServicesMock).to(IUserServices.class);
 			}
