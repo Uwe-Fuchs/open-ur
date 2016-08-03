@@ -34,81 +34,121 @@ import org.openur.remoting.resource.secure_api.SecurityFilter_UsernamePw;
 import org.openur.remoting.resource.userstructure.UserResource;
 import org.openur.remoting.xchange.rest.providers.json.PersonProvider;
 
-public class SecurityClientFilterUsernamePwTest
-	extends JerseyTest
+public class SecurityClientFilterTest
 {
-	protected String applicationName = "Demo-Application";
-	private Boolean hashCredentials = Boolean.FALSE;
-	
-	private OpenUrRdbmsRealmMock realmMock;
-	private IAuthorizationServices authorizationServicesMock;
-	private IUserServices userServicesMock;
-	
-	@Override
-	protected Application configure()
+	private static abstract class AbstractSecurityClientFilterTest
+		extends JerseyTest
 	{
-		realmMock = new OpenUrRdbmsRealmMock();
-		authorizationServicesMock = Mockito.mock(IAuthorizationServices.class);
-		userServicesMock = Mockito.mock(IUserServices.class);
-		
-		AbstractBinder binder = new AbstractBinder()
+		protected String applicationName = "Demo-Application";
+		protected Boolean hashCredentials;
+
+		protected OpenUrRdbmsRealmMock realmMock;
+		protected IAuthorizationServices authorizationServicesMock;
+		protected IUserServices userServicesMock;
+
+		@Override
+		protected Application configure()
 		{
-			@Override
-			protected void configure()
+			realmMock = new OpenUrRdbmsRealmMock();
+			authorizationServicesMock = Mockito.mock(IAuthorizationServices.class);
+			userServicesMock = Mockito.mock(IUserServices.class);
+			hashCredentials = (hashCredentials == null ? Boolean.FALSE : hashCredentials);
+
+			AbstractBinder binder = new AbstractBinder()
 			{
-				bind(realmMock).to(Realm.class);
-				bind(hashCredentials).to(Boolean.class);
-				bind(authorizationServicesMock).to(IAuthorizationServices.class);
-				bind(userServicesMock).to(IUserServices.class);
-			}
-		};
-		
-		ResourceConfig config = new ResourceConfig(UserResource.class)
-				.register(PersonProvider.class)
-				.register(SecurityFilter_UsernamePw.class)
-				.register(EntityNotFoundExceptionMapper.class)
-				.register(binder);
+				@Override
+				protected void configure()
+				{
+					bind(realmMock).to(Realm.class);
+					bind(hashCredentials).to(Boolean.class);
+					bind(authorizationServicesMock).to(IAuthorizationServices.class);
+					bind(userServicesMock).to(IUserServices.class);
+				}
+			};
 
-		return config;
-	}
-	
-	private Invocation.Builder buildInvocationTargetBuilder(String user, String password, boolean hashCredentials)
-	{
-		ClientConfig clientConfig = new ClientConfig();
-		clientConfig.register(PersonProvider.class);
-		clientConfig.register(new SecurityClientFilter_UsernamePw(user, password, hashCredentials));
-		Client client = ClientBuilder.newClient(clientConfig);
-		WebTarget webTarget = client
-				.target("http://localhost:9998/")
-				.path(UserResource.USER_RESOURCE_PATH)
-				.path(UserResource.PERSON_PER_ID_RESOURCE_PATH)
-				.path(TestObjectContainer.PERSON_UUID_1);
+			ResourceConfig config = new ResourceConfig(UserResource.class).register(PersonProvider.class).register(SecurityFilter_UsernamePw.class).register(EntityNotFoundExceptionMapper.class).register(binder);
 
-		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
-		invocationBuilder.header(SecurityFilter_UsernamePw.APPLICATION_NAME_PROPERTY, applicationName);
-		
-		return invocationBuilder;
+			return config;
+		}
+
+		protected Invocation.Builder buildInvocationTargetBuilder(String user, String password, boolean hashCredentials)
+		{
+			ClientConfig clientConfig = new ClientConfig();
+			clientConfig.register(PersonProvider.class);
+			clientConfig.register(new SecurityClientFilter_UsernamePw(user, password, hashCredentials));
+			Client client = ClientBuilder.newClient(clientConfig);
+			WebTarget webTarget = client.target("http://localhost:9998/").path(UserResource.USER_RESOURCE_PATH).path(UserResource.PERSON_PER_ID_RESOURCE_PATH).path(TestObjectContainer.PERSON_UUID_1);
+
+			Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+			invocationBuilder.header(SecurityFilter_UsernamePw.APPLICATION_NAME_PROPERTY, applicationName);
+
+			return invocationBuilder;
+		}
 	}
 
-	@Test
-	public void testFilterValidCredentials_PlainCredentials()
-		throws EntityNotFoundException
+	public static class SecurityClientFilterPlainUsernamePwTest
+		extends AbstractSecurityClientFilterTest
 	{
-		Mockito.when(authorizationServicesMock.hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName))
-				.thenReturn(Boolean.TRUE);
-		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
+		@Override
+		protected Application configure()
+		{
+			hashCredentials = Boolean.FALSE;
 
-		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder(OpenUrRdbmsRealmMock.USER_NAME_2, OpenUrRdbmsRealmMock.PASSWORD_2, false);
-		Response response = invocationBuilder.get();
-		assertEquals(200, response.getStatus());
-		System.out.println(response.getStatus());
+			return super.configure();
+		}
 
-		Person p = response.readEntity(Person.class);
-		assertNotNull(p);
-		System.out.println(p);		
-		assertTrue(new PersonComparer().objectsAreEqual(TestObjectContainer.PERSON_1, p));
+		@Test
+		public void testFilterValidCredentials()
+			throws EntityNotFoundException
+		{
+			Mockito.when(authorizationServicesMock.hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName)).thenReturn(Boolean.TRUE);
+			Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
 
-		assertEquals(1, realmMock.getAuthCounter());
-		verify(authorizationServicesMock, times(1)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName);
+			Invocation.Builder invocationBuilder = buildInvocationTargetBuilder(OpenUrRdbmsRealmMock.USER_NAME_2, OpenUrRdbmsRealmMock.PASSWORD_2, false);
+			Response response = invocationBuilder.get();
+			assertEquals(200, response.getStatus());
+			System.out.println(response.getStatus());
+
+			Person p = response.readEntity(Person.class);
+			assertNotNull(p);
+			System.out.println(p);
+			assertTrue(new PersonComparer().objectsAreEqual(TestObjectContainer.PERSON_1, p));
+
+			assertEquals(1, realmMock.getAuthCounter());
+			verify(authorizationServicesMock, times(1)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName);
+		}
+	}
+
+	public static class SecurityClientFilterHashedUsernamePwTest
+		extends AbstractSecurityClientFilterTest
+	{
+		@Override
+		protected Application configure()
+		{
+			hashCredentials = Boolean.TRUE;
+			
+			return super.configure();
+		}
+
+		@Test
+		public void testFilterValidCredentials()
+			throws EntityNotFoundException
+		{
+			Mockito.when(authorizationServicesMock.hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName)).thenReturn(Boolean.TRUE);
+			Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
+
+			Invocation.Builder invocationBuilder = buildInvocationTargetBuilder(OpenUrRdbmsRealmMock.USER_NAME_2, OpenUrRdbmsRealmMock.PASSWORD_2, false);
+			Response response = invocationBuilder.get();
+			assertEquals(200, response.getStatus());
+			System.out.println(response.getStatus());
+
+			Person p = response.readEntity(Person.class);
+			assertNotNull(p);
+			System.out.println(p);
+			assertTrue(new PersonComparer().objectsAreEqual(TestObjectContainer.PERSON_1, p));
+
+			assertEquals(1, realmMock.getAuthCounter());
+			verify(authorizationServicesMock, times(1)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName);
+		}
 	}
 }
