@@ -21,6 +21,8 @@ import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
+import org.junit.experimental.runners.Enclosed;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.userstructure.person.Person;
@@ -34,9 +36,10 @@ import org.openur.remoting.resource.secure_api.SecurityFilter_UsernamePw;
 import org.openur.remoting.resource.userstructure.UserResource;
 import org.openur.remoting.xchange.rest.providers.json.PersonProvider;
 
-public class SecurityClientFilterTest
+@RunWith(Enclosed.class)
+public class SecurityClientFilterUsernamePwTest
 {
-	private static abstract class AbstractSecurityClientFilterTest
+	private static abstract class AbstractSecurityClientFilterUsernamePwTest
 		extends JerseyTest
 	{
 		protected String applicationName = "Demo-Application";
@@ -87,7 +90,7 @@ public class SecurityClientFilterTest
 	}
 
 	public static class SecurityClientFilterPlainUsernamePwTest
-		extends AbstractSecurityClientFilterTest
+		extends AbstractSecurityClientFilterUsernamePwTest
 	{
 		@Override
 		protected Application configure()
@@ -102,8 +105,9 @@ public class SecurityClientFilterTest
 			throws EntityNotFoundException
 		{
 			Mockito.when(authorizationServicesMock.hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName)).thenReturn(Boolean.TRUE);
-			Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
+			Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);;
 
+			// do NOT hash credentials:
 			Invocation.Builder invocationBuilder = buildInvocationTargetBuilder(OpenUrRdbmsRealmMock.USER_NAME_2, OpenUrRdbmsRealmMock.PASSWORD_2, false);
 			Response response = invocationBuilder.get();
 			assertEquals(200, response.getStatus());
@@ -120,7 +124,7 @@ public class SecurityClientFilterTest
 	}
 
 	public static class SecurityClientFilterHashedUsernamePwTest
-		extends AbstractSecurityClientFilterTest
+		extends AbstractSecurityClientFilterUsernamePwTest
 	{
 		@Override
 		protected Application configure()
@@ -137,7 +141,8 @@ public class SecurityClientFilterTest
 			Mockito.when(authorizationServicesMock.hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName)).thenReturn(Boolean.TRUE);
 			Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
 
-			Invocation.Builder invocationBuilder = buildInvocationTargetBuilder(OpenUrRdbmsRealmMock.USER_NAME_2, OpenUrRdbmsRealmMock.PASSWORD_2, false);
+			// hash credentials:
+			Invocation.Builder invocationBuilder = buildInvocationTargetBuilder(OpenUrRdbmsRealmMock.USER_NAME_2, OpenUrRdbmsRealmMock.PASSWORD_2, true);
 			Response response = invocationBuilder.get();
 			assertEquals(200, response.getStatus());
 			System.out.println(response.getStatus());
