@@ -21,7 +21,7 @@ import org.openur.remoting.resource.errorhandling.EntityNotFoundExceptionMapper;
 import org.openur.remoting.resource.userstructure.UserResource;
 import org.openur.remoting.xchange.rest.providers.json.PersonProvider;
 
-public class AbstractSecurityFilterTest
+public class AbstractSecurityFilterUsernamePwTest
 	extends JerseyTest
 {
 	protected String applicationName = "Demo-Application";

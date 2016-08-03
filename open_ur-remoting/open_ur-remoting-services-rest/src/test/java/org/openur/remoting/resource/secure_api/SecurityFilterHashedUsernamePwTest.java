@@ -23,7 +23,7 @@ import org.openur.module.integration.security.shiro.OpenUrRdbmsRealmMock;
 import org.openur.module.util.exception.EntityNotFoundException;
 
 public class SecurityFilterHashedUsernamePwTest
-	extends AbstractSecurityFilterTest
+	extends AbstractSecurityFilterUsernamePwTest
 {
 	@Override
 	protected Application configure()
