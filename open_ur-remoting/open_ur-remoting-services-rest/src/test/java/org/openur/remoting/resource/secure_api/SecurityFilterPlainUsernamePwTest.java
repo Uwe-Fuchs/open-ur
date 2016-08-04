@@ -41,7 +41,7 @@ public class SecurityFilterPlainUsernamePwTest
 		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
 
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
-		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHENTICATION_PROPERTY, OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2);
+		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHENTICATION_PROPERTY, buildAuthString());
 		Response response = invocationBuilder.get();
 		assertEquals(200, response.getStatus());
 		System.out.println(response.getStatus());
@@ -61,7 +61,7 @@ public class SecurityFilterPlainUsernamePwTest
 	{
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
 		// set invalid credentials:
-		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHENTICATION_PROPERTY, OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + "someWrongPassword");
+		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHENTICATION_PROPERTY, buildAuthString() + "appendSomeWrongPassword");
 		Response response = invocationBuilder.get();
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
@@ -80,7 +80,7 @@ public class SecurityFilterPlainUsernamePwTest
 
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
 		// set valid credentials:
-		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHENTICATION_PROPERTY, OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2);
+		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHENTICATION_PROPERTY, buildAuthString());
 		Response response = invocationBuilder.get();
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
@@ -96,7 +96,7 @@ public class SecurityFilterPlainUsernamePwTest
 		// set new, empty headers, i.e. no application-name given:
 		invocationBuilder.headers(new MultivaluedHashMap<String, Object>());
 		// set valid credentials:
-		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHENTICATION_PROPERTY, OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2);
+		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHENTICATION_PROPERTY, buildAuthString());
 		
 		Response response = invocationBuilder.get();
 		assertEquals(400, response.getStatus());

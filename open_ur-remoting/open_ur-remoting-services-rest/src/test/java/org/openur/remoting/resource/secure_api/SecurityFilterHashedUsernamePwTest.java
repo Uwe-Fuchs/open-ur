@@ -12,7 +12,6 @@ import java.io.UnsupportedEncodingException;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
-import javax.xml.bind.DatatypeConverter;
 
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -42,10 +41,9 @@ public class SecurityFilterHashedUsernamePwTest
 		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
 
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
-		String token = OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2;
 		
 		// add hashed credential to request-headers:
-		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHENTICATION_PROPERTY, DatatypeConverter.printBase64Binary(token.getBytes("UTF-8")));
+		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHENTICATION_PROPERTY, buildHashedAuthString());
 		
 		Response response = invocationBuilder.get();
 		assertEquals(200, response.getStatus());
@@ -64,10 +62,9 @@ public class SecurityFilterHashedUsernamePwTest
 	public void testFilterInvalidCredentials()
 	{
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
-		String token = OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2;
 		
 		// add UNHASHED credential to request-headers:
-		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHENTICATION_PROPERTY, token);
+		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHENTICATION_PROPERTY, buildAuthString());
 		
 		Response response = invocationBuilder.get();
 		assertEquals(401, response.getStatus());

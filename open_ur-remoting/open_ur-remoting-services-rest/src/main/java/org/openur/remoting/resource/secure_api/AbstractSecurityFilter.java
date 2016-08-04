@@ -27,9 +27,8 @@ public abstract class AbstractSecurityFilter<A extends OpenURAuthenticationInfo>
 	implements ContainerRequestFilter
 {
 	private static final Logger LOG = LoggerFactory.getLogger(AbstractSecurityFilter.class);
-
 	public static final String APPLICATION_NAME_PROPERTY = "application-name";
-	public static final String AUTHENTICATION_PROPERTY = "Authentication";
+	
 	@Context
 	private ResourceInfo resourceInfo;
 	

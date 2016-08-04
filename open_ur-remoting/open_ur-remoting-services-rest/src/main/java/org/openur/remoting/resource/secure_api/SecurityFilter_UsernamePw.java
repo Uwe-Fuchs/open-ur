@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
+import javax.annotation.Priority;
+import javax.ws.rs.Priorities;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.ext.Provider;
 import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -13,9 +16,14 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.openur.module.integration.security.shiro.UsernamePwAuthenticationInfo;
 
+@Provider
+@Priority(value = Priorities.AUTHENTICATION)
 public class SecurityFilter_UsernamePw
 	extends AbstractSecurityFilter<UsernamePwAuthenticationInfo>
 {
+	public static final String AUTHENTICATION_PROPERTY = "Authorization";
+	public static final String AUTHENTICATION_SCHEME = "Basic";
+	
 	static final String NO_CREDENTIALS_FOUND_MSG = "No credentials found!";
 	static final String NO_VALID_CREDENTIALS_FOUND_MSG = "No valid credentials found!";
 	
@@ -40,16 +48,14 @@ public class SecurityFilter_UsernamePw
 			throw new AuthenticationException(NO_CREDENTIALS_FOUND_MSG);
 		}
 
-		// Decode username and password (if encoded):
-		if (isHashCredentials())
+		// Decode username and password:
+		try
 		{
-			try
-			{
-				usernameAndPassword = new String(DatatypeConverter.parseBase64Binary(usernameAndPassword));				
-			} catch (IllegalArgumentException e)
-			{
-				throw new AuthenticationException(e.getMessage());
-			}
+			usernameAndPassword = usernameAndPassword.replaceFirst(AUTHENTICATION_SCHEME + " ", "");		
+			usernameAndPassword = isHashCredentials() ? new String(DatatypeConverter.parseBase64Binary(usernameAndPassword)) : usernameAndPassword;				
+		} catch (IllegalArgumentException e)
+		{
+			throw new AuthenticationException(e.getMessage());
 		}
 
 		// Split username and password tokens

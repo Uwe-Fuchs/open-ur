@@ -1,11 +1,14 @@
 package org.openur.remoting.resource.secure_api;
 
+import java.io.UnsupportedEncodingException;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
+import javax.xml.bind.DatatypeConverter;
 
 import org.apache.shiro.realm.Realm;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
@@ -37,7 +40,7 @@ public class AbstractSecurityFilterUsernamePwTest
 		realmMock = new OpenUrRdbmsRealmMock();
 		authorizationServicesMock = Mockito.mock(IAuthorizationServices.class);
 		userServicesMock = Mockito.mock(IUserServices.class);
-		hashCredentials = (hashCredentials == null ? Boolean.FALSE : hashCredentials);
+		hashCredentials = (hashCredentials == null ? Boolean.TRUE : hashCredentials);
 		
 		AbstractBinder binder = new AbstractBinder()
 		{
@@ -75,5 +78,16 @@ public class AbstractSecurityFilterUsernamePwTest
 		invocationBuilder.header(SecurityFilter_UsernamePw.APPLICATION_NAME_PROPERTY, applicationName);
 		
 		return invocationBuilder;
+	}
+	
+	protected String buildAuthString()
+	{
+		return SecurityFilter_UsernamePw.AUTHENTICATION_SCHEME + " " + OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2;
+	}
+	
+	protected String buildHashedAuthString()
+		throws UnsupportedEncodingException
+	{
+		return SecurityFilter_UsernamePw.AUTHENTICATION_SCHEME + " " + DatatypeConverter.printBase64Binary((OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2).getBytes("UTF-8"));
 	}
 }

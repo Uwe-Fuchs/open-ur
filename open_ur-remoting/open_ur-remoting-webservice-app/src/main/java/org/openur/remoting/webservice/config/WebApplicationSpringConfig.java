@@ -80,7 +80,7 @@ public class WebApplicationSpringConfig
 	@Bean(name = "hashCredentials")
 	public Boolean hashCredentials()
 	{
-		String hashCredentialsStr = env.getProperty("hashCredentials", "FALSE");
+		String hashCredentialsStr = env.getProperty("hashCredentials", "TRUE");
 		
 		return Boolean.valueOf(hashCredentialsStr);
 	}
