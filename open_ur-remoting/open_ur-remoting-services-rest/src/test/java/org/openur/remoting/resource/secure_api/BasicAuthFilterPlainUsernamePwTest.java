@@ -3,16 +3,13 @@ package org.openur.remoting.resource.secure_api;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.openur.module.domain.security.secure_api.PermissionConstraints.REMOTE_READ;
 
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.Application;
-import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.Response;
 
+import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
@@ -21,15 +18,18 @@ import org.openur.module.domain.utils.compare.PersonComparer;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealmMock;
 import org.openur.module.util.exception.EntityNotFoundException;
 
-public class SecurityFilterPlainUsernamePwTest
-	extends AbstractSecurityFilterUsernamePwTest
+public class BasicAuthFilterPlainUsernamePwTest
+	extends AbstractSecurityFilterTest
 {
 	@Override
 	protected Application configure()
 	{
 		hashCredentials = Boolean.FALSE;
 		
-		return super.configure();
+		ResourceConfig config = (ResourceConfig) super.configure();
+		config.register(AuthenticationFilter_BasicAuth.class);
+		
+		return config;
 	}
 
 	@Test
@@ -41,7 +41,7 @@ public class SecurityFilterPlainUsernamePwTest
 		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
 
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
-		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHENTICATION_PROPERTY, buildAuthString());
+		invocationBuilder.header(AbstractSecurityFilter.AUTHENTICATION_PROPERTY, buildAuthString());
 		Response response = invocationBuilder.get();
 		assertEquals(200, response.getStatus());
 		System.out.println(response.getStatus());
@@ -52,7 +52,6 @@ public class SecurityFilterPlainUsernamePwTest
 		assertTrue(new PersonComparer().objectsAreEqual(TestObjectContainer.PERSON_1, p));
 
 		assertEquals(1, realmMock.getAuthCounter());
-		verify(authorizationServicesMock, times(1)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName);
 	}
 
 	@Test
@@ -61,48 +60,13 @@ public class SecurityFilterPlainUsernamePwTest
 	{
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
 		// set invalid credentials:
-		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHENTICATION_PROPERTY, buildAuthString() + "appendSomeWrongPassword");
+		invocationBuilder.header(AbstractSecurityFilter.AUTHENTICATION_PROPERTY, buildAuthString() + "appendSomeWrongPassword");
 		Response response = invocationBuilder.get();
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
 
-		// authentication is called, but authorization isn't (because of authentication-failure):
+		// authentication is called:
 		assertEquals(1, realmMock.getAuthCounter());
-		verify(authorizationServicesMock, times(0)).hasPermissionTechUser(anyString(), anyString(), anyString());
-	}
-
-	@Test
-	public void testFilterNotAuthorized()
-		throws EntityNotFoundException
-	{
-		Mockito.when(authorizationServicesMock.hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName))
-				.thenReturn(Boolean.FALSE);
-
-		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
-		// set valid credentials:
-		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHENTICATION_PROPERTY, buildAuthString());
-		Response response = invocationBuilder.get();
-		assertEquals(401, response.getStatus());
-		System.out.println(response.getStatus());
-
-		assertEquals(1, realmMock.getAuthCounter());
-		verify(authorizationServicesMock, times(1)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName);
-	}
-
-	@Test
-	public void testFilterNoApplicationName()
-	{
-		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
-		// set new, empty headers, i.e. no application-name given:
-		invocationBuilder.headers(new MultivaluedHashMap<String, Object>());
-		// set valid credentials:
-		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHENTICATION_PROPERTY, buildAuthString());
-		
-		Response response = invocationBuilder.get();
-		assertEquals(400, response.getStatus());
-		System.out.println(response.getStatus());
-		String msg = response.readEntity(String.class);
-		assertTrue(msg.contains("No application-name given!"));
 	}
 
 	@Test
@@ -110,13 +74,13 @@ public class SecurityFilterPlainUsernamePwTest
 	{
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
 		// set empty credentials:
-		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHENTICATION_PROPERTY, " ");
+		invocationBuilder.header(AbstractSecurityFilter.AUTHENTICATION_PROPERTY, " ");
 		
 		Response response = invocationBuilder.get();
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
 		String msg = response.readEntity(String.class);
-		assertTrue(msg.contains(SecurityFilter_UsernamePw.NO_CREDENTIALS_FOUND_MSG));
+		assertTrue(msg.contains(AbstractSecurityFilter.NO_CREDENTIALS_FOUND_MSG));
 	}
 
 	@Test
@@ -124,21 +88,21 @@ public class SecurityFilterPlainUsernamePwTest
 	{
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
 		// set invalid credentials:
-		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHENTICATION_PROPERTY, "+");
+		invocationBuilder.header(AbstractSecurityFilter.AUTHENTICATION_PROPERTY, "+");
 		
 		Response response = invocationBuilder.get();
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
 		String msg = response.readEntity(String.class);
-		assertTrue(msg.contains(SecurityFilter_UsernamePw.NO_VALID_CREDENTIALS_FOUND_MSG));
+		assertTrue(msg.contains(AbstractSecurityFilter.NO_VALID_CREDENTIALS_FOUND_MSG));
 		
 		// set other invalid credentials:
-		invocationBuilder.header(SecurityFilter_UsernamePw.AUTHENTICATION_PROPERTY, OpenUrRdbmsRealmMock.USER_NAME_2 + ":");
+		invocationBuilder.header(AbstractSecurityFilter.AUTHENTICATION_PROPERTY, OpenUrRdbmsRealmMock.USER_NAME_2 + ":");
 		
 		response = invocationBuilder.get();
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
-		assertTrue(msg.contains(SecurityFilter_UsernamePw.NO_VALID_CREDENTIALS_FOUND_MSG));
+		assertTrue(msg.contains(AbstractSecurityFilter.NO_VALID_CREDENTIALS_FOUND_MSG));
 	}
 
 	@Test
@@ -150,6 +114,6 @@ public class SecurityFilterPlainUsernamePwTest
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
 		String msg = response.readEntity(String.class);
-		assertTrue(msg.contains(SecurityFilter_UsernamePw.NO_CREDENTIALS_FOUND_MSG));
+		assertTrue(msg.contains(AbstractSecurityFilter.NO_CREDENTIALS_FOUND_MSG));
 	}
 }

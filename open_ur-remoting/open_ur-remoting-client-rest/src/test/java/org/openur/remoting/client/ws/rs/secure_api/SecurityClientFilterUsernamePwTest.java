@@ -32,7 +32,9 @@ import org.openur.module.service.security.IAuthorizationServices;
 import org.openur.module.service.userstructure.IUserServices;
 import org.openur.module.util.exception.EntityNotFoundException;
 import org.openur.remoting.resource.errorhandling.EntityNotFoundExceptionMapper;
-import org.openur.remoting.resource.secure_api.SecurityFilter_UsernamePw;
+import org.openur.remoting.resource.secure_api.AbstractSecurityFilter;
+import org.openur.remoting.resource.secure_api.AuthenticationFilter_BasicAuth;
+import org.openur.remoting.resource.secure_api.AuthorizationFilter;
 import org.openur.remoting.resource.userstructure.UserResource;
 import org.openur.remoting.xchange.rest.providers.json.PersonProvider;
 
@@ -55,7 +57,7 @@ public class SecurityClientFilterUsernamePwTest
 			realmMock = new OpenUrRdbmsRealmMock();
 			authorizationServicesMock = Mockito.mock(IAuthorizationServices.class);
 			userServicesMock = Mockito.mock(IUserServices.class);
-			hashCredentials = (hashCredentials == null ? Boolean.FALSE : hashCredentials);
+			hashCredentials = (hashCredentials == null ? Boolean.TRUE : hashCredentials);
 
 			AbstractBinder binder = new AbstractBinder()
 			{
@@ -69,7 +71,12 @@ public class SecurityClientFilterUsernamePwTest
 				}
 			};
 
-			ResourceConfig config = new ResourceConfig(UserResource.class).register(PersonProvider.class).register(SecurityFilter_UsernamePw.class).register(EntityNotFoundExceptionMapper.class).register(binder);
+			ResourceConfig config = new ResourceConfig(UserResource.class)
+					.register(PersonProvider.class)
+					.register(AuthenticationFilter_BasicAuth.class)
+					.register(AuthorizationFilter.class)
+					.register(EntityNotFoundExceptionMapper.class)
+					.register(binder);
 
 			return config;
 		}
@@ -80,10 +87,14 @@ public class SecurityClientFilterUsernamePwTest
 			clientConfig.register(PersonProvider.class);
 			clientConfig.register(new SecurityClientFilter_UsernamePw(user, password, hashCredentials));
 			Client client = ClientBuilder.newClient(clientConfig);
-			WebTarget webTarget = client.target("http://localhost:9998/").path(UserResource.USER_RESOURCE_PATH).path(UserResource.PERSON_PER_ID_RESOURCE_PATH).path(TestObjectContainer.PERSON_UUID_1);
+			WebTarget webTarget = client
+					.target("http://localhost:9998/")
+					.path(UserResource.USER_RESOURCE_PATH)
+					.path(UserResource.PERSON_PER_ID_RESOURCE_PATH)
+					.path(TestObjectContainer.PERSON_UUID_1);
 
 			Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
-			invocationBuilder.header(SecurityFilter_UsernamePw.APPLICATION_NAME_PROPERTY, applicationName);
+			invocationBuilder.header(AbstractSecurityFilter.APPLICATION_NAME_PROPERTY, applicationName);
 
 			return invocationBuilder;
 		}
@@ -104,8 +115,9 @@ public class SecurityClientFilterUsernamePwTest
 		public void testFilterValidCredentials()
 			throws EntityNotFoundException
 		{
-			Mockito.when(authorizationServicesMock.hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName)).thenReturn(Boolean.TRUE);
-			Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);;
+			Mockito.when(authorizationServicesMock.hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName))
+					.thenReturn(Boolean.TRUE);
+			Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
 
 			// do NOT hash credentials:
 			Invocation.Builder invocationBuilder = buildInvocationTargetBuilder(OpenUrRdbmsRealmMock.USER_NAME_2, OpenUrRdbmsRealmMock.PASSWORD_2, false);
@@ -138,7 +150,8 @@ public class SecurityClientFilterUsernamePwTest
 		public void testFilterValidCredentials()
 			throws EntityNotFoundException
 		{
-			Mockito.when(authorizationServicesMock.hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName)).thenReturn(Boolean.TRUE);
+			Mockito.when(authorizationServicesMock.hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName))
+					.thenReturn(Boolean.TRUE);
 			Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
 
 			// hash credentials:

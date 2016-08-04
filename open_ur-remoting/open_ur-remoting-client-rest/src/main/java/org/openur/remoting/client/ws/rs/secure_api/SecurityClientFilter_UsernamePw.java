@@ -9,6 +9,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.lang3.Validate;
+import org.openur.remoting.resource.secure_api.AbstractSecurityFilter;
 
 /**
  * This filter adds username and password to a client-request.
@@ -45,7 +46,7 @@ public class SecurityClientFilter_UsernamePw
 	{
 		MultivaluedMap<String, Object> headers = requestContext.getHeaders();
 		final String basicAuthentication = getBasicAuthentication();
-		headers.add("Authentication", basicAuthentication);		
+		headers.add(AbstractSecurityFilter.AUTHENTICATION_PROPERTY, basicAuthentication);		
 	}
 
 	private String getBasicAuthentication()

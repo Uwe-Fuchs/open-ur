@@ -4,14 +4,15 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.openur.remoting.resource.errorhandling.AuthenticationExceptionMapper;
 import org.openur.remoting.resource.errorhandling.EntityNotFoundExceptionMapper;
 import org.openur.remoting.resource.errorhandling.GenericExceptionMapper;
-import org.openur.remoting.resource.secure_api.SecurityFilter_UsernamePw;
+import org.openur.remoting.resource.secure_api.AuthenticationFilter_BasicAuth;
+import org.openur.remoting.resource.secure_api.AuthorizationFilter;
 import org.openur.remoting.xchange.rest.providers.json.ErrorMessageProvider;
+import org.openur.remoting.xchange.rest.providers.json.IdentifiableEntitySetProvider;
 import org.openur.remoting.xchange.rest.providers.json.OrgUnitProvider;
 import org.openur.remoting.xchange.rest.providers.json.PermissionProvider;
 import org.openur.remoting.xchange.rest.providers.json.PersonProvider;
 import org.openur.remoting.xchange.rest.providers.json.RoleProvider;
 import org.openur.remoting.xchange.rest.providers.json.TechnicalUserProvider;
-import org.openur.remoting.xchange.rest.providers.json.IdentifiableEntitySetProvider;
 import org.openur.remoting.xchange.rest.providers.json.UsernamePwAuthenticationInfoProvider;
 import org.openur.remoting.xchange.rest.providers.json.UsernamePwTokenProvider;
 
@@ -44,6 +45,7 @@ public class OpenUrRestApplication
 		register(EntityNotFoundExceptionMapper.class);
 		register(GenericExceptionMapper.class);
 		register(ErrorMessageProvider.class);
-		register(SecurityFilter_UsernamePw.class);
+		register(AuthenticationFilter_BasicAuth.class);
+		register(AuthorizationFilter.class);
 	}
 }

@@ -1,11 +1,18 @@
 package org.openur.remoting.resource.secure_api;
 
+import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 import javax.annotation.Priority;
+import javax.inject.Inject;
 import javax.ws.rs.Priorities;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.container.ResourceInfo;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.Provider;
 import javax.xml.bind.DatatypeConverter;
@@ -14,21 +21,64 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.realm.Realm;
 import org.openur.module.integration.security.shiro.UsernamePwAuthenticationInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Provider
 @Priority(value = Priorities.AUTHENTICATION)
-public class SecurityFilter_UsernamePw
-	extends AbstractSecurityFilter<UsernamePwAuthenticationInfo>
+public class AuthenticationFilter_BasicAuth
+	extends AbstractSecurityFilter
+	implements ContainerRequestFilter
 {
-	public static final String AUTHENTICATION_PROPERTY = "Authorization";
+	private static final Logger LOG = LoggerFactory.getLogger(AuthenticationFilter_BasicAuth.class);
 	public static final String AUTHENTICATION_SCHEME = "Basic";
 	
-	static final String NO_CREDENTIALS_FOUND_MSG = "No credentials found!";
-	static final String NO_VALID_CREDENTIALS_FOUND_MSG = "No valid credentials found!";
+	@Context
+	private ResourceInfo resourceInfo;
 	
+	@Inject
+	private Boolean hashedCredentials = Boolean.TRUE;
+
+	@Inject
+	private Realm realm;
+
 	@Override
-	protected UsernamePwAuthenticationInfo checkAuthentication(MultivaluedMap<String, String> headers)
+	public void filter(ContainerRequestContext requestContext)
+		throws IOException
+	{
+		Method method = resourceInfo.getResourceMethod();
+
+		// Get request headers
+		MultivaluedMap<String, String> headers = requestContext.getHeaders();
+
+		// Verify user access:
+		UsernamePwAuthenticationInfo authenticationInfo = null;
+
+		try
+		{
+			authenticationInfo = doAuthentication(headers);
+		} catch (AuthenticationException e)
+		{
+			String msg = String.format("Access denied for resource-method: [%s], Authentication failed with message: [%s]", method, e.getMessage());
+			abortWithUnauthorized(requestContext, msg);
+
+			return;
+		}
+		
+		String userId = authenticationInfo.getIdentifier();
+		
+		if (StringUtils.isBlank(userId))
+		{
+			LOG.warn("no User-ID found in Authentication-Info [{}]" + authenticationInfo);
+			abortWithBadRequest(requestContext, "invalid credentials!");
+		}
+		
+		requestContext.setProperty(USER_ID_PROPERTY, userId);
+	}
+
+	private UsernamePwAuthenticationInfo doAuthentication(MultivaluedMap<String, String> headers)
 		throws AuthenticationException
 	{
 		// Fetch authentication header
@@ -52,7 +102,7 @@ public class SecurityFilter_UsernamePw
 		try
 		{
 			usernameAndPassword = usernameAndPassword.replaceFirst(AUTHENTICATION_SCHEME + " ", "");		
-			usernameAndPassword = isHashCredentials() ? new String(DatatypeConverter.parseBase64Binary(usernameAndPassword)) : usernameAndPassword;				
+			usernameAndPassword = hashedCredentials ? new String(DatatypeConverter.parseBase64Binary(usernameAndPassword)) : usernameAndPassword;				
 		} catch (IllegalArgumentException e)
 		{
 			throw new AuthenticationException(e.getMessage());
@@ -80,6 +130,6 @@ public class SecurityFilter_UsernamePw
 		// Verify user access:
 		UsernamePasswordToken token = new UsernamePasswordToken(username, password);
 
-		return (UsernamePwAuthenticationInfo) getRealm().getAuthenticationInfo(token);
+		return (UsernamePwAuthenticationInfo) realm.getAuthenticationInfo(token);
 	}
 }

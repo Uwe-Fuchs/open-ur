@@ -24,7 +24,7 @@ import org.openur.remoting.resource.errorhandling.EntityNotFoundExceptionMapper;
 import org.openur.remoting.resource.userstructure.UserResource;
 import org.openur.remoting.xchange.rest.providers.json.PersonProvider;
 
-public class AbstractSecurityFilterUsernamePwTest
+public class AbstractSecurityFilterTest
 	extends JerseyTest
 {
 	protected String applicationName = "Demo-Application";
@@ -56,7 +56,6 @@ public class AbstractSecurityFilterUsernamePwTest
 		
 		ResourceConfig config = new ResourceConfig(UserResource.class)
 				.register(PersonProvider.class)
-				.register(SecurityFilter_UsernamePw.class)
 				.register(EntityNotFoundExceptionMapper.class)
 				.register(binder);
 
@@ -75,19 +74,19 @@ public class AbstractSecurityFilterUsernamePwTest
 				.path(TestObjectContainer.PERSON_UUID_1);
 
 		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
-		invocationBuilder.header(SecurityFilter_UsernamePw.APPLICATION_NAME_PROPERTY, applicationName);
+		invocationBuilder.header(AbstractSecurityFilter.APPLICATION_NAME_PROPERTY, applicationName);
 		
 		return invocationBuilder;
 	}
 	
 	protected String buildAuthString()
 	{
-		return SecurityFilter_UsernamePw.AUTHENTICATION_SCHEME + " " + OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2;
+		return AuthenticationFilter_BasicAuth.AUTHENTICATION_SCHEME + " " + OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2;
 	}
 	
 	protected String buildHashedAuthString()
 		throws UnsupportedEncodingException
 	{
-		return SecurityFilter_UsernamePw.AUTHENTICATION_SCHEME + " " + DatatypeConverter.printBase64Binary((OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2).getBytes("UTF-8"));
+		return AuthenticationFilter_BasicAuth.AUTHENTICATION_SCHEME + " " + DatatypeConverter.printBase64Binary((OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2).getBytes("UTF-8"));
 	}
 }
