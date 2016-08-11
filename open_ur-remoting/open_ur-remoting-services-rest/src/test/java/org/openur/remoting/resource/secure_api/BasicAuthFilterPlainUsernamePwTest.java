@@ -3,7 +3,6 @@ package org.openur.remoting.resource.secure_api;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.openur.module.domain.security.secure_api.PermissionConstraints.REMOTE_READ;
 
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.Application;
@@ -34,10 +33,7 @@ public class BasicAuthFilterPlainUsernamePwTest
 
 	@Test
 	public void testFilterValidCredentials()
-		throws EntityNotFoundException
 	{
-		Mockito.when(authorizationServicesMock.hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName))
-				.thenReturn(Boolean.TRUE);
 		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
 
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
@@ -70,20 +66,6 @@ public class BasicAuthFilterPlainUsernamePwTest
 	}
 
 	@Test
-	public void testFilterEmptyCredentials()
-	{
-		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
-		// set empty credentials:
-		invocationBuilder.header(AbstractSecurityFilter.AUTHENTICATION_PROPERTY, " ");
-		
-		Response response = invocationBuilder.get();
-		assertEquals(401, response.getStatus());
-		System.out.println(response.getStatus());
-		String msg = response.readEntity(String.class);
-		assertTrue(msg.contains(AbstractSecurityFilter.NO_CREDENTIALS_FOUND_MSG));
-	}
-
-	@Test
 	public void testFilterInvalidCredentials()
 	{
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
@@ -103,17 +85,5 @@ public class BasicAuthFilterPlainUsernamePwTest
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
 		assertTrue(msg.contains(AbstractSecurityFilter.NO_VALID_CREDENTIALS_FOUND_MSG));
-	}
-
-	@Test
-	public void testFilterNoCredentials()
-	{
-		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
-		
-		Response response = invocationBuilder.get();
-		assertEquals(401, response.getStatus());
-		System.out.println(response.getStatus());
-		String msg = response.readEntity(String.class);
-		assertTrue(msg.contains(AbstractSecurityFilter.NO_CREDENTIALS_FOUND_MSG));
 	}
 }

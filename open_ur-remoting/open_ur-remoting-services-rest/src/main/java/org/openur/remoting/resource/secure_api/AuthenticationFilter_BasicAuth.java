@@ -14,7 +14,6 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.ext.Provider;
 import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -26,7 +25,6 @@ import org.openur.module.integration.security.shiro.UsernamePwAuthenticationInfo
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Provider
 @Priority(value = Priorities.AUTHENTICATION)
 public class AuthenticationFilter_BasicAuth
 	extends AbstractSecurityFilter

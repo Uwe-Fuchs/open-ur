@@ -27,8 +27,6 @@ public class IntegratedSecurityFiltersTest
 	@Override
 	protected Application configure()
 	{
-		hashCredentials = Boolean.FALSE;
-		
 		ResourceConfig config = (ResourceConfig) super.configure();
 		config.register(AuthenticationFilter_BasicAuth.class);
 		config.register(AuthorizationFilter.class);
@@ -47,7 +45,7 @@ public class IntegratedSecurityFiltersTest
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
 		
 		// add hashed credential to request-headers:
-		invocationBuilder.header(AbstractSecurityFilter.AUTHENTICATION_PROPERTY, buildAuthString());
+		invocationBuilder.header(AbstractSecurityFilter.AUTHENTICATION_PROPERTY, buildHashedAuthString());
 		
 		Response response = invocationBuilder.get();
 		assertEquals(200, response.getStatus());
@@ -64,11 +62,11 @@ public class IntegratedSecurityFiltersTest
 
 	@Test
 	public void testFilterWrongPassword()
-		throws EntityNotFoundException
+		throws UnsupportedEncodingException, EntityNotFoundException
 	{
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
 		// set invalid credentials:
-		invocationBuilder.header(AbstractSecurityFilter.AUTHENTICATION_PROPERTY, buildAuthString() + "appendSomeWrongPassword");
+		invocationBuilder.header(AbstractSecurityFilter.AUTHENTICATION_PROPERTY, buildHashedAuthString() + "appendSomeWrongPassword");
 		Response response = invocationBuilder.get();
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());

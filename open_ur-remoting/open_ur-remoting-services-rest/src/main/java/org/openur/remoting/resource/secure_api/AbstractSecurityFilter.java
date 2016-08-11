@@ -10,6 +10,7 @@ public abstract class AbstractSecurityFilter
 {
 	private static final Logger LOG = LoggerFactory.getLogger(AbstractSecurityFilter.class);
 	
+	public static final String SECURE_API_SETTINGS = "secureApiSettings";
 	public static final String APPLICATION_NAME_PROPERTY = "application-name";
 	public static final String AUTHENTICATION_PROPERTY = "Authorization";	
 	public static final String USER_ID_PROPERTY = "userId";

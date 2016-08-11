@@ -17,14 +17,12 @@ import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.utils.compare.PersonComparer;
 
-public class BasicAuthFilterHashedUsernamePwTest
+public class BasicAuthFilterTest
 	extends AbstractSecurityFilterTest
 {
 	@Override
 	protected Application configure()
 	{
-		hashCredentials = Boolean.TRUE;
-		
 		ResourceConfig config = (ResourceConfig) super.configure();
 		config.register(AuthenticationFilter_BasicAuth.class);
 		
@@ -32,7 +30,7 @@ public class BasicAuthFilterHashedUsernamePwTest
 	}
 
 	@Test
-	public void testFilter()
+	public void testFilterValidCredentials()
 		throws UnsupportedEncodingException
 	{
 		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
@@ -55,11 +53,26 @@ public class BasicAuthFilterHashedUsernamePwTest
 	}
 
 	@Test
+	public void testFilterWrongPassword()
+		throws UnsupportedEncodingException
+	{
+		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
+		// set invalid credentials:
+		invocationBuilder.header(AbstractSecurityFilter.AUTHENTICATION_PROPERTY, buildHashedAuthString() + "appendSomeWrongPassword");
+		Response response = invocationBuilder.get();
+		assertEquals(401, response.getStatus());
+		System.out.println(response.getStatus());
+
+		// authentication is called:
+		assertEquals(1, realmMock.getAuthCounter());
+	}
+
+	@Test
 	public void testFilterInvalidCredentials()
 	{
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
 		
-		// add UNHASHED credential to request-headers:
+		// add e.g. UNHASHED credentials to request-headers:
 		invocationBuilder.header(AbstractSecurityFilter.AUTHENTICATION_PROPERTY, buildAuthString());
 		
 		Response response = invocationBuilder.get();
@@ -67,5 +80,31 @@ public class BasicAuthFilterHashedUsernamePwTest
 		System.out.println(response.getStatus());
 		String msg = response.readEntity(String.class);
 		assertTrue(msg.contains(AbstractSecurityFilter.NO_VALID_CREDENTIALS_FOUND_MSG));
+	}
+
+	@Test
+	public void testFilterEmptyCredentials()
+	{
+		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
+		// set empty credentials:
+		invocationBuilder.header(AbstractSecurityFilter.AUTHENTICATION_PROPERTY, " ");
+		
+		Response response = invocationBuilder.get();
+		assertEquals(401, response.getStatus());
+		System.out.println(response.getStatus());
+		String msg = response.readEntity(String.class);
+		assertTrue(msg.contains(AbstractSecurityFilter.NO_CREDENTIALS_FOUND_MSG));
+	}
+
+	@Test
+	public void testFilterNoCredentials()
+	{
+		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
+		
+		Response response = invocationBuilder.get();
+		assertEquals(401, response.getStatus());
+		System.out.println(response.getStatus());
+		String msg = response.readEntity(String.class);
+		assertTrue(msg.contains(AbstractSecurityFilter.NO_CREDENTIALS_FOUND_MSG));
 	}
 }
