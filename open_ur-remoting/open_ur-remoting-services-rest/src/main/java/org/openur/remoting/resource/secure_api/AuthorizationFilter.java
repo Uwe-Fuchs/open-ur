@@ -40,6 +40,7 @@ public class AuthorizationFilter
 		throws IOException
 	{
 		String userId = (String) requestContext.getProperty(USER_ID_PROPERTY);
+		requestContext.removeProperty(USER_ID_PROPERTY);
 
 		if (StringUtils.isBlank(userId))
 		{

@@ -18,7 +18,6 @@ import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
-import org.glassfish.jersey.client.ClientConfig;
 import org.openur.remoting.xchange.rest.errorhandling.ErrorMessage;
 import org.openur.remoting.xchange.rest.providers.json.ErrorMessageProvider;
 
@@ -49,16 +48,14 @@ public abstract class AbstractResourceClient
 
 	private Client createJerseyClient()
 	{
-		ClientConfig clientConfig = new ClientConfig();
+		ClientBuilder builder = ClientBuilder.newBuilder();
 
 		for (Class<?> clazz : this.providers)
 		{
-			clientConfig.register(clazz);
+			builder.register(clazz);
 		}
-		
-		//TODO: Use Configuration instead of Jersey-specific ClientConfig
 
-		return ClientBuilder.newClient(clientConfig);
+		return builder.build();
 	}
 
 	protected <T> T performRestCall_GET(String url, String acceptMediaType, Class<T> resultType)
