@@ -19,6 +19,6 @@ public class DummyAuthenticationFilter
 	public void filter(ContainerRequestContext requestContext)
 		throws IOException
 	{
-		requestContext.setProperty(AbstractSecurityFilter.USER_ID_PROPERTY, OpenUrRdbmsRealmMock.TECH_USER_UUID_2);
+		requestContext.setProperty(AbstractSecurityFilterBase.USER_ID_PROPERTY, OpenUrRdbmsRealmMock.TECH_USER_UUID_2);
 	}
 }

@@ -45,7 +45,7 @@ public class IntegratedSecurityFiltersTest
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
 		
 		// add hashed credential to request-headers:
-		invocationBuilder.header(AbstractSecurityFilter.AUTHENTICATION_PROPERTY, buildHashedAuthString());
+		invocationBuilder.header(AbstractSecurityFilterBase.AUTHENTICATION_PROPERTY, buildHashedAuthString());
 		
 		Response response = invocationBuilder.get();
 		assertEquals(200, response.getStatus());
@@ -66,7 +66,7 @@ public class IntegratedSecurityFiltersTest
 	{
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
 		// set invalid credentials:
-		invocationBuilder.header(AbstractSecurityFilter.AUTHENTICATION_PROPERTY, buildHashedAuthString() + "appendSomeWrongPassword");
+		invocationBuilder.header(AbstractSecurityFilterBase.AUTHENTICATION_PROPERTY, buildHashedAuthString() + "appendSomeWrongPassword");
 		Response response = invocationBuilder.get();
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
@@ -82,13 +82,13 @@ public class IntegratedSecurityFiltersTest
 	{
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
 		// set empty credentials:
-		invocationBuilder.header(AbstractSecurityFilter.AUTHENTICATION_PROPERTY, " ");
+		invocationBuilder.header(AbstractSecurityFilterBase.AUTHENTICATION_PROPERTY, " ");
 		
 		Response response = invocationBuilder.get();
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
 		String msg = response.readEntity(String.class);
-		assertTrue(msg.contains(AbstractSecurityFilter.NO_CREDENTIALS_FOUND_MSG));
+		assertTrue(msg.contains(AbstractSecurityFilterBase.NO_CREDENTIALS_FOUND_MSG));
 
 		// neither authentication nor authorization is called:
 		assertEquals(0, realmMock.getAuthCounter());

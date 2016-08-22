@@ -38,7 +38,7 @@ public class BasicAuthFilterTest
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
 		
 		// add hashed credential to request-headers:
-		invocationBuilder.header(AbstractSecurityFilter.AUTHENTICATION_PROPERTY, buildHashedAuthString());
+		invocationBuilder.header(AbstractSecurityFilterBase.AUTHENTICATION_PROPERTY, buildHashedAuthString());
 		
 		Response response = invocationBuilder.get();
 		assertEquals(200, response.getStatus());
@@ -58,7 +58,7 @@ public class BasicAuthFilterTest
 	{
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
 		// set invalid credentials:
-		invocationBuilder.header(AbstractSecurityFilter.AUTHENTICATION_PROPERTY, buildHashedAuthString() + "appendSomeWrongPassword");
+		invocationBuilder.header(AbstractSecurityFilterBase.AUTHENTICATION_PROPERTY, buildHashedAuthString() + "appendSomeWrongPassword");
 		Response response = invocationBuilder.get();
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
@@ -73,13 +73,13 @@ public class BasicAuthFilterTest
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
 		
 		// add e.g. UNHASHED credentials to request-headers:
-		invocationBuilder.header(AbstractSecurityFilter.AUTHENTICATION_PROPERTY, buildAuthString());
+		invocationBuilder.header(AbstractSecurityFilterBase.AUTHENTICATION_PROPERTY, buildAuthString());
 		
 		Response response = invocationBuilder.get();
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
 		String msg = response.readEntity(String.class);
-		assertTrue(msg.contains(AbstractSecurityFilter.NO_VALID_CREDENTIALS_FOUND_MSG));
+		assertTrue(msg.contains(AbstractSecurityFilterBase.NO_VALID_CREDENTIALS_FOUND_MSG));
 	}
 
 	@Test
@@ -87,13 +87,13 @@ public class BasicAuthFilterTest
 	{
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
 		// set empty credentials:
-		invocationBuilder.header(AbstractSecurityFilter.AUTHENTICATION_PROPERTY, " ");
+		invocationBuilder.header(AbstractSecurityFilterBase.AUTHENTICATION_PROPERTY, " ");
 		
 		Response response = invocationBuilder.get();
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
 		String msg = response.readEntity(String.class);
-		assertTrue(msg.contains(AbstractSecurityFilter.NO_CREDENTIALS_FOUND_MSG));
+		assertTrue(msg.contains(AbstractSecurityFilterBase.NO_CREDENTIALS_FOUND_MSG));
 	}
 
 	@Test
@@ -105,6 +105,6 @@ public class BasicAuthFilterTest
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
 		String msg = response.readEntity(String.class);
-		assertTrue(msg.contains(AbstractSecurityFilter.NO_CREDENTIALS_FOUND_MSG));
+		assertTrue(msg.contains(AbstractSecurityFilterBase.NO_CREDENTIALS_FOUND_MSG));
 	}
 }

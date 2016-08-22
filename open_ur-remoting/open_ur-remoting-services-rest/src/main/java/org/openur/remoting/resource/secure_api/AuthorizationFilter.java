@@ -24,11 +24,11 @@ import org.slf4j.LoggerFactory;
 
 @Priority(value = Priorities.AUTHORIZATION)
 public class AuthorizationFilter
-	extends AbstractSecurityFilter
+	extends AbstractSecurityFilterBase
 	implements ContainerRequestFilter
 {
 	private static final Logger LOG = LoggerFactory.getLogger(AuthorizationFilter.class);
-
+	
 	@Context
 	private ResourceInfo resourceInfo;
 
@@ -53,7 +53,7 @@ public class AuthorizationFilter
 		MultivaluedMap<String, String> headers = requestContext.getHeaders();
 
 		// Verify user access:
-		List<String> applicationNameHeaders = headers.get(APPLICATION_NAME_PROPERTY);
+		List<String> applicationNameHeaders = headers.get(AbstractSecurityFilterBase.APPLICATION_NAME_PROPERTY);
 
 		if (CollectionUtils.isEmpty(applicationNameHeaders))
 		{

@@ -8,7 +8,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.openur.remoting.resource.errorhandling.AuthenticationExceptionMapper;
 import org.openur.remoting.resource.errorhandling.EntityNotFoundExceptionMapper;
 import org.openur.remoting.resource.errorhandling.GenericExceptionMapper;
-import org.openur.remoting.resource.secure_api.AbstractSecurityFilter;
+import org.openur.remoting.resource.secure_api.AbstractSecurityFilterBase;
 import org.openur.remoting.resource.secure_api.AuthenticationFilter_BasicAuth;
 import org.openur.remoting.resource.secure_api.AuthorizationFilter;
 import org.openur.remoting.resource.secure_api.SecureApiSettings;
@@ -60,7 +60,7 @@ public class OpenUrRestApplication
 		register(ErrorMessageProvider.class);
 		
 		// build filter-chain for securing API:
-		String filterSetting = getEnvironmentFromApplicationContext().getProperty(AbstractSecurityFilter.SECURE_API_SETTINGS, 
+		String filterSetting = getEnvironmentFromApplicationContext().getProperty(AbstractSecurityFilterBase.SECURE_API_SETTINGS, 
 					SecureApiSettings.NO_SECURITY.name());
 		buildSecureApiFilterChain(filterSetting);
 	}
@@ -89,7 +89,9 @@ public class OpenUrRestApplication
 	
 	private void buildSecureApiFilterChain(String settings)
 	{
-		if (SecureApiSettings.NO_SECURITY.name().equals(settings))
+		SecureApiSettings secureApiSettings = SecureApiSettings.valueOf(settings);
+		
+		if (SecureApiSettings.NO_SECURITY == secureApiSettings)
 		{
 			return;
 		}

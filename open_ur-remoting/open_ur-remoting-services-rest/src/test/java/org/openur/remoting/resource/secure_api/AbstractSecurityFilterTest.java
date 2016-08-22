@@ -74,7 +74,7 @@ public class AbstractSecurityFilterTest
 				.path(TestObjectContainer.PERSON_UUID_1);
 
 		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
-		invocationBuilder.header(AbstractSecurityFilter.APPLICATION_NAME_PROPERTY, applicationName);
+		invocationBuilder.header(AbstractSecurityFilterBase.APPLICATION_NAME_PROPERTY, applicationName);
 		
 		return invocationBuilder;
 	}

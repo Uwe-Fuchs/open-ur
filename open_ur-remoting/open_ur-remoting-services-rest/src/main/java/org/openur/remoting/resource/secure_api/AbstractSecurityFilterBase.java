@@ -6,16 +6,15 @@ import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AbstractSecurityFilter
+public abstract class AbstractSecurityFilterBase
 {
-	private static final Logger LOG = LoggerFactory.getLogger(AbstractSecurityFilter.class);
-	
-	public static final String SECURE_API_SETTINGS = "secureApiSettings";
+	private static final Logger LOG = LoggerFactory.getLogger(AbstractSecurityFilterBase.class);
+	protected static final String USER_ID_PROPERTY = "userId";
+	protected static final String NO_CREDENTIALS_FOUND_MSG = "No credentials found!";
+	protected static final String NO_VALID_CREDENTIALS_FOUND_MSG = "No valid credentials found!";
 	public static final String APPLICATION_NAME_PROPERTY = "application-name";
-	public static final String AUTHENTICATION_PROPERTY = "Authorization";	
-	public static final String USER_ID_PROPERTY = "userId";
-	public static final String NO_CREDENTIALS_FOUND_MSG = "No credentials found!";
-	public static final String NO_VALID_CREDENTIALS_FOUND_MSG = "No valid credentials found!";
+	public static final String AUTHENTICATION_PROPERTY = "Authorization";
+	public static final String SECURE_API_SETTINGS = "secureApiSettings";
 
 	protected void abortWithBadRequest(ContainerRequestContext requestContext, String msg)
 	{

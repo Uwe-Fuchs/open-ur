@@ -37,7 +37,7 @@ public class BasicAuthFilterPlainUsernamePwTest
 		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
 
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
-		invocationBuilder.header(AbstractSecurityFilter.AUTHENTICATION_PROPERTY, buildAuthString());
+		invocationBuilder.header(AbstractSecurityFilterBase.AUTHENTICATION_PROPERTY, buildAuthString());
 		Response response = invocationBuilder.get();
 		assertEquals(200, response.getStatus());
 		System.out.println(response.getStatus());
@@ -56,7 +56,7 @@ public class BasicAuthFilterPlainUsernamePwTest
 	{
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
 		// set invalid credentials:
-		invocationBuilder.header(AbstractSecurityFilter.AUTHENTICATION_PROPERTY, buildAuthString() + "appendSomeWrongPassword");
+		invocationBuilder.header(AbstractSecurityFilterBase.AUTHENTICATION_PROPERTY, buildAuthString() + "appendSomeWrongPassword");
 		Response response = invocationBuilder.get();
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
@@ -70,20 +70,20 @@ public class BasicAuthFilterPlainUsernamePwTest
 	{
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
 		// set invalid credentials:
-		invocationBuilder.header(AbstractSecurityFilter.AUTHENTICATION_PROPERTY, "+");
+		invocationBuilder.header(AbstractSecurityFilterBase.AUTHENTICATION_PROPERTY, "+");
 		
 		Response response = invocationBuilder.get();
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
 		String msg = response.readEntity(String.class);
-		assertTrue(msg.contains(AbstractSecurityFilter.NO_VALID_CREDENTIALS_FOUND_MSG));
+		assertTrue(msg.contains(AbstractSecurityFilterBase.NO_VALID_CREDENTIALS_FOUND_MSG));
 		
 		// set other invalid credentials:
-		invocationBuilder.header(AbstractSecurityFilter.AUTHENTICATION_PROPERTY, OpenUrRdbmsRealmMock.USER_NAME_2 + ":");
+		invocationBuilder.header(AbstractSecurityFilterBase.AUTHENTICATION_PROPERTY, OpenUrRdbmsRealmMock.USER_NAME_2 + ":");
 		
 		response = invocationBuilder.get();
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
-		assertTrue(msg.contains(AbstractSecurityFilter.NO_VALID_CREDENTIALS_FOUND_MSG));
+		assertTrue(msg.contains(AbstractSecurityFilterBase.NO_VALID_CREDENTIALS_FOUND_MSG));
 	}
 }
