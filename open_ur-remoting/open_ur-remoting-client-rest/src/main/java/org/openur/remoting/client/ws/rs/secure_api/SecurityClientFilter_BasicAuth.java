@@ -1,4 +1,4 @@
-package org.openur.remoting.resource.client;
+package org.openur.remoting.client.ws.rs.secure_api;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

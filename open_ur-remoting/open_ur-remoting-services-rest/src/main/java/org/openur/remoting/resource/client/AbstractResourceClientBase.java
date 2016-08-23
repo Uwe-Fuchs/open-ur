@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.ws.rs.HttpMethod;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
@@ -19,21 +18,15 @@ import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
-import org.openur.remoting.resource.secure_api.SecureApiSettings;
 import org.openur.remoting.xchange.rest.errorhandling.ErrorMessage;
 import org.openur.remoting.xchange.rest.providers.json.ErrorMessageProvider;
 
-public abstract class AbstractResourceClient
+public abstract class AbstractResourceClientBase
 {
 	private final List<Class<?>> providers = new ArrayList<>();
 	private final String baseUrl;
-	
-	private String secureApiSettings = SecureApiSettings.NO_SECURITY.name();
-	private String applicationName;
-	private String userName;
-	private String passWord;
 
-	public AbstractResourceClient(String baseUrl, Class<?>... newProviders)
+	public AbstractResourceClientBase(String baseUrl, Class<?>... newProviders)
 	{
 		this(baseUrl);
 		
@@ -45,7 +38,7 @@ public abstract class AbstractResourceClient
 		this.providers.add(ErrorMessageProvider.class);
 	}
 
-	public AbstractResourceClient(String baseUrl)
+	public AbstractResourceClientBase(String baseUrl)
 	{
 		super();
 
@@ -53,59 +46,20 @@ public abstract class AbstractResourceClient
 		this.baseUrl = baseUrl;
 	}
 
-	@Inject
-	public void setSecureApiSettings(String secureApiSettings)
+	protected String getBaseUrl()
 	{
-		Validate.notBlank(secureApiSettings, "API-settings must not be blank!");
-		this.secureApiSettings = secureApiSettings;
-	}
-	
-	@Inject
-	public void setApplicationName(String applicationName)
-	{
-		Validate.notBlank(applicationName, "application-name must not be blank!");
-		this.applicationName = applicationName;
+		return baseUrl;
 	}
 
-	@Inject
-	public void setUserName(String userName)
+	public void addProvider(Class<?> newProvider)
 	{
-		Validate.notBlank(userName, "user-name must not be blank!");
-		this.userName = userName;
+		Validate.notNull(newProvider, "new provider must not be null!");
+		this.providers.add(newProvider);
 	}
 
-	@Inject
-	public void setPassWord(String passWord)
+	public List<Class<?>> getProviders()
 	{
-		Validate.notBlank(passWord, "password must not be blank!");
-		this.passWord = passWord;
-	}
-
-	private void setSecurityFilters(ClientBuilder builder)
-	{
-		SecureApiSettings settings = SecureApiSettings.valueOf(this.secureApiSettings);
-		
-		switch (settings)
-		{
-			case BASIC_AUTH:
-				builder.register(new SecurityClientFilter_BasicAuth(userName, passWord));
-				break;
-
-			case BASIC_AUTH_PERMCHECK:
-				builder.register(new SecurityClientFilter_BasicAuth(userName, passWord, applicationName));
-				break;
-				
-			case DIGEST_AUTH:
-				// TODO!
-				break;
-				
-			case DIGEST_AUTH_PERMCHECK:
-				// TODO!
-				break;
-				
-			default:
-				break;
-		}
+		return providers;
 	}
 
 	private Client createJerseyClient()
@@ -121,6 +75,8 @@ public abstract class AbstractResourceClient
 
 		return builder.build();
 	}
+	
+	protected abstract void setSecurityFilters(ClientBuilder builder);
 
 	protected <T> T performRestCall_GET(String url, String acceptMediaType, Class<T> resultType)
 	{
@@ -140,22 +96,6 @@ public abstract class AbstractResourceClient
 	protected <E, R> R performRestCall(String url, String httpMethod, String acceptMediaType, String contentMediaType, GenericType<R> genericResultType, E object)
 	{
 		return internalRestCall(url, httpMethod, acceptMediaType, contentMediaType, null, genericResultType, object);
-	}
-
-	protected String getBaseUrl()
-	{
-		return baseUrl;
-	}
-
-	public void addProvider(Class<?> newProvider)
-	{
-		Validate.notNull(newProvider, "new provider must not be null!");
-		this.providers.add(newProvider);
-	}
-
-	public List<Class<?>> getProviders()
-	{
-		return providers;
 	}
 
 	// protected scope for test-purposes!

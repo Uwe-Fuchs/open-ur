@@ -20,7 +20,7 @@ import org.openur.module.domain.security.authorization.IRole;
 import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.domain.security.authorization.OpenURRole;
 import org.openur.module.service.security.ISecurityDomainServices;
-import org.openur.remoting.resource.client.AbstractResourceClient;
+import org.openur.remoting.client.ws.rs.secure_api.AbstractResourceClient;
 import org.openur.remoting.resource.security.SecurityDomainResource;
 import org.openur.remoting.xchange.rest.providers.json.IdentifiableEntitySetProvider;
 import org.openur.remoting.xchange.rest.providers.json.PermissionProvider;

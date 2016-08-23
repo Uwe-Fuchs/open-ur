@@ -1,4 +1,4 @@
-package org.openur.remoting.resource.client;
+package org.openur.remoting.client.ws.rs.secure_api;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -29,7 +29,7 @@ import org.openur.module.integration.security.shiro.OpenUrRdbmsRealmMock;
 import org.openur.module.service.security.IAuthorizationServices;
 import org.openur.module.service.userstructure.IUserServices;
 import org.openur.module.util.exception.EntityNotFoundException;
-import org.openur.remoting.resource.client.SecurityClientFilter_BasicAuth;
+import org.openur.remoting.client.ws.rs.secure_api.SecurityClientFilter_BasicAuth;
 import org.openur.remoting.resource.errorhandling.EntityNotFoundExceptionMapper;
 import org.openur.remoting.resource.secure_api.AbstractSecurityFilterBase;
 import org.openur.remoting.resource.secure_api.AuthenticationFilter_BasicAuth;

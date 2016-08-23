@@ -19,7 +19,7 @@ import org.openur.module.domain.security.authorization.IAuthorizableTechUser;
 import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.service.userstructure.IUserServices;
-import org.openur.remoting.resource.client.AbstractResourceClient;
+import org.openur.remoting.client.ws.rs.secure_api.AbstractResourceClient;
 import org.openur.remoting.resource.userstructure.UserResource;
 import org.openur.remoting.xchange.rest.providers.json.IdentifiableEntitySetProvider;
 import org.openur.remoting.xchange.rest.providers.json.PersonProvider;

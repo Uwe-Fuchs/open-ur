@@ -10,7 +10,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.openur.module.service.security.IAuthorizationServices;
 import org.openur.module.util.exception.EntityNotFoundException;
-import org.openur.remoting.resource.client.AbstractResourceClient;
+import org.openur.remoting.client.ws.rs.secure_api.AbstractResourceClient;
 import org.openur.remoting.resource.security.AuthorizationResource;
 import org.openur.remoting.xchange.rest.providers.json.PermissionProvider;
 

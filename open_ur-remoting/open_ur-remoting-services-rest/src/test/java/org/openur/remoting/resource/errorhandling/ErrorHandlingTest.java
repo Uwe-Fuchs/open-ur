@@ -1,11 +1,16 @@
 package org.openur.remoting.resource.errorhandling;
 
-import static org.junit.Assert.*;
-import static org.openur.remoting.resource.security.RdbmsRealmResource.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.openur.remoting.resource.security.RdbmsRealmResource.AUTHENTICATE_RESOURCE_PATH;
+import static org.openur.remoting.resource.security.RdbmsRealmResource.GET_NAME_RESOURCE_PATH;
 
 import javax.ws.rs.HttpMethod;
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
@@ -24,7 +29,7 @@ import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealmMock;
 import org.openur.module.util.exception.OpenURRuntimeException;
-import org.openur.remoting.resource.client.AbstractResourceClient;
+import org.openur.remoting.resource.client.AbstractResourceClientBase;
 import org.openur.remoting.resource.security.RdbmsRealmResource;
 import org.openur.remoting.xchange.rest.errorhandling.ErrorMessage;
 import org.openur.remoting.xchange.rest.providers.json.ErrorMessageProvider;
@@ -169,7 +174,7 @@ public class ErrorHandlingTest
 	}
 
 	private static class MyResourceClient
-		extends AbstractResourceClient
+		extends AbstractResourceClientBase
 	{
 		public MyResourceClient(String baseUrl)
 		{
@@ -187,10 +192,15 @@ public class ErrorHandlingTest
 		{
 			return super.performRestCall_GET(url, acceptMediaType, resultType);
 		}	
+		
+		@Override
+		protected void setSecurityFilters(ClientBuilder builder)
+		{
+		}
 	}
 
 	private static class MyResourceClientMock
-		extends AbstractResourceClient
+		extends AbstractResourceClientBase
 	{
 		private Response response = Mockito.mock(Response.class);
 		
@@ -215,6 +225,11 @@ public class ErrorHandlingTest
 		public MyResourceClientMock(String baseUrl)
 		{
 			super(baseUrl);
-		}	
+		}
+		
+		@Override
+		protected void setSecurityFilters(ClientBuilder builder)
+		{
+		}
 	}
 }

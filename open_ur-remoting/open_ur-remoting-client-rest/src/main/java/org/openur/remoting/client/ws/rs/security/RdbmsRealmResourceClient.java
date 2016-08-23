@@ -10,7 +10,7 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.realm.Realm;
-import org.openur.remoting.resource.client.AbstractResourceClient;
+import org.openur.remoting.client.ws.rs.secure_api.AbstractResourceClient;
 import org.openur.remoting.resource.security.RdbmsRealmResource;
 import org.openur.remoting.xchange.rest.providers.json.UsernamePwAuthenticationInfoProvider;
 import org.openur.remoting.xchange.rest.providers.json.UsernamePwTokenProvider;

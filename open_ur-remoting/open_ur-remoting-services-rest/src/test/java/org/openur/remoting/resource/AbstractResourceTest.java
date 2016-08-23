@@ -1,10 +1,11 @@
 package org.openur.remoting.resource;
 
+import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.GenericType;
 
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Before;
-import org.openur.remoting.resource.client.AbstractResourceClient;
+import org.openur.remoting.resource.client.AbstractResourceClientBase;
 
 public abstract class AbstractResourceTest
 	extends JerseyTest
@@ -31,7 +32,7 @@ public abstract class AbstractResourceTest
 	}
 
 	protected class MyTestResourceClient
-		extends AbstractResourceClient
+		extends AbstractResourceClientBase
 	{
 		public MyTestResourceClient(String baseUrl)
 		{
@@ -72,6 +73,12 @@ public abstract class AbstractResourceTest
 			System.out.println("Result: " + result);
 
 			return result;
+		}
+
+		@Override
+		protected void setSecurityFilters(ClientBuilder builder)
+		{
+			// do nothing			
 		}
 	}
 }
