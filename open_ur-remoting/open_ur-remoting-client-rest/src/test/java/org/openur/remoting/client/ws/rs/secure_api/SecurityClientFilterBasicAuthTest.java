@@ -29,9 +29,7 @@ import org.openur.module.integration.security.shiro.OpenUrRdbmsRealmMock;
 import org.openur.module.service.security.IAuthorizationServices;
 import org.openur.module.service.userstructure.IUserServices;
 import org.openur.module.util.exception.EntityNotFoundException;
-import org.openur.remoting.client.ws.rs.secure_api.SecurityClientFilter_BasicAuth;
 import org.openur.remoting.resource.errorhandling.EntityNotFoundExceptionMapper;
-import org.openur.remoting.resource.secure_api.AbstractSecurityFilterBase;
 import org.openur.remoting.resource.secure_api.AuthenticationFilter_BasicAuth;
 import org.openur.remoting.resource.secure_api.AuthorizationFilter;
 import org.openur.remoting.resource.userstructure.UserResource;
@@ -80,7 +78,7 @@ public class SecurityClientFilterBasicAuthTest
 	{
 		ClientConfig clientConfig = new ClientConfig();
 		clientConfig.register(PersonProvider.class);
-		clientConfig.register(new SecurityClientFilter_BasicAuth(user, password));
+		clientConfig.register(new SecurityClientFilter_BasicAuth(user, password, applicationName));
 		Client client = ClientBuilder.newClient(clientConfig);
 		WebTarget webTarget = client
 					.target("http://localhost:9998/")
@@ -88,10 +86,7 @@ public class SecurityClientFilterBasicAuthTest
 					.path(UserResource.PERSON_PER_ID_RESOURCE_PATH)
 					.path(TestObjectContainer.PERSON_UUID_1);
 
-		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
-		invocationBuilder.header(AbstractSecurityFilterBase.APPLICATION_NAME_PROPERTY, applicationName);
-
-		return invocationBuilder;
+		return webTarget.request(MediaType.APPLICATION_JSON);
 	}
 
 	@Test
@@ -101,18 +96,18 @@ public class SecurityClientFilterBasicAuthTest
 		Mockito.when(authorizationServicesMock.hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName)).thenReturn(Boolean.TRUE);
 		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
 
-		// hash credentials:
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder(OpenUrRdbmsRealmMock.USER_NAME_2, OpenUrRdbmsRealmMock.PASSWORD_2);
 		Response response = invocationBuilder.get();
 		assertEquals(200, response.getStatus());
 		System.out.println(response.getStatus());
 
 		Person p = response.readEntity(Person.class);
-		assertNotNull(p);
-		System.out.println(p);
-		assertTrue(new PersonComparer().objectsAreEqual(TestObjectContainer.PERSON_1, p));
-
 		assertEquals(1, realmMock.getAuthCounter());
 		verify(authorizationServicesMock, times(1)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName);
+		verify(userServicesMock, times(1)).findPersonById(TestObjectContainer.PERSON_UUID_1);
+
+		assertNotNull(p);
+		System.out.println("Result: " + p);		
+		assertTrue(new PersonComparer().objectsAreEqual(TestObjectContainer.PERSON_1, (Person) p));
 	}
 }
