@@ -1,8 +1,6 @@
 package org.openur.remoting.client.ws.rs.secure_api;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.openur.module.domain.security.secure_api.PermissionConstraints.REMOTE_READ;
@@ -99,15 +97,42 @@ public class SecurityClientFilterBasicAuthTest
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder(OpenUrRdbmsRealmMock.USER_NAME_2, OpenUrRdbmsRealmMock.PASSWORD_2);
 		Response response = invocationBuilder.get();
 		assertEquals(200, response.getStatus());
-		System.out.println(response.getStatus());
-
-		Person p = response.readEntity(Person.class);
 		assertEquals(1, realmMock.getAuthCounter());
 		verify(authorizationServicesMock, times(1)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName);
 		verify(userServicesMock, times(1)).findPersonById(TestObjectContainer.PERSON_UUID_1);
 
+		Person p = response.readEntity(Person.class);
 		assertNotNull(p);
 		System.out.println("Result: " + p);		
 		assertTrue(new PersonComparer().objectsAreEqual(TestObjectContainer.PERSON_1, (Person) p));
+	}
+
+	@Test
+	public void testFilterInvalidCredentials()
+		throws EntityNotFoundException
+	{
+		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder(OpenUrRdbmsRealmMock.USER_NAME_2, "someWrongPassword");
+		Response response = invocationBuilder.get();
+		assertEquals(401, response.getStatus());
+		assertEquals(1, realmMock.getAuthCounter());
+		verify(authorizationServicesMock, times(0)).hasPermissionTechUser(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());		
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testFilterEmptyUserName()
+	{
+		new SecurityClientFilter_BasicAuth("", "");
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testFilterEmptyPassword()
+	{
+		new SecurityClientFilter_BasicAuth("someUsername", "");
+	}
+
+	@Test(expected=NullPointerException.class)
+	public void testFilterEmptyApplicationName()
+	{
+		new SecurityClientFilter_BasicAuth("someUsername", "somePassword", null);
 	}
 }

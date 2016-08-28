@@ -11,6 +11,7 @@ import org.openur.remoting.resource.errorhandling.GenericExceptionMapper;
 import org.openur.remoting.resource.secure_api.AbstractSecurityFilterBase;
 import org.openur.remoting.resource.secure_api.AuthenticationFilter_BasicAuth;
 import org.openur.remoting.resource.secure_api.AuthorizationFilter;
+import org.openur.remoting.resource.secure_api.ISecurityFilterChainBuilder;
 import org.openur.remoting.resource.secure_api.SecureApiSettings;
 import org.openur.remoting.xchange.rest.providers.json.ErrorMessageProvider;
 import org.openur.remoting.xchange.rest.providers.json.IdentifiableEntitySetProvider;
@@ -31,6 +32,7 @@ import org.springframework.core.env.Environment;
  */
 public class OpenUrRestApplication
 	extends ResourceConfig
+	implements ISecurityFilterChainBuilder<ResourceConfig>
 {
 	private Environment env;
 	private ServletContext servletContext;
@@ -91,29 +93,55 @@ public class OpenUrRestApplication
 	{
 		SecureApiSettings secureApiSettings = SecureApiSettings.valueOf(settings);
 		
-		if (SecureApiSettings.NO_SECURITY == secureApiSettings)
-		{
-			return;
-		}
-		
-		String permCheck = SecureApiSettings.BASIC_AUTH_PERMCHECK.name().substring(11);
-		
-		if (settings.contains(permCheck))
-		{
-			register(AuthorizationFilter.class);
-		}
-		
-		if (settings.contains(SecureApiSettings.BASIC_AUTH.name()))
-		{
-			register(AuthenticationFilter_BasicAuth.class);
-			
-			return;
-		}
-		
-		if (settings.contains(SecureApiSettings.DIGEST_AUTH.name()))
-		{
-			// TODO!
-			return;
-		}
+		buildSecurityFilterChain(secureApiSettings, this);
+	}
+
+	@Override
+	public void buildFilterChainBasicAuth(ResourceConfig configurable)
+	{
+		register(AuthenticationFilter_BasicAuth.class);		
+	}
+
+	@Override
+	public void buildFilterChainPreBasicAuth(ResourceConfig configurable)
+	{
+		// TODO Auto-generated method stub		
+	}
+
+	@Override
+	public void buildFilterChainBasicAuthPermCheck(ResourceConfig configurable)
+	{
+		register(AuthenticationFilter_BasicAuth.class);	
+		register(AuthorizationFilter.class);
+	}
+
+	@Override
+	public void buildFilterChainPreBasicAuthPermCheck(ResourceConfig configurable)
+	{
+		// TODO Auto-generated method stub		
+	}
+
+	@Override
+	public void buildFilterChainDigestAuth(ResourceConfig configurable)
+	{
+		// TODO Auto-generated method stub		
+	}
+
+	@Override
+	public void buildFilterChainPreDigestAuth(ResourceConfig configurable)
+	{
+		// TODO Auto-generated method stub		
+	}
+
+	@Override
+	public void buildFilterChainDigestAuthPermCheck(ResourceConfig configurable)
+	{
+		// TODO Auto-generated method stub		
+	}
+
+	@Override
+	public void buildFilterChainPreDigestAuthPermCheck(ResourceConfig configurable)
+	{
+		// TODO Auto-generated method stub		
 	}
 }

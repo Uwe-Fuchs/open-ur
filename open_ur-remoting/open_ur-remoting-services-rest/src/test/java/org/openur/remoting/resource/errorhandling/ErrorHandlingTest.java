@@ -10,7 +10,6 @@ import static org.openur.remoting.resource.security.RdbmsRealmResource.GET_NAME_
 import javax.ws.rs.HttpMethod;
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
@@ -191,11 +190,6 @@ public class ErrorHandlingTest
 		protected <T> T performRestCall_GET(String url, String acceptMediaType, Class<T> resultType)
 		{
 			return super.performRestCall_GET(url, acceptMediaType, resultType);
-		}	
-		
-		@Override
-		protected void setSecurityFilters(ClientBuilder builder)
-		{
 		}
 	}
 
@@ -225,11 +219,6 @@ public class ErrorHandlingTest
 		public MyResourceClientMock(String baseUrl)
 		{
 			super(baseUrl);
-		}
-		
-		@Override
-		protected void setSecurityFilters(ClientBuilder builder)
-		{
 		}
 	}
 }

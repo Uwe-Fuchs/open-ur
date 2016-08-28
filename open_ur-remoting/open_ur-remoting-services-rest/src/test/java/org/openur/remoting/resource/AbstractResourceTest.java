@@ -1,6 +1,5 @@
 package org.openur.remoting.resource;
 
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.GenericType;
 
 import org.glassfish.jersey.test.JerseyTest;
@@ -73,12 +72,6 @@ public abstract class AbstractResourceTest
 			System.out.println("Result: " + result);
 
 			return result;
-		}
-
-		@Override
-		protected void setSecurityFilters(ClientBuilder builder)
-		{
-			// do nothing			
 		}
 	}
 }

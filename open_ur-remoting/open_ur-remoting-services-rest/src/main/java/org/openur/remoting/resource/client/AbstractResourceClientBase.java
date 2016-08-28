@@ -20,9 +20,13 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
 import org.openur.remoting.xchange.rest.errorhandling.ErrorMessage;
 import org.openur.remoting.xchange.rest.providers.json.ErrorMessageProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class AbstractResourceClientBase
 {
+	private static final Logger LOG = LoggerFactory.getLogger(AbstractResourceClientBase.class);
+	
 	private final List<Class<?>> providers = new ArrayList<>();
 	private final String baseUrl;
 
@@ -76,7 +80,10 @@ public abstract class AbstractResourceClientBase
 		return builder.build();
 	}
 	
-	protected abstract void setSecurityFilters(ClientBuilder builder);
+	protected void setSecurityFilters(ClientBuilder builder)
+	{
+		// do nothing			
+	}
 
 	protected <T> T performRestCall_GET(String url, String acceptMediaType, Class<T> resultType)
 	{
@@ -172,6 +179,8 @@ public abstract class AbstractResourceClientBase
 				
 				ex = new WebApplicationException(reasonPhrase, response.getStatus());
 			}
+			
+			LOG.error(ex.toString());
 			
 			throw ex;
 		}

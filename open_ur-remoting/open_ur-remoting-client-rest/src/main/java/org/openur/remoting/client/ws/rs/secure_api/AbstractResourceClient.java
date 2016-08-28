@@ -5,11 +5,13 @@ import javax.ws.rs.client.ClientBuilder;
 
 import org.apache.commons.lang3.Validate;
 import org.openur.remoting.resource.client.AbstractResourceClientBase;
+import org.openur.remoting.resource.secure_api.ISecurityFilterChainBuilder;
 import org.openur.remoting.resource.secure_api.SecureApiSettings;
 
 
 public abstract class AbstractResourceClient 
 	extends AbstractResourceClientBase
+	implements ISecurityFilterChainBuilder<ClientBuilder>
 {	
 	private String secureApiSettings = SecureApiSettings.NO_SECURITY.name();
 	private String applicationName;
@@ -44,34 +46,6 @@ public abstract class AbstractResourceClient
 		this.passWord = passWord;
 	}
 
-	@Override
-	protected void setSecurityFilters(ClientBuilder builder)
-	{
-		SecureApiSettings settings = SecureApiSettings.valueOf(this.secureApiSettings);
-		
-		switch (settings)
-		{
-			case BASIC_AUTH:
-				builder.register(new SecurityClientFilter_BasicAuth(userName, passWord));
-				break;
-
-			case BASIC_AUTH_PERMCHECK:
-				builder.register(new SecurityClientFilter_BasicAuth(userName, passWord, applicationName));
-				break;
-				
-			case DIGEST_AUTH:
-				// TODO!
-				break;
-				
-			case DIGEST_AUTH_PERMCHECK:
-				// TODO!
-				break;
-				
-			default:
-				break;
-		}
-	}
-
 	public AbstractResourceClient(String baseUrl, Class<?>... newProviders)
 	{
 		super(baseUrl, newProviders);
@@ -81,4 +55,60 @@ public abstract class AbstractResourceClient
 	{
 		super(baseUrl);
 	}	
+
+	@Override
+	protected void setSecurityFilters(ClientBuilder builder)
+	{
+		SecureApiSettings settings = SecureApiSettings.valueOf(this.secureApiSettings);
+		
+		buildSecurityFilterChain(settings, builder);
+	}
+
+	@Override
+	public void buildFilterChainBasicAuth(ClientBuilder builder)
+	{
+		builder.register(new SecurityClientFilter_BasicAuth(userName, passWord));		
+	}
+
+	@Override
+	public void buildFilterChainPreBasicAuth(ClientBuilder builder)
+	{
+		// TODO Auto-generated method stub		
+	}
+
+	@Override
+	public void buildFilterChainBasicAuthPermCheck(ClientBuilder builder)
+	{
+		builder.register(new SecurityClientFilter_BasicAuth(userName, passWord, applicationName));	
+	}
+
+	@Override
+	public void buildFilterChainPreBasicAuthPermCheck(ClientBuilder builder)
+	{
+		// TODO Auto-generated method stub		
+	}
+
+	@Override
+	public void buildFilterChainDigestAuth(ClientBuilder builder)
+	{
+		// TODO Auto-generated method stub		
+	}
+
+	@Override
+	public void buildFilterChainPreDigestAuth(ClientBuilder builder)
+	{
+		// TODO Auto-generated method stub		
+	}
+
+	@Override
+	public void buildFilterChainDigestAuthPermCheck(ClientBuilder builder)
+	{
+		// TODO Auto-generated method stub		
+	}
+
+	@Override
+	public void buildFilterChainPreDigestAuthPermCheck(ClientBuilder builder)
+	{
+		// TODO Auto-generated method stub		
+	}
 }
