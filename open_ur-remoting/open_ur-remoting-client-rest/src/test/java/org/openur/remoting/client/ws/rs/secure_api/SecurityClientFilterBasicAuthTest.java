@@ -1,6 +1,8 @@
 package org.openur.remoting.client.ws.rs.secure_api;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.openur.module.domain.security.secure_api.PermissionConstraints.REMOTE_READ;
@@ -29,19 +31,18 @@ import org.openur.module.service.userstructure.IUserServices;
 import org.openur.module.util.exception.EntityNotFoundException;
 import org.openur.remoting.resource.errorhandling.EntityNotFoundExceptionMapper;
 import org.openur.remoting.resource.secure_api.AuthenticationFilter_BasicAuth;
-import org.openur.remoting.resource.secure_api.AuthorizationFilter;
 import org.openur.remoting.resource.userstructure.UserResource;
 import org.openur.remoting.xchange.rest.providers.json.PersonProvider;
 
 public class SecurityClientFilterBasicAuthTest
 	extends JerseyTest
 {
-	private String applicationName = "Demo-Application";
-	private Boolean hashCredentials = Boolean.TRUE;
+	protected String applicationName = "Demo-Application";
+	protected Boolean hashCredentials = Boolean.TRUE;
 
-	private OpenUrRdbmsRealmMock realmMock;
-	private IAuthorizationServices authorizationServicesMock;
-	private IUserServices userServicesMock;
+	protected OpenUrRdbmsRealmMock realmMock;
+	protected IAuthorizationServices authorizationServicesMock;
+	protected IUserServices userServicesMock;
 
 	@Override
 	protected Application configure()
@@ -65,7 +66,7 @@ public class SecurityClientFilterBasicAuthTest
 		ResourceConfig config = new ResourceConfig(UserResource.class)
 				.register(PersonProvider.class)
 				.register(AuthenticationFilter_BasicAuth.class)
-				.register(AuthorizationFilter.class)
+				//.register(AuthorizationFilter.class)
 				.register(EntityNotFoundExceptionMapper.class)
 				.register(binder);
 
@@ -98,7 +99,7 @@ public class SecurityClientFilterBasicAuthTest
 		Response response = invocationBuilder.get();
 		assertEquals(200, response.getStatus());
 		assertEquals(1, realmMock.getAuthCounter());
-		verify(authorizationServicesMock, times(1)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName);
+		verify(authorizationServicesMock, times(0)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName);
 		verify(userServicesMock, times(1)).findPersonById(TestObjectContainer.PERSON_UUID_1);
 
 		Person p = response.readEntity(Person.class);
@@ -115,7 +116,8 @@ public class SecurityClientFilterBasicAuthTest
 		Response response = invocationBuilder.get();
 		assertEquals(401, response.getStatus());
 		assertEquals(1, realmMock.getAuthCounter());
-		verify(authorizationServicesMock, times(0)).hasPermissionTechUser(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());		
+		verify(authorizationServicesMock, times(0)).hasPermissionTechUser(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());	
+		verify(userServicesMock, times(0)).findPersonById(TestObjectContainer.PERSON_UUID_1);	
 	}
 
 	@Test(expected=IllegalArgumentException.class)

@@ -40,7 +40,7 @@ public class SecuredResourceClientBasicAuthTest
 
 	@Test
 	@Override
-	public void test()
+	public void testFilterValidCredentials()
 		throws EntityNotFoundException
 	{
 		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);

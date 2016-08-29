@@ -68,7 +68,7 @@ public abstract class AbstractSecuredResourceClientTest
 	}
 	
 	@Test
-	public abstract void test()
+	public abstract void testFilterValidCredentials()
 		throws EntityNotFoundException;
 
 	@Test
