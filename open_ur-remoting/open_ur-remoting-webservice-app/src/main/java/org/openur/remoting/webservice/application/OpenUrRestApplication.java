@@ -10,6 +10,7 @@ import org.openur.remoting.resource.errorhandling.EntityNotFoundExceptionMapper;
 import org.openur.remoting.resource.errorhandling.GenericExceptionMapper;
 import org.openur.remoting.resource.secure_api.AbstractSecurityFilterBase;
 import org.openur.remoting.resource.secure_api.AuthenticationFilter_BasicAuth;
+import org.openur.remoting.resource.secure_api.AuthenticationFilter_J2eePreAuth;
 import org.openur.remoting.resource.secure_api.AuthorizationFilter;
 import org.openur.remoting.resource.secure_api.ISecurityFilterChainBuilder;
 import org.openur.remoting.resource.secure_api.SecureApiSettings;
@@ -105,7 +106,8 @@ public class OpenUrRestApplication
 	@Override
 	public void buildFilterChainPreBasicAuth(ResourceConfig configurable)
 	{
-		// TODO Auto-generated method stub		
+		register(AuthenticationFilter_J2eePreAuth.class);	
+		register(AuthenticationFilter_BasicAuth.class);	
 	}
 
 	@Override
@@ -118,7 +120,9 @@ public class OpenUrRestApplication
 	@Override
 	public void buildFilterChainPreBasicAuthPermCheck(ResourceConfig configurable)
 	{
-		// TODO Auto-generated method stub		
+		register(AuthenticationFilter_J2eePreAuth.class);	
+		register(AuthenticationFilter_BasicAuth.class);	
+		register(AuthorizationFilter.class);
 	}
 
 	@Override
