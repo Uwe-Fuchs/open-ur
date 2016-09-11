@@ -44,7 +44,7 @@ public class AuthorizationFilter
 
 		if (StringUtils.isBlank(userId))
 		{
-			abortWithBadRequest(requestContext, "No User-ID given in context!");
+			abortWithUnauthorized(requestContext, "Not authenticated!");
 		}
 
 		Method method = resourceInfo.getResourceMethod();

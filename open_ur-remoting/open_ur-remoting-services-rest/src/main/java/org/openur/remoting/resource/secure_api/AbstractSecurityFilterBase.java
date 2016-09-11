@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 public abstract class AbstractSecurityFilterBase
 {
-	private static final Logger LOG = LoggerFactory.getLogger(AbstractSecurityFilterBase.class);
+	protected static final Logger LOG = LoggerFactory.getLogger(AbstractSecurityFilterBase.class);
 	protected static final String USER_ID_PROPERTY = "userId";
 	protected static final String NO_CREDENTIALS_FOUND_MSG = "No credentials found!";
 	protected static final String NO_VALID_CREDENTIALS_FOUND_MSG = "No valid credentials found!";

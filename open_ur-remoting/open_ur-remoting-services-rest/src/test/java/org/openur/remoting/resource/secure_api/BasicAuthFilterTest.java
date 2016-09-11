@@ -43,13 +43,12 @@ public class BasicAuthFilterTest
 		Response response = invocationBuilder.get();
 		assertEquals(200, response.getStatus());
 		System.out.println(response.getStatus());
+		assertEquals(1, realmMock.getAuthCounter());
 
 		Person p = response.readEntity(Person.class);
 		assertNotNull(p);
 		System.out.println(p);		
 		assertTrue(new PersonComparer().objectsAreEqual(TestObjectContainer.PERSON_1, p));
-
-		assertEquals(1, realmMock.getAuthCounter());
 	}
 
 	@Test

@@ -1,7 +1,6 @@
 package org.openur.remoting.resource.secure_api;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 
 import javax.inject.Inject;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -10,6 +9,7 @@ import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.realm.Realm;
 import org.openur.module.integration.security.shiro.OpenURAuthenticationInfo;
@@ -28,7 +28,16 @@ public abstract class AbstractAuthenticationFilter<A extends OpenURAuthenticatio
 	public void filter(ContainerRequestContext requestContext)
 		throws IOException
 	{
-		Method method = resourceInfo.getResourceMethod();
+		// try to get user-id from context:
+		String userId = (String) requestContext.getProperty(USER_ID_PROPERTY);
+		
+		// if user-id already in context => authentication already performed, leave:
+		if (StringUtils.isNotEmpty(userId))
+		{
+			LOG.debug("User with ID [%s] already authenticated!");
+			
+			return;
+		}
 
 		// Get request headers
 		MultivaluedMap<String, String> headers = requestContext.getHeaders();
@@ -41,13 +50,14 @@ public abstract class AbstractAuthenticationFilter<A extends OpenURAuthenticatio
 			authenticationInfo = checkAuthentication(headers);
 		} catch (AuthenticationException e)
 		{
-			String msg = String.format("Access denied for resource-method: [%s], Authentication failed with message: [%s]", method, e.getMessage());
+			String msg = String.format("Access denied for resource-method: [%s], Authentication failed with message: [%s]", 
+					resourceInfo.getResourceMethod(), e.getMessage());
 			abortWithUnauthorized(requestContext, msg);
 
 			return;
 		}
 		
-		String userId = null;
+		userId = null;
 		
 		if (authenticationInfo == null || (userId = authenticationInfo.getIdentifier()) == null)
 		{
