@@ -15,10 +15,22 @@ import org.openur.module.integration.security.shiro.OpenUrRdbmsRealmMock;
 public class DummyAuthenticationFilter
 	implements ContainerRequestFilter
 {
+	private boolean addUserIdToContext = true;
+
+	public void setAddUserIdToContext(boolean addUserIdToContext)
+	{
+		this.addUserIdToContext = addUserIdToContext;
+	}
+
 	@Override
 	public void filter(ContainerRequestContext requestContext)
 		throws IOException
 	{
+		if (!addUserIdToContext)
+		{
+			return;
+		}
+			
 		requestContext.setProperty(AbstractSecurityFilterBase.USER_ID_PROPERTY, OpenUrRdbmsRealmMock.TECH_USER_UUID_2);
 	}
 }

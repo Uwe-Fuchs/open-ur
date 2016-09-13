@@ -48,6 +48,7 @@ public class PreBasicAuthFilterTest
 	public void testNotPreAuthenticated()
 		throws UnsupportedEncodingException
 	{
+		Mockito.when(userServicesMock.findTechnicalUserById(TestObjectContainer.TECH_USER_UUID_2)).thenReturn(null);
 		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
 
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
@@ -68,6 +69,8 @@ public class PreBasicAuthFilterTest
 	public void testNotPreAuthenticatedInvalidCredentials()
 		throws UnsupportedEncodingException
 	{
+		Mockito.when(userServicesMock.findTechnicalUserById(TestObjectContainer.TECH_USER_UUID_2)).thenReturn(null);
+		
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
 		
 		// add hashed credential to request-headers:

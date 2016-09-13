@@ -23,11 +23,14 @@ import org.openur.module.util.exception.EntityNotFoundException;
 public class AuthorizationFilterTest
 	extends AbstractSecurityFilterTest
 {
+	private DummyAuthenticationFilter dummyAuthenticationFilter;
+	
 	@Override
 	protected Application configure()
 	{
 		ResourceConfig config = (ResourceConfig) super.configure();
-		config.register(DummyAuthenticationFilter.class);
+		dummyAuthenticationFilter = new DummyAuthenticationFilter();
+		config.register(dummyAuthenticationFilter);
 		config.register(AuthorizationFilter.class);
 		
 		return config;
@@ -83,5 +86,22 @@ public class AuthorizationFilterTest
 		assertEquals(400, response.getStatus());
 		assertTrue(msg.contains("No application-name given!"));
 		verify(authorizationServicesMock, times(0)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName);	
+	}
+
+
+	@Test
+	public void testFilterNotAuthenticated()
+		throws EntityNotFoundException
+	{
+		// prevent dummyFilter from setting user-id in context, i.e. no user-authentication is registrated:
+		dummyAuthenticationFilter.setAddUserIdToContext(false);
+		
+		Mockito.when(authorizationServicesMock.hasPermissionTechUser(null, REMOTE_READ, applicationName))
+				.thenReturn(Boolean.FALSE);
+		
+		Response response = buildInvocationTargetBuilder().get();
+		assertEquals(401, response.getStatus());
+		System.out.println(response.getStatus());
+		verify(authorizationServicesMock, times(0)).hasPermissionTechUser(null, REMOTE_READ, applicationName);	
 	}
 }
