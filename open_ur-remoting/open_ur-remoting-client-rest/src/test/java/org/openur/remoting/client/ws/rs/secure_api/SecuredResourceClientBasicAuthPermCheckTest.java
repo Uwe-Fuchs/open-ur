@@ -10,7 +10,6 @@ import static org.openur.module.domain.security.secure_api.PermissionConstraints
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Application;
-import javax.ws.rs.core.Response.Status;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.Test;
@@ -31,8 +30,9 @@ public class SecuredResourceClientBasicAuthPermCheckTest
 	protected Application configure()
 	{		
 		ResourceConfig config = (ResourceConfig) super.configure();
-		
 		userResourceClient.setSecureApiSettings(SecureApiSettings.BASIC_AUTH_PERMCHECK.name());
+		applicationName = "Demo-Application";
+		userResourceClient.setApplicationName(applicationName);		
 		config.register(AuthorizationFilter.class);
 
 		return config;
@@ -68,7 +68,6 @@ public class SecuredResourceClientBasicAuthPermCheckTest
 		} catch (WebApplicationException e)
 		{
 			assertEquals(401, e.getResponse().getStatus());
-			assertEquals(Status.fromStatusCode(401).getReasonPhrase(), e.getMessage());
 			assertEquals(1, realmMock.getAuthCounter());
 			verify(authorizationServicesMock, times(0)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName);
 			verify(userServicesMock, times(0)).findPersonById(TestObjectContainer.PERSON_UUID_1);

@@ -1,13 +1,15 @@
 package org.openur.remoting.client.ws.rs.secure_api;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.openur.module.domain.security.secure_api.PermissionConstraints.REMOTE_READ;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Application;
-import javax.ws.rs.core.Response.Status;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.Test;
@@ -47,7 +49,8 @@ public class SecuredResourceClientBasicAuthTest
 		
 		IPerson p = userBean.doSomeUserAction();
 		assertEquals(1, realmMock.getAuthCounter());
-		verify(authorizationServicesMock, times(0)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName);
+		verify(authorizationServicesMock, times(0)).hasPermissionTechUser(Mockito.eq(OpenUrRdbmsRealmMock.TECH_USER_UUID_2), Mockito.eq(REMOTE_READ), 
+				Mockito.anyString());
 		verify(userServicesMock, times(1)).findPersonById(TestObjectContainer.PERSON_UUID_1);
 
 		assertNotNull(p);
@@ -68,9 +71,9 @@ public class SecuredResourceClientBasicAuthTest
 		} catch (WebApplicationException e)
 		{
 			assertEquals(401, e.getResponse().getStatus());
-			assertEquals(Status.fromStatusCode(401).getReasonPhrase(), e.getMessage());
 			assertEquals(1, realmMock.getAuthCounter());
-			verify(authorizationServicesMock, times(0)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName);
+			verify(authorizationServicesMock, times(0)).hasPermissionTechUser(Mockito.eq(OpenUrRdbmsRealmMock.TECH_USER_UUID_2), Mockito.eq(REMOTE_READ), 
+					Mockito.anyString());
 			verify(userServicesMock, times(0)).findPersonById(TestObjectContainer.PERSON_UUID_1);
 		}
 	}

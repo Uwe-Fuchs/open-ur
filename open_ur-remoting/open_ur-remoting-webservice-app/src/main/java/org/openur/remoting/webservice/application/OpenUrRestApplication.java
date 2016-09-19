@@ -98,6 +98,13 @@ public class OpenUrRestApplication
 	}
 
 	@Override
+	public void buildFilterChainPreAuthPermCheck(ResourceConfig configurable)
+	{
+		register(AuthenticationFilter_J2eePreAuth.class);	
+		register(AuthorizationFilter.class);		
+	}
+
+	@Override
 	public void buildFilterChainBasicAuth(ResourceConfig configurable)
 	{
 		register(AuthenticationFilter_BasicAuth.class);		

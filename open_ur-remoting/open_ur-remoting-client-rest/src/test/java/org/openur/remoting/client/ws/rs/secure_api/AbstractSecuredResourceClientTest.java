@@ -34,12 +34,10 @@ public abstract class AbstractSecuredResourceClientTest
 	@Override
 	protected Application configure()
 	{		
-		applicationName = "Demo-Application";
 		realmMock = new OpenUrRdbmsRealmMock();
 		authorizationServicesMock = Mockito.mock(IAuthorizationServices.class);
 		userServicesMock = Mockito.mock(IUserServices.class);
 		userResourceClient = new UserResourceClient("http://localhost:9998/");
-		userResourceClient.setApplicationName(applicationName);
 
 		AbstractBinder binder = new AbstractBinder()
 		{

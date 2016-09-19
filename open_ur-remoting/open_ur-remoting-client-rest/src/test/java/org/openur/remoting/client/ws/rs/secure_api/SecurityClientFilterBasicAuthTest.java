@@ -66,7 +66,6 @@ public class SecurityClientFilterBasicAuthTest
 		ResourceConfig config = new ResourceConfig(UserResource.class)
 				.register(PersonProvider.class)
 				.register(AuthenticationFilter_BasicAuth.class)
-				//.register(AuthorizationFilter.class)
 				.register(EntityNotFoundExceptionMapper.class)
 				.register(binder);
 

@@ -65,6 +65,12 @@ public abstract class AbstractResourceClient
 	}
 
 	@Override
+	public void buildFilterChainPreAuthPermCheck(ClientBuilder configurable)
+	{
+		// do nothing in REST-Client
+	}
+
+	@Override
 	public void buildFilterChainBasicAuth(ClientBuilder builder)
 	{
 		builder.register(new SecurityClientFilter_BasicAuth(userName, passWord));		
@@ -73,7 +79,7 @@ public abstract class AbstractResourceClient
 	@Override
 	public void buildFilterChainPreBasicAuth(ClientBuilder builder)
 	{
-		// TODO Auto-generated method stub		
+		buildFilterChainBasicAuth(builder);
 	}
 
 	@Override
@@ -85,7 +91,7 @@ public abstract class AbstractResourceClient
 	@Override
 	public void buildFilterChainPreBasicAuthPermCheck(ClientBuilder builder)
 	{
-		// TODO Auto-generated method stub		
+		buildFilterChainBasicAuthPermCheck(builder);
 	}
 
 	@Override
