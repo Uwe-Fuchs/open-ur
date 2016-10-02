@@ -32,7 +32,7 @@ public class SecuredResourceClientPreAuthPermCheckTest
 		applicationName = "Demo-Application";
 		userResourceClient.setApplicationName(applicationName);		
 		config.register(AuthorizationFilter.class);
-		config.register(DummyPreparePreAuthFilter.class);
+		config.register(new DummyPreparePreAuthFilter(TestObjectContainer.TECH_USER_UUID_2));
 		config.register(AuthenticationFilter_J2eePreAuth.class);
 		
 		return config;

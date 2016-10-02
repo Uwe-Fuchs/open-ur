@@ -10,17 +10,25 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.SecurityContext;
 
 import org.glassfish.grizzly.http.server.GrizzlyPrincipal;
-import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 
 @Priority(value = Priorities.AUTHENTICATION - 20)
 public class DummyPreparePreAuthFilter
 	implements ContainerRequestFilter
 {
+	private final String userId;	
+	
+	public DummyPreparePreAuthFilter(String userId)
+	{
+		super();
+		
+		this.userId = userId;
+	}
+
 	@Override
 	public void filter(ContainerRequestContext requestContext)
 		throws IOException
 	{
-		Principal principal = new GrizzlyPrincipal(TestObjectContainer.TECH_USER_UUID_2);
+		Principal principal = new GrizzlyPrincipal(this.userId);
 		SecurityContext securityContext = new MySecurityContext(principal);
 		requestContext.setSecurityContext(securityContext);
 	}

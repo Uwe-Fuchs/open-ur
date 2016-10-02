@@ -23,7 +23,7 @@ public class PreBasicAuthFilterTest
 	protected Application configure()
 	{
 		ResourceConfig config = (ResourceConfig) super.configure();
-		config.register(DummyPreparePreAuthFilter.class);
+		config.register(new DummyPreparePreAuthFilter(TestObjectContainer.TECH_USER_UUID_2));
 		config.register(AuthenticationFilter_J2eePreAuth.class);
 		config.register(AuthenticationFilter_BasicAuth.class);
 		
