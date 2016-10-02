@@ -65,7 +65,7 @@ public abstract class AbstractResourceClient
 	}
 
 	@Override
-	public void buildFilterChainPreAuthPermCheck(ClientBuilder configurable)
+	public void buildFilterChainPreAuthPermCheck(ClientBuilder builder)
 	{
 		// do nothing in REST-Client
 	}

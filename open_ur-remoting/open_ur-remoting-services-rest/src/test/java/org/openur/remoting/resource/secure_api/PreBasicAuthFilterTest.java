@@ -14,6 +14,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
+import org.openur.remoting.resource.secure_api.testing.DummyPreparePreAuthFilter;
 
 public class PreBasicAuthFilterTest
 	extends AbstractSecurityFilterTest

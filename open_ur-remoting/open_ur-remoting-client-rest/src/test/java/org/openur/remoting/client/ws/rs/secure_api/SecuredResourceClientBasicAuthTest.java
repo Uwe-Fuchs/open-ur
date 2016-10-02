@@ -41,7 +41,6 @@ public class SecuredResourceClientBasicAuthTest
 	}
 
 	@Test
-	@Override
 	public void testFilterValidCredentials()
 		throws EntityNotFoundException
 	{
@@ -59,7 +58,6 @@ public class SecuredResourceClientBasicAuthTest
 	}
 
 	@Test
-	@Override
 	public void testFilterInvalidCredentials()
 		throws EntityNotFoundException
 	{

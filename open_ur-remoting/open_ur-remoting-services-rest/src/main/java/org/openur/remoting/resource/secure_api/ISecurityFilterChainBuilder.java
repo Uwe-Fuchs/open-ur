@@ -19,7 +19,7 @@ public interface ISecurityFilterChainBuilder<C extends Configurable<C>>
 				break;
 
 			case PRE_AUTH_PERMCHECK:
-				buildFilterChainBasicAuth(configurable);
+				buildFilterChainPreAuthPermCheck(configurable);
 				break;
 
 			case BASIC_AUTH_PERMCHECK:

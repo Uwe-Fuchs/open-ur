@@ -30,6 +30,7 @@ public class SecuredResourceClientBasicAuthPermCheckTest
 	protected Application configure()
 	{		
 		ResourceConfig config = (ResourceConfig) super.configure();
+		
 		userResourceClient.setSecureApiSettings(SecureApiSettings.BASIC_AUTH_PERMCHECK.name());
 		applicationName = "Demo-Application";
 		userResourceClient.setApplicationName(applicationName);		

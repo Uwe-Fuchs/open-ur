@@ -1,4 +1,4 @@
-package org.openur.remoting.resource.secure_api;
+package org.openur.remoting.resource.secure_api.testing;
 
 import java.io.IOException;
 import java.security.Principal;
