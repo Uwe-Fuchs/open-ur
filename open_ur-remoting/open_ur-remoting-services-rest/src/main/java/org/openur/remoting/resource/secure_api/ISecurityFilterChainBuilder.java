@@ -14,8 +14,28 @@ public interface ISecurityFilterChainBuilder<C extends Configurable<C>>
 	{
 		switch (settings)
 		{
+			case PRE_AUTH:
+				buildFilterChainPreAuth(configurable);
+				break;
+				
 			case BASIC_AUTH:
 				buildFilterChainBasicAuth(configurable);
+				break;
+				
+			case DIGEST_AUTH:
+				buildFilterChainDigestAuth(configurable);
+				break;
+				
+			case PERMCHECK:
+				buildFilterChainPermCheck(configurable);
+				break;
+				
+			case PRE_BASIC_AUTH:
+				buildFilterChainPreBasicAuth(configurable);
+				break;
+				
+			case PRE_DIGEST_AUTH:
+				buildFilterChainPreDigestAuth(configurable);
 				break;
 
 			case PRE_AUTH_PERMCHECK:
@@ -26,24 +46,12 @@ public interface ISecurityFilterChainBuilder<C extends Configurable<C>>
 				buildFilterChainBasicAuthPermCheck(configurable);
 				break;
 				
-			case PRE_BASIC_AUTH:
-				buildFilterChainPreBasicAuth(configurable);
-				break;
-				
-			case PRE_BASIC_AUTH_PERMCHECK:
-				buildFilterChainPreBasicAuthPermCheck(configurable);
-				break;
-				
-			case DIGEST_AUTH:
-				buildFilterChainDigestAuth(configurable);
-				break;
-				
 			case DIGEST_AUTH_PERMCHECK:
 				buildFilterChainDigestAuthPermCheck(configurable);
 				break;
 				
-			case PRE_DIGEST_AUTH:
-				buildFilterChainPreDigestAuth(configurable);
+			case PRE_BASIC_AUTH_PERMCHECK:
+				buildFilterChainPreBasicAuthPermCheck(configurable);
 				break;
 				
 			case PRE_DIGEST_AUTH_PERMCHECK:
@@ -60,7 +68,7 @@ public interface ISecurityFilterChainBuilder<C extends Configurable<C>>
 	 * 
 	 * @param configurable
 	 */
-	void buildFilterChainPreAuthPermCheck(C configurable);
+	void buildFilterChainPreAuth(C configurable);
 	
 	/**
 	 * 
@@ -74,28 +82,21 @@ public interface ISecurityFilterChainBuilder<C extends Configurable<C>>
 	 * 
 	 * @param configurable
 	 */
-	void buildFilterChainPreBasicAuth(C configurable);
-	
-	/**
-	 * 
-	 * 
-	 * @param configurable
-	 */
-	void buildFilterChainBasicAuthPermCheck(C configurable);
-	
-	/**
-	 * 
-	 * 
-	 * @param configurable
-	 */
-	void buildFilterChainPreBasicAuthPermCheck(C configurable);
-	
-	/**
-	 * 
-	 * 
-	 * @param configurable
-	 */
 	void buildFilterChainDigestAuth(C configurable);
+	
+	/**
+	 * 
+	 * 
+	 * @param configurable
+	 */
+	void buildFilterChainPermCheck(C configurable);
+	
+	/**
+	 * 
+	 * 
+	 * @param configurable
+	 */
+	void buildFilterChainPreBasicAuth(C configurable);
 	
 	/**
 	 * 
@@ -109,7 +110,28 @@ public interface ISecurityFilterChainBuilder<C extends Configurable<C>>
 	 * 
 	 * @param configurable
 	 */
+	void buildFilterChainPreAuthPermCheck(C configurable);
+	
+	/**
+	 * 
+	 * 
+	 * @param configurable
+	 */
+	void buildFilterChainBasicAuthPermCheck(C configurable);
+	
+	/**
+	 * 
+	 * 
+	 * @param configurable
+	 */
 	void buildFilterChainDigestAuthPermCheck(C configurable);
+	
+	/**
+	 * 
+	 * 
+	 * @param configurable
+	 */
+	void buildFilterChainPreBasicAuthPermCheck(C configurable);
 	
 	/**
 	 * 

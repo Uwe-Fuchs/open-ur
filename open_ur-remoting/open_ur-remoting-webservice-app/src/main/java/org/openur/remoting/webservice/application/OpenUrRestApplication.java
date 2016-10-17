@@ -69,8 +69,9 @@ public class OpenUrRestApplication
 	}
 	
 	/**
-	 * try to obtain {@link Environment}-reference from application-context:
-	 * @return
+	 * try to obtain {@link Environment}-reference from application-context.
+	 * 
+	 * @return {@link Environment}
 	 */
 	private Environment getEnvironmentFromApplicationContext()
 	{
@@ -98,16 +99,27 @@ public class OpenUrRestApplication
 	}
 
 	@Override
-	public void buildFilterChainPreAuthPermCheck(ResourceConfig configurable)
+	public void buildFilterChainPreAuth(ResourceConfig configurable)
 	{
 		register(AuthenticationFilter_J2eePreAuth.class);	
-		register(AuthorizationFilter.class);		
 	}
 
 	@Override
 	public void buildFilterChainBasicAuth(ResourceConfig configurable)
 	{
 		register(AuthenticationFilter_BasicAuth.class);		
+	}
+
+	@Override
+	public void buildFilterChainDigestAuth(ResourceConfig configurable)
+	{
+		// TODO Auto-generated method stub		
+	}
+
+	@Override
+	public void buildFilterChainPermCheck(ResourceConfig configurable)
+	{
+		register(AuthorizationFilter.class);		
 	}
 
 	@Override
@@ -118,10 +130,29 @@ public class OpenUrRestApplication
 	}
 
 	@Override
+	public void buildFilterChainPreDigestAuth(ResourceConfig configurable)
+	{
+		// TODO Auto-generated method stub		
+	}
+
+	@Override
+	public void buildFilterChainPreAuthPermCheck(ResourceConfig configurable)
+	{
+		register(AuthenticationFilter_J2eePreAuth.class);	
+		register(AuthorizationFilter.class);		
+	}
+
+	@Override
 	public void buildFilterChainBasicAuthPermCheck(ResourceConfig configurable)
 	{
 		register(AuthenticationFilter_BasicAuth.class);	
 		register(AuthorizationFilter.class);
+	}
+
+	@Override
+	public void buildFilterChainDigestAuthPermCheck(ResourceConfig configurable)
+	{
+		// TODO Auto-generated method stub		
 	}
 
 	@Override
@@ -130,24 +161,6 @@ public class OpenUrRestApplication
 		register(AuthenticationFilter_J2eePreAuth.class);	
 		register(AuthenticationFilter_BasicAuth.class);	
 		register(AuthorizationFilter.class);
-	}
-
-	@Override
-	public void buildFilterChainDigestAuth(ResourceConfig configurable)
-	{
-		// TODO Auto-generated method stub		
-	}
-
-	@Override
-	public void buildFilterChainPreDigestAuth(ResourceConfig configurable)
-	{
-		// TODO Auto-generated method stub		
-	}
-
-	@Override
-	public void buildFilterChainDigestAuthPermCheck(ResourceConfig configurable)
-	{
-		// TODO Auto-generated method stub		
 	}
 
 	@Override
