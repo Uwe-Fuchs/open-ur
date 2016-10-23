@@ -9,12 +9,12 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractSecurityFilterBase
 {
 	protected static final Logger LOG = LoggerFactory.getLogger(AbstractSecurityFilterBase.class);
-	protected static final String USER_ID_PROPERTY = "userId";
 	protected static final String NO_CREDENTIALS_FOUND_MSG = "No credentials found!";
 	protected static final String NO_VALID_CREDENTIALS_FOUND_MSG = "No valid credentials found!";
 	public static final String APPLICATION_NAME_PROPERTY = "application-name";
 	public static final String AUTHENTICATION_PROPERTY = "Authorization";
 	public static final String SECURE_API_SETTINGS = "secureApiSettings";
+	public static final String USER_ID_PROPERTY = "userId";
 
 	protected void abortWithBadRequest(ContainerRequestContext requestContext, String msg)
 	{

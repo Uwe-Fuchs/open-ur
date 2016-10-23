@@ -65,15 +65,15 @@ public abstract class AbstractResourceClient
 	}
 
 	@Override
-	public void buildFilterChainPreAuth(ClientBuilder configurable)
+	public void buildFilterChainPreAuth(ClientBuilder builder)
 	{
-		// TODO Auto-generated method stub		
+		// do nothing in REST-Client
 	}
 
 	@Override
 	public void buildFilterChainBasicAuth(ClientBuilder builder)
 	{
-		builder.register(new SecurityClientFilter_BasicAuth(userName, passWord));		
+		builder.register(new AuthenticationClientFilter_BasicAuth(userName, passWord));		
 	}
 
 	@Override
@@ -83,9 +83,9 @@ public abstract class AbstractResourceClient
 	}
 
 	@Override
-	public void buildFilterChainPermCheck(ClientBuilder configurable)
+	public void buildFilterChainPermCheck(ClientBuilder builder)
 	{
-		// TODO Auto-generated method stub		
+		builder.register(new AuthorizationClientFilter(applicationName));
 	}
 
 	@Override
@@ -103,13 +103,14 @@ public abstract class AbstractResourceClient
 	@Override
 	public void buildFilterChainPreAuthPermCheck(ClientBuilder builder)
 	{
-		// do nothing in REST-Client
+		buildFilterChainPermCheck(builder);
 	}
 
 	@Override
 	public void buildFilterChainBasicAuthPermCheck(ClientBuilder builder)
 	{
-		builder.register(new SecurityClientFilter_BasicAuth(userName, passWord, applicationName));	
+		builder.register(new AuthenticationClientFilter_BasicAuth(userName, passWord));
+		builder.register(new AuthorizationClientFilter(applicationName));	
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package org.openur.remoting.resource.secure_api;
+package org.openur.remoting.resource.secure_api.testing;
 
 import java.io.IOException;
 
@@ -9,6 +9,7 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.ext.Provider;
 
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealmMock;
+import org.openur.remoting.resource.secure_api.AbstractSecurityFilterBase;
 
 @Provider
 @Priority(value = Priorities.AUTHENTICATION)
