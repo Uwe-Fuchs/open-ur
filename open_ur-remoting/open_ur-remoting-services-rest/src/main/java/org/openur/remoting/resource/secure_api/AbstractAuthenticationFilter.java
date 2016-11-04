@@ -54,7 +54,7 @@ public abstract class AbstractAuthenticationFilter<A extends OpenURAuthenticatio
 			authenticationInfo = checkAuthentication(headers);
 		} catch (AuthenticationException e)
 		{
-			LOG.info("Basic authentication failed with message: [{}]", e.getMessage());
+			LOG.info("Authentication failed with message: [{}]!", e.getMessage());
 
 			return;
 		}

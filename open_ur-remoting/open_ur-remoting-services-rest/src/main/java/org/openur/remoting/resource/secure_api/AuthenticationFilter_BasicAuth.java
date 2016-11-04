@@ -15,11 +15,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.openur.module.integration.security.shiro.UsernamePwAuthenticationInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Priority(value = Priorities.AUTHENTICATION)
 public class AuthenticationFilter_BasicAuth
 	extends AbstractAuthenticationFilter<UsernamePwAuthenticationInfo>
 {
+	private static final Logger LOG = LoggerFactory.getLogger(AuthenticationFilter_BasicAuth.class);
 	public static final String AUTHENTICATION_SCHEME = "Basic";
 	
 	@Inject
@@ -80,8 +83,18 @@ public class AuthenticationFilter_BasicAuth
 		}
 
 		// Verify user access:
-		UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-
-		return (UsernamePwAuthenticationInfo) getRealm().getAuthenticationInfo(token);
+		try
+		{
+			UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+			UsernamePwAuthenticationInfo info =  (UsernamePwAuthenticationInfo) getRealm().getAuthenticationInfo(token);
+			LOG.debug("Basic authentication successful for user [{}].", info.getUserName());
+			
+			return info;
+		} catch (AuthenticationException e)
+		{
+			LOG.info("Basic authentication failed with message: [{}]!", e.getMessage());
+			
+			throw e;
+		}
 	}
 }

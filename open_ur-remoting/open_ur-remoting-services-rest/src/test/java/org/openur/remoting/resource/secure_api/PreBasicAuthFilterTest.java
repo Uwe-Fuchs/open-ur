@@ -1,6 +1,8 @@
 package org.openur.remoting.resource.secure_api;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -14,6 +16,9 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
+import org.openur.module.domain.userstructure.person.IPerson;
+import org.openur.module.domain.userstructure.person.Person;
+import org.openur.module.domain.utils.compare.PersonComparer;
 
 public class PreBasicAuthFilterTest
 	extends AbstractSecurityFilterTest
@@ -43,14 +48,18 @@ public class PreBasicAuthFilterTest
 		System.out.println(response.getStatus());
 		verify(userServicesMock, times(1)).findTechnicalUserById(TestObjectContainer.TECH_USER_UUID_2);
 		assertEquals(0, realmMock.getAuthCounter());
-		verify(userServicesMock, times(1)).findPersonById(TestObjectContainer.PERSON_UUID_1);
+
+		IPerson p = response.readEntity(Person.class);
+		assertNotNull(p);
+		System.out.println("Result: " + p);		
+		assertTrue(new PersonComparer().objectsAreEqual(TestObjectContainer.PERSON_1, (Person) p));
 	}
 
 	@Test
-	public void testNotPreAuthenticated()
+	public void testNotPreButBasicAuthenticated()
 		throws UnsupportedEncodingException
 	{
-		Mockito.when(userServicesMock.findTechnicalUserById(TestObjectContainer.TECH_USER_UUID_2)).thenReturn(null);
+		dummyPreparePreAuthFilter.setSecurityContextInRequestContext(false);
 		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
 
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
@@ -62,16 +71,19 @@ public class PreBasicAuthFilterTest
 		
 		assertEquals(200, response.getStatus());
 		System.out.println(response.getStatus());
-		verify(userServicesMock, times(1)).findTechnicalUserById(TestObjectContainer.TECH_USER_UUID_2);
 		assertEquals(1, realmMock.getAuthCounter());
-		verify(userServicesMock, times(1)).findPersonById(TestObjectContainer.PERSON_UUID_1);		
+
+		IPerson p = response.readEntity(Person.class);
+		assertNotNull(p);
+		System.out.println("Result: " + p);		
+		assertTrue(new PersonComparer().objectsAreEqual(TestObjectContainer.PERSON_1, (Person) p));	
 	}
 
 	@Test
-	public void testNotPreAuthenticatedInvalidCredentials()
+	public void testNotPreAuthenticatedInvalidBasicCredentials()
 		throws UnsupportedEncodingException
 	{
-		Mockito.when(userServicesMock.findTechnicalUserById(TestObjectContainer.TECH_USER_UUID_2)).thenReturn(null);
+		dummyPreparePreAuthFilter.setSecurityContextInRequestContext(false);
 		
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
 		
@@ -82,7 +94,6 @@ public class PreBasicAuthFilterTest
 		
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
-		verify(userServicesMock, times(1)).findTechnicalUserById(TestObjectContainer.TECH_USER_UUID_2);
 		assertEquals(1, realmMock.getAuthCounter());
 		verify(userServicesMock, times(0)).findPersonById(TestObjectContainer.PERSON_UUID_1);		
 	}
