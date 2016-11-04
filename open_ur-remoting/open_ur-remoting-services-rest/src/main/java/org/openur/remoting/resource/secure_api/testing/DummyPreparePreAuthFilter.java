@@ -16,6 +16,7 @@ public class DummyPreparePreAuthFilter
 	implements ContainerRequestFilter
 {
 	private final String userId;	
+	private boolean securityContextInRequestContext = true;
 	
 	public DummyPreparePreAuthFilter(String userId)
 	{
@@ -24,10 +25,20 @@ public class DummyPreparePreAuthFilter
 		this.userId = userId;
 	}
 
+	public void setSecurityContextInRequestContext(boolean securityContextInRequestContext)
+	{
+		this.securityContextInRequestContext = securityContextInRequestContext;
+	}
+
 	@Override
 	public void filter(ContainerRequestContext requestContext)
 		throws IOException
 	{
+		if (!securityContextInRequestContext)
+		{
+			return;
+		}
+		
 		Principal principal = new GrizzlyPrincipal(this.userId);
 		SecurityContext securityContext = new MySecurityContext(principal);
 		requestContext.setSecurityContext(securityContext);

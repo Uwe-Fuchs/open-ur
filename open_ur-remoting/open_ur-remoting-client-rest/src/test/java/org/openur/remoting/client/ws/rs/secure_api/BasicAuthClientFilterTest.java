@@ -29,6 +29,7 @@ import org.openur.module.service.userstructure.IUserServices;
 import org.openur.module.util.exception.EntityNotFoundException;
 import org.openur.remoting.resource.errorhandling.EntityNotFoundExceptionMapper;
 import org.openur.remoting.resource.secure_api.AuthenticationFilter_BasicAuth;
+import org.openur.remoting.resource.secure_api.AuthenticationResultCheckFilter;
 import org.openur.remoting.resource.userstructure.UserResource;
 import org.openur.remoting.xchange.rest.providers.json.PersonProvider;
 
@@ -59,6 +60,7 @@ public class BasicAuthClientFilterTest
 		ResourceConfig config = new ResourceConfig(UserResource.class)
 				.register(PersonProvider.class)
 				.register(AuthenticationFilter_BasicAuth.class)
+				.register(AuthenticationResultCheckFilter.class)
 				.register(EntityNotFoundExceptionMapper.class)
 				.register(binder);
 

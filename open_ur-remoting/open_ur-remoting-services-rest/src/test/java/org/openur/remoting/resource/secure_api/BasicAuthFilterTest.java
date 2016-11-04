@@ -25,6 +25,7 @@ public class BasicAuthFilterTest
 	{
 		ResourceConfig config = (ResourceConfig) super.configure();
 		config.register(AuthenticationFilter_BasicAuth.class);
+		config.register(AuthenticationResultCheckFilter.class);
 		
 		return config;
 	}
@@ -71,14 +72,14 @@ public class BasicAuthFilterTest
 	{
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
 		
-		// add e.g. UNHASHED credentials to request-headers:
-		invocationBuilder.header(AbstractSecurityFilterBase.AUTHENTICATION_PROPERTY, buildAuthString());
+		// add WRONG (e.g. UNHASHED) credentials to request-headers:
+		invocationBuilder.header(AbstractSecurityFilterBase.AUTHENTICATION_PROPERTY, buildUnhashedAuthString());
 		
 		Response response = invocationBuilder.get();
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
 		String msg = response.readEntity(String.class);
-		assertTrue(msg.contains(AbstractSecurityFilterBase.NO_VALID_CREDENTIALS_FOUND_MSG));
+		assertTrue(msg.contains(AbstractSecurityFilterBase.NOT_AUTHENTICATED_MSG));
 	}
 
 	@Test
@@ -86,13 +87,13 @@ public class BasicAuthFilterTest
 	{
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
 		// set empty credentials:
-		invocationBuilder.header(AbstractSecurityFilterBase.AUTHENTICATION_PROPERTY, " ");
+		invocationBuilder.header(AbstractSecurityFilterBase.AUTHENTICATION_PROPERTY, "");
 		
 		Response response = invocationBuilder.get();
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
 		String msg = response.readEntity(String.class);
-		assertTrue(msg.contains(AbstractSecurityFilterBase.NO_CREDENTIALS_FOUND_MSG));
+		assertTrue(msg.contains(AbstractSecurityFilterBase.NOT_AUTHENTICATED_MSG));
 	}
 
 	@Test
@@ -104,6 +105,6 @@ public class BasicAuthFilterTest
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
 		String msg = response.readEntity(String.class);
-		assertTrue(msg.contains(AbstractSecurityFilterBase.NO_CREDENTIALS_FOUND_MSG));
+		assertTrue(msg.contains(AbstractSecurityFilterBase.NOT_AUTHENTICATED_MSG));
 	}
 }

@@ -11,6 +11,7 @@ import org.openur.remoting.resource.errorhandling.GenericExceptionMapper;
 import org.openur.remoting.resource.secure_api.AbstractSecurityFilterBase;
 import org.openur.remoting.resource.secure_api.AuthenticationFilter_BasicAuth;
 import org.openur.remoting.resource.secure_api.AuthenticationFilter_J2eePreAuth;
+import org.openur.remoting.resource.secure_api.AuthenticationResultCheckFilter;
 import org.openur.remoting.resource.secure_api.AuthorizationFilter;
 import org.openur.remoting.resource.secure_api.ISecurityFilterChainBuilder;
 import org.openur.remoting.resource.secure_api.SecureApiSettings;
@@ -102,6 +103,7 @@ public class OpenUrRestApplication
 	public void buildFilterChainPreAuth(ResourceConfig configurable)
 	{
 		register(AuthenticationFilter_J2eePreAuth.class);	
+		register(AuthenticationResultCheckFilter.class);	
 	}
 
 	@Override

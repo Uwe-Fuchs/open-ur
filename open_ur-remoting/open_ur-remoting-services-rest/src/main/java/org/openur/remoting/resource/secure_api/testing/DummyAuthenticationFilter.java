@@ -16,18 +16,18 @@ import org.openur.remoting.resource.secure_api.AbstractSecurityFilterBase;
 public class DummyAuthenticationFilter
 	implements ContainerRequestFilter
 {
-	private boolean addUserIdToContext = true;
+	private boolean userIdInContext = true;
 
-	public void setAddUserIdToContext(boolean addUserIdToContext)
+	public void setUserIdInContext(boolean userIdInContext)
 	{
-		this.addUserIdToContext = addUserIdToContext;
+		this.userIdInContext = userIdInContext;
 	}
 
 	@Override
 	public void filter(ContainerRequestContext requestContext)
 		throws IOException
 	{
-		if (!addUserIdToContext)
+		if (!userIdInContext)
 		{
 			return;
 		}

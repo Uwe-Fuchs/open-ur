@@ -13,11 +13,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.realm.Realm;
 import org.openur.module.integration.security.shiro.OpenURAuthenticationInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class AbstractAuthenticationFilter<A extends OpenURAuthenticationInfo>
 	extends AbstractSecurityFilterBase
 	implements ContainerRequestFilter
 {
+	private static final Logger LOG = LoggerFactory.getLogger(AbstractAuthenticationFilter.class);
+	
 	@Context
 	private ResourceInfo resourceInfo;
 
@@ -34,7 +38,7 @@ public abstract class AbstractAuthenticationFilter<A extends OpenURAuthenticatio
 		// if user-id already in context => authentication already performed, leave:
 		if (StringUtils.isNotEmpty(userId))
 		{
-			LOG.debug("User with ID [%s] already authenticated!");
+			LOG.debug("User with ID [{}] already authenticated!", userId);
 			
 			return;
 		}
@@ -50,9 +54,7 @@ public abstract class AbstractAuthenticationFilter<A extends OpenURAuthenticatio
 			authenticationInfo = checkAuthentication(headers);
 		} catch (AuthenticationException e)
 		{
-			String msg = String.format("Access denied for resource-method: [%s], Authentication failed with message: [%s]", 
-					resourceInfo.getResourceMethod(), e.getMessage());
-			abortWithUnauthorized(requestContext, msg);
+			LOG.info("Basic authentication failed with message: [{}]", e.getMessage());
 
 			return;
 		}
@@ -61,7 +63,7 @@ public abstract class AbstractAuthenticationFilter<A extends OpenURAuthenticatio
 		
 		if (authenticationInfo == null || (userId = authenticationInfo.getIdentifier()) == null)
 		{
-			abortWithUnauthorized(requestContext, "authenticationInfo-object must not be null!");
+			abortWithBadRequest(requestContext, "Authentication Service returned empty or invalid authetication-object!");
 		}
 		
 		requestContext.setProperty(USER_ID_PROPERTY, userId);

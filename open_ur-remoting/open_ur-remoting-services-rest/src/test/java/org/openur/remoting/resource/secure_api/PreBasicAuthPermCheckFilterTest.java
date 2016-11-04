@@ -14,15 +14,16 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
+import org.openur.remoting.resource.secure_api.testing.DummyPreparePreAuthFilter;
 
-public class PreBasicAuthFilterTest
+public class PreBasicAuthPermCheckFilterTest
 	extends AbstractSecurityFilterTest
 {
 	@Override
 	protected Application configure()
 	{
 		ResourceConfig config = (ResourceConfig) super.configure();
-		config.register(dummyPreparePreAuthFilter);
+		config.register(new DummyPreparePreAuthFilter(TestObjectContainer.TECH_USER_UUID_2));
 		config.register(AuthenticationFilter_J2eePreAuth.class);
 		config.register(AuthenticationFilter_BasicAuth.class);
 		config.register(AuthenticationResultCheckFilter.class);
@@ -33,7 +34,6 @@ public class PreBasicAuthFilterTest
 	@Test
 	public void testPreAuthenticated()
 	{
-		dummyPreparePreAuthFilter.setSecurityContextInRequestContext(true);
 		Mockito.when(userServicesMock.findTechnicalUserById(TestObjectContainer.TECH_USER_UUID_2)).thenReturn(TestObjectContainer.TECH_USER_2);
 		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
 		

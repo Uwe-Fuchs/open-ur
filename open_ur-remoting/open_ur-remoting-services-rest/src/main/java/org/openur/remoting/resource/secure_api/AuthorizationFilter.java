@@ -40,13 +40,10 @@ public class AuthorizationFilter
 		throws IOException
 	{
 		String userId = (String) requestContext.getProperty(USER_ID_PROPERTY);
-		
-		// remove user-id from request-context:
-		requestContext.removeProperty(USER_ID_PROPERTY);
 
 		if (StringUtils.isBlank(userId))
 		{
-			abortWithUnauthorized(requestContext, "Not authenticated!");
+			abortWithUnauthorized(requestContext, NOT_AUTHENTICATED_MSG);
 
 			return;
 		}

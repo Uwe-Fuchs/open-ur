@@ -15,24 +15,34 @@ import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
+import org.junit.BeforeClass;
 import org.mockito.Mockito;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealmMock;
 import org.openur.module.service.security.IAuthorizationServices;
 import org.openur.module.service.userstructure.IUserServices;
 import org.openur.remoting.resource.errorhandling.EntityNotFoundExceptionMapper;
+import org.openur.remoting.resource.secure_api.testing.DummyPreparePreAuthFilter;
 import org.openur.remoting.resource.userstructure.UserResource;
 import org.openur.remoting.xchange.rest.providers.json.PersonProvider;
 
 public class AbstractSecurityFilterTest
 	extends JerseyTest
 {
+	protected static DummyPreparePreAuthFilter dummyPreparePreAuthFilter;
+	
 	protected String applicationName = "Demo-Application";
 	protected Boolean hashCredentials;
 	
 	protected OpenUrRdbmsRealmMock realmMock;
 	protected IAuthorizationServices authorizationServicesMock;
 	protected IUserServices userServicesMock;
+	
+	@BeforeClass
+	public static void init()
+	{
+		dummyPreparePreAuthFilter = new DummyPreparePreAuthFilter(TestObjectContainer.TECH_USER_UUID_2);
+	}
 	
 	@Override
 	protected Application configure()
@@ -79,7 +89,7 @@ public class AbstractSecurityFilterTest
 		return invocationBuilder;
 	}
 	
-	protected String buildAuthString()
+	protected String buildUnhashedAuthString()
 	{
 		return AuthenticationFilter_BasicAuth.AUTHENTICATION_SCHEME + " " + OpenUrRdbmsRealmMock.USER_NAME_2 + ":" + OpenUrRdbmsRealmMock.PASSWORD_2;
 	}

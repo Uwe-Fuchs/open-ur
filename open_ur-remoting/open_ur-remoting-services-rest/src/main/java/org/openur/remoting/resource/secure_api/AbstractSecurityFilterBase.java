@@ -8,9 +8,12 @@ import org.slf4j.LoggerFactory;
 
 public abstract class AbstractSecurityFilterBase
 {
-	protected static final Logger LOG = LoggerFactory.getLogger(AbstractSecurityFilterBase.class);
+	private static final Logger LOG = LoggerFactory.getLogger(AbstractSecurityFilterBase.class);
+	
 	protected static final String NO_CREDENTIALS_FOUND_MSG = "No credentials found!";
 	protected static final String NO_VALID_CREDENTIALS_FOUND_MSG = "No valid credentials found!";
+	protected static final String NOT_AUTHENTICATED_MSG = "Not authenticated!";
+	
 	public static final String APPLICATION_NAME_PROPERTY = "application-name";
 	public static final String AUTHENTICATION_PROPERTY = "Authorization";
 	public static final String SECURE_API_SETTINGS = "secureApiSettings";

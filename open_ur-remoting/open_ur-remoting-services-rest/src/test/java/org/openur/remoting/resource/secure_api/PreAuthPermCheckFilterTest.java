@@ -16,32 +16,31 @@ import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.utils.compare.PersonComparer;
+import org.openur.remoting.resource.secure_api.testing.DummyPreparePreAuthFilter;
 
-public class PreAuthFilterTest
+public class PreAuthPermCheckFilterTest
 	extends AbstractSecurityFilterTest
 {
 	@Override
 	protected Application configure()
 	{
 		ResourceConfig config = (ResourceConfig) super.configure();
-		config.register(dummyPreparePreAuthFilter);
+		config.register(new DummyPreparePreAuthFilter(TestObjectContainer.TECH_USER_UUID_2));
 		config.register(AuthenticationFilter_J2eePreAuth.class);
-		config.register(AuthenticationResultCheckFilter.class);
 		
 		return config;
 	}
 
 	@Test
-	public void testFilterPreAuthenticated()
+	public void testFilter()
 	{
-		dummyPreparePreAuthFilter.setSecurityContextInRequestContext(true);
 		Mockito.when(userServicesMock.findTechnicalUserById(TestObjectContainer.TECH_USER_UUID_2)).thenReturn(TestObjectContainer.TECH_USER_2);
 		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
 		
 		Response response = buildInvocationTargetBuilder().get();
-		System.out.println(response.getStatus());
 		
 		assertEquals(200, response.getStatus());
+		System.out.println(response.getStatus());
 		verify(userServicesMock, times(1)).findTechnicalUserById(TestObjectContainer.TECH_USER_UUID_2);
 		verify(userServicesMock, times(1)).findPersonById(TestObjectContainer.PERSON_UUID_1);
 
@@ -49,19 +48,5 @@ public class PreAuthFilterTest
 		assertNotNull(p);
 		System.out.println("Result: " + p);		
 		assertTrue(new PersonComparer().objectsAreEqual(TestObjectContainer.PERSON_1, (Person) p));
-	}
-
-	@Test
-	public void testFilterNotPreAuthenticated()
-	{
-		dummyPreparePreAuthFilter.setSecurityContextInRequestContext(false);
-		
-		Response response = buildInvocationTargetBuilder().get();
-		System.out.println(response.getStatus());
-		
-		assertEquals(401, response.getStatus());
-		verify(userServicesMock, times(0)).findTechnicalUserById(Mockito.anyString());
-		verify(userServicesMock, times(0)).findPersonById(Mockito.anyString());
-		
 	}
 }

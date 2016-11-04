@@ -41,6 +41,9 @@ public class AuthorizationFilterTest
 	public void testFilter()
 		throws EntityNotFoundException
 	{
+		// set user-id in context, i.e. user is authenticated:
+		dummyAuthenticationFilter.setUserIdInContext(true);
+		
 		Mockito.when(authorizationServicesMock.hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName))
 				.thenReturn(Boolean.TRUE);
 		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
@@ -61,6 +64,10 @@ public class AuthorizationFilterTest
 	public void testFilterNotAuthorized()
 		throws EntityNotFoundException
 	{
+		// set user-id in context, i.e. user is authenticated:
+		dummyAuthenticationFilter.setUserIdInContext(true);
+		
+		// test-user hasn't got the (global) permission for reading users:
 		Mockito.when(authorizationServicesMock.hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName))
 				.thenReturn(Boolean.FALSE);
 		
@@ -76,6 +83,9 @@ public class AuthorizationFilterTest
 	public void testFilterNoApplicationName()
 		throws EntityNotFoundException
 	{
+		// set user-id in context, i.e. user is authenticated:
+		dummyAuthenticationFilter.setUserIdInContext(true);
+		
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();	
 		// set new, empty headers, i.e. no application-name given:
 		invocationBuilder.headers(new MultivaluedHashMap<String, Object>());
@@ -85,8 +95,8 @@ public class AuthorizationFilterTest
 		String msg = response.readEntity(String.class);
 		
 		assertEquals(400, response.getStatus());
-		assertTrue(msg.contains("No application-name given!"));
-		verify(authorizationServicesMock, times(0)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName);	
+		assertTrue(msg.contains("No application-name given!"));		
+		verify(authorizationServicesMock, times(0)).hasPermissionTechUser(Mockito.anyString(), Mockito.any(), Mockito.anyString());	
 	}
 
 
@@ -95,14 +105,12 @@ public class AuthorizationFilterTest
 		throws EntityNotFoundException
 	{
 		// prevent dummyFilter from setting user-id in context, i.e. no user-authentication is registrated:
-		dummyAuthenticationFilter.setAddUserIdToContext(false);
-		
-		Mockito.when(authorizationServicesMock.hasPermissionTechUser(null, REMOTE_READ, applicationName))
-				.thenReturn(Boolean.FALSE);
+		dummyAuthenticationFilter.setUserIdInContext(false);
 		
 		Response response = buildInvocationTargetBuilder().get();
-		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
-		verify(authorizationServicesMock, times(0)).hasPermissionTechUser(null, REMOTE_READ, applicationName);	
+		
+		assertEquals(401, response.getStatus());		
+		verify(authorizationServicesMock, times(0)).hasPermissionTechUser(Mockito.anyString(), Mockito.any(), Mockito.anyString());	
 	}
 }

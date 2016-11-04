@@ -30,12 +30,12 @@ public class AuthenticationFilter_BasicAuth
 		throws AuthenticationException
 	{
 		// Fetch authentication header
-		List<String> authentication = headers.get(AbstractSecurityFilterBase.AUTHENTICATION_PROPERTY);
+		List<String> authentication = headers.get(AUTHENTICATION_PROPERTY);
 
 		// If no credentials present -> block access
 		if (CollectionUtils.isEmpty(authentication))
 		{
-			throw new AuthenticationException(AbstractSecurityFilterBase.NO_CREDENTIALS_FOUND_MSG);
+			throw new AuthenticationException(NO_CREDENTIALS_FOUND_MSG);
 		}
 
 		// Get username and password
@@ -43,7 +43,7 @@ public class AuthenticationFilter_BasicAuth
 
 		if (StringUtils.isBlank(usernameAndPassword))
 		{
-			throw new AuthenticationException(AbstractSecurityFilterBase.NO_CREDENTIALS_FOUND_MSG);
+			throw new AuthenticationException(NO_VALID_CREDENTIALS_FOUND_MSG);
 		}
 		
 		usernameAndPassword = usernameAndPassword.replaceFirst(AUTHENTICATION_SCHEME + " ", "");
@@ -71,12 +71,12 @@ public class AuthenticationFilter_BasicAuth
 			password = tokenizer.nextToken();
 		} catch (NoSuchElementException e)
 		{
-			throw new AuthenticationException(AbstractSecurityFilterBase.NO_VALID_CREDENTIALS_FOUND_MSG);
+			throw new AuthenticationException(NO_VALID_CREDENTIALS_FOUND_MSG);
 		}
 
 		if (StringUtils.isBlank(username) || StringUtils.isBlank(password))
 		{
-			throw new AuthenticationException(AbstractSecurityFilterBase.NO_VALID_CREDENTIALS_FOUND_MSG);
+			throw new AuthenticationException(NO_VALID_CREDENTIALS_FOUND_MSG);
 		}
 
 		// Verify user access:

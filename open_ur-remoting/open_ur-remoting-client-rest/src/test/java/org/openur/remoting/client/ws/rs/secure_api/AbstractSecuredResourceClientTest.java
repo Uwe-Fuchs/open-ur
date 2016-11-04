@@ -15,6 +15,7 @@ import org.openur.module.service.security.IAuthorizationServices;
 import org.openur.module.service.userstructure.IUserServices;
 import org.openur.remoting.client.ws.rs.userstructure.UserResourceClient;
 import org.openur.remoting.resource.errorhandling.EntityNotFoundExceptionMapper;
+import org.openur.remoting.resource.secure_api.AuthenticationResultCheckFilter;
 import org.openur.remoting.resource.userstructure.UserResource;
 import org.openur.remoting.xchange.rest.providers.json.PersonProvider;
 
@@ -51,6 +52,7 @@ public abstract class AbstractSecuredResourceClientTest
 
 		ResourceConfig config = new ResourceConfig(UserResource.class)
 				.register(PersonProvider.class)
+				.register(AuthenticationResultCheckFilter.class)
 				.register(EntityNotFoundExceptionMapper.class)
 				.register(binder);
 

@@ -88,7 +88,7 @@ public class BasicAuthPermCheckFilterTest
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
 		String msg = response.readEntity(String.class);
-		assertTrue(msg.contains(AbstractSecurityFilterBase.NO_CREDENTIALS_FOUND_MSG));
+		assertTrue(msg.contains(AbstractSecurityFilterBase.NOT_AUTHENTICATED_MSG));
 
 		// neither authentication nor authorization is called:
 		assertEquals(0, realmMock.getAuthCounter());
