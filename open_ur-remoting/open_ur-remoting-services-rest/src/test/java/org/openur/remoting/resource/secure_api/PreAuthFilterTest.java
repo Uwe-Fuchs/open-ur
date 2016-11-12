@@ -34,16 +34,18 @@ public class PreAuthFilterTest
 	@Test
 	public void testFilterPreAuthenticated()
 	{
+		// add security-context to request containing UserPrinicipal-Object:
 		dummyPreparePreAuthFilter.setSecurityContextInRequestContext(true);
+		
 		Mockito.when(userServicesMock.findTechnicalUserById(TestObjectContainer.TECH_USER_UUID_2)).thenReturn(TestObjectContainer.TECH_USER_2);
 		Mockito.when(userServicesMock.findPersonById(TestObjectContainer.PERSON_UUID_1)).thenReturn(TestObjectContainer.PERSON_1);
 		
 		Response response = buildInvocationTargetBuilder().get();
-		System.out.println(response.getStatus());
-		
+		System.out.println(response.getStatus());		
 		assertEquals(200, response.getStatus());
+		
+		// userServices.findTechnicalUserById() is called to verify found pre-authentication:
 		verify(userServicesMock, times(1)).findTechnicalUserById(TestObjectContainer.TECH_USER_UUID_2);
-		verify(userServicesMock, times(1)).findPersonById(TestObjectContainer.PERSON_UUID_1);
 
 		IPerson p = response.readEntity(Person.class);
 		assertNotNull(p);
@@ -54,14 +56,17 @@ public class PreAuthFilterTest
 	@Test
 	public void testFilterNotPreAuthenticated()
 	{
+		// DO NOT ADD security-context containing UserPrinicipal-Object, hence no pre-authenticated user is found in request:
 		dummyPreparePreAuthFilter.setSecurityContextInRequestContext(false);
 		
 		Response response = buildInvocationTargetBuilder().get();
-		System.out.println(response.getStatus());
-		
-		assertEquals(401, response.getStatus());
+		System.out.println(response.getStatus());		
+		assertEquals(401, response.getStatus());		
+
+		// userServices.findTechnicalUserById() is NOT called because no pre-authentication was found:
 		verify(userServicesMock, times(0)).findTechnicalUserById(Mockito.anyString());
-		verify(userServicesMock, times(0)).findPersonById(Mockito.anyString());
 		
+		// userServices.findPersonById is NOT called because user is not authenticated:
+		verify(userServicesMock, times(0)).findPersonById(Mockito.anyString());		
 	}
 }

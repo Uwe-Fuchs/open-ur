@@ -29,13 +29,14 @@ public class BasicAuthPermCheckFilterTest
 	{
 		ResourceConfig config = (ResourceConfig) super.configure();
 		config.register(AuthenticationFilter_BasicAuth.class);
+		config.register(AuthenticationResultCheckFilter.class);
 		config.register(AuthorizationFilter.class);
 		
 		return config;
 	}
 	
 	@Test
-	public void testFilter()
+	public void testFilterAuthenticatedAndAuthorized()
 		throws UnsupportedEncodingException, EntityNotFoundException
 	{
 		Mockito.when(authorizationServicesMock.hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName))
@@ -51,13 +52,14 @@ public class BasicAuthPermCheckFilterTest
 		assertEquals(200, response.getStatus());
 		System.out.println(response.getStatus());
 
+		// basic authentication and authorization are called:
+		assertEquals(1, realmMock.getAuthCounter());
+		verify(authorizationServicesMock, times(1)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName);
+
 		Person p = response.readEntity(Person.class);
 		assertNotNull(p);
 		System.out.println(p);		
 		assertTrue(new PersonComparer().objectsAreEqual(TestObjectContainer.PERSON_1, p));
-
-		assertEquals(1, realmMock.getAuthCounter());
-		verify(authorizationServicesMock, times(1)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName);
 	}
 
 	@Test
@@ -65,33 +67,44 @@ public class BasicAuthPermCheckFilterTest
 		throws UnsupportedEncodingException, EntityNotFoundException
 	{
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
-		// set invalid credentials:
+		
+		// set INVALID credentials:
 		invocationBuilder.header(AbstractSecurityFilterBase.AUTHENTICATION_PROPERTY, buildHashedAuthString() + "appendSomeWrongPassword");
-		Response response = invocationBuilder.get();
-		assertEquals(401, response.getStatus());
-		System.out.println(response.getStatus());
-
-		// authentication is called, but authorization isn't (because of authentication-failure):
-		assertEquals(1, realmMock.getAuthCounter());
-		verify(authorizationServicesMock, times(0)).hasPermissionTechUser(anyString(), anyString(), anyString());
-	}
-
-	@Test
-	public void testFilterEmptyCredentials()
-		throws EntityNotFoundException
-	{
-		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
-		// set empty credentials:
-		invocationBuilder.header(AbstractSecurityFilterBase.AUTHENTICATION_PROPERTY, " ");
 		
 		Response response = invocationBuilder.get();
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
-		String msg = response.readEntity(String.class);
-		assertTrue(msg.contains(AbstractSecurityFilterBase.NOT_AUTHENTICATED_MSG));
 
-		// neither authentication nor authorization is called:
-		assertEquals(0, realmMock.getAuthCounter());
+		// basic authentication is called, but authorization isn't (because of authentication-failure):
+		assertEquals(1, realmMock.getAuthCounter());
 		verify(authorizationServicesMock, times(0)).hasPermissionTechUser(anyString(), anyString(), anyString());
+		
+		// userServices.findPersonById is NOT called because user is not authenticated:
+		verify(userServicesMock, times(0)).findPersonById(Mockito.anyString());	
+	}
+	
+	@Test
+	public void testFilterAuthenticatedButNotAuthorized()
+		throws UnsupportedEncodingException, EntityNotFoundException
+	{
+		// reject permission for authorization for this (technical) user:
+		Mockito.when(authorizationServicesMock.hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName))
+				.thenReturn(Boolean.FALSE);
+
+		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
+		
+		// add hashed credential to request-headers:
+		invocationBuilder.header(AbstractSecurityFilterBase.AUTHENTICATION_PROPERTY, buildHashedAuthString());
+		
+		Response response = invocationBuilder.get();
+		assertEquals(401, response.getStatus());
+		System.out.println(response.getStatus());
+
+		// authentication and authorization are called:
+		assertEquals(1, realmMock.getAuthCounter());
+		verify(authorizationServicesMock, times(1)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName);		
+		
+		// userServices.findPersonById is NOT called because user is not authorized:
+		verify(userServicesMock, times(0)).findPersonById(Mockito.anyString());	
 	}
 }

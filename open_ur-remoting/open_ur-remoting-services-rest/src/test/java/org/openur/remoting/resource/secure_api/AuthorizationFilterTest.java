@@ -53,11 +53,13 @@ public class AuthorizationFilterTest
 		assertEquals(200, response.getStatus());
 		System.out.println(response.getStatus());
 
+		// authorization is called:
+		verify(authorizationServicesMock, times(1)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName);
+
 		Person p = response.readEntity(Person.class);
 		assertNotNull(p);
 		System.out.println(p);		
 		assertTrue(new PersonComparer().objectsAreEqual(TestObjectContainer.PERSON_1, p));
-		verify(authorizationServicesMock, times(1)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName);
 	}
 
 	@Test
@@ -76,7 +78,11 @@ public class AuthorizationFilterTest
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
 
-		verify(authorizationServicesMock, times(1)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName);		
+		// authorization is called:
+		verify(authorizationServicesMock, times(1)).hasPermissionTechUser(OpenUrRdbmsRealmMock.TECH_USER_UUID_2, REMOTE_READ, applicationName);	
+		
+		// userServices.findPersonById is NOT called because user is not authorized:
+		verify(userServicesMock, times(0)).findPersonById(Mockito.anyString());	
 	}
 
 	@Test
@@ -96,6 +102,8 @@ public class AuthorizationFilterTest
 		
 		assertEquals(400, response.getStatus());
 		assertTrue(msg.contains("No application-name given!"));		
+
+		// authorization is NOT called:
 		verify(authorizationServicesMock, times(0)).hasPermissionTechUser(Mockito.anyString(), Mockito.any(), Mockito.anyString());	
 	}
 
@@ -108,9 +116,10 @@ public class AuthorizationFilterTest
 		dummyAuthenticationFilter.setUserIdInContext(false);
 		
 		Response response = buildInvocationTargetBuilder().get();
-		System.out.println(response.getStatus());
-		
+		System.out.println(response.getStatus());		
 		assertEquals(401, response.getStatus());		
+
+		// authorization is NOT called because user is not authenticated:
 		verify(authorizationServicesMock, times(0)).hasPermissionTechUser(Mockito.anyString(), Mockito.any(), Mockito.anyString());	
 	}
 }

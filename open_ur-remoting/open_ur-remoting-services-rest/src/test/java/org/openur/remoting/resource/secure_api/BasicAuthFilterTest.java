@@ -57,8 +57,10 @@ public class BasicAuthFilterTest
 		throws UnsupportedEncodingException
 	{
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
+		
 		// set invalid credentials:
 		invocationBuilder.header(AbstractSecurityFilterBase.AUTHENTICATION_PROPERTY, buildHashedAuthString() + "appendSomeWrongPassword");
+		
 		Response response = invocationBuilder.get();
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
@@ -80,12 +82,16 @@ public class BasicAuthFilterTest
 		System.out.println(response.getStatus());
 		String msg = response.readEntity(String.class);
 		assertTrue(msg.contains(AbstractSecurityFilterBase.NOT_AUTHENTICATED_MSG));
+
+		// authentication is NOT called (Filter has canceled request becaus of invalid credentials) :
+		assertEquals(0, realmMock.getAuthCounter());
 	}
 
 	@Test
 	public void testFilterEmptyCredentials()
 	{
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
+		
 		// set empty credentials:
 		invocationBuilder.header(AbstractSecurityFilterBase.AUTHENTICATION_PROPERTY, "");
 		
@@ -94,11 +100,15 @@ public class BasicAuthFilterTest
 		System.out.println(response.getStatus());
 		String msg = response.readEntity(String.class);
 		assertTrue(msg.contains(AbstractSecurityFilterBase.NOT_AUTHENTICATED_MSG));
+
+		// authentication is NOT called (Filter has canceled request becaus of invalid credentials) :
+		assertEquals(0, realmMock.getAuthCounter());
 	}
 
 	@Test
 	public void testFilterNoCredentials()
 	{
+		// do not add any header containing credentials to request:
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
 		
 		Response response = invocationBuilder.get();
@@ -106,5 +116,8 @@ public class BasicAuthFilterTest
 		System.out.println(response.getStatus());
 		String msg = response.readEntity(String.class);
 		assertTrue(msg.contains(AbstractSecurityFilterBase.NOT_AUTHENTICATED_MSG));
+
+		// authentication is NOT called (Filter has canceled request becaus of invalid credentials) :
+		assertEquals(0, realmMock.getAuthCounter());
 	}
 }

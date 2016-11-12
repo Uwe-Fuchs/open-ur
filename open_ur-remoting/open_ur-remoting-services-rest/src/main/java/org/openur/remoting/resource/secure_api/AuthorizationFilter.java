@@ -88,6 +88,8 @@ public class AuthorizationFilter
 
 			return;
 		}
+		
+		LOG.debug("Access granted for resource-method: [{}] for User #{}.", method, userId);
 	}
 
 	private boolean checkPermissions(Method method, String applicationName, String userId)

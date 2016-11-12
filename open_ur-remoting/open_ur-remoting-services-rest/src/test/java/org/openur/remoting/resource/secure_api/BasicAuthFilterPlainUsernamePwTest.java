@@ -56,8 +56,10 @@ public class BasicAuthFilterPlainUsernamePwTest
 		throws EntityNotFoundException
 	{
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
+		
 		// set invalid credentials:
 		invocationBuilder.header(AbstractSecurityFilterBase.AUTHENTICATION_PROPERTY, buildUnhashedAuthString() + "appendSomeWrongPassword");
+		
 		Response response = invocationBuilder.get();
 		assertEquals(401, response.getStatus());
 		System.out.println(response.getStatus());
@@ -70,6 +72,7 @@ public class BasicAuthFilterPlainUsernamePwTest
 	public void testFilterInvalidCredentials()
 	{
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder();
+		
 		// set invalid credentials:
 		invocationBuilder.header(AbstractSecurityFilterBase.AUTHENTICATION_PROPERTY, "+");
 		
