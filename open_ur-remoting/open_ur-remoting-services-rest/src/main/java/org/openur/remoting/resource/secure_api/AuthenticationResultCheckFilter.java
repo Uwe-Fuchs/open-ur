@@ -18,8 +18,9 @@ public class AuthenticationResultCheckFilter
 	public void filter(ContainerRequestContext requestContext)
 		throws IOException
 	{
-		String userId = (String) requestContext.getProperty(USER_ID_PROPERTY);
-
+		// try to get user-id from context:
+		String userId = getUserPrincipalFromSecurityContext(requestContext);
+		
 		if (StringUtils.isBlank(userId))
 		{
 			abortWithUnauthorized(requestContext, NOT_AUTHENTICATED_MSG);

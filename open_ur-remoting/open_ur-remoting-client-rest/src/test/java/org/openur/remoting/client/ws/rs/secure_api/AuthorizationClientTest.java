@@ -30,9 +30,9 @@ import org.openur.module.service.userstructure.IUserServices;
 import org.openur.module.util.exception.EntityNotFoundException;
 import org.openur.remoting.resource.errorhandling.EntityNotFoundExceptionMapper;
 import org.openur.remoting.resource.secure_api.AuthorizationFilter;
-import org.openur.remoting.resource.secure_api.testing.DummyAuthenticationFilter;
 import org.openur.remoting.resource.userstructure.UserResource;
 import org.openur.remoting.xchange.rest.providers.json.PersonProvider;
+import org.openur.remoting.client.ws.rs.secure_api.DummyAuthenticationFilter;
 
 public class AuthorizationClientTest
 	extends JerseyTest

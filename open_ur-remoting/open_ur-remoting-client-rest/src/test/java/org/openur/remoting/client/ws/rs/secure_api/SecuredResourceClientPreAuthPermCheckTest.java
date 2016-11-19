@@ -16,8 +16,8 @@ import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.utils.compare.PersonComparer;
 import org.openur.remoting.resource.secure_api.AuthenticationFilter_J2eePreAuth;
 import org.openur.remoting.resource.secure_api.AuthorizationFilter;
+import org.openur.remoting.client.ws.rs.secure_api.DummyPreparePreAuthFilter;
 import org.openur.remoting.resource.secure_api.SecureApiSettings;
-import org.openur.remoting.resource.secure_api.testing.DummyPreparePreAuthFilter;
 
 @Ignore
 public class SecuredResourceClientPreAuthPermCheckTest

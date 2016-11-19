@@ -1,4 +1,4 @@
-package org.openur.remoting.resource.secure_api.testing;
+package org.openur.remoting.client.ws.rs.secure_api;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -10,6 +10,7 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.SecurityContext;
 
 import org.glassfish.grizzly.http.server.GrizzlyPrincipal;
+import org.openur.remoting.resource.secure_api.OpenUrSecurityContext;
 
 @Priority(value = Priorities.AUTHENTICATION - 20)
 public class DummyPreparePreAuthFilter
@@ -40,42 +41,7 @@ public class DummyPreparePreAuthFilter
 		}
 		
 		Principal principal = new GrizzlyPrincipal(this.userId);
-		SecurityContext securityContext = new MySecurityContext(principal);
+		SecurityContext securityContext = new OpenUrSecurityContext(principal);
 		requestContext.setSecurityContext(securityContext);
-	}
-
-	public static final class MySecurityContext
-		implements SecurityContext
-	{
-		private final Principal principal;
-		
-		public MySecurityContext(Principal principal)
-		{
-			this.principal = principal;
-		}
-
-		@Override
-		public boolean isUserInRole(final String role)
-		{
-			return false;
-		}
-
-		@Override
-		public boolean isSecure()
-		{
-			return false;
-		}
-
-		@Override
-		public Principal getUserPrincipal()
-		{
-			return this.principal;
-		}
-
-		@Override
-		public String getAuthenticationScheme()
-		{
-			return null;
-		}
 	};
 }

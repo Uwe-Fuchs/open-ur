@@ -107,9 +107,9 @@
 				<configuration>
 					<jettyXml>src/main/webapp/WEB-INF/jetty-env.xml</jettyXml>
 					<httpConnector>
-						<port>9080</port>
+						<port>8080</port>
 					</httpConnector>
-					<stopPort>9005</stopPort>
+					<stopPort>8005</stopPort>
 					<webApp>
 						<contextPath>/open_ur-remoting-webservice-app</contextPath>
 					</webApp>

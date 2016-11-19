@@ -33,7 +33,7 @@ public abstract class AbstractAuthenticationFilter<A extends OpenURAuthenticatio
 		throws IOException
 	{
 		// try to get user-id from context:
-		String userId = (String) requestContext.getProperty(USER_ID_PROPERTY);
+		String userId = getUserPrincipalFromSecurityContext(requestContext);
 		
 		// if user-id already in context => authentication already performed, leave:
 		if (StringUtils.isNotEmpty(userId))
@@ -66,7 +66,7 @@ public abstract class AbstractAuthenticationFilter<A extends OpenURAuthenticatio
 			abortWithBadRequest(requestContext, "Authentication Service returned empty or invalid authetication-object!");
 		}
 		
-		requestContext.setProperty(USER_ID_PROPERTY, userId);
+		addUserPrincipalToSecurityContext(requestContext, userId);
 	}
 
 	protected Realm getRealm()

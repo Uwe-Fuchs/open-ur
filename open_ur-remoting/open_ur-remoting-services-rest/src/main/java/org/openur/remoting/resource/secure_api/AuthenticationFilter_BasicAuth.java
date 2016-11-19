@@ -18,7 +18,7 @@ import org.openur.module.integration.security.shiro.UsernamePwAuthenticationInfo
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Priority(value = Priorities.AUTHENTICATION)
+@Priority(value = Priorities.AUTHENTICATION + 10)
 public class AuthenticationFilter_BasicAuth
 	extends AbstractAuthenticationFilter<UsernamePwAuthenticationInfo>
 {

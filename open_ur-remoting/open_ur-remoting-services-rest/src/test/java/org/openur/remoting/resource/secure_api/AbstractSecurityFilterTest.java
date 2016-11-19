@@ -22,7 +22,6 @@ import org.openur.module.integration.security.shiro.OpenUrRdbmsRealmMock;
 import org.openur.module.service.security.IAuthorizationServices;
 import org.openur.module.service.userstructure.IUserServices;
 import org.openur.remoting.resource.errorhandling.EntityNotFoundExceptionMapper;
-import org.openur.remoting.resource.secure_api.testing.DummyPreparePreAuthFilter;
 import org.openur.remoting.resource.userstructure.UserResource;
 import org.openur.remoting.xchange.rest.providers.json.PersonProvider;
 

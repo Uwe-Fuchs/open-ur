@@ -110,6 +110,7 @@ public class OpenUrRestApplication
 	public void buildFilterChainBasicAuth(ResourceConfig configurable)
 	{
 		register(AuthenticationFilter_BasicAuth.class);		
+		register(AuthenticationResultCheckFilter.class);	
 	}
 
 	@Override
@@ -129,6 +130,7 @@ public class OpenUrRestApplication
 	{
 		register(AuthenticationFilter_J2eePreAuth.class);	
 		register(AuthenticationFilter_BasicAuth.class);	
+		register(AuthenticationResultCheckFilter.class);	
 	}
 
 	@Override
@@ -141,6 +143,7 @@ public class OpenUrRestApplication
 	public void buildFilterChainPreAuthPermCheck(ResourceConfig configurable)
 	{
 		register(AuthenticationFilter_J2eePreAuth.class);	
+		register(AuthenticationResultCheckFilter.class);	
 		register(AuthorizationFilter.class);		
 	}
 
@@ -148,6 +151,7 @@ public class OpenUrRestApplication
 	public void buildFilterChainBasicAuthPermCheck(ResourceConfig configurable)
 	{
 		register(AuthenticationFilter_BasicAuth.class);	
+		register(AuthenticationResultCheckFilter.class);	
 		register(AuthorizationFilter.class);
 	}
 
@@ -162,6 +166,7 @@ public class OpenUrRestApplication
 	{
 		register(AuthenticationFilter_J2eePreAuth.class);	
 		register(AuthenticationFilter_BasicAuth.class);	
+		register(AuthenticationResultCheckFilter.class);	
 		register(AuthorizationFilter.class);
 	}
 

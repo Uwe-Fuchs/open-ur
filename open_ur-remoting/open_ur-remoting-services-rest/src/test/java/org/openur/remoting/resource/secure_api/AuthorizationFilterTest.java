@@ -19,7 +19,6 @@ import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.utils.compare.PersonComparer;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealmMock;
 import org.openur.module.util.exception.EntityNotFoundException;
-import org.openur.remoting.resource.secure_api.testing.DummyAuthenticationFilter;
 
 public class AuthorizationFilterTest
 	extends AbstractSecurityFilterTest
