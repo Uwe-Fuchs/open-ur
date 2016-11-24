@@ -8,39 +8,36 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.Test;
+import org.openur.module.util.exception.EntityNotFoundException;
 
-public class BasicAuthClientFilterTest
+public class AuthorizationClientFilterTest
 	extends AbstractSecurityClientFilterTest
-{	
+{
 	@Override
 	protected Application configure()
 	{
 		ResourceConfig config = (ResourceConfig) super.configure();
-		config.register(CheckIfAuthenticationIsPresentInRequestFilter.class);
-
+		config.register(CheckIfAuthorizationIsPresentInRequest.class);
+		
 		return config;
 	}
 
 	@Test
-	public void testFilter()
+	public void testFilterValidAuthorization()
+		throws EntityNotFoundException
 	{
-		AuthenticationClientFilter_BasicAuth testFilter = new AuthenticationClientFilter_BasicAuth(TEST_USER_NAME, TEST_PASSWORD);
+		AuthorizationClientFilter testFilter = new AuthorizationClientFilter(TEST_APPLICATION_NAME);
+
 		Invocation.Builder invocationBuilder = buildInvocationTargetBuilder(testFilter);
 		Response response = invocationBuilder.get();
 		assertEquals(200, response.getStatus());
 		String msg = response.readEntity(String.class);
-		assertEquals(msg, CheckIfAuthenticationIsPresentInRequestFilter.AUTHENTICATION_FOUND_MSG);
+		assertEquals(msg, CheckIfAuthorizationIsPresentInRequest.AUTHORIZATION_FOUND_MSG);
 	}
 
-	@Test(expected=IllegalArgumentException.class)
-	public void testFilterEmptyUserName()
+	@Test(expected = NullPointerException.class)
+	public void testFilterEmptyApplicationName()
 	{
-		new AuthenticationClientFilter_BasicAuth("", "");
-	}
-
-	@Test(expected=IllegalArgumentException.class)
-	public void testFilterEmptyPassword()
-	{
-		new AuthenticationClientFilter_BasicAuth("someUsername", "");
+		new AuthorizationClientFilter(null);
 	}
 }
