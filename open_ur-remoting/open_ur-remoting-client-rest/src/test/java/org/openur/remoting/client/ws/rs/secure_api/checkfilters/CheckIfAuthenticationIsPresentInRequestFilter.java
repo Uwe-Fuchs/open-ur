@@ -1,38 +1,27 @@
-package org.openur.remoting.client.ws.rs.secure_api;
+package org.openur.remoting.client.ws.rs.secure_api.checkfilters;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.core.Response;
 import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.openur.remoting.client.ws.rs.secure_api.AbstractSecurityClientFilterTest;
 import org.openur.remoting.resource.secure_api.AbstractSecurityFilterBase;
 
 public class CheckIfAuthenticationIsPresentInRequestFilter
-	implements ContainerRequestFilter
+	extends AbstractCheckIfSecurityIsPresentFilter
 {
-	static final String AUTHENTICATION_FOUND_MSG = "Authentication found in request!";
-	
-	protected final Response badRequestResponse = Response
-			.status(Response.Status.BAD_REQUEST)
-			.build();
-	
-	private final Response okResponse = Response
-			.status(Response.Status.OK)
-			.entity(AUTHENTICATION_FOUND_MSG)
-			.build();
+	public static final String AUTHENTICATION_FOUND_MSG = "Authentication found in request!";
 
-	@Override
-	public void filter(ContainerRequestContext requestContext)
-		throws IOException
+	public CheckIfAuthenticationIsPresentInRequestFilter(ResponseStatus responseStatus)
 	{
-		doFilter(requestContext);
-		requestContext.abortWith(okResponse);
-	}
+		super(responseStatus);
+		
+		setSuccessMessage(AUTHENTICATION_FOUND_MSG);
+	}	
 	
 	protected void doFilter(ContainerRequestContext requestContext)
 		throws IOException

@@ -1,6 +1,7 @@
 package org.openur.remoting.client.ws.rs.secure_api;
 
 import static org.junit.Assert.assertEquals;
+import static org.openur.remoting.client.ws.rs.secure_api.checkfilters.AbstractCheckIfSecurityIsPresentFilter.*;
 
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.Application;
@@ -8,6 +9,7 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.Test;
+import org.openur.remoting.client.ws.rs.secure_api.checkfilters.CheckIfAuthenticationIsPresentInRequestFilter;
 
 public class BasicAuthClientFilterTest
 	extends AbstractSecurityClientFilterTest
@@ -16,7 +18,7 @@ public class BasicAuthClientFilterTest
 	protected Application configure()
 	{
 		ResourceConfig config = (ResourceConfig) super.configure();
-		config.register(CheckIfAuthenticationIsPresentInRequestFilter.class);
+		config.register(new CheckIfAuthenticationIsPresentInRequestFilter(ResponseStatus.status_200));
 
 		return config;
 	}

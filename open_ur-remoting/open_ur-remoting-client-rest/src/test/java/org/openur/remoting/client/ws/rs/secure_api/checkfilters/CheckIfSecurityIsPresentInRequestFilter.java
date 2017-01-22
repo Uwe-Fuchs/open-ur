@@ -1,35 +1,36 @@
-package org.openur.remoting.client.ws.rs.secure_api;
+package org.openur.remoting.client.ws.rs.secure_api.checkfilters;
+
+import static org.openur.remoting.client.ws.rs.secure_api.checkfilters.CheckIfAuthorizationIsPresentInRequest.AUTHORIZATION_FOUND_MSG;
 
 import java.io.IOException;
 import java.util.List;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang3.StringUtils;
+import org.openur.remoting.client.ws.rs.secure_api.AbstractSecurityClientFilterTest;
 import org.openur.remoting.resource.secure_api.AbstractSecurityFilterBase;
 
-public class CheckIfAuthorizationIsPresentInRequest
+public class CheckIfSecurityIsPresentInRequestFilter
+	extends CheckIfAuthenticationIsPresentInRequestFilter
 	implements ContainerRequestFilter
-{
-	static final String AUTHORIZATION_FOUND_MSG = "Authorization found in request!";
+{	
+	public CheckIfSecurityIsPresentInRequestFilter(AbstractCheckIfSecurityIsPresentFilter.ResponseStatus responseStatus)
+	{
+		super(responseStatus);
+		
+		setSuccessMessage(AUTHENTICATION_FOUND_MSG + AUTHORIZATION_FOUND_MSG);
+	}
 
 	@Override
-	public void filter(ContainerRequestContext requestContext)
+	protected void doFilter(ContainerRequestContext requestContext)
 		throws IOException
 	{
-		Response badRequestResponse = Response
-					.status(Response.Status.BAD_REQUEST)
-					.build();
+		super.doFilter(requestContext);
 		
-		Response okResponse = Response
-					.status(Response.Status.OK)
-					.entity(AUTHORIZATION_FOUND_MSG)
-					.build();
-
 		String appName = null;
-		
+
 		try
 		{
 			List<String> authorization = requestContext.getHeaders().get(AbstractSecurityFilterBase.APPLICATION_NAME_PROPERTY);
@@ -42,8 +43,6 @@ public class CheckIfAuthorizationIsPresentInRequest
 		if (StringUtils.isBlank(appName) || !StringUtils.equals(appName, AbstractSecurityClientFilterTest.TEST_APPLICATION_NAME))
 		{
 			requestContext.abortWith(badRequestResponse);
-		}
-
-		requestContext.abortWith(okResponse);
+		}	
 	}
 }

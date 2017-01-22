@@ -22,15 +22,17 @@ import org.openur.remoting.xchange.rest.providers.json.PersonProvider;
 public abstract class AbstractSecurityClientFilterTest
 	extends JerseyTest
 {
-	static final String TEST_USER_NAME = OpenUrRdbmsRealmMock.USER_NAME_2;
-	static final String TEST_PASSWORD = OpenUrRdbmsRealmMock.PASSWORD_2;
-	static final String TEST_APPLICATION_NAME = "Demo-Application";
-	
+	public static final String TEST_USER_NAME = OpenUrRdbmsRealmMock.USER_NAME_2;
+	public static final String TEST_PASSWORD = OpenUrRdbmsRealmMock.PASSWORD_2;
+	public static final String TEST_APPLICATION_NAME = "Demo-Application";
+
+	protected Boolean hashCredentials;
 	protected IUserServices userServicesMock;
 
 	@Override
 	protected Application configure()
 	{
+		hashCredentials = Boolean.TRUE;
 		userServicesMock = Mockito.mock(IUserServices.class);
 
 		AbstractBinder binder = new AbstractBinder()
@@ -38,9 +40,7 @@ public abstract class AbstractSecurityClientFilterTest
 			@Override
 			protected void configure()
 			{
-//				bind(realmMock).to(Realm.class);
-//				bind(hashCredentials).to(Boolean.class);
-//				bind(authorizationServicesMock).to(IAuthorizationServices.class);
+				bind(hashCredentials).to(Boolean.class);
 				bind(userServicesMock).to(IUserServices.class);		
 			}
 		};
