@@ -1,9 +1,13 @@
-package org.openur.module.service.config;
+package org.openur.module.integration.security.shiro.config;
 
 import static org.mockito.Mockito.mock;
 
+import org.openur.module.integration.security.shiro.AuthenticationServicesImpl;
+import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
+import org.openur.module.integration.security.shiro.testing.OpenUrRdbmsRealmMock;
 import org.openur.module.persistence.dao.ISecurityDao;
 import org.openur.module.service.security.AuthorizationServicesImpl;
+import org.openur.module.service.security.IAuthenticationServices;
 import org.openur.module.service.security.IAuthorizationServices;
 import org.openur.module.service.security.ISecurityDomainServices;
 import org.openur.module.service.security.SecurityDomainServicesImpl;
@@ -16,7 +20,19 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 @Profile(value="testSecurityServices")
 public class SecurityTestSpringConfig
-{	
+{
+	@Bean(name = "authenticationServices")
+	public IAuthenticationServices authenticationServices()
+	{
+		return new AuthenticationServicesImpl();
+	}
+
+	@Bean(name = "realmMock")
+	public OpenUrRdbmsRealm realm()
+	{
+		return new OpenUrRdbmsRealmMock();
+	}
+	
 	@Bean(name = "securityDomainServices")
 	public ISecurityDomainServices securityDomainServices()
 	{

@@ -168,16 +168,19 @@ public abstract class AbstractResourceClientBase
 			} catch (Exception ignored)
 			{
 				String reasonPhrase;
+				int status;
 				
 				try
 				{
-					reasonPhrase = Status.fromStatusCode(response.getStatus()).getReasonPhrase();
+					status = response.getStatus();
+					reasonPhrase = Status.fromStatusCode(status).getReasonPhrase();					
 				} catch (Exception alsoIgnored)
 				{
+					status = 400;
 					reasonPhrase = "Unrecognized error!";
 				}
 				
-				ex = new WebApplicationException(reasonPhrase, response.getStatus());
+				ex = new WebApplicationException(reasonPhrase, status);
 			}
 			
 			LOG.error(ex.toString());

@@ -2,59 +2,29 @@ package org.openur.remoting.client.ws.rs.secure_api;
 
 import javax.ws.rs.core.Application;
 
-import org.apache.shiro.realm.Realm;
-import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Before;
-import org.mockito.Mockito;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.userstructure.person.IPerson;
-import org.openur.module.integration.security.shiro.OpenUrRdbmsRealmMock;
-import org.openur.module.service.security.IAuthorizationServices;
-import org.openur.module.service.userstructure.IUserServices;
+import org.openur.module.integration.security.shiro.testing.OpenUrRdbmsRealmMock;
 import org.openur.remoting.client.ws.rs.userstructure.UserResourceClient;
-import org.openur.remoting.resource.errorhandling.EntityNotFoundExceptionMapper;
-import org.openur.remoting.resource.secure_api.AuthenticationResultCheckFilter;
-import org.openur.remoting.resource.userstructure.UserResource;
-import org.openur.remoting.xchange.rest.providers.json.PersonProvider;
+import org.openur.remoting.resource.secure_api.SecureApiSettings;
 
-public abstract class AbstractSecuredResourceClientTest
-	extends JerseyTest
+public class AbstractSecuredResourceClientTest
+	extends AbstractSecurityClientFilterTest
 {
-	protected Boolean hashCredentials = Boolean.TRUE;
-	protected String applicationName;
+	protected Boolean hashCredentials;
 	protected UserResourceClient userResourceClient;
-	protected OpenUrRdbmsRealmMock realmMock;
-	protected IAuthorizationServices authorizationServicesMock;
-	protected IUserServices userServicesMock;
 	protected SomeUserBean userBean;
-
+	
 	@Override
 	protected Application configure()
-	{		
-		realmMock = new OpenUrRdbmsRealmMock();
-		authorizationServicesMock = Mockito.mock(IAuthorizationServices.class);
-		userServicesMock = Mockito.mock(IUserServices.class);
-		userResourceClient = new UserResourceClient("http://localhost:9998/");
-
-		AbstractBinder binder = new AbstractBinder()
-		{
-			@Override
-			protected void configure()
-			{
-				bind(realmMock).to(Realm.class);
-				bind(hashCredentials).to(Boolean.class);
-				bind(authorizationServicesMock).to(IAuthorizationServices.class);
-				bind(userServicesMock).to(IUserServices.class);		
-			}
-		};
-
-		ResourceConfig config = new ResourceConfig(UserResource.class)
-				.register(PersonProvider.class)
-				.register(AuthenticationResultCheckFilter.class)
-				.register(EntityNotFoundExceptionMapper.class)
-				.register(binder);
+	{
+		ResourceConfig config = (ResourceConfig) super.configure();
+		userResourceClient = new UserResourceClient("http://localhost:9998/");	
+		userResourceClient.setSecureApiSettings(SecureApiSettings.BASIC_AUTH.name());
+		userResourceClient.setUserName(OpenUrRdbmsRealmMock.USER_NAME_2);
+		userResourceClient.setPassWord(OpenUrRdbmsRealmMock.PASSWORD_2);
 
 		return config;
 	}

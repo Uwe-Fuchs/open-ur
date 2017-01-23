@@ -26,7 +26,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
-import org.openur.module.integration.security.shiro.OpenUrRdbmsRealmMock;
+import org.openur.module.integration.security.shiro.testing.OpenUrRdbmsRealmMock;
 import org.openur.module.util.exception.OpenURRuntimeException;
 import org.openur.remoting.resource.client.AbstractResourceClientBase;
 import org.openur.remoting.resource.security.RdbmsRealmResource;

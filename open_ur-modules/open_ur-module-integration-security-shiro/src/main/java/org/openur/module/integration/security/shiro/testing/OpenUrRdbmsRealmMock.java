@@ -1,4 +1,4 @@
-package org.openur.module.integration.security.shiro;
+package org.openur.module.integration.security.shiro.testing;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -10,6 +10,8 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.util.ByteSource;
 import org.openur.module.domain.security.authentication.IUserAccount;
+import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
+import org.openur.module.integration.security.shiro.UsernamePwAuthenticationInfo;
 import org.openur.module.util.exception.OpenURRuntimeException;
 
 /**

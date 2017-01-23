@@ -7,7 +7,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
-import org.openur.module.integration.security.shiro.OpenUrRdbmsRealmMock;
+import org.openur.module.integration.security.shiro.testing.OpenUrRdbmsRealmMock;
 import org.openur.remoting.resource.errorhandling.AuthenticationExceptionMapper;
 import org.openur.remoting.resource.security.RdbmsRealmResource;
 
