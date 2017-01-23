@@ -2,7 +2,7 @@ package org.openur.module.util.data;
 
 public enum Title
 {
-	NONE,	DR,	PROF;
+	NONE, DR, PROF;
 	
 	public boolean isPartOfName() {
 		return this == DR;
