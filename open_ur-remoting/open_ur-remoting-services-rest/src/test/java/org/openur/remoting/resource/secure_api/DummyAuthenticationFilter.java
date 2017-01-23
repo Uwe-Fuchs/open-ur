@@ -11,7 +11,7 @@ import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.ext.Provider;
 
 import org.glassfish.grizzly.http.server.GrizzlyPrincipal;
-import org.openur.module.integration.security.shiro.OpenUrRdbmsRealmMock;
+import org.openur.module.integration.security.shiro.testing.OpenUrRdbmsRealmMock;
 import org.openur.remoting.resource.secure_api.OpenUrSecurityContext;
 
 @Provider

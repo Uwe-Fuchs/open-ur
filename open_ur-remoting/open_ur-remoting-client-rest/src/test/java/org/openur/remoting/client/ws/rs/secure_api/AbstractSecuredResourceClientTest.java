@@ -6,7 +6,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.Before;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.userstructure.person.IPerson;
-import org.openur.module.integration.security.shiro.OpenUrRdbmsRealmMock;
+import org.openur.module.integration.security.shiro.testing.OpenUrRdbmsRealmMock;
 import org.openur.remoting.client.ws.rs.userstructure.UserResourceClient;
 import org.openur.remoting.resource.secure_api.SecureApiSettings;
 

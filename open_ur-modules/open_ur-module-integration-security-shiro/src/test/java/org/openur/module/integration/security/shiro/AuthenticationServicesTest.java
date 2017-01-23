@@ -1,11 +1,12 @@
-package org.openur.module.service.security;
+package org.openur.module.integration.security.shiro;
 
 import javax.inject.Inject;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openur.module.integration.security.shiro.OpenUrRdbmsRealmMock;
-import org.openur.module.service.config.SecurityTestSpringConfig;
+import org.openur.module.integration.security.shiro.config.SecurityTestSpringConfig;
+import org.openur.module.integration.security.shiro.testing.OpenUrRdbmsRealmMock;
+import org.openur.module.service.security.IAuthenticationServices;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
