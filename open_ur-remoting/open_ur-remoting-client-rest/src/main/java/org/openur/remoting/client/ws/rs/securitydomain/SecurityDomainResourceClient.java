@@ -1,12 +1,12 @@
-package org.openur.remoting.client.ws.rs.security;
+package org.openur.remoting.client.ws.rs.securitydomain;
 
-import static org.openur.remoting.resource.security.SecurityDomainResource.ALL_PERMISSIONS_RESOURCE_PATH;
-import static org.openur.remoting.resource.security.SecurityDomainResource.ALL_ROLES_RESOURCE_PATH;
-import static org.openur.remoting.resource.security.SecurityDomainResource.PERMISSIONS_PER_APP_RESOURCE_PATH;
-import static org.openur.remoting.resource.security.SecurityDomainResource.PERMISSION_PER_ID_RESOURCE_PATH;
-import static org.openur.remoting.resource.security.SecurityDomainResource.PERMISSION_PER_TEXT_RESOURCE_PATH;
-import static org.openur.remoting.resource.security.SecurityDomainResource.ROLE_PER_ID_RESOURCE_PATH;
-import static org.openur.remoting.resource.security.SecurityDomainResource.ROLE_PER_NAME_RESOURCE_PATH;
+import static org.openur.remoting.resource.securitydomain.SecurityDomainResource.ALL_PERMISSIONS_RESOURCE_PATH;
+import static org.openur.remoting.resource.securitydomain.SecurityDomainResource.ALL_ROLES_RESOURCE_PATH;
+import static org.openur.remoting.resource.securitydomain.SecurityDomainResource.PERMISSIONS_PER_APP_RESOURCE_PATH;
+import static org.openur.remoting.resource.securitydomain.SecurityDomainResource.PERMISSION_PER_ID_RESOURCE_PATH;
+import static org.openur.remoting.resource.securitydomain.SecurityDomainResource.PERMISSION_PER_TEXT_RESOURCE_PATH;
+import static org.openur.remoting.resource.securitydomain.SecurityDomainResource.ROLE_PER_ID_RESOURCE_PATH;
+import static org.openur.remoting.resource.securitydomain.SecurityDomainResource.ROLE_PER_NAME_RESOURCE_PATH;
 
 import java.util.Set;
 
@@ -19,9 +19,9 @@ import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
 import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.domain.security.authorization.OpenURRole;
-import org.openur.module.service.security.ISecurityDomainServices;
+import org.openur.module.service.securitydomain.ISecurityDomainServices;
 import org.openur.remoting.client.ws.rs.secure_api.AbstractResourceClient;
-import org.openur.remoting.resource.security.SecurityDomainResource;
+import org.openur.remoting.resource.securitydomain.SecurityDomainResource;
 import org.openur.remoting.xchange.rest.providers.json.IdentifiableEntitySetProvider;
 import org.openur.remoting.xchange.rest.providers.json.PermissionProvider;
 import org.openur.remoting.xchange.rest.providers.json.RoleProvider;

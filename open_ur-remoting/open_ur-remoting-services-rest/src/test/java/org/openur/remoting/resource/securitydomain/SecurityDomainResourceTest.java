@@ -1,7 +1,7 @@
-package org.openur.remoting.resource.security;
+package org.openur.remoting.resource.securitydomain;
 
 import static org.junit.Assert.*;
-import static org.openur.remoting.resource.security.SecurityDomainResource.*;
+import static org.openur.remoting.resource.securitydomain.SecurityDomainResource.*;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -24,8 +24,9 @@ import org.openur.module.domain.security.authorization.OpenURRole;
 import org.openur.module.domain.utils.common.DomainObjectHelper;
 import org.openur.module.domain.utils.compare.PermissionComparer;
 import org.openur.module.domain.utils.compare.RoleComparer;
-import org.openur.module.service.security.ISecurityDomainServices;
+import org.openur.module.service.securitydomain.ISecurityDomainServices;
 import org.openur.remoting.resource.AbstractResourceTest;
+import org.openur.remoting.resource.securitydomain.SecurityDomainResource;
 import org.openur.remoting.xchange.rest.providers.json.IdentifiableEntitySetProvider;
 import org.openur.remoting.xchange.rest.providers.json.PermissionProvider;
 import org.openur.remoting.xchange.rest.providers.json.RoleProvider;

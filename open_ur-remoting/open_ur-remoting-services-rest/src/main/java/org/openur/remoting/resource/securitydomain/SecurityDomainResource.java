@@ -1,4 +1,4 @@
-package org.openur.remoting.resource.security;
+package org.openur.remoting.resource.securitydomain;
 
 import static org.openur.module.domain.security.secure_api.PermissionConstraints.REMOTE_READ;
 
@@ -15,7 +15,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
-import org.openur.module.service.security.ISecurityDomainServices;
+import org.openur.module.service.securitydomain.ISecurityDomainServices;
 
 @Path(SecurityDomainResource.SECURITY_DOMAIN_RESOURCE_PATH)
 public class SecurityDomainResource

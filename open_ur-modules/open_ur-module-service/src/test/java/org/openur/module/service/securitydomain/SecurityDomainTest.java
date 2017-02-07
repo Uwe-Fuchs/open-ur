@@ -1,4 +1,4 @@
-package org.openur.module.service.security;
+package org.openur.module.service.securitydomain;
 
 import static org.junit.Assert.*;
 
@@ -20,6 +20,7 @@ import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
 import org.openur.module.persistence.dao.ISecurityDomainDao;
 import org.openur.module.service.config.SecurityTestSpringConfig;
+import org.openur.module.service.securitydomain.ISecurityDomainServices;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;

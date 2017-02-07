@@ -1,4 +1,4 @@
-package org.openur.remoting.client.ws.rs.security;
+package org.openur.remoting.client.ws.rs.securitydomain;
 
 import static org.junit.Assert.*;
 
@@ -22,8 +22,9 @@ import org.openur.module.domain.security.authorization.OpenURRole;
 import org.openur.module.domain.utils.common.DomainObjectHelper;
 import org.openur.module.domain.utils.compare.PermissionComparer;
 import org.openur.module.domain.utils.compare.RoleComparer;
-import org.openur.module.service.security.ISecurityDomainServices;
-import org.openur.remoting.resource.security.SecurityDomainResource;
+import org.openur.module.service.securitydomain.ISecurityDomainServices;
+import org.openur.remoting.client.ws.rs.securitydomain.SecurityDomainResourceClient;
+import org.openur.remoting.resource.securitydomain.SecurityDomainResource;
 
 public class SecurityDomainResourceClientTest
 	extends JerseyTest
