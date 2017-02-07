@@ -6,7 +6,12 @@ import org.openur.module.domain.security.authentication.IUserAccount;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
 
-public interface ISecurityDao
+/**
+ * all data-access-operations concerning open-ur security-domain.
+ * 
+ * @author info@uwefuchs.com
+ */
+public interface ISecurityDomainDao
 {
 	/**
 	 * searches all defined user-roles in the underlying persistence-system and returns them

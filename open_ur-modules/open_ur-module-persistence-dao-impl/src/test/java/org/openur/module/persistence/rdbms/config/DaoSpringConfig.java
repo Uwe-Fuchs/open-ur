@@ -3,12 +3,12 @@ package org.openur.module.persistence.rdbms.config;
 import org.openur.module.persistence.dao.IApplicationDao;
 import org.openur.module.persistence.dao.IOrgUnitDao;
 import org.openur.module.persistence.dao.IPersonDao;
-import org.openur.module.persistence.dao.ISecurityDao;
+import org.openur.module.persistence.dao.ISecurityDomainDao;
 import org.openur.module.persistence.dao.ITechnicalUserDao;
 import org.openur.module.persistence.dao.rdbms.ApplicationDaoImpl;
 import org.openur.module.persistence.dao.rdbms.OrgUnitDaoImplRdbms;
 import org.openur.module.persistence.dao.rdbms.PersonDaoImplRdbms;
-import org.openur.module.persistence.dao.rdbms.SecurityDaoImplRdbms;
+import org.openur.module.persistence.dao.rdbms.SecurityDomainDaoImplRdbms;
 import org.openur.module.persistence.dao.rdbms.TechnicalUserDaoImplRdbms;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -48,8 +48,8 @@ public class DaoSpringConfig
 	}
 
 	@Bean(name = "securityDao")
-	public ISecurityDao securityDao()
+	public ISecurityDomainDao securityDao()
 	{		
-		return new SecurityDaoImplRdbms();
+		return new SecurityDomainDaoImplRdbms();
 	}
 }

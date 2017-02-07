@@ -37,8 +37,8 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.openur.module.integration</groupId>
-			<artifactId>open_ur-module-integration-security-shiro</artifactId>
+			<groupId>org.openur.module.service</groupId>
+			<artifactId>open_ur-module-service</artifactId>
 			<exclusions>
 				<exclusion>
 					<groupId>org.openur.module.persistence</groupId>
@@ -47,8 +47,8 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>org.openur.module.service</groupId>
-			<artifactId>open_ur-module-service</artifactId>
+			<groupId>org.openur.module.integration</groupId>
+			<artifactId>open_ur-module-integration-security-shiro</artifactId>
 			<exclusions>
 				<exclusion>
 					<groupId>org.openur.module.persistence</groupId>

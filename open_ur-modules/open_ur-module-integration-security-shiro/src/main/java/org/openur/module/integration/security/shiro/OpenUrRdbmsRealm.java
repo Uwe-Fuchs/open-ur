@@ -17,7 +17,7 @@ import org.apache.shiro.realm.jdbc.JdbcRealm.SaltStyle;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.openur.module.domain.security.authentication.IUserAccount;
-import org.openur.module.persistence.dao.ISecurityDao;
+import org.openur.module.persistence.dao.ISecurityDomainDao;
 
 /**
  * OpenUR-specific, Username-PW-based implementation of {@link AuthorizingRealm}-class.
@@ -31,7 +31,7 @@ public class OpenUrRdbmsRealm
 	private Map<String, String> userSalts = new ConcurrentHashMap<>();
 
 	@Inject
-	private ISecurityDao securityDao;
+	private ISecurityDomainDao securityDao;
 	
 	public UsernamePwAuthenticationInfo getUsernamePwAuthenticationInfo(UsernamePasswordToken token)
 		throws AuthenticationException

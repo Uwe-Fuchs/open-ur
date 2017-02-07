@@ -18,7 +18,7 @@ import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.application.IApplication;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
-import org.openur.module.persistence.dao.ISecurityDao;
+import org.openur.module.persistence.dao.ISecurityDomainDao;
 import org.openur.module.service.config.SecurityTestSpringConfig;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -30,7 +30,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class SecurityDomainTest
 {
 	@Inject
-	private ISecurityDao securityDao;
+	private ISecurityDomainDao securityDao;
 	
 	@Inject
 	private ISecurityDomainServices securityDomainServices;

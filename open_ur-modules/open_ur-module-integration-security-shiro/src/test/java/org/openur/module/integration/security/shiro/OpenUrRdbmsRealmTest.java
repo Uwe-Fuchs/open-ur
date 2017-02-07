@@ -22,7 +22,7 @@ import org.mockito.Mockito;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.security.authentication.UserAccount;
 import org.openur.module.domain.security.authentication.UserAccountBuilder;
-import org.openur.module.persistence.dao.ISecurityDao;
+import org.openur.module.persistence.dao.ISecurityDomainDao;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -42,7 +42,7 @@ public class OpenUrRdbmsRealmTest
 	private String hashedSaltBase64;
 
 	@Inject
-	private ISecurityDao securityDao;
+	private ISecurityDomainDao securityDao;
 
 	@Inject
 	private OpenUrRdbmsRealm realm;

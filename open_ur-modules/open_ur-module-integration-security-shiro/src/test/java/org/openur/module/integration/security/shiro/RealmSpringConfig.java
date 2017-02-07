@@ -3,7 +3,7 @@ package org.openur.module.integration.security.shiro;
 import static org.mockito.Mockito.mock;
 
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
-import org.openur.module.persistence.dao.ISecurityDao;
+import org.openur.module.persistence.dao.ISecurityDomainDao;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -19,8 +19,8 @@ public class RealmSpringConfig
 	}
 
 	@Bean(name = "securityDaoMock")
-	public ISecurityDao securityDao()
+	public ISecurityDomainDao securityDao()
 	{		
-		return mock(ISecurityDao.class);
+		return mock(ISecurityDomainDao.class);
 	}
 }

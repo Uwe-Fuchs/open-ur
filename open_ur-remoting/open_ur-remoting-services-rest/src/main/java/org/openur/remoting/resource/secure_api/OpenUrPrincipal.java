@@ -4,9 +4,8 @@ import java.io.Serializable;
 import java.security.Principal;
 
 /**
- * Generic implementation of <strong>java.security.Principal</strong> that is
- * used to represent principals authenticated when calling
- * OpenUR-Remote-Services.
+ * Generic implementation of {@link java.security.Principal}.
+ * Represents authenticated persons or technical users calling OpenUR-Remote-Services.
  *
  * @author info@uwefuchs.com
  */
@@ -38,7 +37,7 @@ public class OpenUrPrincipal
 	@Override
 	public String toString()
 	{
-		StringBuilder sb = new StringBuilder("OpenUrPrincipal[");
+		StringBuilder sb = new StringBuilder("OpenUrPrincipal [");
 		sb.append(this.name);
 		sb.append("]");
 		return (sb.toString());

@@ -9,7 +9,7 @@ import org.openur.module.domain.security.authentication.IUserAccount;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
 import org.openur.module.domain.userstructure.IUserStructureBase;
-import org.openur.module.persistence.dao.ISecurityDao;
+import org.openur.module.persistence.dao.ISecurityDomainDao;
 import org.openur.module.persistence.mapper.rdbms.IEntityDomainObjectMapper;
 import org.openur.module.persistence.mapper.rdbms.IUserAccountMapper;
 import org.openur.module.persistence.rdbms.entity.PPermission;
@@ -23,8 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional(readOnly = true)
-public class SecurityDaoImplRdbms
-	implements ISecurityDao
+public class SecurityDomainDaoImplRdbms
+	implements ISecurityDomainDao
 {
 	@Inject
 	private IEntityDomainObjectMapper<PPermission, ? extends IPermission> permissionMapper;
@@ -44,7 +44,7 @@ public class SecurityDaoImplRdbms
 	@Inject
 	private UserAccountRepository userAccountRepository;
 
-	public SecurityDaoImplRdbms()
+	public SecurityDomainDaoImplRdbms()
 	{
 		super();
 	}

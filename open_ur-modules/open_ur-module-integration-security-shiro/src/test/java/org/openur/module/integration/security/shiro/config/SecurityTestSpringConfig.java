@@ -5,7 +5,7 @@ import static org.mockito.Mockito.mock;
 import org.openur.module.integration.security.shiro.AuthenticationServicesImpl;
 import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
 import org.openur.module.integration.security.shiro.testing.OpenUrRdbmsRealmMock;
-import org.openur.module.persistence.dao.ISecurityDao;
+import org.openur.module.persistence.dao.ISecurityDomainDao;
 import org.openur.module.service.security.AuthorizationServicesImpl;
 import org.openur.module.service.security.IAuthenticationServices;
 import org.openur.module.service.security.IAuthorizationServices;
@@ -46,9 +46,9 @@ public class SecurityTestSpringConfig
 	}
 
 	@Bean(name = "securityDaoMock")
-	public ISecurityDao securityDao()
+	public ISecurityDomainDao securityDao()
 	{		
-		return mock(ISecurityDao.class);
+		return mock(ISecurityDomainDao.class);
 	}
 
 	@Bean(name = "userServicesMock")

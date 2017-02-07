@@ -8,12 +8,12 @@ import org.openur.module.integration.security.shiro.OpenUrRdbmsRealm;
 import org.openur.module.persistence.dao.IApplicationDao;
 import org.openur.module.persistence.dao.IOrgUnitDao;
 import org.openur.module.persistence.dao.IPersonDao;
-import org.openur.module.persistence.dao.ISecurityDao;
+import org.openur.module.persistence.dao.ISecurityDomainDao;
 import org.openur.module.persistence.dao.ITechnicalUserDao;
 import org.openur.module.persistence.dao.rdbms.ApplicationDaoImpl;
 import org.openur.module.persistence.dao.rdbms.OrgUnitDaoImplRdbms;
 import org.openur.module.persistence.dao.rdbms.PersonDaoImplRdbms;
-import org.openur.module.persistence.dao.rdbms.SecurityDaoImplRdbms;
+import org.openur.module.persistence.dao.rdbms.SecurityDomainDaoImplRdbms;
 import org.openur.module.persistence.dao.rdbms.TechnicalUserDaoImplRdbms;
 import org.openur.module.persistence.mapper.rdbms.AddressMapper;
 import org.openur.module.persistence.mapper.rdbms.ApplicationMapper;
@@ -111,9 +111,9 @@ public class WebApplicationSpringConfig
 	}
 
 	@Bean(name = "securityDao")
-	public ISecurityDao securityDao()
+	public ISecurityDomainDao securityDao()
 	{		
-		return new SecurityDaoImplRdbms();
+		return new SecurityDomainDaoImplRdbms();
 	}
 	
 	// mappers:

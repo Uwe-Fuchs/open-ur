@@ -9,13 +9,13 @@ import javax.inject.Inject;
 import org.apache.commons.lang3.Validate;
 import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.security.authorization.IRole;
-import org.openur.module.persistence.dao.ISecurityDao;
+import org.openur.module.persistence.dao.ISecurityDomainDao;
 
 public class SecurityDomainServicesImpl
 	implements ISecurityDomainServices
 {
 	@Inject
-	private ISecurityDao securityDao;
+	private ISecurityDomainDao securityDao;
 
 	@Override
 	public IRole findRoleById(String roleId)

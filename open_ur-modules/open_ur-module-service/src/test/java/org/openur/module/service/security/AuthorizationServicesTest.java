@@ -22,7 +22,7 @@ import org.openur.domain.testfixture.dummyimpl.MyPerson;
 import org.openur.domain.testfixture.dummyimpl.MyRoleImpl;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
-import org.openur.module.persistence.dao.ISecurityDao;
+import org.openur.module.persistence.dao.ISecurityDomainDao;
 import org.openur.module.service.config.SecurityTestSpringConfig;
 import org.openur.module.service.userstructure.IOrgUnitServices;
 import org.openur.module.service.userstructure.IUserServices;
@@ -46,7 +46,7 @@ public class AuthorizationServicesTest
 	private IOrgUnitServices orgUnitServicesMock;
 	
 	@Inject
-	private ISecurityDao securityDaoMock;
+	private ISecurityDomainDao securityDaoMock;
 	
 	// fields for arbitrary domain-objects:
 	private static final String APP_ID = UUID.randomUUID().toString();

@@ -24,7 +24,7 @@ import org.openur.module.domain.security.authorization.IRole;
 import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.domain.security.authorization.OpenURRole;
 import org.openur.module.domain.userstructure.UserStructureBase;
-import org.openur.module.persistence.dao.ISecurityDao;
+import org.openur.module.persistence.dao.ISecurityDomainDao;
 import org.openur.module.persistence.mapper.rdbms.IEntityDomainObjectMapper;
 import org.openur.module.persistence.mapper.rdbms.IUserAccountMapper;
 import org.openur.module.persistence.mapper.rdbms.PermissionMapper;
@@ -73,7 +73,7 @@ public class SecurityDaoImplRdbmsTest
 	private UserAccountRepository userAccountRepository;
 	
 	@Inject
-	private ISecurityDao securityDao;
+	private ISecurityDomainDao securityDao;
 
 	@Test
 	public void testFindPermissionById()

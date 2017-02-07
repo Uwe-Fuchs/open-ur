@@ -2,7 +2,7 @@ package org.openur.module.service.config;
 
 import static org.mockito.Mockito.mock;
 
-import org.openur.module.persistence.dao.ISecurityDao;
+import org.openur.module.persistence.dao.ISecurityDomainDao;
 import org.openur.module.service.security.AuthorizationServicesImpl;
 import org.openur.module.service.security.IAuthorizationServices;
 import org.openur.module.service.security.ISecurityDomainServices;
@@ -30,9 +30,9 @@ public class SecurityTestSpringConfig
 	}
 
 	@Bean(name = "securityDaoMock")
-	public ISecurityDao securityDao()
+	public ISecurityDomainDao securityDao()
 	{		
-		return mock(ISecurityDao.class);
+		return mock(ISecurityDomainDao.class);
 	}
 
 	@Bean(name = "userServicesMock")
