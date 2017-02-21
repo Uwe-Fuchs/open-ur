@@ -2,7 +2,6 @@ package org.openur.remoting.resource.errorhandling;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 import org.apache.shiro.authc.AuthenticationException;
@@ -10,7 +9,6 @@ import org.apache.shiro.authc.AuthenticationException;
 @Provider
 public class AuthenticationExceptionMapper
 	extends AbstractExceptionMapper<AuthenticationException>
-	implements ExceptionMapper<AuthenticationException>
 {
 	@Override
 	protected String getDefaultExceptionMessage()
@@ -21,6 +19,6 @@ public class AuthenticationExceptionMapper
 	@Override
 	protected Status getHttpStatus(Throwable ex)
 	{
-		return Response.Status.CONFLICT;
+		return Response.Status.FORBIDDEN;
 	}
 }
