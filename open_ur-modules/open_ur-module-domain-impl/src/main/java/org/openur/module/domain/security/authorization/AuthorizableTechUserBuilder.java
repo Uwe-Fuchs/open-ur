@@ -10,7 +10,7 @@ import org.openur.module.domain.userstructure.technicaluser.AbstractTechnicalUse
 // builder-class:
 public class AuthorizableTechUserBuilder
 	extends AbstractTechnicalUserBuilder<AuthorizableTechUserBuilder>
-	implements IPermissionContainerBuilder
+	implements IPermissionsContainerBuilder
 {
 	// properties:
 	private Map<OpenURApplication, Set<OpenURPermission>> permissions = new HashMap<>();
@@ -24,7 +24,7 @@ public class AuthorizableTechUserBuilder
 	// builder-methods:
 	public AuthorizableTechUserBuilder permissions(Set<OpenURPermission> perms)
 	{
-		IPermissionContainerBuilder.super.permissions(perms, this);
+		IPermissionsContainerBuilder.super.permissions(perms, this);
 		
 		return this;
 	}
