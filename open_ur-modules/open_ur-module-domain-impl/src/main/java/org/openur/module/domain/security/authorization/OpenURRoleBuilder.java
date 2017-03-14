@@ -10,7 +10,7 @@ import org.openur.module.domain.application.OpenURApplication;
 
 public class OpenURRoleBuilder
 	extends IdentifiableEntityBuilder<OpenURRoleBuilder>
-	implements IPermissionContainerBuilder
+	implements IPermissionsContainerBuilder
 {
 	// properties:
 	private String roleName = null;
