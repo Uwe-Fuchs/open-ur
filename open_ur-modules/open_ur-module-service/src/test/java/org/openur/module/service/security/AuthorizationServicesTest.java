@@ -14,14 +14,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.openur.domain.testfixture.dummyimpl.MyApplicationImpl;
-import org.openur.domain.testfixture.dummyimpl.MyAuthorizableMember;
-import org.openur.domain.testfixture.dummyimpl.MyAuthorizableOrgUnit;
+import org.openur.domain.testfixture.dummyimpl.MyOrgUnitMember;
+import org.openur.domain.testfixture.dummyimpl.MyOrgUnit;
 import org.openur.domain.testfixture.dummyimpl.MyAuthorizableTechUser;
 import org.openur.domain.testfixture.dummyimpl.MyPermissionImpl;
 import org.openur.domain.testfixture.dummyimpl.MyPerson;
 import org.openur.domain.testfixture.dummyimpl.MyRoleImpl;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
-import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
+import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 import org.openur.module.persistence.dao.ISecurityDomainDao;
 import org.openur.module.service.config.SecurityTestSpringConfig;
 import org.openur.module.service.userstructure.IOrgUnitServices;
@@ -74,13 +74,13 @@ public class AuthorizationServicesTest
 	private MyRoleImpl roleInRootOu;
 	private MyPerson person;
 	private MyPerson personInRoot;
-	private MyAuthorizableMember member;
-	private MyAuthorizableMember memberInSuperOu;
-	private MyAuthorizableMember memberInRootOu;
-	private MyAuthorizableOrgUnit ou;
-	private MyAuthorizableOrgUnit otherOu;
-	private MyAuthorizableOrgUnit superOu;
-	private MyAuthorizableOrgUnit rootOu;
+	private MyOrgUnitMember member;
+	private MyOrgUnitMember memberInSuperOu;
+	private MyOrgUnitMember memberInRootOu;
+	private MyOrgUnit ou;
+	private MyOrgUnit otherOu;
+	private MyOrgUnit superOu;
+	private MyOrgUnit rootOu;
 	private MyAuthorizableTechUser techUser; 
 	
 	@Before
@@ -110,9 +110,9 @@ public class AuthorizationServicesTest
 		permissionInRootOu = new MyPermissionImpl(UUID.randomUUID().toString(), PERMISSION_IN_ROOT_OU_TEXT, app);
 		roleInRootOu = new MyRoleImpl(UUID.randomUUID().toString(), "roleInRootOuName");
 		roleInRootOu.addPermissionSet(app, new HashSet<MyPermissionImpl>(Arrays.asList(permissionInRootOu)));
-		memberInRootOu = new MyAuthorizableMember(personInRoot, ROOT_OU_ID);
+		memberInRootOu = new MyOrgUnitMember(personInRoot, ROOT_OU_ID);
 		memberInRootOu.addRole(roleInRootOu);
-		rootOu = new MyAuthorizableOrgUnit(ROOT_OU_ID, "rootOuNumber");
+		rootOu = new MyOrgUnit(ROOT_OU_ID, "rootOuNumber");
 		rootOu.addMember(memberInRootOu);
 
 		person = new MyPerson(PERSON_ID, "personNumber");
@@ -121,9 +121,9 @@ public class AuthorizationServicesTest
 		permissionInSuperOu = new MyPermissionImpl(UUID.randomUUID().toString(), PERMISSION_IN_SUPER_OU_TEXT, app);
 		roleInSuperOu = new MyRoleImpl(UUID.randomUUID().toString(), "roleInSuperOuName");
 		roleInSuperOu.addPermissionSet(app, new HashSet<MyPermissionImpl>(Arrays.asList(permissionInSuperOu)));
-		memberInSuperOu = new MyAuthorizableMember(person, SUPER_OU_ID);
+		memberInSuperOu = new MyOrgUnitMember(person, SUPER_OU_ID);
 		memberInSuperOu.addRole(roleInSuperOu);
-		superOu = new MyAuthorizableOrgUnit(SUPER_OU_ID, "superOuNumber");
+		superOu = new MyOrgUnit(SUPER_OU_ID, "superOuNumber");
 		superOu.setSuperOrgUnit(rootOu);
 		superOu.setRootOrgUnit(rootOu);
 		superOu.addMember(memberInSuperOu);
@@ -131,16 +131,16 @@ public class AuthorizationServicesTest
 		permission = new MyPermissionImpl(PERM_ID, PERMISSION_TEXT, app);
 		role = new MyRoleImpl(UUID.randomUUID().toString(), "roleName");
 		role.addPermissionSet(app, new HashSet<MyPermissionImpl>(Arrays.asList(permission)));
-		member = new MyAuthorizableMember(person, OU_ID);
+		member = new MyOrgUnitMember(person, OU_ID);
 		member.addRole(role);
-		ou = new MyAuthorizableOrgUnit(OU_ID, "ouNumber");
+		ou = new MyOrgUnit(OU_ID, "ouNumber");
 		ou.setSuperOrgUnit(superOu);
 		ou.setRootOrgUnit(rootOu);
 		ou.addMember(member);
 		
 		otherPermission = new MyPermissionImpl(UUID.randomUUID().toString(), OTHER_PERMISSION_TEXT, app);
 		
-		otherOu = new MyAuthorizableOrgUnit(OTHER_OU_ID, "otherOuNumber");
+		otherOu = new MyOrgUnit(OTHER_OU_ID, "otherOuNumber");
 		otherOu.setSuperOrgUnit(superOu);
 		
 		techUser = new MyAuthorizableTechUser(TECH_USER_ID, "techUserNumber");
@@ -155,7 +155,7 @@ public class AuthorizationServicesTest
 		Mockito.when(orgUnitServicesMock.findOrgUnitById(SUPER_OU_ID, Boolean.TRUE)).thenReturn(superOu);
 		Mockito.when(orgUnitServicesMock.findOrgUnitById(OU_ID, Boolean.TRUE)).thenReturn(ou);
 		Mockito.when(orgUnitServicesMock.findOrgUnitById(OTHER_OU_ID, Boolean.TRUE)).thenReturn(otherOu);
-		Mockito.when(orgUnitServicesMock.obtainRootOrgUnits()).thenReturn(new HashSet<IAuthorizableOrgUnit>(Arrays.asList(rootOu)));
+		Mockito.when(orgUnitServicesMock.obtainRootOrgUnits()).thenReturn(new HashSet<IOrganizationalUnit>(Arrays.asList(rootOu)));
 		Mockito.when(userServicesMock.findTechnicalUserById(TECH_USER_ID)).thenReturn(techUser);
 	}
 

@@ -1,6 +1,6 @@
 package org.openur.module.persistence.mapper.rdbms;
 
-import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
+import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 import org.openur.module.persistence.rdbms.entity.POrganizationalUnit;
 
 /**
@@ -10,7 +10,7 @@ import org.openur.module.persistence.rdbms.entity.POrganizationalUnit;
  *
  * @param <O> placeholder for orgUnit-domain-object.
  */
-public interface IOrganizationalUnitMapper<O extends IAuthorizableOrgUnit>
+public interface IOrganizationalUnitMapper<O extends IOrganizationalUnit>
 	extends IEntityDomainObjectMapper<POrganizationalUnit, O>
 {
 	/**

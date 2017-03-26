@@ -4,6 +4,7 @@ import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.openur.module.domain.security.authorization.IPermission;
 import org.openur.module.domain.userstructure.IUserStructureBase;
 import org.openur.module.domain.userstructure.person.IPerson;
 
@@ -123,5 +124,25 @@ public interface IOrganizationalUnit
 														.toComparison();
 
     return comparison;
+	}
+
+	/**
+	 * indicates if a person has a certain permission in an app.
+	 * 
+	 * @param person : the person for whom the permission is used.
+	 * @param permission : the permission (incl. the app) the person should have.
+	 * 
+	 * @return the person has the permission.
+	 */
+	default boolean hasPermission(IPerson person, IPermission permission)
+	{
+		IOrgUnitMember member = findMemberByPerson(person);
+		
+		if (member == null)
+		{
+			return false;
+		}
+		
+		return member.hasPermission(permission);
 	}
 }

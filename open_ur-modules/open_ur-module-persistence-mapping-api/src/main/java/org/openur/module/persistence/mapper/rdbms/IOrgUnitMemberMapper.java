@@ -1,6 +1,6 @@
 package org.openur.module.persistence.mapper.rdbms;
 
-import org.openur.module.domain.security.authorization.IAuthorizableMember;
+import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
 import org.openur.module.persistence.rdbms.entity.POrgUnitMember;
 import org.openur.module.persistence.rdbms.entity.POrganizationalUnit;
 
@@ -11,7 +11,7 @@ import org.openur.module.persistence.rdbms.entity.POrganizationalUnit;
  * 
  * @param <M> generic palceholder for domain-object-type.
  */
-public interface IOrgUnitMemberMapper<M extends IAuthorizableMember>
+public interface IOrgUnitMemberMapper<M extends IOrgUnitMember>
 {
 	/**
 	 * map domain-object plus corresponding org-unit-entity on corresponding org-unit-member-entity.

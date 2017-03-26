@@ -7,7 +7,7 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.Validate;
-import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
+import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 import org.openur.module.persistence.dao.IOrgUnitDao;
 
 public class OrgUnitServicesImpl
@@ -17,11 +17,11 @@ public class OrgUnitServicesImpl
 	private IOrgUnitDao orgUnitDao;
 	
 	@Override
-	public IAuthorizableOrgUnit findOrgUnitById(String orgUnitId, Boolean inclMembersRoles)
+	public IOrganizationalUnit findOrgUnitById(String orgUnitId, Boolean inclMembersRoles)
 	{
 		Validate.notEmpty(orgUnitId, "org-unit-id must not be empty!");
 		
-		IAuthorizableOrgUnit ou = null;
+		IOrganizationalUnit ou = null;
 		
 		if (inclMembersRoles)
 		{
@@ -35,11 +35,11 @@ public class OrgUnitServicesImpl
 	}
 
 	@Override
-	public IAuthorizableOrgUnit findOrgUnitByNumber(String orgUnitNumber, Boolean inclMembersRoles)
+	public IOrganizationalUnit findOrgUnitByNumber(String orgUnitNumber, Boolean inclMembersRoles)
 	{
 		Validate.notEmpty(orgUnitNumber, "org-unit-number must not be empty!");		
 		
-		IAuthorizableOrgUnit ou = null;
+		IOrganizationalUnit ou = null;
 		
 		if (inclMembersRoles)
 		{
@@ -53,9 +53,9 @@ public class OrgUnitServicesImpl
 	}
 
 	@Override
-	public Set<IAuthorizableOrgUnit> obtainAllOrgUnits()
+	public Set<IOrganizationalUnit> obtainAllOrgUnits()
 	{
-		List<IAuthorizableOrgUnit> orgUnitList = orgUnitDao.obtainAllOrgUnits();
+		List<IOrganizationalUnit> orgUnitList = orgUnitDao.obtainAllOrgUnits();
 		
 		if (orgUnitList == null)
 		{
@@ -67,12 +67,12 @@ public class OrgUnitServicesImpl
 	}
 
 	@Override
-	public Set<IAuthorizableOrgUnit> obtainSubOrgUnitsForOrgUnit(String orgUnitId,
+	public Set<IOrganizationalUnit> obtainSubOrgUnitsForOrgUnit(String orgUnitId,
 		Boolean inclMembersRoles)
 	{
 		Validate.notEmpty(orgUnitId, "org-unit-id must not be empty!");		
 		
-		List<IAuthorizableOrgUnit> orgUnitList;
+		List<IOrganizationalUnit> orgUnitList;
 		
 		if (inclMembersRoles)
 		{
@@ -92,9 +92,9 @@ public class OrgUnitServicesImpl
 	}
 
 	@Override
-	public Set<IAuthorizableOrgUnit> obtainRootOrgUnits()
+	public Set<IOrganizationalUnit> obtainRootOrgUnits()
 	{
-		List<IAuthorizableOrgUnit> orgUnitList = orgUnitDao.obtainRootOrgUnits();
+		List<IOrganizationalUnit> orgUnitList = orgUnitDao.obtainRootOrgUnits();
 		
 		if (orgUnitList == null)
 		{

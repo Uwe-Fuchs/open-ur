@@ -4,9 +4,9 @@ import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.openur.module.domain.security.authorization.AuthorizableMember;
-import org.openur.module.domain.security.authorization.AuthorizableMember.AuthorizableMemberBuilder;
 import org.openur.module.domain.security.authorization.OpenURRole;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitMember.OrgUnitMemberBuilder;
 import org.openur.module.domain.userstructure.person.Person;
 
 import com.google.gson.JsonArray;
@@ -18,12 +18,12 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-public class AuthorizableMemberSerializer
+public class OrgUnitMemberSerializer
 	extends AbstractIdentifiableEntitySerializer
-	implements JsonDeserializer<AuthorizableMember>, JsonSerializer<AuthorizableMember>
+	implements JsonDeserializer<OrgUnitMember>, JsonSerializer<OrgUnitMember>
 {	
 	@Override
-	public JsonElement serialize(AuthorizableMember src, Type typeOfSrc, JsonSerializationContext context)
+	public JsonElement serialize(OrgUnitMember src, Type typeOfSrc, JsonSerializationContext context)
 	{
 		JsonObject jsonObject = new JsonObject();		
 		super.serialize(src, jsonObject, context);
@@ -40,7 +40,7 @@ public class AuthorizableMemberSerializer
 	}
 
 	@Override
-	public AuthorizableMember deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+	public OrgUnitMember deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 		throws JsonParseException
 	{
 		JsonObject jsonObject = json.getAsJsonObject();
@@ -49,7 +49,7 @@ public class AuthorizableMemberSerializer
 		JsonElement element = jsonObject.get("person");
 		Person person = context.deserialize(element.getAsJsonObject(), Person.class);
 		
-		AuthorizableMemberBuilder builder = new AuthorizableMemberBuilder(person, orgUnitId);
+		OrgUnitMemberBuilder builder = new OrgUnitMemberBuilder(person, orgUnitId);
 		super.deserialize(jsonObject, builder);
 		
 		JsonArray rolesArray = jsonObject.get("roles").getAsJsonArray();

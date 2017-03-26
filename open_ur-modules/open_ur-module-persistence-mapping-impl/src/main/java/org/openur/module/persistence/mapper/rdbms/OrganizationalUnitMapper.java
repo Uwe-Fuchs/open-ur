@@ -5,12 +5,12 @@ import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.openur.module.domain.security.authorization.AuthorizableMember;
-import org.openur.module.domain.security.authorization.AuthorizableMember.AuthorizableMemberBuilder;
-import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
-import org.openur.module.domain.security.authorization.AuthorizableOrgUnitBuilder;
 import org.openur.module.domain.security.authorization.OpenURRole;
 import org.openur.module.domain.userstructure.EMailAddress;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitFull;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitFullBuilder;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitMember.OrgUnitMemberBuilder;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.persistence.rdbms.entity.POrgUnitMember;
 import org.openur.module.persistence.rdbms.entity.POrganizationalUnit;
@@ -19,7 +19,7 @@ import org.openur.module.persistence.rdbms.entity.PRole;
 import org.openur.module.util.processing.DefaultsUtil;
 
 public class OrganizationalUnitMapper
-	extends UserStructureBaseMapper implements IOrganizationalUnitMapper<AuthorizableOrgUnit>
+	extends UserStructureBaseMapper implements IOrganizationalUnitMapper<OrgUnitFull>
 {
 	@Inject
 	private AddressMapper addressMapper;
@@ -28,7 +28,7 @@ public class OrganizationalUnitMapper
 	private OrgUnitMemberMapper orgUnitMemberMapper;
 	
 	@Override
-	public POrganizationalUnit mapFromDomainObject(AuthorizableOrgUnit domainObject)
+	public POrganizationalUnit mapFromDomainObject(OrgUnitFull domainObject)
 	{
 		POrganizationalUnit pRootOu = null;
 		POrganizationalUnit pSuperOu = null;
@@ -43,7 +43,7 @@ public class OrganizationalUnitMapper
 	}
 	
 	POrganizationalUnit mapFromDomainObject(
-		AuthorizableOrgUnit immutable, POrganizationalUnit rootOu,	POrganizationalUnit superOu)
+		OrgUnitFull immutable, POrganizationalUnit rootOu,	POrganizationalUnit superOu)
 	{
 		POrganizationalUnit persistable = new POrganizationalUnit(immutable.getOrgUnitNumber(), immutable.getName());
 
@@ -63,23 +63,23 @@ public class OrganizationalUnitMapper
 		return persistable;
 	}
 	
-	POrganizationalUnit mapRootOuFromDomainObject(AuthorizableOrgUnit rootOu)
+	POrganizationalUnit mapRootOuFromDomainObject(OrgUnitFull rootOu)
 	{
 		return mapFromDomainObject(rootOu, null, null);
 	}
 	
-	POrganizationalUnit mapSuperOuFromDomainObject(AuthorizableOrgUnit superOu, POrganizationalUnit pRootOu)
+	POrganizationalUnit mapSuperOuFromDomainObject(OrgUnitFull superOu, POrganizationalUnit pRootOu)
 	{
 		return mapFromDomainObject(superOu, pRootOu, pRootOu);
 	}
 	
 	@Override
-	public AuthorizableOrgUnit mapFromEntity(POrganizationalUnit entity, boolean inclMembers, boolean inclRoles)
+	public OrgUnitFull mapFromEntity(POrganizationalUnit entity, boolean inclMembers, boolean inclRoles)
 	{
 		Validate.isTrue(!(!inclMembers && inclRoles), "You can't get the roles without the members!");
 		
-		AuthorizableOrgUnit rootOu = null;
-		AuthorizableOrgUnit superOu = null;
+		OrgUnitFull rootOu = null;
+		OrgUnitFull superOu = null;
 		
 		if (entity.getRootOu() != null)
 		{
@@ -98,18 +98,18 @@ public class OrganizationalUnitMapper
 	}
 
 	@Override
-	public AuthorizableOrgUnit mapFromEntity(POrganizationalUnit entity)
+	public OrgUnitFull mapFromEntity(POrganizationalUnit entity)
 	{
 		return mapFromEntity(entity, true, true);
 	}
 
-	AuthorizableOrgUnit mapFromEntity(
-		POrganizationalUnit persistable, AuthorizableOrgUnit rootOu, AuthorizableOrgUnit superOu, boolean inclMembers, boolean inclRoles)
+	OrgUnitFull mapFromEntity(
+		POrganizationalUnit persistable, OrgUnitFull rootOu, OrgUnitFull superOu, boolean inclMembers, boolean inclRoles)
 	{		
 		final String IDENTIFIER = persistable.getIdentifier() != null ? 
 			persistable.getIdentifier() : DefaultsUtil.getRandomIdentifierByDefaultMechanism();
 
-		AuthorizableOrgUnitBuilder immutableBuilder = new AuthorizableOrgUnitBuilder(persistable.getOrgUnitNumber(), persistable.getName());		
+		OrgUnitFullBuilder immutableBuilder = new OrgUnitFullBuilder(persistable.getOrgUnitNumber(), persistable.getName());		
 		immutableBuilder = super.mapFromEntity(immutableBuilder, persistable);
 
 		if (rootOu != null)
@@ -140,17 +140,17 @@ public class OrganizationalUnitMapper
 		return immutableBuilder.build();
 	}
 	
-	AuthorizableOrgUnit mapRootOuFromEntity(POrganizationalUnit pRootOu)
+	OrgUnitFull mapRootOuFromEntity(POrganizationalUnit pRootOu)
 	{
 		return mapFromEntity(pRootOu, null, null, true, true);
 	}
 	
-	AuthorizableOrgUnit mapSuperOuFromEntity(POrganizationalUnit pSuperOu, AuthorizableOrgUnit rootOu)
+	OrgUnitFull mapSuperOuFromEntity(POrganizationalUnit pSuperOu, OrgUnitFull rootOu)
 	{
 		return mapFromEntity(pSuperOu, rootOu, rootOu, true, true);
 	}
 	
-	public static class OrgUnitMemberMapper implements IOrgUnitMemberMapper<AuthorizableMember>
+	public static class OrgUnitMemberMapper implements IOrgUnitMemberMapper<OrgUnitMember>
 	{		
 		@Inject
 		private PersonMapper personMapper;
@@ -159,7 +159,7 @@ public class OrganizationalUnitMapper
 		private RoleMapper roleMapper;
 		
 		@Override
-		public POrgUnitMember mapFromDomainObject(AuthorizableMember domainObject, POrganizationalUnit pOrgUnit)
+		public POrgUnitMember mapFromDomainObject(OrgUnitMember domainObject, POrganizationalUnit pOrgUnit)
 		{
 			PPerson pPerson = personMapper.mapFromDomainObject(domainObject.getPerson());
 			POrgUnitMember pMember = new POrgUnitMember(pOrgUnit, pPerson);
@@ -173,10 +173,10 @@ public class OrganizationalUnitMapper
 		}
 		
 		@Override
-		public AuthorizableMember mapFromEntity(POrgUnitMember entity, String orgUnitId, boolean inclRoles)
+		public OrgUnitMember mapFromEntity(POrgUnitMember entity, String orgUnitId, boolean inclRoles)
 		{
 			Person person = personMapper.mapFromEntity(entity.getPerson());
-			AuthorizableMemberBuilder immutableBuilder = new AuthorizableMemberBuilder(person, orgUnitId);
+			OrgUnitMemberBuilder immutableBuilder = new OrgUnitMemberBuilder(person, orgUnitId);
 			immutableBuilder.creationDate(entity.getCreationDate());
 			immutableBuilder.lastModifiedDate(entity.getLastModifiedDate());
 			
@@ -197,7 +197,7 @@ public class OrganizationalUnitMapper
 		}
 	}
 
-	public static boolean domainObjectEqualsToEntity(AuthorizableOrgUnit domainObject, POrganizationalUnit entity)
+	public static boolean domainObjectEqualsToEntity(OrgUnitFull domainObject, POrganizationalUnit entity)
 	{
 		if (!UserStructureBaseMapper.domainObjectEqualsToEntity(domainObject, entity))
 		{
@@ -224,7 +224,7 @@ public class OrganizationalUnitMapper
 	
 		for (POrgUnitMember pMember : entity.getMembers())
 		{
-			AuthorizableMember member = findMemberInDomianObject(pMember, domainObject);
+			OrgUnitMember member = findMemberInDomianObject(pMember, domainObject);
 	
 			if (member == null || !OrganizationalUnitMapper.domainObjectMemberEqualsToEntityMember(member, pMember))
 			{
@@ -241,7 +241,7 @@ public class OrganizationalUnitMapper
 			.isEquals();
 	}
 	
-	public static boolean domainObjectMemberEqualsToEntityMember(AuthorizableMember domainObjectMember, POrgUnitMember entityMember)
+	public static boolean domainObjectMemberEqualsToEntityMember(OrgUnitMember domainObjectMember, POrgUnitMember entityMember)
 	{
 		if (!AbstractEntityMapper.domainObjectEqualsToEntity(domainObjectMember, entityMember))
 		{
@@ -266,9 +266,9 @@ public class OrganizationalUnitMapper
 		return true;
 	}
 
-	private static AuthorizableMember findMemberInDomianObject(POrgUnitMember pMember, AuthorizableOrgUnit openUrOrgUnit)
+	private static OrgUnitMember findMemberInDomianObject(POrgUnitMember pMember, OrgUnitFull openUrOrgUnit)
 	{
-		for (AuthorizableMember openUrMember : openUrOrgUnit.getMembers())
+		for (OrgUnitMember openUrMember : openUrOrgUnit.getMembers())
 		{
 			if (PersonMapper.domainObjectEqualsToEntity(openUrMember.getPerson(), pMember.getPerson()))
 			{
@@ -279,7 +279,7 @@ public class OrganizationalUnitMapper
 		return null;
 	}
 	
-	private static OpenURRole findRoleInDomainObjectMember(PRole pRole, AuthorizableMember openUrMember)
+	private static OpenURRole findRoleInDomainObjectMember(PRole pRole, OrgUnitMember openUrMember)
 	{
 		for (OpenURRole openUrRole : openUrMember.getRoles())
 		{

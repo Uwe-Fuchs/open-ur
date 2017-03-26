@@ -4,21 +4,21 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
+import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 import org.openur.module.util.data.Status;
 
-public class MyAuthorizableOrgUnit
-	implements IAuthorizableOrgUnit
+public class MyOrgUnit
+	implements IOrganizationalUnit
 {
 	private static final long serialVersionUID = 1L;
 	
 	private String identifier;
 	private String number;
-	private MyAuthorizableOrgUnit superOrgUnit;
-	private MyAuthorizableOrgUnit rootOrgUnit;
-	private Set<MyAuthorizableMember> members = new HashSet<>();
+	private MyOrgUnit superOrgUnit;
+	private MyOrgUnit rootOrgUnit;
+	private Set<MyOrgUnitMember> members = new HashSet<>();
 	
-	public MyAuthorizableOrgUnit(String identifier, String orgUnitNumber)
+	public MyOrgUnit(String identifier, String orgUnitNumber)
 	{
 		super();
 		
@@ -39,34 +39,34 @@ public class MyAuthorizableOrgUnit
 	}
 
 	@Override
-	public MyAuthorizableOrgUnit getSuperOrgUnit()
+	public MyOrgUnit getSuperOrgUnit()
 	{
 		return this.superOrgUnit;
 	}
 
-	public void setSuperOrgUnit(MyAuthorizableOrgUnit superOrgUnit)
+	public void setSuperOrgUnit(MyOrgUnit superOrgUnit)
 	{
 		this.superOrgUnit = superOrgUnit;
 	}
 
 	@Override
-	public MyAuthorizableOrgUnit getRootOrgUnit()
+	public MyOrgUnit getRootOrgUnit()
 	{
 		return this.rootOrgUnit;
 	}
 
-	public void setRootOrgUnit(MyAuthorizableOrgUnit rootOrgUnit)
+	public void setRootOrgUnit(MyOrgUnit rootOrgUnit)
 	{
 		this.rootOrgUnit = rootOrgUnit;
 	}
 
 	@Override
-	public Set<MyAuthorizableMember> getMembers()
+	public Set<MyOrgUnitMember> getMembers()
 	{
 		return this.members;
 	}
 
-	public void addMember(MyAuthorizableMember member)
+	public void addMember(MyOrgUnitMember member)
 	{
 		this.members.add(member);
 	}

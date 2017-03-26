@@ -11,13 +11,13 @@ import org.openur.module.domain.userstructure.InconsistentHierarchyException;
 import org.openur.module.domain.userstructure.UserStructureBaseBuilder;
 import org.openur.module.util.exception.OpenURRuntimeException;
 
-public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>>
-	extends UserStructureBaseBuilder<T>
+public class OrgUnitFullBuilder
+	extends UserStructureBaseBuilder<OrgUnitFullBuilder>
 {
 	// properties:
-	private AbstractOrgUnit superOrgUnit = null;
-	private AbstractOrgUnit rootOrgUnit = null;
-	protected Set<AbstractOrgUnitMember> members = new HashSet<>();
+	private OrgUnitFull superOrgUnit = null;
+	private OrgUnitFull rootOrgUnit = null;
+	private Set<OrgUnitMember> members = new HashSet<>();
 	private String name = null;
 	private String shortName = null;
 	private String description = null;
@@ -25,37 +25,34 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 	private EMailAddress emailAddress = null;
 
 	// constructors:
-	protected AbstractOrgUnitBuilder(String orgUnitNumber, String name)
+	public OrgUnitFullBuilder(String orgUnitNumber, String name)
 	{
 		super(orgUnitNumber);
 
 		this.name = name;
 	}
 
-	public AbstractOrgUnitBuilder()
+	public OrgUnitFullBuilder()
 	{
 		super();
 	}
 
 	// builder-methods:
-	@SuppressWarnings("unchecked")
-	public T orgUnitNumber(String orgUnitNumber)
+	public OrgUnitFullBuilder orgUnitNumber(String orgUnitNumber)
 	{
 		super.number(orgUnitNumber);
 		
-		return (T) this;
+		return (OrgUnitFullBuilder) this;
 	}
 
-	@SuppressWarnings("unchecked")
-	public T name(String name)
+	public OrgUnitFullBuilder name(String name)
 	{
 		this.name = name;
 		
-		return (T) this;
+		return (OrgUnitFullBuilder) this;
 	}
 	
-	@SuppressWarnings("unchecked")
-	protected T superOrgUnit(AbstractOrgUnit superOrgUnit)
+	public OrgUnitFullBuilder superOrgUnit(OrgUnitFull superOrgUnit)
 	{
 		Validate.notNull(superOrgUnit, "super-org-unit must not be null!");
 		
@@ -67,34 +64,31 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 		
 		this.superOrgUnit = superOrgUnit;
 		
-		return (T) this;
+		return this;
 	}
 	
-	@SuppressWarnings("unchecked")
-	protected T rootOrgUnit(AbstractOrgUnit rootOrgUnit)
+	public OrgUnitFullBuilder rootOrgUnit(OrgUnitFull rootOrgUnit)
 	{
 		Validate.notNull(rootOrgUnit, "root-orgunit must not be null!");
 		
 		this.rootOrgUnit = rootOrgUnit;
 		
-		return (T) this;
+		return this;
 	}
 
-	@SuppressWarnings("unchecked")
-	protected T members(Collection<? extends AbstractOrgUnitMember> members)
+	public OrgUnitFullBuilder members(Collection<OrgUnitMember> members)
 	{
 		Validate.notNull(members, "members-list must not be null!");
 		
-		for (AbstractOrgUnitMember m : members)
+		for (OrgUnitMember m : members)
 		{
 			addMember(m);
 		}
 		
-		return (T) this;
+		return this;
 	}
 	
-	@SuppressWarnings("unchecked")
-	protected T addMember(AbstractOrgUnitMember member)	
+	public OrgUnitFullBuilder addMember(OrgUnitMember member)	
 	{
 		Validate.notNull(member, "member must not be null!");
 		
@@ -105,49 +99,49 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 		
 		this.members.add(member);
 		
-		return (T) this;
+		return this;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public T shortName(String shortName)
+	public OrgUnitFullBuilder shortName(String shortName)
 	{
-		this.shortName = shortName;		
-		return (T) this;
+		this.shortName = shortName;	
+		
+		return this;
 	}
 
-	@SuppressWarnings("unchecked")
-	public T description(String description)
+	public OrgUnitFullBuilder description(String description)
 	{
 		this.description = description;
-		return (T) this;
+		
+		return this;
 	}
 
-	@SuppressWarnings("unchecked")
-	public T address(Address address)
+	public OrgUnitFullBuilder address(Address address)
 	{
 		this.address = address;
-		return (T) this;
+		
+		return this;
 	}
 
-	@SuppressWarnings("unchecked")
-	public T emailAddress(EMailAddress emailAddress)
+	public OrgUnitFullBuilder emailAddress(EMailAddress emailAddress)
 	{
 		this.emailAddress = emailAddress;
-		return (T) this;
+		
+		return this;
 	}
 
 	// accessors:
-	AbstractOrgUnit getRootOrgUnit()
+	OrgUnitFull getRootOrgUnit()
 	{
 		return rootOrgUnit;
 	}
 
-	AbstractOrgUnit getSuperOrgUnit()
+	OrgUnitFull getSuperOrgUnit()
 	{
 		return superOrgUnit;
 	}
 
-	Set<? extends AbstractOrgUnitMember> getMembers()
+	Set<? extends OrgUnitMember> getMembers()
 	{
 		return members;
 	}
@@ -178,7 +172,7 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 	}
 	
 	// builder:
-	protected AbstractOrgUnit build()
+	public OrgUnitFull build()
 	{
 		super.build();
 		
@@ -190,6 +184,6 @@ public abstract class AbstractOrgUnitBuilder<T extends AbstractOrgUnitBuilder<T>
 				"Org-Unit is not root, hence a super-org-unit must be set!");
 		}
 		
-		return null;
+		return new OrgUnitFull(this);
 	}
 }

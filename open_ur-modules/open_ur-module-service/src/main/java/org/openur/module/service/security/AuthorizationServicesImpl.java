@@ -5,9 +5,9 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.Validate;
-import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.IAuthorizableTechUser;
 import org.openur.module.domain.security.authorization.IPermission;
+import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 import org.openur.module.domain.userstructure.person.IPerson;
 import org.openur.module.service.securitydomain.ISecurityDomainServices;
 import org.openur.module.service.userstructure.IOrgUnitServices;
@@ -26,10 +26,10 @@ public class AuthorizationServicesImpl
 	@Inject
 	private ISecurityDomainServices securityDomainServices;
 
-	private boolean internalHasPermission(IPerson person, IAuthorizableOrgUnit orgUnit, IPermission permission)
+	private boolean internalHasPermission(IPerson person, IOrganizationalUnit orgUnit, IPermission permission)
 	{
 		boolean hasPerm = false;
-		IAuthorizableOrgUnit ouTmp = orgUnit;
+		IOrganizationalUnit ouTmp = orgUnit;
 
 		while (!hasPerm && ouTmp != null)
 		{
@@ -40,7 +40,7 @@ public class AuthorizationServicesImpl
 		return hasPerm;
 	}
 
-	private boolean lookupDomainObjectsAndCheckIfUserHasPermission(String userId, String permissionText, String applicationName, IAuthorizableOrgUnit orgUnit)
+	private boolean lookupDomainObjectsAndCheckIfUserHasPermission(String userId, String permissionText, String applicationName, IOrganizationalUnit orgUnit)
 		throws EntityNotFoundException
 	{
 		Validate.notEmpty(userId, "user-id must not be empty!");
@@ -83,7 +83,7 @@ public class AuthorizationServicesImpl
 	{
 		Validate.notEmpty(orgUnitId, "org-unit-id must not be empty!");
 
-		IAuthorizableOrgUnit orgUnit = orgUnitServices.findOrgUnitById(orgUnitId, Boolean.TRUE);
+		IOrganizationalUnit orgUnit = orgUnitServices.findOrgUnitById(orgUnitId, Boolean.TRUE);
 
 		if (orgUnit == null)
 		{
@@ -97,12 +97,12 @@ public class AuthorizationServicesImpl
 	public Boolean hasPermission(String personId, String permissionText, String applicationName)
 		throws EntityNotFoundException
 	{
-		Set<IAuthorizableOrgUnit> rootOus = orgUnitServices.obtainRootOrgUnits();
+		Set<IOrganizationalUnit> rootOus = orgUnitServices.obtainRootOrgUnits();
 		Validate.validState(!rootOus.isEmpty(), "There must be at least one root organizational-unit within the system!");
 
 		// take first root-ou, for system-wide permissions are placed (redundantly)
 		// in ALL root-ou's:
-		IAuthorizableOrgUnit orgUnit = rootOus.stream().findFirst().get();
+		IOrganizationalUnit orgUnit = rootOus.stream().findFirst().get();
 
 		return lookupDomainObjectsAndCheckIfUserHasPermission(personId, permissionText, applicationName, orgUnit);
 	}

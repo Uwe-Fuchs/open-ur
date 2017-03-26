@@ -8,10 +8,6 @@ import java.util.UUID;
 
 import org.openur.module.domain.application.OpenURApplication;
 import org.openur.module.domain.application.OpenURApplicationBuilder;
-import org.openur.module.domain.security.authorization.AuthorizableMember;
-import org.openur.module.domain.security.authorization.AuthorizableMember.AuthorizableMemberBuilder;
-import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
-import org.openur.module.domain.security.authorization.AuthorizableOrgUnitBuilder;
 import org.openur.module.domain.security.authorization.AuthorizableTechUser;
 import org.openur.module.domain.security.authorization.AuthorizableTechUserBuilder;
 import org.openur.module.domain.security.authorization.OpenURPermission;
@@ -22,6 +18,10 @@ import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.Address.AddressBuilder;
 import org.openur.module.domain.userstructure.Country;
 import org.openur.module.domain.userstructure.EMailAddress;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitFull;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitFullBuilder;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitMember.OrgUnitMemberBuilder;
 import org.openur.module.domain.userstructure.person.Name;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.domain.userstructure.person.PersonBuilder;
@@ -78,18 +78,18 @@ public class TestObjectContainer
 	public static final String ORG_UNIT_NUMBER_A = "aaa";
 	public static final String ORG_UNIT_NUMBER_B = "bbb";
 	public static final String ORG_UNIT_NUMBER_C = "ccc";
-	public static final AuthorizableOrgUnit ROOT_OU;
-	public static final AuthorizableOrgUnit SUPER_OU_1;
-	public static final AuthorizableOrgUnit SUPER_OU_2;
-	public static final AuthorizableOrgUnit ORG_UNIT_A;
-	public static final AuthorizableOrgUnit ORG_UNIT_A_WITHOUT_MEMBERS;
-	public static final AuthorizableOrgUnit ORG_UNIT_B;
-	public static final AuthorizableOrgUnit ORG_UNIT_C;
+	public static final OrgUnitFull ROOT_OU;
+	public static final OrgUnitFull SUPER_OU_1;
+	public static final OrgUnitFull SUPER_OU_2;
+	public static final OrgUnitFull ORG_UNIT_A;
+	public static final OrgUnitFull ORG_UNIT_A_WITHOUT_MEMBERS;
+	public static final OrgUnitFull ORG_UNIT_B;
+	public static final OrgUnitFull ORG_UNIT_C;
 	
-	public static final AuthorizableMember MEMBER_1_A;
-	public static final AuthorizableMember MEMBER_2_A;
-	public static final AuthorizableMember MEMBER_1_B;
-	public static final AuthorizableMember MEMBER_3_B;
+	public static final OrgUnitMember MEMBER_1_A;
+	public static final OrgUnitMember MEMBER_2_A;
+	public static final OrgUnitMember MEMBER_1_B;
+	public static final OrgUnitMember MEMBER_3_B;
 
 	public static final String TECH_USER_UUID_1 = UUID.randomUUID().toString();
 	public static final String TECH_USER_UUID_2 = UUID.randomUUID().toString();
@@ -253,17 +253,17 @@ public class TestObjectContainer
 				.poBox("poBox_company")
 				.build();
 		
-		ROOT_OU = new AuthorizableOrgUnitBuilder(ROOT_OU_NUMBER, "rootOu")
+		ROOT_OU = new OrgUnitFullBuilder(ROOT_OU_NUMBER, "rootOu")
 				.identifier(ROOT_OU_UUID)
 				.shortName("short_name_root_ou")
 				.address(address)
 				.build();
 		
-		AuthorizableMember super_ou_1_member_3 = new AuthorizableMemberBuilder(PERSON_3, SUPER_OU_UUID_1)
+		OrgUnitMember super_ou_1_member_3 = new OrgUnitMemberBuilder(PERSON_3, SUPER_OU_UUID_1)
 				.roles(Arrays.asList(ROLE_Z))
 				.build();	
 		
-		SUPER_OU_1 = new AuthorizableOrgUnitBuilder(SUPER_OU_NUMBER_1, "superOu_1")
+		SUPER_OU_1 = new OrgUnitFullBuilder(SUPER_OU_NUMBER_1, "superOu_1")
 				.identifier(SUPER_OU_UUID_1)
 				.shortName("short_name_sup_ou_1")
 				.rootOrgUnit(ROOT_OU)
@@ -271,7 +271,7 @@ public class TestObjectContainer
 				.addMember(super_ou_1_member_3)
 				.build();
 		
-		SUPER_OU_2 = new AuthorizableOrgUnitBuilder(SUPER_OU_NUMBER_2, "superOu_2")
+		SUPER_OU_2 = new OrgUnitFullBuilder(SUPER_OU_NUMBER_2, "superOu_2")
 				.identifier(SUPER_OU_UUID_2)
 				.shortName("short_name_sup_ou_2")
 				.rootOrgUnit(ROOT_OU)
@@ -279,14 +279,14 @@ public class TestObjectContainer
 				.build();
 		
 		// org-unit 1:
-		MEMBER_1_A = new AuthorizableMemberBuilder(PERSON_1, ORG_UNIT_UUID_A)
+		MEMBER_1_A = new OrgUnitMemberBuilder(PERSON_1, ORG_UNIT_UUID_A)
 				.roles(Arrays.asList(ROLE_X))
 				.build();	
-		MEMBER_2_A = new AuthorizableMemberBuilder(PERSON_2, ORG_UNIT_UUID_A)
+		MEMBER_2_A = new OrgUnitMemberBuilder(PERSON_2, ORG_UNIT_UUID_A)
 				.roles(Arrays.asList(ROLE_Y))
 				.build();
 		
-		ORG_UNIT_A = new AuthorizableOrgUnitBuilder(ORG_UNIT_NUMBER_A, "name_org_unit_A")
+		ORG_UNIT_A = new OrgUnitFullBuilder(ORG_UNIT_NUMBER_A, "name_org_unit_A")
 				.identifier(ORG_UNIT_UUID_A)
 				.creationDate(LocalDateTime.now())
 				.status(Status.ACTIVE)
@@ -294,11 +294,11 @@ public class TestObjectContainer
 				.description("description_ou_A")
 				.rootOrgUnit(ROOT_OU)
 				.superOrgUnit(SUPER_OU_1)
-				.authorizableMembers(Arrays.asList(MEMBER_1_A, MEMBER_2_A))
+				.members(Arrays.asList(MEMBER_1_A, MEMBER_2_A))
 				.emailAddress(EMailAddress.create("org_unit_A@company.com"))
 				.build();
 		
-		ORG_UNIT_A_WITHOUT_MEMBERS = new AuthorizableOrgUnitBuilder(ORG_UNIT_NUMBER_A, "name_org_unit_A_wm")
+		ORG_UNIT_A_WITHOUT_MEMBERS = new OrgUnitFullBuilder(ORG_UNIT_NUMBER_A, "name_org_unit_A_wm")
 				.identifier(ORG_UNIT_UUID_A)
 				.creationDate(LocalDateTime.now())
 				.status(Status.ACTIVE)
@@ -310,14 +310,14 @@ public class TestObjectContainer
 				.build();
 		
 		// org-unit 2:
-		MEMBER_1_B = new AuthorizableMemberBuilder(PERSON_1, ORG_UNIT_UUID_B)
+		MEMBER_1_B = new OrgUnitMemberBuilder(PERSON_1, ORG_UNIT_UUID_B)
 				.roles(Arrays.asList(ROLE_Y))
 				.build();	
-		MEMBER_3_B = new AuthorizableMemberBuilder(PERSON_3, ORG_UNIT_UUID_B)
+		MEMBER_3_B = new OrgUnitMemberBuilder(PERSON_3, ORG_UNIT_UUID_B)
 				.roles(Arrays.asList(ROLE_Z))
 				.build();
 		
-		ORG_UNIT_B = new AuthorizableOrgUnitBuilder(ORG_UNIT_NUMBER_B, "name_org_unit_B")
+		ORG_UNIT_B = new OrgUnitFullBuilder(ORG_UNIT_NUMBER_B, "name_org_unit_B")
 				.identifier(ORG_UNIT_UUID_B)
 				.creationDate(LocalDateTime.now())
 				.status(Status.ACTIVE)
@@ -325,12 +325,12 @@ public class TestObjectContainer
 				.description("description_ou_B")
 				.rootOrgUnit(ROOT_OU)
 				.superOrgUnit(SUPER_OU_1)
-				.authorizableMembers(Arrays.asList(MEMBER_1_B, MEMBER_3_B))
+				.members(Arrays.asList(MEMBER_1_B, MEMBER_3_B))
 				.emailAddress(EMailAddress.create("org_unit_B@company.com"))
 				.build();
 		
 		// org-unit 3:
-		ORG_UNIT_C = new AuthorizableOrgUnitBuilder(ORG_UNIT_NUMBER_C, "name_org_unit_C")
+		ORG_UNIT_C = new OrgUnitFullBuilder(ORG_UNIT_NUMBER_C, "name_org_unit_C")
 				.identifier(ORG_UNIT_UUID_C)
 				.status(Status.INACTIVE)
 				.shortName("short_name_ou_C")

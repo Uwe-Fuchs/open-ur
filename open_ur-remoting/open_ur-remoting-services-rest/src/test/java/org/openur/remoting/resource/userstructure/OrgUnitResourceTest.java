@@ -1,7 +1,14 @@
 package org.openur.remoting.resource.userstructure;
 
-import static org.junit.Assert.*;
-import static org.openur.remoting.resource.userstructure.OrgUnitResource.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.openur.remoting.resource.userstructure.OrgUnitResource.ALL_ORGUNITS_RESOURCE_PATH;
+import static org.openur.remoting.resource.userstructure.OrgUnitResource.ALL_ROOT_ORGUNITS_RESOURCE_PATH;
+import static org.openur.remoting.resource.userstructure.OrgUnitResource.ORGUNIT_PER_ID_RESOURCE_PATH;
+import static org.openur.remoting.resource.userstructure.OrgUnitResource.ORGUNIT_PER_NUMBER_RESOURCE_PATH;
+import static org.openur.remoting.resource.userstructure.OrgUnitResource.ORGUNIT_RESOURCE_PATH;
+import static org.openur.remoting.resource.userstructure.OrgUnitResource.SUB_ORGUNITS_RESOURCE_PATH;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -18,9 +25,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
-import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitFull;
 import org.openur.module.domain.utils.common.DomainObjectHelper;
-import org.openur.module.domain.utils.compare.AuthorizableOrgUnitComparer;
+import org.openur.module.domain.utils.compare.OrgUnitComparer;
 import org.openur.module.service.userstructure.IOrgUnitServices;
 import org.openur.remoting.resource.AbstractResourceTest;
 import org.openur.remoting.xchange.rest.providers.json.IdentifiableEntitySetProvider;
@@ -68,11 +75,11 @@ public class OrgUnitResourceTest
 	{
 		Mockito.when(orgUnitServicesMock.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_A, Boolean.TRUE)).thenReturn(TestObjectContainer.ORG_UNIT_A);
 		
-		AuthorizableOrgUnit o = getResourceClient().performRestCall_GET(
+		OrgUnitFull o = getResourceClient().performRestCall_GET(
 				ORGUNIT_PER_ID_RESOURCE_PATH + TestObjectContainer.ORG_UNIT_UUID_A 
-				+ "?inclMembers=true", MediaType.APPLICATION_JSON, AuthorizableOrgUnit.class);
+				+ "?inclMembers=true", MediaType.APPLICATION_JSON, OrgUnitFull.class);
 
-		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A, o));
+		assertTrue(new OrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A, o));
 		assertFalse(o.getMembers().isEmpty());
 	}
 
@@ -82,10 +89,10 @@ public class OrgUnitResourceTest
 		Mockito.when(orgUnitServicesMock.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_A, Boolean.FALSE))
 				.thenReturn(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS);
 		
-		AuthorizableOrgUnit o = getResourceClient().performRestCall_GET(
-				ORGUNIT_PER_ID_RESOURCE_PATH + TestObjectContainer.ORG_UNIT_UUID_A, MediaType.APPLICATION_JSON, AuthorizableOrgUnit.class);
+		OrgUnitFull o = getResourceClient().performRestCall_GET(
+				ORGUNIT_PER_ID_RESOURCE_PATH + TestObjectContainer.ORG_UNIT_UUID_A, MediaType.APPLICATION_JSON, OrgUnitFull.class);
 
-		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, o));
+		assertTrue(new OrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, o));
 		assertTrue(o.getMembers().isEmpty());		
 	}
 
@@ -94,11 +101,11 @@ public class OrgUnitResourceTest
 	{
 		Mockito.when(orgUnitServicesMock.findOrgUnitByNumber(TestObjectContainer.ORG_UNIT_NUMBER_A, Boolean.TRUE)).thenReturn(TestObjectContainer.ORG_UNIT_A);
 		
-		AuthorizableOrgUnit o = getResourceClient().performRestCall_GET(
+		OrgUnitFull o = getResourceClient().performRestCall_GET(
 				ORGUNIT_PER_NUMBER_RESOURCE_PATH + TestObjectContainer.ORG_UNIT_NUMBER_A 
-				+ "?inclMembers=true", MediaType.APPLICATION_JSON, AuthorizableOrgUnit.class);
+				+ "?inclMembers=true", MediaType.APPLICATION_JSON, OrgUnitFull.class);
 
-		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A, o));
+		assertTrue(new OrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A, o));
 		assertFalse(o.getMembers().isEmpty());
 	}
 
@@ -108,10 +115,10 @@ public class OrgUnitResourceTest
 		Mockito.when(orgUnitServicesMock.findOrgUnitByNumber(TestObjectContainer.ORG_UNIT_NUMBER_A, Boolean.FALSE))
 				.thenReturn(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS);
 		
-		AuthorizableOrgUnit o = getResourceClient().performRestCall_GET(
-				ORGUNIT_PER_NUMBER_RESOURCE_PATH + TestObjectContainer.ORG_UNIT_NUMBER_A, MediaType.APPLICATION_JSON, AuthorizableOrgUnit.class);
+		OrgUnitFull o = getResourceClient().performRestCall_GET(
+				ORGUNIT_PER_NUMBER_RESOURCE_PATH + TestObjectContainer.ORG_UNIT_NUMBER_A, MediaType.APPLICATION_JSON, OrgUnitFull.class);
 
-		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, o));
+		assertTrue(new OrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, o));
 		assertTrue(o.getMembers().isEmpty());						
 	}
 
@@ -121,18 +128,18 @@ public class OrgUnitResourceTest
 		Mockito.when(orgUnitServicesMock.obtainAllOrgUnits()).thenReturn(new HashSet<>(Arrays.asList(TestObjectContainer.ORG_UNIT_A, TestObjectContainer.ORG_UNIT_B, 
 				TestObjectContainer.ORG_UNIT_C)));
 		
-		Set<AuthorizableOrgUnit> resultSet = getResourceClient().performRestCall_GET(ALL_ORGUNITS_RESOURCE_PATH, MediaType.APPLICATION_JSON, 
-				new GenericType<Set<AuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
+		Set<OrgUnitFull> resultSet = getResourceClient().performRestCall_GET(ALL_ORGUNITS_RESOURCE_PATH, MediaType.APPLICATION_JSON, 
+				new GenericType<Set<OrgUnitFull>>(new ParameterizedTypeImpl(Set.class, OrgUnitFull.class)));
 
 		assertFalse(resultSet.isEmpty());
 		assertEquals(3, resultSet.size());
 		
-		AuthorizableOrgUnit p = DomainObjectHelper.findIdentifiableEntityInCollection(resultSet, TestObjectContainer.ORG_UNIT_UUID_A);
-		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A, p));
+		OrgUnitFull p = DomainObjectHelper.findIdentifiableEntityInCollection(resultSet, TestObjectContainer.ORG_UNIT_UUID_A);
+		assertTrue(new OrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A, p));
 		p = DomainObjectHelper.findIdentifiableEntityInCollection(resultSet, TestObjectContainer.ORG_UNIT_UUID_B);
-		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_B, p));
+		assertTrue(new OrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_B, p));
 		p = DomainObjectHelper.findIdentifiableEntityInCollection(resultSet, TestObjectContainer.ORG_UNIT_UUID_C);
-		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_C, p));
+		assertTrue(new OrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_C, p));
 	}
 
 	@Test
@@ -141,19 +148,19 @@ public class OrgUnitResourceTest
 		Mockito.when(orgUnitServicesMock.obtainSubOrgUnitsForOrgUnit(TestObjectContainer.SUPER_OU_UUID_1, Boolean.TRUE)).thenReturn(
 				new HashSet<>(Arrays.asList(TestObjectContainer.ORG_UNIT_A, TestObjectContainer.ORG_UNIT_B)));
 		
-		Set<AuthorizableOrgUnit> resultSet = getResourceClient().performRestCall_GET(
+		Set<OrgUnitFull> resultSet = getResourceClient().performRestCall_GET(
 				SUB_ORGUNITS_RESOURCE_PATH + TestObjectContainer.SUPER_OU_UUID_1 + "?inclMembers=true", MediaType.APPLICATION_JSON, 
-				new GenericType<Set<AuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
+				new GenericType<Set<OrgUnitFull>>(new ParameterizedTypeImpl(Set.class, OrgUnitFull.class)));
 
 		assertFalse(resultSet.isEmpty());
 		assertEquals(2, resultSet.size());
 		
-		AuthorizableOrgUnit p = DomainObjectHelper.findIdentifiableEntityInCollection(resultSet, TestObjectContainer.ORG_UNIT_UUID_A);
+		OrgUnitFull p = DomainObjectHelper.findIdentifiableEntityInCollection(resultSet, TestObjectContainer.ORG_UNIT_UUID_A);
 		assertFalse(p.getMembers().isEmpty());
-		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A, p));
+		assertTrue(new OrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A, p));
 		p = DomainObjectHelper.findIdentifiableEntityInCollection(resultSet, TestObjectContainer.ORG_UNIT_UUID_B);
 		assertFalse(p.getMembers().isEmpty());
-		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_B, p));
+		assertTrue(new OrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_B, p));
 	}
 
 	@Test
@@ -162,28 +169,28 @@ public class OrgUnitResourceTest
 		Mockito.when(orgUnitServicesMock.obtainSubOrgUnitsForOrgUnit(TestObjectContainer.SUPER_OU_UUID_1, Boolean.FALSE)).thenReturn(
 				new HashSet<>(Arrays.asList(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS)));
 		
-		Set<AuthorizableOrgUnit> resultSet = getResourceClient().performRestCall_GET(
+		Set<OrgUnitFull> resultSet = getResourceClient().performRestCall_GET(
 				SUB_ORGUNITS_RESOURCE_PATH + TestObjectContainer.SUPER_OU_UUID_1 + "?inclMembers=false", MediaType.APPLICATION_JSON, 
-				new GenericType<Set<AuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
+				new GenericType<Set<OrgUnitFull>>(new ParameterizedTypeImpl(Set.class, OrgUnitFull.class)));
 
 		assertFalse(resultSet.isEmpty());
 		assertEquals(1, resultSet.size());
 		
-		AuthorizableOrgUnit p = DomainObjectHelper.findIdentifiableEntityInCollection(resultSet, TestObjectContainer.ORG_UNIT_UUID_A);
+		OrgUnitFull p = DomainObjectHelper.findIdentifiableEntityInCollection(resultSet, TestObjectContainer.ORG_UNIT_UUID_A);
 		assertTrue(p.getMembers().isEmpty());
-		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, p));
+		assertTrue(new OrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, p));
 		
 		// default value for query-param => without members:
 		resultSet = getResourceClient().performRestCall_GET(
 				SUB_ORGUNITS_RESOURCE_PATH + TestObjectContainer.SUPER_OU_UUID_1, MediaType.APPLICATION_JSON, 
-				new GenericType<Set<AuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
+				new GenericType<Set<OrgUnitFull>>(new ParameterizedTypeImpl(Set.class, OrgUnitFull.class)));
 
 		assertFalse(resultSet.isEmpty());
 		assertEquals(1, resultSet.size());
 		
 		p = DomainObjectHelper.findIdentifiableEntityInCollection(resultSet, TestObjectContainer.ORG_UNIT_UUID_A);
 		assertTrue(p.getMembers().isEmpty());
-		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, p));		
+		assertTrue(new OrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, p));		
 	}
 
 	@Test
@@ -191,14 +198,14 @@ public class OrgUnitResourceTest
 	{
 		Mockito.when(orgUnitServicesMock.obtainRootOrgUnits()).thenReturn(new HashSet<>(Arrays.asList(TestObjectContainer.ROOT_OU)));
 		
-		Set<AuthorizableOrgUnit> resultSet = getResourceClient().performRestCall_GET(ALL_ROOT_ORGUNITS_RESOURCE_PATH, MediaType.APPLICATION_JSON,
-				new GenericType<Set<AuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
+		Set<OrgUnitFull> resultSet = getResourceClient().performRestCall_GET(ALL_ROOT_ORGUNITS_RESOURCE_PATH, MediaType.APPLICATION_JSON,
+				new GenericType<Set<OrgUnitFull>>(new ParameterizedTypeImpl(Set.class, OrgUnitFull.class)));
 
 		assertFalse(resultSet.isEmpty());
 		assertEquals(1, resultSet.size());
 		
-		AuthorizableOrgUnit p = DomainObjectHelper.findIdentifiableEntityInCollection(resultSet, TestObjectContainer.ROOT_OU_UUID);
-		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ROOT_OU, p));
+		OrgUnitFull p = DomainObjectHelper.findIdentifiableEntityInCollection(resultSet, TestObjectContainer.ROOT_OU_UUID);
+		assertTrue(new OrgUnitComparer().objectsAreEqual(TestObjectContainer.ROOT_OU, p));
 	}
 
 	@Override

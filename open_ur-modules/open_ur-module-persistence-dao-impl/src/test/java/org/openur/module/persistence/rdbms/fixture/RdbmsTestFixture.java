@@ -13,11 +13,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
 import org.openur.module.domain.application.OpenURApplication;
-import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.AuthorizableTechUser;
 import org.openur.module.domain.security.authorization.OpenURPermission;
 import org.openur.module.domain.security.authorization.OpenURRole;
 import org.openur.module.domain.security.secure_api.PermissionConstraints;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitFull;
 import org.openur.module.domain.userstructure.person.Person;
 import org.openur.module.persistence.mapper.rdbms.IEntityDomainObjectMapper;
 import org.openur.module.persistence.mapper.rdbms.IOrganizationalUnitMapper;
@@ -65,7 +65,7 @@ public class RdbmsTestFixture
 	private PTechnicalUser techUser_2;
 	
 	@Inject
-	private IOrganizationalUnitMapper<AuthorizableOrgUnit> organizationalUnitMapper;
+	private IOrganizationalUnitMapper<OrgUnitFull> organizationalUnitMapper;
 	
 	@Inject
 	private IEntityDomainObjectMapper<PApplication, OpenURApplication> applicationMapper;

@@ -13,13 +13,13 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.Provider;
 
 import org.openur.module.domain.IdentifiableEntityImpl;
-import org.openur.module.domain.security.authorization.AuthorizableMember;
-import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
 import org.openur.module.domain.security.authorization.AuthorizableTechUser;
 import org.openur.module.domain.security.authorization.OpenURRole;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitFull;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
 import org.openur.module.domain.userstructure.person.Person;
-import org.openur.remoting.xchange.marshalling.json.AuthorizableMemberSerializer;
-import org.openur.remoting.xchange.marshalling.json.AuthorizableOrgUnitSerializer;
+import org.openur.remoting.xchange.marshalling.json.OrgUnitMemberSerializer;
+import org.openur.remoting.xchange.marshalling.json.OrgUnitSerializer;
 import org.openur.remoting.xchange.marshalling.json.OpenURRoleSerializer;
 import org.openur.remoting.xchange.marshalling.json.PersonSerializer;
 import org.openur.remoting.xchange.marshalling.json.TechnicalUserSerializer;
@@ -59,8 +59,8 @@ public class IdentifiableEntitySetProvider<I extends IdentifiableEntityImpl>
 	{
 		return new GsonBuilder()
     		.registerTypeAdapter(AuthorizableTechUser.class, new TechnicalUserSerializer())
-		    .registerTypeAdapter(AuthorizableOrgUnit.class, new AuthorizableOrgUnitSerializer())
-		    .registerTypeAdapter(AuthorizableMember.class, new AuthorizableMemberSerializer())
+		    .registerTypeAdapter(OrgUnitFull.class, new OrgUnitSerializer())
+		    .registerTypeAdapter(OrgUnitMember.class, new OrgUnitMemberSerializer())
 		    .registerTypeAdapter(OpenURRole.class, new OpenURRoleSerializer());
 	}	
 }

@@ -3,14 +3,14 @@ package org.openur.module.domain.utils.compare;
 import java.util.Arrays;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.openur.module.domain.security.authorization.AuthorizableMember;
-import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitFull;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
 
-public class AuthorizableOrgUnitComparer
-	extends AbstractIdentifiableObjectComparer<AuthorizableOrgUnit>
+public class OrgUnitComparer
+	extends AbstractIdentifiableObjectComparer<OrgUnitFull>
 {
 	@Override
-	protected boolean internalEqualityCheck(AuthorizableOrgUnit orgUnit1, AuthorizableOrgUnit orgUnit2)
+	protected boolean internalEqualityCheck(OrgUnitFull orgUnit1, OrgUnitFull orgUnit2)
 	{
 		boolean isEqual = EqualsBuilder.reflectionEquals(orgUnit1, orgUnit2, Arrays.asList("members", "rootOrgUnit", "superOrgUnit", "address"));
 		
@@ -26,11 +26,11 @@ public class AuthorizableOrgUnitComparer
 			return false;
 		}
 		
-		AuthorizableMemberComparer memberComparer = new AuthorizableMemberComparer();
+		OrgUnitMemberComparer memberComparer = new OrgUnitMemberComparer();
 		
-		for (AuthorizableMember member1 : orgUnit1.getMembers())
+		for (OrgUnitMember member1 : orgUnit1.getMembers())
 		{
-			AuthorizableMember member2 = orgUnit2.findMemberByPerson(member1.getPerson());
+			OrgUnitMember member2 = orgUnit2.findMemberByPerson(member1.getPerson());
 			
 			if (member2 == null || !memberComparer.objectsAreEqual(member1, member2))
 			{
@@ -38,7 +38,7 @@ public class AuthorizableOrgUnitComparer
 			}
 		}
 		
-		AuthorizableOrgUnitComparer orgUnitComparer = new AuthorizableOrgUnitComparer();
+		OrgUnitComparer orgUnitComparer = new OrgUnitComparer();
 		
 		if (!(orgUnit1.getRootOrgUnit() == null && orgUnit2.getRootOrgUnit() == null) 
 			&& !orgUnitComparer.objectsAreEqual(orgUnit1.getRootOrgUnit(), orgUnit2.getRootOrgUnit()))

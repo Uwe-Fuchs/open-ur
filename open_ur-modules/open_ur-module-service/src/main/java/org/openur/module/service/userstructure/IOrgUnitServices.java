@@ -2,7 +2,7 @@ package org.openur.module.service.userstructure;
 
 import java.util.Set;
 
-import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
+import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 
 public interface IOrgUnitServices
 {
@@ -12,9 +12,9 @@ public interface IOrgUnitServices
    * @param orgUnitId : the unique identifier of the organizational-unit.
    * @param inclMembersRoles : including all members (plus their roles)?
    * 
-   * @return the (authorizable) organizational-unit or null, if no organizational-unit is found.
+   * @return the organizational-unit or null, if no organizational-unit is found.
    */
-  IAuthorizableOrgUnit findOrgUnitById(String orgUnitId, Boolean inclMembersRoles);
+  IOrganizationalUnit findOrgUnitById(String orgUnitId, Boolean inclMembersRoles);
   
   /**
    * searches a organizational-unit via it's (domain specific) number.
@@ -22,17 +22,17 @@ public interface IOrgUnitServices
    * @param orgUnitNumber : the number of the organizational-unit.
    * @param inclMembersRoles  : including all members (plus their roles)?
    * 
-   * @return the (authorizable) organizational-unit or null, if no organizational-unit is found.
+   * @return the organizational-unit or null, if no organizational-unit is found.
    */
-  IAuthorizableOrgUnit findOrgUnitByNumber(String orgUnitNumber, Boolean inclMembersRoles);
+  IOrganizationalUnit findOrgUnitByNumber(String orgUnitNumber, Boolean inclMembersRoles);
 	
   /**
    * returns all stored organizational-units in a set.
    * If no organizational-units are found, the result-set will be empty (not null).
    * 
-   * @return Set with all (authorizable) organizational-units.
+   * @return Set with all organizational-units.
    */
-  Set<IAuthorizableOrgUnit> obtainAllOrgUnits();
+  Set<IOrganizationalUnit> obtainAllOrgUnits();
   
   /**
    * returns all subordinated org-units of an org-unit in a set.
@@ -41,15 +41,15 @@ public interface IOrgUnitServices
    * @param orgUnitId : the unique identifier of the super-org-unit.
    * @param inclMembersRoles : including all members (plus their roles) of the org-units?
    * 
-   * @return Set with all subordinated (authorizable) org-units of an org-unit (maybe empty).
+   * @return Set with all subordinated org-units of an org-unit (maybe empty).
    */
-  Set<IAuthorizableOrgUnit> obtainSubOrgUnitsForOrgUnit(String orgUnitId, Boolean inclMembersRoles);
+  Set<IOrganizationalUnit> obtainSubOrgUnitsForOrgUnit(String orgUnitId, Boolean inclMembersRoles);
 	
   /**
    * returns all organizational-units (without their members!!!), which are roots (i.e. the highest in
    * an organization) in a set. If no org-units can be found, the result-set will be empty (not null).
    * 
-   * @return Set with all (authorizable) root-org-units.
+   * @return Set with all root-org-units.
    */
-  Set<IAuthorizableOrgUnit> obtainRootOrgUnits();
+  Set<IOrganizationalUnit> obtainRootOrgUnits();
 }

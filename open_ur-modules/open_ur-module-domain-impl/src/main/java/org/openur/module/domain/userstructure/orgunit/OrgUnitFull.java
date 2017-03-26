@@ -4,35 +4,33 @@ import java.util.Collections;
 import java.util.Set;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
-import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.EMailAddress;
 import org.openur.module.domain.userstructure.UserStructureBase;
+import org.openur.module.domain.userstructure.person.IPerson;
 
 /**
- * Implementation of {@link IOrganizationalUnit}. All userstructure-related concerns are implemented. Anyway the
- * security-related concerns are still missing, so the final (and concrete) implementation is found under 
- * {@link AuthorizableOrgUnit}.
+ * Implementation of {@link IOrganizationalUnit}. All userstructure-related concerns are implemented.
  * 
  * @author info@uwefuchs.com
  */
-public abstract class AbstractOrgUnit
+public class OrgUnitFull
 	extends UserStructureBase
 	implements IOrganizationalUnit
 {
 	private static final long serialVersionUID = 2892816957009550354L;
 	
 	// properties:
-  private final Set<? extends AbstractOrgUnitMember> members;
-  private final AbstractOrgUnit rootOrgUnit;
-  private final AbstractOrgUnit superOrgUnit;
+  private final Set<OrgUnitMember> members;
+  private final OrgUnitFull rootOrgUnit;
+  private final OrgUnitFull superOrgUnit;
   private final String name;
   private final String shortName;
   private final String description;
 	private final Address address;
 	private final EMailAddress emailAddress;
 	
-	public AbstractOrgUnit(	AbstractOrgUnitBuilder<? extends AbstractOrgUnitBuilder<?>> b)
+	public OrgUnitFull(	OrgUnitFullBuilder b)
 	{
 		super(b);
 
@@ -48,19 +46,19 @@ public abstract class AbstractOrgUnit
 
 	// accessors:
 	@Override
-	public AbstractOrgUnit getSuperOrgUnit()
+	public OrgUnitFull getSuperOrgUnit()
 	{
-		return (AbstractOrgUnit) this.superOrgUnit;
+		return (OrgUnitFull) this.superOrgUnit;
 	}
 
 	@Override
-	public AbstractOrgUnit getRootOrgUnit()
+	public OrgUnitFull getRootOrgUnit()
 	{
-		return (AbstractOrgUnit) this.rootOrgUnit;
+		return (OrgUnitFull) this.rootOrgUnit;
 	}
 
 	@Override
-	public Set<? extends AbstractOrgUnitMember> getMembers()
+	public Set<OrgUnitMember> getMembers()
 	{
 		return this.members;
 	}
@@ -92,14 +90,26 @@ public abstract class AbstractOrgUnit
 
 	// operations:
 	@Override
+	public OrgUnitMember findMemberByPersonId(String id)
+	{
+		return (OrgUnitMember) IOrganizationalUnit.super.findMemberByPersonId(id);
+	}
+
+	@Override
+	public OrgUnitMember findMemberByPerson(IPerson person)
+	{
+		return (OrgUnitMember) IOrganizationalUnit.super.findMemberByPerson(person);
+	}
+	
+	@Override
 	public int compareTo(IOrganizationalUnit ou)
 	{    
-		if (!(ou instanceof AbstractOrgUnit))
+		if (!(ou instanceof OrgUnitFull))
 		{
 			return IOrganizationalUnit.super.compareTo(ou);
 		}
 		
-		AbstractOrgUnit orgUnit = (AbstractOrgUnit) ou;
+		OrgUnitFull orgUnit = (OrgUnitFull) ou;
 		
     int comparison = new CompareToBuilder()
 														.append(this.getName(), orgUnit.getName())

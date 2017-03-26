@@ -5,11 +5,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
-import org.openur.module.domain.security.authorization.AuthorizableMember;
-import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
-import org.openur.module.domain.security.authorization.AuthorizableOrgUnitBuilder;
 import org.openur.module.domain.userstructure.Address;
 import org.openur.module.domain.userstructure.EMailAddress;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitFull;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitFullBuilder;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
@@ -20,16 +20,16 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-public class AuthorizableOrgUnitSerializer
+public class OrgUnitSerializer
 	extends UserStructureBaseSerializer
-	implements JsonSerializer<AuthorizableOrgUnit>, JsonDeserializer<AuthorizableOrgUnit>
+	implements JsonSerializer<OrgUnitFull>, JsonDeserializer<OrgUnitFull>
 {	
 	@Override
-	public AuthorizableOrgUnit deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+	public OrgUnitFull deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 		throws JsonParseException
 	{
 		JsonObject jsonObject = json.getAsJsonObject();
-		AuthorizableOrgUnitBuilder orgUnitBuilder = new AuthorizableOrgUnitBuilder();		
+		OrgUnitFullBuilder orgUnitBuilder = new OrgUnitFullBuilder();		
 		super.deserialize(jsonObject, orgUnitBuilder);
 
 		String name = jsonObject.get("name").getAsString();
@@ -43,17 +43,17 @@ public class AuthorizableOrgUnitSerializer
 		EMailAddress emailAddress = element != null ? context.deserialize(element.getAsJsonObject(), EMailAddress.class) : null;
 		
 		JsonArray applicationsArray = jsonObject.get("members").getAsJsonArray();
-		Set<AuthorizableMember> members = new HashSet<>();
+		Set<OrgUnitMember> members = new HashSet<>();
 		for (JsonElement e : applicationsArray)
 		{
-			members.add(context.deserialize(e, AuthorizableMember.class));
+			members.add(context.deserialize(e, OrgUnitMember.class));
 		}
 		
 		element = jsonObject.get("rootOrgUnit");
-		AuthorizableOrgUnit rootOrgUnit = element != null ? context.deserialize(element.getAsJsonObject(), AuthorizableOrgUnit.class) : null;
+		OrgUnitFull rootOrgUnit = element != null ? context.deserialize(element.getAsJsonObject(), OrgUnitFull.class) : null;
 		
 		element = jsonObject.get("superOrgUnit");
-		AuthorizableOrgUnit superOrgUnit = element != null ? context.deserialize(element.getAsJsonObject(), AuthorizableOrgUnit.class) : null;
+		OrgUnitFull superOrgUnit = element != null ? context.deserialize(element.getAsJsonObject(), OrgUnitFull.class) : null;
 		
 		orgUnitBuilder
 				.name(name)
@@ -61,7 +61,7 @@ public class AuthorizableOrgUnitSerializer
 				.description(description)
 				.address(address)
 				.emailAddress(emailAddress)
-				.authorizableMembers(members);
+				.members(members);
 		
 		if (rootOrgUnit != null)
 		{
@@ -77,7 +77,7 @@ public class AuthorizableOrgUnitSerializer
 	}
 
 	@Override
-	public JsonElement serialize(AuthorizableOrgUnit src, Type typeOfSrc, JsonSerializationContext context)
+	public JsonElement serialize(OrgUnitFull src, Type typeOfSrc, JsonSerializationContext context)
 	{
 		JsonObject jsonObject = new JsonObject();		
 		super.serialize(src, jsonObject, context);

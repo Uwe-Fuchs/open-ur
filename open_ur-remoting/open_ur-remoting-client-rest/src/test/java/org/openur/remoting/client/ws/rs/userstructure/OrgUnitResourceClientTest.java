@@ -17,10 +17,10 @@ import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
-import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
-import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
+import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitFull;
 import org.openur.module.domain.utils.common.DomainObjectHelper;
-import org.openur.module.domain.utils.compare.AuthorizableOrgUnitComparer;
+import org.openur.module.domain.utils.compare.OrgUnitComparer;
 import org.openur.module.service.userstructure.IOrgUnitServices;
 import org.openur.remoting.resource.userstructure.OrgUnitResource;
 
@@ -65,10 +65,10 @@ public class OrgUnitResourceClientTest
 	{
 		Mockito.when(orgUnitServicesMock.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_A, Boolean.TRUE)).thenReturn(TestObjectContainer.ORG_UNIT_A);
 		
-		IAuthorizableOrgUnit o = orgUnitResourceClient.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_A, Boolean.TRUE);
+		IOrganizationalUnit o = orgUnitResourceClient.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_A, Boolean.TRUE);
 
 		System.out.println("Result: " + o);
-		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A, (AuthorizableOrgUnit) o));
+		assertTrue(new OrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A, (OrgUnitFull) o));
 		assertFalse(o.getMembers().isEmpty());
 	}
 
@@ -78,10 +78,10 @@ public class OrgUnitResourceClientTest
 		Mockito.when(orgUnitServicesMock.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_A, Boolean.FALSE))
 				.thenReturn(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS);
 		
-		IAuthorizableOrgUnit o = orgUnitResourceClient.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_A, Boolean.FALSE);
+		IOrganizationalUnit o = orgUnitResourceClient.findOrgUnitById(TestObjectContainer.ORG_UNIT_UUID_A, Boolean.FALSE);
 
 		System.out.println("Result: " + o);
-		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, (AuthorizableOrgUnit) o));
+		assertTrue(new OrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, (OrgUnitFull) o));
 		assertTrue(o.getMembers().isEmpty());
 	}
 
@@ -90,10 +90,10 @@ public class OrgUnitResourceClientTest
 	{
 		Mockito.when(orgUnitServicesMock.findOrgUnitByNumber(TestObjectContainer.ORG_UNIT_NUMBER_A, Boolean.TRUE)).thenReturn(TestObjectContainer.ORG_UNIT_A);
 		
-		IAuthorizableOrgUnit o = orgUnitResourceClient.findOrgUnitByNumber(TestObjectContainer.ORG_UNIT_NUMBER_A, Boolean.TRUE);
+		IOrganizationalUnit o = orgUnitResourceClient.findOrgUnitByNumber(TestObjectContainer.ORG_UNIT_NUMBER_A, Boolean.TRUE);
 
 		System.out.println("Result: " + o);
-		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A, (AuthorizableOrgUnit) o));
+		assertTrue(new OrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A, (OrgUnitFull) o));
 		assertFalse(o.getMembers().isEmpty());
 	}
 
@@ -103,10 +103,10 @@ public class OrgUnitResourceClientTest
 		Mockito.when(orgUnitServicesMock.findOrgUnitByNumber(TestObjectContainer.ORG_UNIT_NUMBER_A, Boolean.FALSE))
 				.thenReturn(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS);
 
-		IAuthorizableOrgUnit o = orgUnitResourceClient.findOrgUnitByNumber(TestObjectContainer.ORG_UNIT_NUMBER_A, Boolean.FALSE);
+		IOrganizationalUnit o = orgUnitResourceClient.findOrgUnitByNumber(TestObjectContainer.ORG_UNIT_NUMBER_A, Boolean.FALSE);
 
 		System.out.println("Result: " + o);
-		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, (AuthorizableOrgUnit) o));
+		assertTrue(new OrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, (OrgUnitFull) o));
 		assertTrue(o.getMembers().isEmpty());
 	}
 
@@ -116,20 +116,20 @@ public class OrgUnitResourceClientTest
 		Mockito.when(orgUnitServicesMock.obtainAllOrgUnits()).thenReturn(new HashSet<>(Arrays.asList(TestObjectContainer.ORG_UNIT_A, TestObjectContainer.ORG_UNIT_B, 
 				TestObjectContainer.ORG_UNIT_C)));
 	
-		Set<IAuthorizableOrgUnit> resultSet = orgUnitResourceClient.obtainAllOrgUnits();
+		Set<IOrganizationalUnit> resultSet = orgUnitResourceClient.obtainAllOrgUnits();
 
 		assertFalse(resultSet.isEmpty());
 		assertEquals(3, resultSet.size());
 		System.out.println("Result: " + resultSet);
 		
-		Set<AuthorizableOrgUnit> allOrgUnits = resultSet.stream().map(o -> (AuthorizableOrgUnit) o).collect(Collectors.toSet());
+		Set<OrgUnitFull> allOrgUnits = resultSet.stream().map(o -> (OrgUnitFull) o).collect(Collectors.toSet());
 		
-		AuthorizableOrgUnit p = DomainObjectHelper.findIdentifiableEntityInCollection(allOrgUnits, TestObjectContainer.ORG_UNIT_UUID_A);
-		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A, p));
+		OrgUnitFull p = DomainObjectHelper.findIdentifiableEntityInCollection(allOrgUnits, TestObjectContainer.ORG_UNIT_UUID_A);
+		assertTrue(new OrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A, p));
 		p = DomainObjectHelper.findIdentifiableEntityInCollection(allOrgUnits, TestObjectContainer.ORG_UNIT_UUID_B);
-		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_B, p));
+		assertTrue(new OrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_B, p));
 		p = DomainObjectHelper.findIdentifiableEntityInCollection(allOrgUnits, TestObjectContainer.ORG_UNIT_UUID_C);
-		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_C, p));
+		assertTrue(new OrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_C, p));
 	}
 
 	@Test
@@ -138,20 +138,20 @@ public class OrgUnitResourceClientTest
 		Mockito.when(orgUnitServicesMock.obtainSubOrgUnitsForOrgUnit(TestObjectContainer.SUPER_OU_UUID_1, Boolean.TRUE)).thenReturn(
 				new HashSet<>(Arrays.asList(TestObjectContainer.ORG_UNIT_A, TestObjectContainer.ORG_UNIT_B)));
 		
-		Set<IAuthorizableOrgUnit> resultSet = orgUnitResourceClient.obtainSubOrgUnitsForOrgUnit(TestObjectContainer.SUPER_OU_UUID_1, Boolean.TRUE);
+		Set<IOrganizationalUnit> resultSet = orgUnitResourceClient.obtainSubOrgUnitsForOrgUnit(TestObjectContainer.SUPER_OU_UUID_1, Boolean.TRUE);
 
 		assertFalse(resultSet.isEmpty());
 		assertEquals(2, resultSet.size());
 		System.out.println("Result: " + resultSet);
 		
-		Set<AuthorizableOrgUnit> allOrgUnits = resultSet.stream().map(o -> (AuthorizableOrgUnit) o).collect(Collectors.toSet());
+		Set<OrgUnitFull> allOrgUnits = resultSet.stream().map(o -> (OrgUnitFull) o).collect(Collectors.toSet());
 		
-		AuthorizableOrgUnit p = DomainObjectHelper.findIdentifiableEntityInCollection(allOrgUnits, TestObjectContainer.ORG_UNIT_UUID_A);
+		OrgUnitFull p = DomainObjectHelper.findIdentifiableEntityInCollection(allOrgUnits, TestObjectContainer.ORG_UNIT_UUID_A);
 		assertFalse(p.getMembers().isEmpty());
-		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A, p));
+		assertTrue(new OrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A, p));
 		p = DomainObjectHelper.findIdentifiableEntityInCollection(allOrgUnits, TestObjectContainer.ORG_UNIT_UUID_B);
 		assertFalse(p.getMembers().isEmpty());
-		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_B, p));
+		assertTrue(new OrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_B, p));
 	}
 
 	@Test
@@ -160,17 +160,17 @@ public class OrgUnitResourceClientTest
 		Mockito.when(orgUnitServicesMock.obtainSubOrgUnitsForOrgUnit(TestObjectContainer.SUPER_OU_UUID_1, Boolean.FALSE)).thenReturn(
 				new HashSet<>(Arrays.asList(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS)));
 		
-		Set<IAuthorizableOrgUnit> resultSet = orgUnitResourceClient.obtainSubOrgUnitsForOrgUnit(TestObjectContainer.SUPER_OU_UUID_1, Boolean.FALSE);
+		Set<IOrganizationalUnit> resultSet = orgUnitResourceClient.obtainSubOrgUnitsForOrgUnit(TestObjectContainer.SUPER_OU_UUID_1, Boolean.FALSE);
 
 		assertFalse(resultSet.isEmpty());
 		assertEquals(1, resultSet.size());
 		System.out.println("Result: " + resultSet);
 		
-		Set<AuthorizableOrgUnit> allOrgUnits = resultSet.stream().map(o -> (AuthorizableOrgUnit) o).collect(Collectors.toSet());
+		Set<OrgUnitFull> allOrgUnits = resultSet.stream().map(o -> (OrgUnitFull) o).collect(Collectors.toSet());
 		
-		AuthorizableOrgUnit p = DomainObjectHelper.findIdentifiableEntityInCollection(allOrgUnits, TestObjectContainer.ORG_UNIT_UUID_A);
+		OrgUnitFull p = DomainObjectHelper.findIdentifiableEntityInCollection(allOrgUnits, TestObjectContainer.ORG_UNIT_UUID_A);
 		assertTrue(p.getMembers().isEmpty());
-		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, p));		
+		assertTrue(new OrgUnitComparer().objectsAreEqual(TestObjectContainer.ORG_UNIT_A_WITHOUT_MEMBERS, p));		
 	}
 
 	@Test
@@ -178,15 +178,15 @@ public class OrgUnitResourceClientTest
 	{
 		Mockito.when(orgUnitServicesMock.obtainRootOrgUnits()).thenReturn(new HashSet<>(Arrays.asList(TestObjectContainer.ROOT_OU)));
 		
-		Set<IAuthorizableOrgUnit> resultSet = orgUnitResourceClient.obtainRootOrgUnits();
+		Set<IOrganizationalUnit> resultSet = orgUnitResourceClient.obtainRootOrgUnits();
 
 		assertFalse(resultSet.isEmpty());
 		assertEquals(1, resultSet.size());
 		System.out.println("Result: " + resultSet);
 		
-		Set<AuthorizableOrgUnit> allOrgUnits = resultSet.stream().map(o -> (AuthorizableOrgUnit) o).collect(Collectors.toSet());
+		Set<OrgUnitFull> allOrgUnits = resultSet.stream().map(o -> (OrgUnitFull) o).collect(Collectors.toSet());
 		
-		AuthorizableOrgUnit p = DomainObjectHelper.findIdentifiableEntityInCollection(allOrgUnits, TestObjectContainer.ROOT_OU_UUID);
-		assertTrue(new AuthorizableOrgUnitComparer().objectsAreEqual(TestObjectContainer.ROOT_OU, p));
+		OrgUnitFull p = DomainObjectHelper.findIdentifiableEntityInCollection(allOrgUnits, TestObjectContainer.ROOT_OU_UUID);
+		assertTrue(new OrgUnitComparer().objectsAreEqual(TestObjectContainer.ROOT_OU, p));
 	}
 }

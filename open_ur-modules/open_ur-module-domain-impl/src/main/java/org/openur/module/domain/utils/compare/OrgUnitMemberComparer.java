@@ -3,15 +3,15 @@ package org.openur.module.domain.utils.compare;
 import java.util.Arrays;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.openur.module.domain.security.authorization.AuthorizableMember;
 import org.openur.module.domain.security.authorization.OpenURRole;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
 import org.openur.module.domain.utils.common.DomainObjectHelper;
 
-public class AuthorizableMemberComparer
-	extends AbstractIdentifiableObjectComparer<AuthorizableMember>
+public class OrgUnitMemberComparer
+	extends AbstractIdentifiableObjectComparer<OrgUnitMember>
 {
 	@Override
-	protected boolean internalEqualityCheck(AuthorizableMember member1, AuthorizableMember member2)
+	protected boolean internalEqualityCheck(OrgUnitMember member1, OrgUnitMember member2)
 	{
 		boolean isEqual = EqualsBuilder.reflectionEquals(member1, member2, Arrays.asList("person", "roles"));
 		

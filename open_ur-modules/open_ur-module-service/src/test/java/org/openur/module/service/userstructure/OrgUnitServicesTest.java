@@ -15,11 +15,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.openur.domain.testfixture.dummyimpl.MyAuthorizableMember;
-import org.openur.domain.testfixture.dummyimpl.MyAuthorizableOrgUnit;
+import org.openur.domain.testfixture.dummyimpl.MyOrgUnitMember;
+import org.openur.domain.testfixture.dummyimpl.MyOrgUnit;
 import org.openur.domain.testfixture.dummyimpl.MyPerson;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
-import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
 import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
 import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
 import org.openur.module.domain.userstructure.person.IPerson;
@@ -41,8 +40,8 @@ public class OrgUnitServicesTest
 	private static String NO_456;
 	private static String NUMBER_DIFFERENT_FROM_ALL_OTHERS;
 
-	private static IAuthorizableOrgUnit ORG_UNIT_1;
-	private static IAuthorizableOrgUnit ORG_UNIT_2;
+	private static IOrganizationalUnit ORG_UNIT_1;
+	private static IOrganizationalUnit ORG_UNIT_2;
 	
 	@Inject
 	private IOrgUnitDao orgUnitDaoMock;
@@ -61,8 +60,8 @@ public class OrgUnitServicesTest
 		NO_456 = "456";
 		NUMBER_DIFFERENT_FROM_ALL_OTHERS = "numberDifferentFromAllOthers";
 		
-		ORG_UNIT_1 = new MyAuthorizableOrgUnit(UUID_1, NO_123);
-		ORG_UNIT_2 = new MyAuthorizableOrgUnit(UUID_2, NO_456);
+		ORG_UNIT_1 = new MyOrgUnit(UUID_1, NO_123);
+		ORG_UNIT_2 = new MyOrgUnit(UUID_2, NO_456);
 	}
 
 	@Test
@@ -171,7 +170,7 @@ public class OrgUnitServicesTest
 		// test with open-ur-specific domain-objects:
 		Mockito.when(orgUnitDaoMock.obtainAllOrgUnits()).thenReturn(Arrays.asList(TestObjectContainer.ORG_UNIT_A, TestObjectContainer.ORG_UNIT_B));
 		
-		Set<IAuthorizableOrgUnit> orgUnitSet = orgUnitServices.obtainAllOrgUnits();
+		Set<IOrganizationalUnit> orgUnitSet = orgUnitServices.obtainAllOrgUnits();
 		
 		assertNotNull(orgUnitSet);
 		assertEquals(2, orgUnitSet.size());
@@ -241,14 +240,14 @@ public class OrgUnitServicesTest
 
 		// test with arbitrary domain-objects:
 		final String SUPER_OU_ID = UUID.randomUUID().toString();		
-		final MyAuthorizableOrgUnit SUPER_OU = new MyAuthorizableOrgUnit(SUPER_OU_ID, "superOuNumber");		
-		final MyAuthorizableOrgUnit ROOT_OU = new MyAuthorizableOrgUnit(UUID.randomUUID().toString(), "rootOuNumber");		
+		final MyOrgUnit SUPER_OU = new MyOrgUnit(SUPER_OU_ID, "superOuNumber");		
+		final MyOrgUnit ROOT_OU = new MyOrgUnit(UUID.randomUUID().toString(), "rootOuNumber");		
 
-		MyAuthorizableOrgUnit orgUnit1 = new MyAuthorizableOrgUnit(UUID_1, NO_123);
+		MyOrgUnit orgUnit1 = new MyOrgUnit(UUID_1, NO_123);
 		orgUnit1.setSuperOrgUnit(SUPER_OU);
 		orgUnit1.setRootOrgUnit(ROOT_OU);
 		
-		MyAuthorizableOrgUnit orgUnit2 = new MyAuthorizableOrgUnit(UUID_2, NO_456);
+		MyOrgUnit orgUnit2 = new MyOrgUnit(UUID_2, NO_456);
 		orgUnit2.setSuperOrgUnit(SUPER_OU);
 		orgUnit2.setRootOrgUnit(ROOT_OU);
 		
@@ -277,12 +276,12 @@ public class OrgUnitServicesTest
 		final String NUMBER_PERS_B = "numberPersB";
 		
 		IPerson persA = new MyPerson(UUID_PERS_A, NUMBER_PERS_A);
-		MyAuthorizableMember mA = new MyAuthorizableMember(persA, UUID_2);
+		MyOrgUnitMember mA = new MyOrgUnitMember(persA, UUID_2);
 		
 		IPerson persB = new MyPerson(UUID_PERS_B, NUMBER_PERS_B);
-		MyAuthorizableMember mB = new MyAuthorizableMember(persB, UUID_2);
+		MyOrgUnitMember mB = new MyOrgUnitMember(persB, UUID_2);
 		
-		MyAuthorizableOrgUnit orgUnit2_m = new MyAuthorizableOrgUnit(UUID_2, NO_456);
+		MyOrgUnit orgUnit2_m = new MyOrgUnit(UUID_2, NO_456);
 		orgUnit2_m.setSuperOrgUnit(SUPER_OU);
 		orgUnit2_m.setRootOrgUnit(ROOT_OU);
 		orgUnit2_m.addMember(mA);
@@ -330,9 +329,9 @@ public class OrgUnitServicesTest
 		// test with arbitrary domain-objects:
 		final String ROOT_OU_ID = UUID.randomUUID().toString();
 		final String ROOT_OU_NUMBER = "rootOuNumber";
-		MyAuthorizableOrgUnit rootOu = new MyAuthorizableOrgUnit(ROOT_OU_ID, ROOT_OU_NUMBER);
+		MyOrgUnit rootOu = new MyOrgUnit(ROOT_OU_ID, ROOT_OU_NUMBER);
 
-		MyAuthorizableOrgUnit orgUnit1 = new MyAuthorizableOrgUnit(UUID_1, NO_123);
+		MyOrgUnit orgUnit1 = new MyOrgUnit(UUID_1, NO_123);
 		orgUnit1.setRootOrgUnit(rootOu);
 		
 		Mockito.when(orgUnitDaoMock.obtainRootOrgUnits()).thenReturn(Arrays.asList(rootOu));

@@ -13,8 +13,8 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 
 import org.glassfish.hk2.utilities.reflection.ParameterizedTypeImpl;
-import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
-import org.openur.module.domain.security.authorization.IAuthorizableOrgUnit;
+import org.openur.module.domain.userstructure.orgunit.IOrganizationalUnit;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitFull;
 import org.openur.module.service.userstructure.IOrgUnitServices;
 import org.openur.remoting.client.ws.rs.secure_api.AbstractResourceClient;
 import org.openur.remoting.resource.userstructure.OrgUnitResource;
@@ -32,7 +32,7 @@ public class OrgUnitResourceClient
 	}
 
 	@Override
-	public IAuthorizableOrgUnit findOrgUnitById(String orgUnitId, Boolean inclMembersRoles)
+	public IOrganizationalUnit findOrgUnitById(String orgUnitId, Boolean inclMembersRoles)
 	{
 		String url = new StringBuilder()
 				.append(ORGUNIT_PER_ID_RESOURCE_PATH)
@@ -41,11 +41,11 @@ public class OrgUnitResourceClient
 				.append(inclMembersRoles.toString())
 				.toString();
 		
-		return performRestCall_GET(url, MediaType.APPLICATION_JSON, AuthorizableOrgUnit.class);
+		return performRestCall_GET(url, MediaType.APPLICATION_JSON, OrgUnitFull.class);
 	}
 
 	@Override
-	public IAuthorizableOrgUnit findOrgUnitByNumber(String orgUnitNumber, Boolean inclMembersRoles)
+	public IOrganizationalUnit findOrgUnitByNumber(String orgUnitNumber, Boolean inclMembersRoles)
 	{
 		String url = new StringBuilder()
 				.append(ORGUNIT_PER_NUMBER_RESOURCE_PATH)
@@ -54,19 +54,19 @@ public class OrgUnitResourceClient
 				.append(inclMembersRoles.toString())
 				.toString();
 
-		return performRestCall_GET(url, MediaType.APPLICATION_JSON, AuthorizableOrgUnit.class);
+		return performRestCall_GET(url, MediaType.APPLICATION_JSON, OrgUnitFull.class);
 	}
 
 	@Override
-	public Set<IAuthorizableOrgUnit> obtainAllOrgUnits()
+	public Set<IOrganizationalUnit> obtainAllOrgUnits()
 	{
 		return performRestCall_GET(
 				ALL_ORGUNITS_RESOURCE_PATH, MediaType.APPLICATION_JSON, 
-				new GenericType<Set<IAuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
+				new GenericType<Set<IOrganizationalUnit>>(new ParameterizedTypeImpl(Set.class, OrgUnitFull.class)));
 	}
 
 	@Override
-	public Set<IAuthorizableOrgUnit> obtainSubOrgUnitsForOrgUnit(String orgUnitId, Boolean inclMembersRoles)
+	public Set<IOrganizationalUnit> obtainSubOrgUnitsForOrgUnit(String orgUnitId, Boolean inclMembersRoles)
 	{
 		String url = new StringBuilder()
 				.append(SUB_ORGUNITS_RESOURCE_PATH)
@@ -76,14 +76,14 @@ public class OrgUnitResourceClient
 				.toString();
 		
 		return performRestCall_GET(
-					url, MediaType.APPLICATION_JSON, new GenericType<Set<IAuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
+					url, MediaType.APPLICATION_JSON, new GenericType<Set<IOrganizationalUnit>>(new ParameterizedTypeImpl(Set.class, OrgUnitFull.class)));
 	}
 
 	@Override
-	public Set<IAuthorizableOrgUnit> obtainRootOrgUnits()
+	public Set<IOrganizationalUnit> obtainRootOrgUnits()
 	{
 		return performRestCall_GET(
 				ALL_ROOT_ORGUNITS_RESOURCE_PATH, MediaType.APPLICATION_JSON, 
-				new GenericType<Set<IAuthorizableOrgUnit>>(new ParameterizedTypeImpl(Set.class, AuthorizableOrgUnit.class)));
+				new GenericType<Set<IOrganizationalUnit>>(new ParameterizedTypeImpl(Set.class, OrgUnitFull.class)));
 	}
 }

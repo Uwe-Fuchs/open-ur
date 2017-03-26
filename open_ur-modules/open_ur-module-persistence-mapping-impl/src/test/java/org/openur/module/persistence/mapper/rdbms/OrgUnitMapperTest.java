@@ -8,8 +8,8 @@ import javax.inject.Inject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openur.domain.testfixture.testobjects.TestObjectContainer;
-import org.openur.module.domain.security.authorization.AuthorizableMember;
-import org.openur.module.domain.security.authorization.AuthorizableOrgUnit;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitFull;
+import org.openur.module.domain.userstructure.orgunit.OrgUnitMember;
 import org.openur.module.persistence.rdbms.config.MapperSpringConfig;
 import org.openur.module.persistence.rdbms.entity.POrganizationalUnit;
 import org.springframework.test.context.ActiveProfiles;
@@ -41,20 +41,20 @@ public class OrgUnitMapperTest
 	public void testMapFromEntity()
 	{
 		POrganizationalUnit pRootOu = organizationalUnitMapper.mapRootOuFromDomainObject(TestObjectContainer.ROOT_OU);		
-		AuthorizableOrgUnit rootOu = organizationalUnitMapper.mapRootOuFromEntity(pRootOu);
+		OrgUnitFull rootOu = organizationalUnitMapper.mapRootOuFromEntity(pRootOu);
 		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity(rootOu, pRootOu));
 		
 		POrganizationalUnit pSuperOu = organizationalUnitMapper.mapSuperOuFromDomainObject(TestObjectContainer.SUPER_OU_1, pRootOu);		
-		AuthorizableOrgUnit superOu = organizationalUnitMapper.mapSuperOuFromEntity(pSuperOu, rootOu);
+		OrgUnitFull superOu = organizationalUnitMapper.mapSuperOuFromEntity(pSuperOu, rootOu);
 		assertTrue(OrganizationalUnitMapper.domainObjectEqualsToEntity(superOu, pSuperOu));
 		
 		POrganizationalUnit pOrgUnit = organizationalUnitMapper.mapFromDomainObject(TestObjectContainer.ORG_UNIT_A);		
-		AuthorizableOrgUnit orgUnit = organizationalUnitMapper.mapFromEntity(pOrgUnit, false, false);
+		OrgUnitFull orgUnit = organizationalUnitMapper.mapFromEntity(pOrgUnit, false, false);
 		assertTrue(orgUnit.getMembers().isEmpty());
 
 		orgUnit = organizationalUnitMapper.mapFromEntity(pOrgUnit, true, false);
 		assertFalse(orgUnit.getMembers().isEmpty());
-		for (AuthorizableMember member : orgUnit.getMembers())
+		for (OrgUnitMember member : orgUnit.getMembers())
 		{
 			assertTrue(member.getRoles().isEmpty());
 		}

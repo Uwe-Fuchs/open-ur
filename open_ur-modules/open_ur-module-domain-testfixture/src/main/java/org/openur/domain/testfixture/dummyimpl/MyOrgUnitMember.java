@@ -4,11 +4,11 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.openur.module.domain.security.authorization.IAuthorizableMember;
+import org.openur.module.domain.userstructure.orgunit.IOrgUnitMember;
 import org.openur.module.domain.userstructure.person.IPerson;
 
-public class MyAuthorizableMember
-	implements IAuthorizableMember
+public class MyOrgUnitMember
+	implements IOrgUnitMember
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -16,7 +16,7 @@ public class MyAuthorizableMember
 	private String orgUnitId;
 	private Set<MyRoleImpl> roles = new HashSet<>();
 	
-	public MyAuthorizableMember(IPerson person, String orgUnitId)
+	public MyOrgUnitMember(IPerson person, String orgUnitId)
 	{
 		super();
 		
