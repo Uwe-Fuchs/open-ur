@@ -4,3 +4,4 @@
 /.project
 /open_ur-module-service.iml
 *.springBeans
+/bin/
