@@ -19,53 +19,45 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@ImportResource("classpath:/springDataAppContext.xml")
-@EnableJpaRepositories(basePackages = { "org.openur.module.persistence.rdbms.repository" })
-public class JpaRepositorySpringConfig
-{
-	@Inject
-	protected Environment env;
+@EnableJpaRepositories(basePackages = {"org.openur.module.persistence.rdbms.repository"})
+public class JpaRepositorySpringConfig {
+    @Inject
+    protected Environment env;
 
-	public DataSource dataSource()
-	{
-    final JndiDataSourceLookup dsLookup = new JndiDataSourceLookup();
-    dsLookup.setResourceRef(true);
-    DataSource dataSource = dsLookup.getDataSource(env.getProperty("database.jndiName", "java:comp/env/jdbc/open_ur"));
-    
-    return dataSource;
-	}
+    public DataSource dataSource() {
+        final JndiDataSourceLookup dsLookup = new JndiDataSourceLookup();
+        dsLookup.setResourceRef(true);
 
-	@Bean
-	public EntityManagerFactory entityManagerFactory()
-	{
-		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-		em.setDataSource(dataSource());
-		em.setJpaVendorAdapter(jpaVendorAdapter());
-		em.setPackagesToScan("org.openur.module.persistence");
-		em.afterPropertiesSet();
+        return dsLookup.getDataSource(env.getProperty("database.jndiName", "java:comp/env/jdbc/open_ur"));
+    }
 
-		return em.getObject();
-	}
+    @Bean
+    public EntityManagerFactory entityManagerFactory() {
+        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+        em.setDataSource(dataSource());
+        em.setJpaVendorAdapter(jpaVendorAdapter());
+        em.setPackagesToScan("org.openur.module.persistence");
+        em.afterPropertiesSet();
 
-	@Bean
-	public PersistenceExceptionTranslator hibernateExceptionTranslator()
-	{
-		return new HibernateExceptionTranslator();
-	}
+        return em.getObject();
+    }
 
-	@Bean
-	public HibernateJpaVendorAdapter jpaVendorAdapter()
-	{
-		HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
-		adapter.setShowSql(env.getProperty("database.showSql", Boolean.class, Boolean.FALSE));
-		adapter.setDatabasePlatform(env.getProperty("database.databasePlatform", "org.hibernate.dialect.MySQL5InnoDBDialect"));
+    @Bean
+    public PersistenceExceptionTranslator hibernateExceptionTranslator() {
+        return new HibernateExceptionTranslator();
+    }
 
-		return adapter;
-	}
+    @Bean
+    public HibernateJpaVendorAdapter jpaVendorAdapter() {
+        HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
+        adapter.setShowSql(env.getProperty("database.showSql", Boolean.class, Boolean.FALSE));
+        adapter.setDatabasePlatform(env.getProperty("database.databasePlatform", "org.hibernate.dialect.MySQL5InnoDBDialect"));
 
-	@Bean(name = "transactionManager")
-	public JpaTransactionManager transactionManager()
-	{
-		return new JpaTransactionManager(entityManagerFactory());
-	}
+        return adapter;
+    }
+
+    @Bean(name = "transactionManager")
+    public JpaTransactionManager transactionManager() {
+        return new JpaTransactionManager(entityManagerFactory());
+    }
 }
